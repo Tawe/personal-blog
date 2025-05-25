@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -40,23 +42,42 @@ export function ArtumiContentFilter({
 
       let filtered = content.filter(Boolean) // Remove any null/undefined items
 
-      // Search filter
+      // Search filter - improved logic
       if (searchTerm.trim()) {
-        const searchLower = searchTerm.toLowerCase()
+        const searchLower = searchTerm.toLowerCase().trim()
         filtered = filtered.filter((item) => {
           if (!item) return false
 
+          // Search in title
           const titleMatch = item.title?.toLowerCase().includes(searchLower) || false
+
+          // Search in excerpt
           const excerptMatch = item.excerpt?.toLowerCase().includes(searchLower) || false
+
+          // Search in region
           const regionMatch = item.region?.toLowerCase().includes(searchLower) || false
+
+          // Search in categories
           const categoriesMatch = Array.isArray(item.categories)
             ? item.categories.some((cat) => cat?.toLowerCase().includes(searchLower))
             : false
+
+          // Search in tags
           const tagsMatch = Array.isArray(item.tags)
             ? item.tags.some((tag) => tag?.toLowerCase().includes(searchLower))
             : false
 
-          return titleMatch || excerptMatch || regionMatch || categoriesMatch || tagsMatch
+          // Search in type
+          const typeMatch = item.type?.toLowerCase().includes(searchLower) || false
+
+          // Search in connections
+          const connectionsMatch = Array.isArray(item.connections)
+            ? item.connections.some((conn) => conn?.toLowerCase().includes(searchLower))
+            : false
+
+          return (
+            titleMatch || excerptMatch || regionMatch || categoriesMatch || tagsMatch || typeMatch || connectionsMatch
+          )
         })
       }
 
@@ -86,16 +107,17 @@ export function ArtumiContentFilter({
       onFilterChange(filtered)
     } catch (error) {
       console.error("Error filtering content:", error)
-      onFilterChange([])
+      onFilterChange(content || [])
     }
   }
 
+  // Trigger filtering when any filter changes
   useEffect(() => {
     filterContent()
   }, [searchTerm, selectedCategories, selectedType, selectedRegion, selectedStatus, content])
 
-  const handleSearchChange = (value: string) => {
-    setSearchTerm(value)
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
   }
 
   const handleCategoryToggle = (category: string) => {
@@ -111,8 +133,14 @@ export function ArtumiContentFilter({
     setSelectedType("")
     setSelectedRegion("")
     setSelectedStatus("")
-    onFilterChange(content || [])
   }
+
+  // Clear filters will trigger useEffect which will call onFilterChange with original content
+  useEffect(() => {
+    if (!searchTerm && selectedCategories.length === 0 && !selectedType && !selectedRegion && !selectedStatus) {
+      onFilterChange(content || [])
+    }
+  }, [searchTerm, selectedCategories, selectedType, selectedRegion, selectedStatus, content, onFilterChange])
 
   const hasActiveFilters =
     searchTerm.trim() || selectedCategories.length > 0 || selectedType || selectedRegion || selectedStatus
@@ -140,9 +168,9 @@ export function ArtumiContentFilter({
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
         <Input
           type="text"
-          placeholder="Search the realm for stories, characters, locations..."
+          placeholder="Search stories, characters, locations, magic..."
           value={searchTerm}
-          onChange={(e) => handleSearchChange(e.target.value)}
+          onChange={handleSearchChange}
           className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-purple-500"
         />
       </div>
@@ -239,6 +267,41 @@ export function ArtumiContentFilter({
           {selectedRegion && <span>• {selectedRegion} </span>}
           {selectedStatus && <span>• {selectedStatus} </span>}
           {selectedCategories.length > 0 && <span>• {selectedCategories.join(", ")}</span>}
+        </div>
+      )}
+
+      {/* Search results count */}
+      {searchTerm && (
+        <div className="text-sm text-purple-400">
+          {
+            content.filter((item) => {
+              if (!item) return false
+              const searchLower = searchTerm.toLowerCase().trim()
+              const titleMatch = item.title?.toLowerCase().includes(searchLower) || false
+              const excerptMatch = item.excerpt?.toLowerCase().includes(searchLower) || false
+              const regionMatch = item.region?.toLowerCase().includes(searchLower) || false
+              const categoriesMatch = Array.isArray(item.categories)
+                ? item.categories.some((cat) => cat?.toLowerCase().includes(searchLower))
+                : false
+              const tagsMatch = Array.isArray(item.tags)
+                ? item.tags.some((tag) => tag?.toLowerCase().includes(searchLower))
+                : false
+              const typeMatch = item.type?.toLowerCase().includes(searchLower) || false
+              const connectionsMatch = Array.isArray(item.connections)
+                ? item.connections.some((conn) => conn?.toLowerCase().includes(searchLower))
+                : false
+              return (
+                titleMatch ||
+                excerptMatch ||
+                regionMatch ||
+                categoriesMatch ||
+                tagsMatch ||
+                typeMatch ||
+                connectionsMatch
+              )
+            }).length
+          }{" "}
+          results found for "{searchTerm}"
         </div>
       )}
     </div>
