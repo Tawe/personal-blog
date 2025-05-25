@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Map, Scroll, Users, Crown, Sparkles, Clock } from "lucide-react"
 import Link from "next/link"
-import type { ArtumiContentMetadata } from "@/lib/artumi-content"
+import type { ArtumiContentMetadata } from "@/lib/content"
 
 // Sample Artumin content data - in production, this would come from getAllArtumiContent()
 const sampleContent: ArtumiContentMetadata[] = [
@@ -26,6 +26,7 @@ const sampleContent: ArtumiContentMetadata[] = [
     status: "complete",
     connections: ["archmage-theron", "the-last-crystal"],
     reading_time: 8,
+    tags: ["magic", "ancient-history", "locations"],
   },
   {
     slug: "archmage-theron",
@@ -40,6 +41,7 @@ const sampleContent: ArtumiContentMetadata[] = [
     status: "complete",
     connections: ["crystal-spires-valdris", "the-last-crystal"],
     reading_time: 6,
+    tags: ["magic", "ancient-history", "characters"],
   },
   {
     slug: "the-last-crystal",
@@ -54,6 +56,7 @@ const sampleContent: ArtumiContentMetadata[] = [
     status: "complete",
     connections: ["archmage-theron", "crystal-spires-valdris"],
     reading_time: 15,
+    tags: ["magic", "adventure", "stories"],
   },
   {
     slug: "shadowmere-trading-company",
@@ -68,6 +71,7 @@ const sampleContent: ArtumiContentMetadata[] = [
     status: "complete",
     connections: ["port-of-whispers", "captain-morwyn"],
     reading_time: 10,
+    tags: ["politics", "mystery", "organizations"],
   },
   {
     slug: "port-of-whispers",
@@ -82,6 +86,7 @@ const sampleContent: ArtumiContentMetadata[] = [
     status: "complete",
     connections: ["shadowmere-trading-company", "captain-morwyn"],
     reading_time: 12,
+    tags: ["politics", "intrigue", "locations"],
   },
   {
     slug: "the-sundering-war",
@@ -96,6 +101,7 @@ const sampleContent: ArtumiContentMetadata[] = [
     status: "complete",
     connections: ["northern-kingdoms", "coastal-realms", "eastern-dominion"],
     reading_time: 20,
+    tags: ["history", "politics", "war"],
   },
   {
     slug: "magic-system-overview",
@@ -110,6 +116,7 @@ const sampleContent: ArtumiContentMetadata[] = [
     status: "complete",
     connections: ["crystal-spires-valdris", "archmage-theron"],
     reading_time: 14,
+    tags: ["lore", "magic", "worldbuilding"],
   },
   {
     slug: "the-eastern-dominion",
@@ -124,19 +131,49 @@ const sampleContent: ArtumiContentMetadata[] = [
     status: "in-progress",
     connections: ["the-sundering-war"],
     reading_time: 16,
+    tags: ["politics", "culture", "locations"],
   },
 ]
 
-const allCategories = Array.from(new Set(sampleContent.flatMap((content) => content.categories))).sort()
-const allTypes = Array.from(new Set(sampleContent.map((content) => content.type))).sort()
-const allRegions = Array.from(new Set(sampleContent.map((content) => content.region))).sort()
-const allStatuses = Array.from(new Set(sampleContent.map((content) => content.status))).sort()
+// Safe array extraction with fallbacks
+const allCategories = Array.from(
+  new Set(
+    sampleContent.filter((content) => content && content.categories).flatMap((content) => content.categories || []),
+  ),
+).sort()
+
+const allTypes = Array.from(
+  new Set(sampleContent.filter((content) => content && content.type).map((content) => content.type)),
+).sort()
+
+const allRegions = Array.from(
+  new Set(sampleContent.filter((content) => content && content.region).map((content) => content.region)),
+).sort()
+
+const allStatuses = Array.from(
+  new Set(sampleContent.filter((content) => content && content.status).map((content) => content.status)),
+).sort()
 
 export default function ArtumiPage() {
-  const [filteredContent, setFilteredContent] = useState<ArtumiContentMetadata[]>(sampleContent)
+  const [filteredContent, setFilteredContent] = useState<ArtumiContentMetadata[]>(sampleContent || [])
   const [viewMode, setViewMode] = useState<"grid" | "timeline">("grid")
 
-  const timelineContent = [...filteredContent].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  // Safe content filtering and sorting
+  const safeFilteredContent = Array.isArray(filteredContent) ? filteredContent : []
+  const timelineContent = [...safeFilteredContent].sort((a, b) => {
+    const dateA = a?.date ? new Date(a.date).getTime() : 0
+    const dateB = b?.date ? new Date(b.date).getTime() : 0
+    return dateA - dateB
+  })
+
+  // Safe content counting functions
+  const getContentCountByType = (type: string) => {
+    return sampleContent.filter((c) => c && c.type === type).length
+  }
+
+  const getContentCountByRegion = (region: string) => {
+    return sampleContent.filter((c) => c && c.region === region).length
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950">
@@ -161,15 +198,15 @@ export default function ArtumiPage() {
               <div className="flex justify-center gap-4 text-sm text-slate-400">
                 <div className="flex items-center gap-1">
                   <Scroll className="h-4 w-4" />
-                  <span>{sampleContent.filter((c) => c.type === "story").length} Stories</span>
+                  <span>{getContentCountByType("story")} Stories</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Map className="h-4 w-4" />
-                  <span>{sampleContent.filter((c) => c.type === "location").length} Locations</span>
+                  <span>{getContentCountByType("location")} Locations</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Users className="h-4 w-4" />
-                  <span>{sampleContent.filter((c) => c.type === "character").length} Characters</span>
+                  <span>{getContentCountByType("character")} Characters</span>
                 </div>
               </div>
             </div>
@@ -184,9 +221,7 @@ export default function ArtumiPage() {
                     Ancient magic flows through crystal spires in these mountainous realms, where old traditions clash
                     with new ambitions.
                   </p>
-                  <div className="text-xs text-blue-400">
-                    {sampleContent.filter((c) => c.region === "Northern Kingdoms").length} entries
-                  </div>
+                  <div className="text-xs text-blue-400">{getContentCountByRegion("Northern Kingdoms")} entries</div>
                 </CardContent>
               </Card>
 
@@ -197,9 +232,7 @@ export default function ArtumiPage() {
                   <p className="text-slate-400 text-sm mb-4">
                     Trading ports and merchant cities where information is currency and every harbor holds secrets.
                   </p>
-                  <div className="text-xs text-teal-400">
-                    {sampleContent.filter((c) => c.region === "Coastal Realms").length} entries
-                  </div>
+                  <div className="text-xs text-teal-400">{getContentCountByRegion("Coastal Realms")} entries</div>
                 </CardContent>
               </Card>
 
@@ -210,9 +243,7 @@ export default function ArtumiPage() {
                   <p className="text-slate-400 text-sm mb-4">
                     A disciplined empire where warrior-philosophers seek to bring order through strength and wisdom.
                   </p>
-                  <div className="text-xs text-orange-400">
-                    {sampleContent.filter((c) => c.region === "Eastern Dominion").length} entries
-                  </div>
+                  <div className="text-xs text-orange-400">{getContentCountByRegion("Eastern Dominion")} entries</div>
                 </CardContent>
               </Card>
             </div>
@@ -247,9 +278,9 @@ export default function ArtumiPage() {
             {/* Content Display */}
             <Tabs value={viewMode} className="w-full">
               <TabsContent value="grid">
-                {filteredContent.length > 0 ? (
+                {safeFilteredContent.length > 0 ? (
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredContent.map((content) => (
+                    {safeFilteredContent.map((content) => (
                       <ArtumiContentCard key={content.slug} content={content} />
                     ))}
                   </div>
@@ -264,26 +295,35 @@ export default function ArtumiPage() {
 
               <TabsContent value="timeline">
                 <div className="space-y-8">
-                  {timelineContent.map((content, index) => (
-                    <div key={content.slug} className="flex gap-6">
-                      <div className="flex flex-col items-center">
-                        <div className="w-4 h-4 bg-purple-500 rounded-full border-2 border-slate-800"></div>
-                        {index < timelineContent.length - 1 && (
-                          <div className="w-0.5 h-16 bg-gradient-to-b from-purple-500 to-slate-600 mt-2"></div>
-                        )}
-                      </div>
-                      <div className="flex-1 pb-8">
-                        <div className="text-sm text-purple-400 mb-2">
-                          {new Date(content.date).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
+                  {timelineContent.length > 0 ? (
+                    timelineContent.map((content, index) => (
+                      <div key={content.slug} className="flex gap-6">
+                        <div className="flex flex-col items-center">
+                          <div className="w-4 h-4 bg-purple-500 rounded-full border-2 border-slate-800"></div>
+                          {index < timelineContent.length - 1 && (
+                            <div className="w-0.5 h-16 bg-gradient-to-b from-purple-500 to-slate-600 mt-2"></div>
+                          )}
                         </div>
-                        <ArtumiContentCard content={content} compact />
+                        <div className="flex-1 pb-8">
+                          <div className="text-sm text-purple-400 mb-2">
+                            {content.date &&
+                              new Date(content.date).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })}
+                          </div>
+                          <ArtumiContentCard content={content} compact />
+                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <Clock className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-slate-300 mb-2">No timeline content</h3>
+                      <p className="text-slate-400">No content matches your current filters.</p>
                     </div>
-                  ))}
+                  )}
                 </div>
               </TabsContent>
             </Tabs>
