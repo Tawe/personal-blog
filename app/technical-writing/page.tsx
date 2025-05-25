@@ -1,152 +1,208 @@
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import Image from "next/image"
-import { Clock, Calendar } from "lucide-react"
+"use client"
+
+import { useState } from "react"
+import { ContentLayout } from "@/components/content-layout"
+import { TechnicalArticleCard } from "@/components/technical-article-card"
+import { TechnicalContentFilter } from "@/components/technical-content-filter"
+import { Card, CardContent } from "@/components/ui/card"
+import { Code, Database, Cloud, Shield, Zap, GitBranch } from "lucide-react"
+import type { TechnicalArticleMetadata } from "@/lib/technical-content"
+
+// Sample technical articles data - in production, this would come from getAllTechnicalArticles()
+const sampleArticles: TechnicalArticleMetadata[] = [
+  {
+    slug: "microservices-architecture",
+    title: "Building Scalable Microservices Architecture",
+    date: "2024-01-15",
+    updated: "2024-02-01",
+    excerpt: "A comprehensive guide to designing and implementing microservices that scale with your business needs",
+    tags: ["architecture", "microservices", "scalability", "devops"],
+    difficulty: "intermediate",
+    type: "guide",
+    reading_time: 12,
+    featured_image: "/placeholder.svg?height=200&width=400",
+    code_languages: ["javascript", "docker", "yaml"],
+    recently_updated: true,
+  },
+  {
+    slug: "react-performance-optimization",
+    title: "Performance Optimization Techniques for React Applications",
+    date: "2024-01-08",
+    excerpt:
+      "Practical strategies to improve the performance of your React apps, from code splitting to memory optimization",
+    tags: ["react", "performance", "javascript", "optimization"],
+    difficulty: "advanced",
+    type: "tutorial",
+    reading_time: 14,
+    featured_image: "/placeholder.svg?height=200&width=400",
+    code_languages: ["javascript", "typescript", "react"],
+  },
+  {
+    slug: "kubernetes-deployment-strategies",
+    title: "Advanced Kubernetes Deployment Strategies",
+    date: "2024-01-02",
+    excerpt: "Master blue-green deployments, canary releases, and rolling updates in Kubernetes environments",
+    tags: ["kubernetes", "devops", "deployment", "containers"],
+    difficulty: "advanced",
+    type: "guide",
+    reading_time: 18,
+    featured_image: "/placeholder.svg?height=200&width=400",
+    code_languages: ["yaml", "bash", "docker"],
+  },
+  {
+    slug: "database-design-patterns",
+    title: "Modern Database Design Patterns",
+    date: "2023-12-20",
+    updated: "2024-01-10",
+    excerpt: "Explore CQRS, Event Sourcing, and other patterns for building scalable data architectures",
+    tags: ["database", "architecture", "patterns", "scalability"],
+    difficulty: "intermediate",
+    type: "analysis",
+    reading_time: 16,
+    featured_image: "/placeholder.svg?height=200&width=400",
+    code_languages: ["sql", "javascript", "python"],
+    recently_updated: true,
+  },
+  {
+    slug: "api-security-best-practices",
+    title: "API Security Best Practices",
+    date: "2023-12-15",
+    excerpt: "Comprehensive guide to securing REST and GraphQL APIs with authentication, authorization, and monitoring",
+    tags: ["security", "api", "authentication", "best-practices"],
+    difficulty: "intermediate",
+    type: "guide",
+    reading_time: 10,
+    featured_image: "/placeholder.svg?height=200&width=400",
+    code_languages: ["javascript", "python", "yaml"],
+  },
+  {
+    slug: "typescript-advanced-patterns",
+    title: "Advanced TypeScript Patterns for Large Applications",
+    date: "2023-12-08",
+    excerpt:
+      "Leverage TypeScript's type system for better code organization and developer experience in enterprise apps",
+    tags: ["typescript", "patterns", "enterprise", "javascript"],
+    difficulty: "advanced",
+    type: "tutorial",
+    reading_time: 13,
+    featured_image: "/placeholder.svg?height=200&width=400",
+    code_languages: ["typescript", "javascript"],
+  },
+]
+
+const allTags = Array.from(new Set(sampleArticles.flatMap((article) => article.tags))).sort()
+const allDifficulties = ["beginner", "intermediate", "advanced"]
+const allTypes = ["tutorial", "guide", "analysis", "documentation"]
+const allLanguages = Array.from(new Set(sampleArticles.flatMap((article) => article.code_languages || []))).sort()
 
 export default function TechnicalWritingPage() {
-  // Sample articles data - in a real app, this would come from a database or CMS
-  const articles = [
-    {
-      id: 1,
-      title: "Implementing Microservices Architecture",
-      description: "A comprehensive guide to breaking down monolithic applications into microservices",
-      date: "May 15, 2023",
-      readTime: "12 min read",
-      image: "/placeholder.svg?height=200&width=400",
-      slug: "implementing-microservices-architecture",
-    },
-    {
-      id: 2,
-      title: "The Future of TypeScript in Enterprise Development",
-      description: "How TypeScript is changing the landscape of large-scale application development",
-      date: "April 3, 2023",
-      readTime: "8 min read",
-      image: "/placeholder.svg?height=200&width=400",
-      slug: "typescript-in-enterprise-development",
-    },
-    {
-      id: 3,
-      title: "CI/CD Best Practices for Development Teams",
-      description: "Streamlining your development pipeline with effective CI/CD strategies",
-      date: "March 21, 2023",
-      readTime: "10 min read",
-      image: "/placeholder.svg?height=200&width=400",
-      slug: "cicd-best-practices",
-    },
-    {
-      id: 4,
-      title: "Managing Technical Debt in Growing Organizations",
-      description: "Strategies for identifying, prioritizing, and addressing technical debt",
-      date: "February 12, 2023",
-      readTime: "15 min read",
-      image: "/placeholder.svg?height=200&width=400",
-      slug: "managing-technical-debt",
-    },
-    {
-      id: 5,
-      title: "Building Accessible Web Applications",
-      description: "A guide to creating inclusive web experiences for all users",
-      date: "January 28, 2023",
-      readTime: "11 min read",
-      image: "/placeholder.svg?height=200&width=400",
-      slug: "building-accessible-web-applications",
-    },
-    {
-      id: 6,
-      title: "Performance Optimization Techniques for React Applications",
-      description: "Practical strategies to improve the performance of your React apps",
-      date: "December 10, 2022",
-      readTime: "14 min read",
-      image: "/placeholder.svg?height=200&width=400",
-      slug: "react-performance-optimization",
-    },
-  ]
+  const [filteredArticles, setFilteredArticles] = useState<TechnicalArticleMetadata[]>(sampleArticles)
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">Technical Writing</h1>
-                <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                  Insights, tutorials, and best practices from my experience as a Head of Development
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+    <ContentLayout
+      title="Technical Writing"
+      description="Deep dives into architecture, best practices, and technical solutions"
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Introduction */}
+        <div className="mb-12 text-center">
+          <p className="text-lg text-slate-300 leading-relaxed max-w-4xl mx-auto mb-8">
+            Technical communication is about translating complex concepts into actionable insights. These articles focus
+            on practical solutions, architectural patterns, and best practices drawn from real-world experience building
+            and scaling software systems.
+          </p>
+        </div>
 
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {articles.map((article) => (
-                <Card key={article.id} className="overflow-hidden transition-all hover:shadow-lg">
-                  <div className="relative">
-                    <Image
-                      src={article.image || "/placeholder.svg"}
-                      width={400}
-                      height={200}
-                      alt={article.title}
-                      className="aspect-video w-full object-cover"
-                    />
-                  </div>
-                  <CardHeader>
-                    <CardTitle>{article.title}</CardTitle>
-                    <CardDescription>{article.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{article.date}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        <span>{article.readTime}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button variant="outline" className="w-full" asChild>
-                      <Link href={`/technical-writing/${article.slug}`}>Read Article</Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Technical Focus Areas */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <Card className="bg-slate-800/30 border-slate-700">
+            <CardContent className="p-6 text-center">
+              <Code className="h-8 w-8 text-blue-400 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-slate-100 mb-2">Architecture & Design</h3>
+              <p className="text-slate-400 text-sm">
+                System design patterns, microservices, and scalable architecture principles.
+              </p>
+            </CardContent>
+          </Card>
 
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Subscribe to My Newsletter</h2>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Get the latest articles and insights delivered directly to your inbox
-                </p>
-              </div>
-              <div className="w-full max-w-sm space-y-2">
-                <form className="flex flex-col sm:flex-row gap-2">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-                  <Button type="submit">Subscribe</Button>
-                </form>
-              </div>
-            </div>
+          <Card className="bg-slate-800/30 border-slate-700">
+            <CardContent className="p-6 text-center">
+              <Zap className="h-8 w-8 text-blue-400 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-slate-100 mb-2">Performance & Optimization</h3>
+              <p className="text-slate-400 text-sm">
+                Strategies for building fast, efficient applications that scale under load.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-slate-800/30 border-slate-700">
+            <CardContent className="p-6 text-center">
+              <Cloud className="h-8 w-8 text-blue-400 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-slate-100 mb-2">Cloud & DevOps</h3>
+              <p className="text-slate-400 text-sm">
+                Modern deployment strategies, containerization, and cloud-native development.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-slate-800/30 border-slate-700">
+            <CardContent className="p-6 text-center">
+              <Database className="h-8 w-8 text-blue-400 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-slate-100 mb-2">Data & Databases</h3>
+              <p className="text-slate-400 text-sm">
+                Database design, data modeling, and strategies for managing data at scale.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-slate-800/30 border-slate-700">
+            <CardContent className="p-6 text-center">
+              <Shield className="h-8 w-8 text-blue-400 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-slate-100 mb-2">Security & Best Practices</h3>
+              <p className="text-slate-400 text-sm">
+                Security patterns, code quality, and engineering practices for reliable systems.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-slate-800/30 border-slate-700">
+            <CardContent className="p-6 text-center">
+              <GitBranch className="h-8 w-8 text-blue-400 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-slate-100 mb-2">Languages & Frameworks</h3>
+              <p className="text-slate-400 text-sm">
+                Deep dives into JavaScript, TypeScript, React, and modern development tools.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Content Filter */}
+        <TechnicalContentFilter
+          articles={sampleArticles}
+          allTags={allTags}
+          allDifficulties={allDifficulties}
+          allTypes={allTypes}
+          allLanguages={allLanguages}
+          onFilterChange={setFilteredArticles}
+        />
+
+        {/* Articles Grid */}
+        {filteredArticles.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredArticles.map((article) => (
+              <TechnicalArticleCard key={article.slug} article={article} />
+            ))}
           </div>
-        </section>
-      </main>
-      <SiteFooter />
-    </div>
+        ) : (
+          <div className="text-center py-12">
+            <Code className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-slate-300 mb-2">No articles found</h3>
+            <p className="text-slate-400">
+              Try adjusting your search terms or clearing the filters to see more articles.
+            </p>
+          </div>
+        )}
+      </div>
+    </ContentLayout>
   )
 }

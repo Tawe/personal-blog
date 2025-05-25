@@ -1,265 +1,277 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { BookText, Users, Sword, Building2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
+import Image from "next/image"
+import { ArrowRight, Code, Users, Lightbulb, Target, BookOpen, Dice6 } from "lucide-react"
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-background to-muted">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_500px]">
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">John Doe</h1>
-                  <p className="text-xl text-muted-foreground">
-                    Head of Development | Technical Writer | Fantasy Storyteller | D&D Enthusiast
-                  </p>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Welcome to my personal website where I share my professional insights, creative writing, and passion
-                    for Dungeons & Dragons.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button asChild>
-                    <Link href="#featured">Explore My Work</Link>
-                  </Button>
-                  <Button variant="outline" asChild>
-                    <Link href="/team-building">Team Building Services</Link>
-                  </Button>
-                </div>
-              </div>
-              <Image
-                src="/placeholder.svg?height=550&width=550"
-                width={550}
-                height={550}
-                alt="Profile"
-                className="mx-auto aspect-square overflow-hidden rounded-xl object-cover object-center sm:w-full"
-                priority
-              />
-            </div>
-          </div>
-        </section>
+    <div className="min-h-screen bg-slate-950">
+      <div className="absolute inset-0 bg-tech-pattern opacity-30"></div>
+      <div className="relative">
+        <SiteHeader />
 
-        <section id="featured" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Featured Content</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl">
-                  Explore the different facets of my professional and creative work
-                </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 gap-6 pt-12 md:grid-cols-2 lg:grid-cols-4">
-              <Card className="transition-all hover:shadow-lg">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <BookText className="h-5 w-5 text-primary" />
-                    <span className="text-sm font-medium">Technical Writing</span>
-                  </div>
-                  <CardTitle>Development Insights</CardTitle>
-                  <CardDescription>
-                    Articles, tutorials, and insights from my experience as a Head of Development
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400"
-                    width={400}
-                    height={200}
-                    alt="Technical Writing"
-                    className="aspect-video rounded-lg object-cover"
-                  />
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href="/technical-writing">Read Articles</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card className="transition-all hover:shadow-lg">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Users className="h-5 w-5 text-primary" />
-                    <span className="text-sm font-medium">Leadership Fantasy</span>
-                  </div>
-                  <CardTitle>Leadership Stories</CardTitle>
-                  <CardDescription>Creative stories that blend fantasy with leadership principles</CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400"
-                    width={400}
-                    height={200}
-                    alt="Leadership Fantasy"
-                    className="aspect-video rounded-lg object-cover"
-                  />
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href="/leadership-fantasy">Read Stories</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card className="transition-all hover:shadow-lg">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Sword className="h-5 w-5 text-primary" />
-                    <span className="text-sm font-medium">D&D Creations</span>
-                  </div>
-                  <CardTitle>Homebrew Content</CardTitle>
-                  <CardDescription>
-                    Custom campaigns, characters, and game mechanics for Dungeons & Dragons
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400"
-                    width={400}
-                    height={200}
-                    alt="D&D Creations"
-                    className="aspect-video rounded-lg object-cover"
-                  />
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href="/dnd-creations">Explore Creations</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card className="transition-all hover:shadow-lg">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Building2 className="h-5 w-5 text-primary" />
-                    <span className="text-sm font-medium">Team Building</span>
-                  </div>
-                  <CardTitle>D&D Team Building</CardTitle>
-                  <CardDescription>Corporate team building services using Dungeons & Dragons</CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400"
-                    width={400}
-                    height={200}
-                    alt="Team Building"
-                    className="aspect-video rounded-lg object-cover"
-                  />
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href="/team-building">Learn More</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-10 px-10 md:gap-16 lg:grid-cols-2">
+        {/* Hero Section */}
+        <section className="container mx-auto px-6 py-20 lg:py-32">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8 animate-fade-in">
               <div className="space-y-4">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-                  Bringing Teams Together Through Adventure
-                </h2>
-                <p className="text-muted-foreground md:text-xl">
-                  My unique approach combines professional development with the collaborative storytelling of Dungeons &
-                  Dragons to create memorable team building experiences.
+                <h1 className="text-5xl lg:text-7xl font-bold text-slate-100 leading-tight">John Munn</h1>
+                <p className="text-xl lg:text-2xl text-blue-400 font-medium">
+                  Technical Leader | Engineering Strategist | Team Builder | Dungeon Master
                 </p>
-                <Button size="lg" asChild>
-                  <Link href="/team-building">Book a Session</Link>
+                <p className="text-lg text-slate-300 leading-relaxed max-w-2xl">
+                  I architect scalable solutions and lead high-performing teams, applying the same strategic
+                  storytelling I use as a Dungeon Master. Ready to guide organizations through complex challenges with
+                  analytical precision and creative problem-solving.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+                  <Link href="#featured-content">
+                    Explore My Work
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-slate-600 text-slate-300 hover:bg-slate-800"
+                  asChild
+                >
+                  <Link href="/mentoring">Schedule Mentoring</Link>
                 </Button>
               </div>
-              <div className="flex flex-col items-start space-y-4">
-                <ul className="grid gap-4">
-                  <li className="flex items-start gap-2">
-                    <div className="rounded-full bg-primary/10 p-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-5 w-5 text-primary"
-                      >
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </div>
-                    <div className="grid gap-1">
-                      <p className="text-base font-medium leading-none">Improved Communication</p>
-                      <p className="text-sm text-muted-foreground">
-                        Role-playing scenarios that develop effective communication skills
-                      </p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="rounded-full bg-primary/10 p-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-5 w-5 text-primary"
-                      >
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </div>
-                    <div className="grid gap-1">
-                      <p className="text-base font-medium leading-none">Problem Solving</p>
-                      <p className="text-sm text-muted-foreground">
-                        Collaborative challenges that enhance creative problem-solving abilities
-                      </p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="rounded-full bg-primary/10 p-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-5 w-5 text-primary"
-                      >
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </div>
-                    <div className="grid gap-1">
-                      <p className="text-base font-medium leading-none">Team Bonding</p>
-                      <p className="text-sm text-muted-foreground">
-                        Shared adventures that create lasting bonds between team members
-                      </p>
-                    </div>
-                  </li>
-                </ul>
+            </div>
+
+            <div className="flex justify-center lg:justify-end animate-slide-in">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-2xl opacity-20 scale-110"></div>
+                <Image
+                  src="/me.jpeg"
+                  width={400}
+                  height={400}
+                  alt="John Munn - Professional Headshot"
+                  className="relative rounded-full border-4 border-slate-700 shadow-2xl object-cover"
+                  priority
+                />
               </div>
             </div>
           </div>
         </section>
-      </main>
-      <SiteFooter />
+
+        {/* Featured Content Overview */}
+        <section id="featured-content" className="container mx-auto px-6 py-20">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-100 mb-4">Areas of Expertise</h2>
+            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+              Explore my insights across technical leadership, strategic thinking, and innovative problem-solving
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <Target className="h-6 w-6 text-blue-400" />
+                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">Vision</CardTitle>
+                </div>
+                <CardDescription className="text-slate-400">
+                  Strategic technology roadmaps and organizational transformation insights
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
+                  <Link href="/vision">
+                    Explore Vision <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <Code className="h-6 w-6 text-blue-400" />
+                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
+                    Technical Strategy
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-slate-400">
+                  Architecture decisions, technology choices, and engineering excellence
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
+                  <Link href="/technical-strategy">
+                    View Strategy <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <Users className="h-6 w-6 text-blue-400" />
+                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
+                    Leadership & Strategy
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-slate-400">
+                  Team building, culture development, and leadership philosophy
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
+                  <Link href="/strategic-narratives/leadership-strategy">
+                    Read Insights <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <BookOpen className="h-6 w-6 text-blue-400" />
+                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
+                    Technical Architecture
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-slate-400">
+                  Deep dives into technology, architecture patterns, and best practices
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
+                  <Link href="/strategic-narratives/technical-architecture">
+                    Read Articles <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <Lightbulb className="h-6 w-6 text-blue-400" />
+                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
+                    Team Building
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-slate-400">
+                  Innovative approaches to team development and collaboration
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
+                  <Link href="/team-building">
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <Dice6 className="h-6 w-6 text-blue-400" />
+                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
+                    Strategic Narratives
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-slate-400">
+                  Creative storytelling and strategic thinking insights
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
+                  <Link href="/strategic-narratives">
+                    Explore Worlds <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Recent Content Preview */}
+        <section className="container mx-auto px-6 py-20 bg-slate-900/30">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-100 mb-4">Latest Insights</h2>
+            <p className="text-xl text-slate-400">Recent thoughts on technology, leadership, and innovation</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Sample recent articles - these would be dynamically loaded from markdown */}
+            <Card className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300">
+              <CardHeader>
+                <div className="text-sm text-blue-400 mb-2">Technical Strategy • 5 min read</div>
+                <CardTitle className="text-slate-100 text-xl leading-tight">
+                  Building Resilient Microservices Architecture
+                </CardTitle>
+                <CardDescription className="text-slate-400">
+                  Key principles for designing fault-tolerant distributed systems that scale with your organization.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-slate-500">March 15, 2024</span>
+                  <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300" asChild>
+                    <Link href="/strategic-narratives/technical-architecture/resilient-microservices">Read More</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300">
+              <CardHeader>
+                <div className="text-sm text-blue-400 mb-2">Leadership • 7 min read</div>
+                <CardTitle className="text-slate-100 text-xl leading-tight">
+                  The Art of Technical Decision Making
+                </CardTitle>
+                <CardDescription className="text-slate-400">
+                  How to balance technical debt, innovation, and business objectives in complex engineering decisions.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-slate-500">March 10, 2024</span>
+                  <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300" asChild>
+                    <Link href="/strategic-narratives/leadership-strategy/technical-decision-making">Read More</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300">
+              <CardHeader>
+                <div className="text-sm text-blue-400 mb-2">D&D Musings • 4 min read</div>
+                <CardTitle className="text-slate-100 text-xl leading-tight">
+                  Lessons from the Dungeon Master's Chair
+                </CardTitle>
+                <CardDescription className="text-slate-400">
+                  How running D&D campaigns has made me a better technical leader and strategic thinker.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-slate-500">March 5, 2024</span>
+                  <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300" asChild>
+                    <Link href="/strategic-narratives">Read More</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <SiteFooter />
+      </div>
     </div>
   )
 }
