@@ -74,7 +74,7 @@ export function SiteHeader() {
           <Link href="/" className="flex items-center space-x-2 group">
             <div className="relative">
               <PentagonGrowthIcon className="h-8 w-8 text-blue-400 group-hover:text-blue-300 transition-colors" />
-              <div className="absolute inset-0 bg-blue-400 rounded-full blur-lg opacity-20 group-hover:opacity-30 transition-opacity"></div>
+              <div className="absolute inset-0 bg-blue-400 rounded-full blur-xl opacity-25 group-hover:opacity-35 transition-opacity"></div>
             </div>
             <span className="text-xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors">
               John Munn
