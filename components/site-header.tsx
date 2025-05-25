@@ -73,7 +73,7 @@ export function SiteHeader() {
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 group">
             <div className="relative">
-              <PentagonGrowthIcon className="h-8 w-8 text-blue-400 group-hover:text-blue-300 transition-colors" />
+              <PentagonGrowthIcon className="h-16 w-16 text-blue-400 group-hover:text-blue-300 transition-colors" />
               <div className="absolute inset-0 bg-blue-400 rounded-full blur-xl opacity-25 group-hover:opacity-35 transition-opacity"></div>
             </div>
             <span className="text-xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors">
@@ -106,7 +106,7 @@ export function SiteHeader() {
             <SheetContent side="right" className="w-80 bg-slate-950 border-slate-800">
               <div className="flex items-center justify-between mb-8">
                 <Link href="/" className="flex items-center space-x-2" onClick={() => setIsOpen(false)}>
-                  <PentagonGrowthIcon className="h-6 w-6 text-blue-400" />
+                  <PentagonGrowthIcon className="h-12 w-12 text-blue-400" />
                   <span className="text-lg font-bold text-slate-100">John Munn</span>
                 </Link>
                 <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
