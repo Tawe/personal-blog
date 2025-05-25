@@ -3,10 +3,11 @@
 import { useState } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { ArticlePreviewCard } from "@/components/article-preview-card"
-import { ContentFilter } from "@/components/content-filter"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BookOpen, Users, Target, ArrowLeft } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { BookOpen, Users, Target, ArrowLeft, Search, X } from "lucide-react"
 import Link from "next/link"
 import type { ArticleMetadata } from "@/lib/content"
 
@@ -78,6 +79,49 @@ const allTags = Array.from(new Set(sampleArticles.flatMap((article) => article.t
 
 export default function LeadershipStrategyPage() {
   const [filteredArticles, setFilteredArticles] = useState<ArticleMetadata[]>(sampleArticles)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+  const handleSearch = (value: string) => {
+    setSearchTerm(value)
+    filterArticles(value, selectedTags)
+  }
+
+  const handleTagToggle = (tag: string) => {
+    const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]
+    setSelectedTags(newTags)
+    filterArticles(searchTerm, newTags)
+  }
+
+  const filterArticles = (search: string, tags: string[]) => {
+    let filtered = [...sampleArticles]
+
+    // Search filter
+    if (search.trim()) {
+      const searchLower = search.toLowerCase()
+      filtered = filtered.filter((article) => {
+        const titleMatch = article.title?.toLowerCase().includes(searchLower) || false
+        const excerptMatch = article.excerpt?.toLowerCase().includes(searchLower) || false
+        const tagMatch = (article.tags || []).some((tag) => tag.toLowerCase().includes(searchLower))
+        return titleMatch || excerptMatch || tagMatch
+      })
+    }
+
+    // Tag filter
+    if (tags.length > 0) {
+      filtered = filtered.filter((article) => tags.every((tag) => (article.tags || []).includes(tag)))
+    }
+
+    setFilteredArticles(filtered)
+  }
+
+  const clearFilters = () => {
+    setSearchTerm("")
+    setSelectedTags([])
+    setFilteredArticles(sampleArticles)
+  }
+
+  const hasActiveFilters = searchTerm.trim() || selectedTags.length > 0
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -142,8 +186,70 @@ export default function LeadershipStrategyPage() {
               </Card>
             </div>
 
-            {/* Content Filter */}
-            <ContentFilter articles={sampleArticles} allTags={allTags} onFilterChange={setFilteredArticles} />
+            {/* Simple Filter Component */}
+            <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-blue-900/20 rounded-xl border border-slate-700">
+              <div className="flex items-center gap-2 mb-4">
+                <Search className="h-5 w-5 text-blue-400" />
+                <h3 className="text-lg font-semibold text-slate-100">Filter Articles</h3>
+                {hasActiveFilters && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFilters}
+                    className="text-slate-400 hover:text-slate-200 ml-auto"
+                  >
+                    <X className="h-4 w-4 mr-1" />
+                    Clear all
+                  </Button>
+                )}
+              </div>
+
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <Input
+                  type="text"
+                  placeholder="Search articles, topics, or concepts..."
+                  value={searchTerm}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-blue-500"
+                />
+              </div>
+
+              {/* Tags */}
+              {allTags.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {allTags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant={selectedTags.includes(tag) ? "default" : "secondary"}
+                        className={`cursor-pointer transition-colors text-xs ${
+                          selectedTags.includes(tag)
+                            ? "bg-blue-600 hover:bg-blue-700 text-white"
+                            : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                        }`}
+                        onClick={() => handleTagToggle(tag)}
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Results count */}
+              <div className="text-sm text-slate-400">
+                Showing {filteredArticles.length} of {sampleArticles.length} articles
+                {hasActiveFilters && (
+                  <span className="ml-2">
+                    • Filtered by: {searchTerm && `"${searchTerm}"`}{" "}
+                    {selectedTags.length > 0 && selectedTags.join(", ")}
+                  </span>
+                )}
+              </div>
+            </div>
 
             {/* Articles Grid */}
             {filteredArticles.length > 0 ? (
