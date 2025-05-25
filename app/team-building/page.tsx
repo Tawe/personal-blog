@@ -603,7 +603,7 @@ export default function TeamBuildingPage() {
                     <Link href="/contact">Schedule Consultation</Link>
                   </Button>
                   <Button variant="outline" size="lg" asChild>
-                    <Link href="/strategic-narratives/game-design-systems">Learn More</Link>
+                    <Link href="/strategic-narratives">Learn More</Link>
                   </Button>
                 </div>
               </div>

@@ -1,12 +1,16 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { TechnicalArticleCard } from "@/components/technical-article-card"
-import { TechnicalContentFilter } from "@/components/technical-content-filter"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Code, Database, Cloud, Shield, Zap, GitBranch, ArrowLeft } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Code, Database, Cloud, Shield, Zap, GitBranch, ArrowLeft, Search, X, Target, FileText } from "lucide-react"
 import Link from "next/link"
 import type { TechnicalArticleMetadata } from "@/lib/technical-content"
 
@@ -92,13 +96,97 @@ const sampleArticles: TechnicalArticleMetadata[] = [
   },
 ]
 
-const allTags = Array.from(new Set(sampleArticles.flatMap((article) => article.tags))).sort()
+const allTags = Array.from(new Set(sampleArticles.flatMap((article) => article.tags || []))).sort()
 const allDifficulties = ["beginner", "intermediate", "advanced"]
 const allTypes = ["tutorial", "guide", "analysis", "documentation"]
 const allLanguages = Array.from(new Set(sampleArticles.flatMap((article) => article.code_languages || []))).sort()
 
 export default function TechnicalArchitecturePage() {
-  const [filteredArticles, setFilteredArticles] = useState<TechnicalArticleMetadata[]>(sampleArticles)
+  const [filteredArticles, setFilteredArticles] = useState<TechnicalArticleMetadata[]>(sampleArticles || [])
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string>("")
+  const [selectedType, setSelectedType] = useState<string>("")
+
+  const applyFilters = () => {
+    try {
+      let filtered = [...(sampleArticles || [])]
+
+      // Search filter
+      if (searchTerm && searchTerm.trim()) {
+        const searchLower = searchTerm.toLowerCase()
+        filtered = filtered.filter((article) => {
+          if (!article) return false
+
+          const titleMatch = (article.title || "").toLowerCase().includes(searchLower)
+          const excerptMatch = (article.excerpt || "").toLowerCase().includes(searchLower)
+          const tagsMatch = (article.tags || []).some((tag) => (tag || "").toLowerCase().includes(searchLower))
+          const languagesMatch = (article.code_languages || []).some((lang) =>
+            (lang || "").toLowerCase().includes(searchLower),
+          )
+          const difficultyMatch = (article.difficulty || "").toLowerCase().includes(searchLower)
+          const typeMatch = (article.type || "").toLowerCase().includes(searchLower)
+
+          return titleMatch || excerptMatch || tagsMatch || languagesMatch || difficultyMatch || typeMatch
+        })
+      }
+
+      // Tag filter
+      if (selectedTags && selectedTags.length > 0) {
+        filtered = filtered.filter(
+          (article) => article && article.tags && selectedTags.every((tag) => (article.tags || []).includes(tag)),
+        )
+      }
+
+      // Difficulty filter
+      if (selectedDifficulty) {
+        filtered = filtered.filter((article) => article && article.difficulty === selectedDifficulty)
+      }
+
+      // Type filter
+      if (selectedType) {
+        filtered = filtered.filter((article) => article && article.type === selectedType)
+      }
+
+      setFilteredArticles(filtered || [])
+    } catch (error) {
+      console.error("Error filtering articles:", error)
+      setFilteredArticles(sampleArticles || [])
+    }
+  }
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value || ""
+    setSearchTerm(value)
+    setTimeout(applyFilters, 0)
+  }
+
+  const handleTagToggle = (tag: string) => {
+    if (!tag) return
+    const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]
+    setSelectedTags(newTags)
+    setTimeout(applyFilters, 0)
+  }
+
+  const handleDifficultyChange = (value: string) => {
+    setSelectedDifficulty(value || "")
+    setTimeout(applyFilters, 0)
+  }
+
+  const handleTypeChange = (value: string) => {
+    setSelectedType(value || "")
+    setTimeout(applyFilters, 0)
+  }
+
+  const clearFilters = () => {
+    setSearchTerm("")
+    setSelectedTags([])
+    setSelectedDifficulty("")
+    setSelectedType("")
+    setFilteredArticles(sampleArticles || [])
+  }
+
+  const hasActiveFilters = searchTerm.trim() || selectedTags.length > 0 || selectedDifficulty || selectedType
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -191,18 +279,118 @@ export default function TechnicalArchitecturePage() {
               </Card>
             </div>
 
-            {/* Content Filter */}
-            <TechnicalContentFilter
-              articles={sampleArticles}
-              allTags={allTags}
-              allDifficulties={allDifficulties}
-              allTypes={allTypes}
-              allLanguages={allLanguages}
-              onFilterChange={setFilteredArticles}
-            />
+            {/* Filter Section */}
+            <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-blue-900/20 rounded-xl border border-slate-700">
+              <div className="flex items-center gap-2 mb-4">
+                <Target className="h-5 w-5 text-blue-400" />
+                <h3 className="text-lg font-semibold text-slate-100">Filter Technical Content</h3>
+                {hasActiveFilters && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFilters}
+                    className="text-slate-400 hover:text-slate-200 ml-auto"
+                  >
+                    <X className="h-4 w-4 mr-1" />
+                    Clear all
+                  </Button>
+                )}
+              </div>
+
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <Input
+                  type="text"
+                  placeholder="Search articles, technologies, or concepts..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-blue-500"
+                />
+              </div>
+
+              {/* Filters */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4 text-slate-400" />
+                    <label className="text-sm font-medium text-slate-300">Difficulty Level</label>
+                  </div>
+                  <Select value={selectedDifficulty} onValueChange={handleDifficultyChange}>
+                    <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
+                      <SelectValue placeholder="All levels" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-slate-800 border-slate-600">
+                      {allDifficulties.map((difficulty) => (
+                        <SelectItem key={difficulty} value={difficulty} className="text-slate-100">
+                          {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-slate-400" />
+                    <label className="text-sm font-medium text-slate-300">Article Type</label>
+                  </div>
+                  <Select value={selectedType} onValueChange={handleTypeChange}>
+                    <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
+                      <SelectValue placeholder="All types" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-slate-800 border-slate-600">
+                      {allTypes.map((type) => (
+                        <SelectItem key={type} value={type} className="text-slate-100">
+                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Tags */}
+              {allTags.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {allTags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant={selectedTags.includes(tag) ? "default" : "secondary"}
+                        className={`cursor-pointer transition-colors text-xs ${
+                          selectedTags.includes(tag)
+                            ? "bg-blue-600 hover:bg-blue-700 text-white"
+                            : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                        }`}
+                        onClick={() => handleTagToggle(tag)}
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Results counter */}
+              <div className="text-sm text-slate-400 pt-2 border-t border-slate-700">
+                <span className="font-medium">
+                  Showing {filteredArticles?.length || 0} of {sampleArticles?.length || 0} articles
+                </span>
+                {hasActiveFilters && (
+                  <span className="ml-2">
+                    • Filters: {searchTerm && `"${searchTerm}"`}
+                    {selectedDifficulty && ` • ${selectedDifficulty}`}
+                    {selectedType && ` • ${selectedType}`}
+                    {selectedTags.length > 0 && ` • ${selectedTags.join(", ")}`}
+                  </span>
+                )}
+              </div>
+            </div>
 
             {/* Articles Grid */}
-            {filteredArticles.length > 0 ? (
+            {filteredArticles && filteredArticles.length > 0 ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredArticles.map((article) => (
                   <TechnicalArticleCard key={article.slug} article={article} />
