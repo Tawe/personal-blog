@@ -24,7 +24,7 @@ Each microservice should have a single, well-defined responsibility. This princi
 ### Decentralized Data Management
 Each service should own its data and expose it only through well-defined APIs.
 
-\`\`\`javascript
+```javascript
 // User Service - owns user data
 class UserService {
   async createUser(userData) {
@@ -37,7 +37,7 @@ class UserService {
     return await this.userRepository.findById(id);
   }
 }
-\`\`\`
+```
 
 ### Service Communication
 Services should communicate through well-defined APIs, preferably using HTTP/REST or message queues for asynchronous communication.
