@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -33,104 +33,108 @@ export function ArtumiContentFilter({
   const [selectedRegion, setSelectedRegion] = useState<string>("")
   const [selectedStatus, setSelectedStatus] = useState<string>("")
 
-  const filterContent = useCallback(() => {
-    try {
-      // Ensure content is an array
-      const safeContent = Array.isArray(content) ? content : []
-
-      if (safeContent.length === 0) {
-        onFilterChange([])
-        return
-      }
-
-      let filtered = safeContent.filter((item) => item != null) // Remove any null/undefined items
-
-      // Search filter
-      if (searchTerm && searchTerm.trim()) {
-        const searchLower = searchTerm.toLowerCase().trim()
-        filtered = filtered.filter((item) => {
-          if (!item) return false
-
-          try {
-            // Search in title
-            const titleMatch = (item.title || "").toLowerCase().includes(searchLower)
-
-            // Search in excerpt
-            const excerptMatch = (item.excerpt || "").toLowerCase().includes(searchLower)
-
-            // Search in region
-            const regionMatch = (item.region || "").toLowerCase().includes(searchLower)
-
-            // Search in categories
-            const categoriesMatch = Array.isArray(item.categories)
-              ? item.categories.some((cat) => (cat || "").toLowerCase().includes(searchLower))
-              : false
-
-            // Search in tags
-            const tagsMatch = Array.isArray(item.tags)
-              ? item.tags.some((tag) => (tag || "").toLowerCase().includes(searchLower))
-              : false
-
-            // Search in type
-            const typeMatch = (item.type || "").toLowerCase().includes(searchLower)
-
-            return titleMatch || excerptMatch || regionMatch || categoriesMatch || tagsMatch || typeMatch
-          } catch (error) {
-            console.error("Error in search filter:", error)
-            return false
-          }
-        })
-      }
-
-      // Category filter
-      if (Array.isArray(selectedCategories) && selectedCategories.length > 0) {
-        filtered = filtered.filter((item) => {
-          if (!item || !Array.isArray(item.categories)) return false
-          return selectedCategories.every((cat) => item.categories.includes(cat))
-        })
-      }
-
-      // Type filter
-      if (selectedType) {
-        filtered = filtered.filter((item) => item && item.type === selectedType)
-      }
-
-      // Region filter
-      if (selectedRegion) {
-        filtered = filtered.filter((item) => item && item.region === selectedRegion)
-      }
-
-      // Status filter
-      if (selectedStatus) {
-        filtered = filtered.filter((item) => item && item.status === selectedStatus)
-      }
-
-      onFilterChange(filtered)
-    } catch (error) {
-      console.error("Error filtering content:", error)
+  const applyFilters = () => {
+    if (!content || !Array.isArray(content)) {
       onFilterChange([])
+      return
     }
-  }, [content, searchTerm, selectedCategories, selectedType, selectedRegion, selectedStatus, onFilterChange])
 
-  // Trigger filtering when any filter changes
-  useEffect(() => {
-    filterContent()
-  }, [filterContent])
+    let filtered = [...content]
+
+    // Search filter
+    if (searchTerm && searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase().trim()
+      filtered = filtered.filter((item) => {
+        if (!item) return false
+
+        const title = item.title || ""
+        const excerpt = item.excerpt || ""
+        const region = item.region || ""
+        const type = item.type || ""
+
+        const titleMatch = title.toLowerCase().includes(searchLower)
+        const excerptMatch = excerpt.toLowerCase().includes(searchLower)
+        const regionMatch = region.toLowerCase().includes(searchLower)
+        const typeMatch = type.toLowerCase().includes(searchLower)
+
+        const categories = item.categories || []
+        const categoriesMatch = categories.some((cat) => cat && cat.toLowerCase().includes(searchLower))
+
+        const tags = item.tags || []
+        const tagsMatch = tags.some((tag) => tag && tag.toLowerCase().includes(searchLower))
+
+        return titleMatch || excerptMatch || regionMatch || typeMatch || categoriesMatch || tagsMatch
+      })
+    }
+
+    // Category filter
+    if (selectedCategories && selectedCategories.length > 0) {
+      filtered = filtered.filter((item) => {
+        if (!item || !item.categories) return false
+        return selectedCategories.every((cat) => item.categories.includes(cat))
+      })
+    }
+
+    // Type filter
+    if (selectedType) {
+      filtered = filtered.filter((item) => item && item.type === selectedType)
+    }
+
+    // Region filter
+    if (selectedRegion) {
+      filtered = filtered.filter((item) => item && item.region === selectedRegion)
+    }
+
+    // Status filter
+    if (selectedStatus) {
+      filtered = filtered.filter((item) => item && item.status === selectedStatus)
+    }
+
+    onFilterChange(filtered)
+  }
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value || ""
+    const value = e.target.value
     setSearchTerm(value)
+
+    // Apply filters immediately when search changes
+    setTimeout(() => {
+      applyFilters()
+    }, 0)
   }
 
   const handleCategoryToggle = (category: string) => {
-    if (!category) return
+    const newCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter((c) => c !== category)
+      : [...selectedCategories, category]
 
-    setSelectedCategories((prev) => {
-      const newCategories = Array.isArray(prev) ? prev : []
-      return newCategories.includes(category)
-        ? newCategories.filter((c) => c !== category)
-        : [...newCategories, category]
-    })
+    setSelectedCategories(newCategories)
+
+    // Apply filters immediately
+    setTimeout(() => {
+      applyFilters()
+    }, 0)
+  }
+
+  const handleTypeChange = (value: string) => {
+    setSelectedType(value)
+    setTimeout(() => {
+      applyFilters()
+    }, 0)
+  }
+
+  const handleRegionChange = (value: string) => {
+    setSelectedRegion(value)
+    setTimeout(() => {
+      applyFilters()
+    }, 0)
+  }
+
+  const handleStatusChange = (value: string) => {
+    setSelectedStatus(value)
+    setTimeout(() => {
+      applyFilters()
+    }, 0)
   }
 
   const clearFilters = () => {
@@ -139,44 +143,11 @@ export function ArtumiContentFilter({
     setSelectedType("")
     setSelectedRegion("")
     setSelectedStatus("")
+    onFilterChange(content)
   }
 
   const hasActiveFilters =
-    (searchTerm && searchTerm.trim()) ||
-    (Array.isArray(selectedCategories) && selectedCategories.length > 0) ||
-    selectedType ||
-    selectedRegion ||
-    selectedStatus
-
-  // Safe search results count
-  const getSearchResultsCount = () => {
-    if (!searchTerm || !searchTerm.trim()) return 0
-
-    try {
-      const safeContent = Array.isArray(content) ? content : []
-      const searchLower = searchTerm.toLowerCase().trim()
-
-      return safeContent.filter((item) => {
-        if (!item) return false
-
-        const titleMatch = (item.title || "").toLowerCase().includes(searchLower)
-        const excerptMatch = (item.excerpt || "").toLowerCase().includes(searchLower)
-        const regionMatch = (item.region || "").toLowerCase().includes(searchLower)
-        const categoriesMatch = Array.isArray(item.categories)
-          ? item.categories.some((cat) => (cat || "").toLowerCase().includes(searchLower))
-          : false
-        const tagsMatch = Array.isArray(item.tags)
-          ? item.tags.some((tag) => (tag || "").toLowerCase().includes(searchLower))
-          : false
-        const typeMatch = (item.type || "").toLowerCase().includes(searchLower)
-
-        return titleMatch || excerptMatch || regionMatch || categoriesMatch || tagsMatch || typeMatch
-      }).length
-    } catch (error) {
-      console.error("Error counting search results:", error)
-      return 0
-    }
-  }
+    searchTerm.trim() || selectedCategories.length > 0 || selectedType || selectedRegion || selectedStatus
 
   return (
     <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-purple-900/20 rounded-xl border border-slate-700">
@@ -211,10 +182,10 @@ export function ArtumiContentFilter({
       {/* Filters */}
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Type Filter */}
-        {Array.isArray(allTypes) && allTypes.length > 0 && (
+        {allTypes && allTypes.length > 0 && (
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-300">Content Type</label>
-            <Select value={selectedType} onValueChange={setSelectedType}>
+            <Select value={selectedType} onValueChange={handleTypeChange}>
               <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
                 <SelectValue placeholder="All types" />
               </SelectTrigger>
@@ -230,10 +201,10 @@ export function ArtumiContentFilter({
         )}
 
         {/* Region Filter */}
-        {Array.isArray(allRegions) && allRegions.length > 0 && (
+        {allRegions && allRegions.length > 0 && (
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-300">Region</label>
-            <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+            <Select value={selectedRegion} onValueChange={handleRegionChange}>
               <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
                 <SelectValue placeholder="All regions" />
               </SelectTrigger>
@@ -249,10 +220,10 @@ export function ArtumiContentFilter({
         )}
 
         {/* Status Filter */}
-        {Array.isArray(allStatuses) && allStatuses.length > 0 && (
+        {allStatuses && allStatuses.length > 0 && (
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-300">Status</label>
-            <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+            <Select value={selectedStatus} onValueChange={handleStatusChange}>
               <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
                 <SelectValue placeholder="All statuses" />
               </SelectTrigger>
@@ -269,18 +240,16 @@ export function ArtumiContentFilter({
       </div>
 
       {/* Categories */}
-      {Array.isArray(allCategories) && allCategories.length > 0 && (
+      {allCategories && allCategories.length > 0 && (
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-slate-300">Categories & Themes</h4>
           <div className="flex flex-wrap gap-2">
             {allCategories.map((category) => (
               <Badge
                 key={category}
-                variant={
-                  Array.isArray(selectedCategories) && selectedCategories.includes(category) ? "default" : "secondary"
-                }
+                variant={selectedCategories.includes(category) ? "default" : "secondary"}
                 className={`cursor-pointer transition-colors text-xs ${
-                  Array.isArray(selectedCategories) && selectedCategories.includes(category)
+                  selectedCategories.includes(category)
                     ? "bg-purple-600 hover:bg-purple-700 text-white"
                     : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
                 }`}
@@ -297,20 +266,11 @@ export function ArtumiContentFilter({
       {hasActiveFilters && (
         <div className="text-sm text-slate-400 pt-2 border-t border-slate-700">
           <span className="font-medium">Active filters: </span>
-          {searchTerm && searchTerm.trim() && <span>"{searchTerm}" </span>}
+          {searchTerm && <span>"{searchTerm}" </span>}
           {selectedType && <span>• {selectedType} </span>}
           {selectedRegion && <span>• {selectedRegion} </span>}
           {selectedStatus && <span>• {selectedStatus} </span>}
-          {Array.isArray(selectedCategories) && selectedCategories.length > 0 && (
-            <span>• {selectedCategories.join(", ")}</span>
-          )}
-        </div>
-      )}
-
-      {/* Search results count */}
-      {searchTerm && searchTerm.trim() && (
-        <div className="text-sm text-purple-400">
-          {getSearchResultsCount()} results found for "{searchTerm}"
+          {selectedCategories.length > 0 && <span>• {selectedCategories.join(", ")}</span>}
         </div>
       )}
     </div>
