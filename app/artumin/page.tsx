@@ -135,31 +135,36 @@ const sampleContent: ArtumiContentMetadata[] = [
   },
 ]
 
-// Safe array extraction with fallbacks
-const allCategories = Array.from(
-  new Set(
-    sampleContent.filter((content) => content && content.categories).flatMap((content) => content.categories || []),
-  ),
-).sort()
-
-const allTypes = Array.from(
-  new Set(sampleContent.filter((content) => content && content.type).map((content) => content.type)),
-).sort()
-
-const allRegions = Array.from(
-  new Set(sampleContent.filter((content) => content && content.region).map((content) => content.region)),
-).sort()
-
-const allStatuses = Array.from(
-  new Set(sampleContent.filter((content) => content && content.status).map((content) => content.status)),
-).sort()
-
 export default function ArtumiPage() {
-  const [filteredContent, setFilteredContent] = useState<ArtumiContentMetadata[]>(sampleContent || [])
+  const [filteredContent, setFilteredContent] = useState<ArtumiContentMetadata[]>(sampleContent)
   const [viewMode, setViewMode] = useState<"grid" | "timeline">("grid")
 
-  // Safe content filtering and sorting
-  const safeFilteredContent = Array.isArray(filteredContent) ? filteredContent : []
+  // Safe content processing with error handling
+  const safeContent = Array.isArray(sampleContent) ? sampleContent.filter(Boolean) : []
+  const safeFilteredContent = Array.isArray(filteredContent) ? filteredContent.filter(Boolean) : []
+
+  // Safe array extraction with fallbacks
+  const allCategories = Array.from(
+    new Set(
+      safeContent
+        .filter((content) => content && Array.isArray(content.categories))
+        .flatMap((content) => content.categories),
+    ),
+  ).sort()
+
+  const allTypes = Array.from(
+    new Set(safeContent.filter((content) => content && content.type).map((content) => content.type)),
+  ).sort()
+
+  const allRegions = Array.from(
+    new Set(safeContent.filter((content) => content && content.region).map((content) => content.region)),
+  ).sort()
+
+  const allStatuses = Array.from(
+    new Set(safeContent.filter((content) => content && content.status).map((content) => content.status)),
+  ).sort()
+
+  // Timeline content with safe sorting
   const timelineContent = [...safeFilteredContent].sort((a, b) => {
     const dateA = a?.date ? new Date(a.date).getTime() : 0
     const dateB = b?.date ? new Date(b.date).getTime() : 0
@@ -168,11 +173,15 @@ export default function ArtumiPage() {
 
   // Safe content counting functions
   const getContentCountByType = (type: string) => {
-    return sampleContent.filter((c) => c && c.type === type).length
+    return safeContent.filter((c) => c && c.type === type).length
   }
 
   const getContentCountByRegion = (region: string) => {
-    return sampleContent.filter((c) => c && c.region === region).length
+    return safeContent.filter((c) => c && c.region === region).length
+  }
+
+  const handleFilterChange = (newFilteredContent: ArtumiContentMetadata[]) => {
+    setFilteredContent(Array.isArray(newFilteredContent) ? newFilteredContent : [])
   }
 
   return (
@@ -267,12 +276,12 @@ export default function ArtumiPage() {
 
             {/* Content Filter */}
             <ArtumiContentFilter
-              content={sampleContent}
+              content={safeContent}
               allCategories={allCategories}
               allTypes={allTypes}
               allRegions={allRegions}
               allStatuses={allStatuses}
-              onFilterChange={setFilteredContent}
+              onFilterChange={handleFilterChange}
             />
 
             {/* Content Display */}
