@@ -1,125 +1,241 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, X, Filter } from "lucide-react"
+import { Search, X, Filter, Target, FileText } from "lucide-react"
+import type {
+  BaseContentMetadata,
+  TechnicalArticleMetadata,
+  ArtumiContentMetadata,
+  DndContentMetadata,
+} from "@/lib/content"
 
-interface ContentMetadata {
-  slug: string
-  title: string
-  date: string
-  type: string
-  excerpt: string
-  categories: string[]
-  tags: string[]
-  reading_time?: number
+interface BaseFilterProps<T extends BaseContentMetadata> {
+  content: T[]
+  allTags: string[]
+  onFilterChange: (filteredContent: T[]) => void
+  section: "leadership" | "technical" | "artumin" | "dnd"
+  accentColor?: string
 }
 
-interface ContentFilterProps {
-  content: ContentMetadata[]
+interface TechnicalFilterProps extends BaseFilterProps<TechnicalArticleMetadata> {
+  allDifficulties: string[]
+  allTypes: string[]
+  allLanguages: string[]
+}
+
+interface ArtumiFilterProps extends BaseFilterProps<ArtumiContentMetadata> {
   allCategories: string[]
   allTypes: string[]
-  allTags: string[]
-  onFilterChange: (filteredContent: ContentMetadata[]) => void
+  allRegions: string[]
+  allStatuses: string[]
 }
 
-export function ContentFilter({
-  content = [],
-  allCategories = [],
-  allTypes = [],
-  allTags = [],
-  onFilterChange,
-}: ContentFilterProps) {
+interface DndFilterProps extends BaseFilterProps<DndContentMetadata> {
+  allTypes: string[]
+  allSystems: string[]
+  allAvailability: string[]
+}
+
+type ContentFilterProps<T extends BaseContentMetadata> =
+  | (BaseFilterProps<T> & { section: "leadership" })
+  | TechnicalFilterProps
+  | ArtumiFilterProps
+  | DndFilterProps
+
+export function ContentFilter<T extends BaseContentMetadata>(props: ContentFilterProps<T>) {
+  const { content, allTags, onFilterChange, section, accentColor = "blue" } = props
+
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+  // Section-specific filters
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string>("")
   const [selectedType, setSelectedType] = useState<string>("")
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedRegion, setSelectedRegion] = useState<string>("")
+  const [selectedStatus, setSelectedStatus] = useState<string>("")
+  const [selectedSystem, setSelectedSystem] = useState<string>("")
+  const [selectedAvailability, setSelectedAvailability] = useState<string>("")
+  const [playtestedOnly, setPlaytestedOnly] = useState(false)
 
-  const applyFilters = () => {
-    if (!content || !Array.isArray(content)) {
-      onFilterChange([])
-      return
-    }
+  const filterContent = () => {
+    let filtered = content
 
-    let filtered = [...content]
-
-    // Search filter
-    if (searchTerm && searchTerm.trim()) {
-      const searchLower = searchTerm.toLowerCase().trim()
+    // Common search filter
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase()
       filtered = filtered.filter((item) => {
-        if (!item) return false
+        const basicMatch =
+          item.title.toLowerCase().includes(searchLower) ||
+          item.excerpt?.toLowerCase().includes(searchLower) ||
+          item.tags.some((tag) => tag.toLowerCase().includes(searchLower))
 
-        const title = item.title || ""
-        const excerpt = item.excerpt || ""
-        const type = item.type || ""
+        // Section-specific search
+        if (section === "technical") {
+          const tech = item as TechnicalArticleMetadata
+          return basicMatch || tech.code_languages?.some((lang) => lang.toLowerCase().includes(searchLower))
+        }
+        if (section === "artumin") {
+          const artumi = item as ArtumiContentMetadata
+          return basicMatch || artumi.region?.toLowerCase().includes(searchLower)
+        }
+        if (section === "dnd") {
+          const dnd = item as DndContentMetadata
+          return basicMatch || dnd.system.toLowerCase().includes(searchLower)
+        }
 
-        const titleMatch = title.toLowerCase().includes(searchLower)
-        const excerptMatch = excerpt.toLowerCase().includes(searchLower)
-        const typeMatch = type.toLowerCase().includes(searchLower)
-
-        const categories = item.categories || []
-        const categoriesMatch = categories.some((cat) => cat && cat.toLowerCase().includes(searchLower))
-
-        const tags = item.tags || []
-        const tagsMatch = tags.some((tag) => tag && tag.toLowerCase().includes(searchLower))
-
-        return titleMatch || excerptMatch || typeMatch || categoriesMatch || tagsMatch
+        return basicMatch
       })
     }
 
-    // Category filter
-    if (selectedCategories && selectedCategories.length > 0) {
-      filtered = filtered.filter((item) => {
-        if (!item || !item.categories) return false
-        return selectedCategories.every((cat) => item.categories.includes(cat))
-      })
+    // Common tag filter
+    if (selectedTags.length > 0) {
+      filtered = filtered.filter((item) => selectedTags.every((tag) => item.tags.includes(tag)))
     }
 
-    // Type filter
-    if (selectedType) {
-      filtered = filtered.filter((item) => item && item.type === selectedType)
+    // Section-specific filters
+    if (section === "technical") {
+      const techProps = props as TechnicalFilterProps
+      if (selectedDifficulty) {
+        filtered = filtered.filter((item) => (item as TechnicalArticleMetadata).difficulty === selectedDifficulty)
+      }
+      if (selectedType) {
+        filtered = filtered.filter((item) => (item as TechnicalArticleMetadata).type === selectedType)
+      }
+      if (selectedLanguages.length > 0) {
+        filtered = filtered.filter((item) =>
+          selectedLanguages.some((lang) => (item as TechnicalArticleMetadata).code_languages?.includes(lang)),
+        )
+      }
+    }
+
+    if (section === "artumin") {
+      if (selectedCategories.length > 0) {
+        filtered = filtered.filter((item) =>
+          selectedCategories.every((cat) => (item as ArtumiContentMetadata).categories.includes(cat)),
+        )
+      }
+      if (selectedType) {
+        filtered = filtered.filter((item) => (item as ArtumiContentMetadata).type === selectedType)
+      }
+      if (selectedRegion) {
+        filtered = filtered.filter((item) => (item as ArtumiContentMetadata).region === selectedRegion)
+      }
+      if (selectedStatus) {
+        filtered = filtered.filter((item) => (item as ArtumiContentMetadata).status === selectedStatus)
+      }
+    }
+
+    if (section === "dnd") {
+      if (selectedType) {
+        filtered = filtered.filter((item) => (item as DndContentMetadata).type === selectedType)
+      }
+      if (selectedSystem) {
+        filtered = filtered.filter((item) => (item as DndContentMetadata).system === selectedSystem)
+      }
+      if (selectedAvailability) {
+        filtered = filtered.filter((item) => (item as DndContentMetadata).availability === selectedAvailability)
+      }
+      if (playtestedOnly) {
+        filtered = filtered.filter((item) => (item as DndContentMetadata).playtested)
+      }
     }
 
     onFilterChange(filtered)
   }
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
+  const handleSearchChange = (value: string) => {
     setSearchTerm(value)
-    setTimeout(() => applyFilters(), 0)
+    setTimeout(filterContent, 0)
   }
 
-  const handleCategoryToggle = (category: string) => {
-    const newCategories = selectedCategories.includes(category)
-      ? selectedCategories.filter((c) => c !== category)
-      : [...selectedCategories, category]
-    setSelectedCategories(newCategories)
-    setTimeout(() => applyFilters(), 0)
-  }
-
-  const handleTypeChange = (value: string) => {
-    setSelectedType(value)
-    setTimeout(() => applyFilters(), 0)
+  const handleTagToggle = (tag: string) => {
+    const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]
+    setSelectedTags(newTags)
+    setTimeout(filterContent, 0)
   }
 
   const clearFilters = () => {
     setSearchTerm("")
-    setSelectedCategories([])
+    setSelectedTags([])
+    setSelectedDifficulty("")
     setSelectedType("")
+    setSelectedLanguages([])
+    setSelectedCategories([])
+    setSelectedRegion("")
+    setSelectedStatus("")
+    setSelectedSystem("")
+    setSelectedAvailability("")
+    setPlaytestedOnly(false)
     onFilterChange(content)
   }
 
-  const hasActiveFilters = searchTerm.trim() || selectedCategories.length > 0 || selectedType
+  const hasActiveFilters =
+    searchTerm.trim() ||
+    selectedTags.length > 0 ||
+    selectedDifficulty ||
+    selectedType ||
+    selectedLanguages.length > 0 ||
+    selectedCategories.length > 0 ||
+    selectedRegion ||
+    selectedStatus ||
+    selectedSystem ||
+    selectedAvailability ||
+    playtestedOnly
+
+  const getSectionTitle = () => {
+    switch (section) {
+      case "technical":
+        return "Filter Technical Content"
+      case "artumin":
+        return "Explore Artumin"
+      case "dnd":
+        return "Filter RPG Content"
+      default:
+        return "Filter Content"
+    }
+  }
+
+  const getSectionIcon = () => {
+    switch (section) {
+      case "technical":
+        return <Filter className={`h-5 w-5 text-${accentColor}-400`} />
+      case "artumin":
+        return <Filter className={`h-5 w-5 text-purple-400`} />
+      case "dnd":
+        return <Filter className={`h-5 w-5 text-red-400`} />
+      default:
+        return <Filter className={`h-5 w-5 text-${accentColor}-400`} />
+    }
+  }
+
+  const getSearchPlaceholder = () => {
+    switch (section) {
+      case "technical":
+        return "Search articles, technologies, or concepts..."
+      case "artumin":
+        return "Search the realm for stories, characters, locations..."
+      case "dnd":
+        return "Search mechanics, monsters, adventures..."
+      default:
+        return "Search articles..."
+    }
+  }
 
   return (
-    <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-purple-900/20 rounded-xl border border-slate-700">
+    <div
+      className={`space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 ${
+        section === "artumin" ? "to-purple-900/20" : section === "dnd" ? "to-red-900/20" : "to-blue-900/20"
+      } rounded-xl border border-slate-700`}
+    >
       <div className="flex items-center gap-2 mb-4">
-        <Filter className="h-5 w-5 text-purple-400" />
-        <h3 className="text-lg font-semibold text-slate-100">Filter Content</h3>
+        {getSectionIcon()}
+        <h3 className="text-lg font-semibold text-slate-100">{getSectionTitle()}</h3>
         {hasActiveFilters && (
           <Button
             variant="ghost"
@@ -138,25 +254,48 @@ export function ContentFilter({
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
         <Input
           type="text"
-          placeholder="Search content..."
+          placeholder={getSearchPlaceholder()}
           value={searchTerm}
-          onChange={handleSearchChange}
-          className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-purple-500"
+          onChange={(e) => handleSearchChange(e.target.value)}
+          className={`pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-${
+            section === "artumin" ? "purple" : section === "dnd" ? "red" : accentColor
+          }-500`}
         />
       </div>
 
-      {/* Filters */}
-      <div className="grid md:grid-cols-2 gap-4">
-        {/* Type Filter */}
-        {allTypes && allTypes.length > 0 && (
+      {/* Section-specific filters */}
+      {section === "technical" && (
+        <div className="grid md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300">Content Type</label>
-            <Select value={selectedType} onValueChange={handleTypeChange}>
+            <div className="flex items-center gap-2">
+              <Target className="h-4 w-4 text-slate-400" />
+              <label className="text-sm font-medium text-slate-300">Difficulty Level</label>
+            </div>
+            <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
+              <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
+                <SelectValue placeholder="All levels" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800 border-slate-600">
+                {(props as TechnicalFilterProps).allDifficulties.map((difficulty) => (
+                  <SelectItem key={difficulty} value={difficulty} className="text-slate-100">
+                    {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4 text-slate-400" />
+              <label className="text-sm font-medium text-slate-300">Article Type</label>
+            </div>
+            <Select value={selectedType} onValueChange={setSelectedType}>
               <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
                 <SelectValue placeholder="All types" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-600">
-                {allTypes.map((type) => (
+                {(props as TechnicalFilterProps).allTypes.map((type) => (
                   <SelectItem key={type} value={type} className="text-slate-100">
                     {type.charAt(0).toUpperCase() + type.slice(1)}
                   </SelectItem>
@@ -164,26 +303,28 @@ export function ContentFilter({
               </SelectContent>
             </Select>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Categories */}
-      {allCategories && allCategories.length > 0 && (
+      {/* Tags */}
+      {allTags.length > 0 && (
         <div className="space-y-3">
-          <h4 className="text-sm font-medium text-slate-300">Categories</h4>
+          <h4 className="text-sm font-medium text-slate-300">
+            {section === "artumin" ? "Categories & Themes" : "Topics & Categories"}
+          </h4>
           <div className="flex flex-wrap gap-2">
-            {allCategories.map((category) => (
+            {allTags.map((tag) => (
               <Badge
-                key={category}
-                variant={selectedCategories.includes(category) ? "default" : "secondary"}
+                key={tag}
+                variant={selectedTags.includes(tag) ? "default" : "secondary"}
                 className={`cursor-pointer transition-colors text-xs ${
-                  selectedCategories.includes(category)
-                    ? "bg-purple-600 hover:bg-purple-700 text-white"
+                  selectedTags.includes(tag)
+                    ? `bg-${section === "artumin" ? "purple" : section === "dnd" ? "red" : accentColor}-600 hover:bg-${section === "artumin" ? "purple" : section === "dnd" ? "red" : accentColor}-700 text-white`
                     : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
                 }`}
-                onClick={() => handleCategoryToggle(category)}
+                onClick={() => handleTagToggle(tag)}
               >
-                {category}
+                {tag}
               </Badge>
             ))}
           </div>
@@ -195,10 +336,16 @@ export function ContentFilter({
         <div className="text-sm text-slate-400 pt-2 border-t border-slate-700">
           <span className="font-medium">Active filters: </span>
           {searchTerm && <span>"{searchTerm}" </span>}
+          {selectedDifficulty && <span>• {selectedDifficulty} </span>}
           {selectedType && <span>• {selectedType} </span>}
-          {selectedCategories.length > 0 && <span>• {selectedCategories.join(", ")}</span>}
+          {selectedTags.length > 0 && <span>• {selectedTags.join(", ")}</span>}
         </div>
       )}
     </div>
   )
 }
+
+// Legacy exports for backward compatibility
+export { ContentFilter as TechnicalContentFilter }
+export { ContentFilter as ArtumiContentFilter }
+export { ContentFilter as DndContentFilter }
