@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
 import { AlertCircle, CheckCircle } from "lucide-react"
+import { submitMentoringForm } from "@/app/actions/mentoring-contact"
 
 export function MentoringContactForm() {
   const [formData, setFormData] = useState({
@@ -46,28 +45,6 @@ export function MentoringContactForm() {
       ...prev,
       preferredTimes: checked ? [...prev.preferredTimes, time] : prev.preferredTimes.filter((t) => t !== time),
     }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
-    // Check if timezone is outside North America
-    if (formData.timeZone === "other") {
-      setSubmitStatus("timezone-error")
-      setIsSubmitting(false)
-      return
-    }
-
-    try {
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      setSubmitStatus("success")
-    } catch (error) {
-      setSubmitStatus("error")
-    } finally {
-      setIsSubmitting(false)
-    }
   }
 
   if (submitStatus === "success") {
@@ -129,7 +106,7 @@ export function MentoringContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form action={submitMentoringForm} className="space-y-6">
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="name" className="text-slate-300">
@@ -273,8 +250,8 @@ export function MentoringContactForm() {
         </Card>
       )}
 
-      <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isSubmitting}>
-        {isSubmitting ? "Submitting..." : "Submit Application"}
+      <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+        Submit Application
       </Button>
 
       <p className="text-sm text-slate-400 text-center">
