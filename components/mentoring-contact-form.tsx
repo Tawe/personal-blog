@@ -10,7 +10,7 @@ interface MentoringContactFormProps {
   mentorEmail: string
 }
 
-const MentoringContactForm: React.FC<MentoringContactFormProps> = ({ mentorName, mentorEmail }) => {
+export const MentoringContactForm: React.FC<MentoringContactFormProps> = ({ mentorName, mentorEmail }) => {
   const initialState = { message: null }
   const [state, dispatch] = useFormState(submitMentoringForm, initialState)
   const [name, setName] = useState("")
@@ -83,5 +83,3 @@ const MentoringContactForm: React.FC<MentoringContactFormProps> = ({ mentorName,
     </form>
   )
 }
-
-export default MentoringContactForm

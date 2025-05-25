@@ -426,3 +426,9 @@ export function ArtumiContentCard({ content, compact }: { content: ArtumiContent
 export function DndContentCard({ content, compact }: { content: DndContentMetadata; compact?: boolean }) {
   return <ContentCard content={content} section="dnd" compact={compact} hoverColor="red" />
 }
+
+// Additional legacy exports for backward compatibility with specific file imports
+export { ArtumiContentCard } from "./content-card"
+export { DndContentCard } from "./content-card"
+export { TechnicalArticleCard } from "./content-card"
+export { ArticleCard } from "./content-card"
