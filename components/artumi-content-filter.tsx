@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -33,98 +33,75 @@ export function ArtumiContentFilter({
   const [selectedRegion, setSelectedRegion] = useState<string>("")
   const [selectedStatus, setSelectedStatus] = useState<string>("")
 
-  const filterContent = () => {
-    try {
-      if (!Array.isArray(content)) {
-        onFilterChange([])
-        return
-      }
-
-      let filtered = content.filter(Boolean) // Remove any null/undefined items
-
-      // Search filter - improved logic
-      if (searchTerm.trim()) {
-        const searchLower = searchTerm.toLowerCase().trim()
-        filtered = filtered.filter((item) => {
-          if (!item) return false
-
-          // Search in title
-          const titleMatch = item.title?.toLowerCase().includes(searchLower) || false
-
-          // Search in excerpt
-          const excerptMatch = item.excerpt?.toLowerCase().includes(searchLower) || false
-
-          // Search in region
-          const regionMatch = item.region?.toLowerCase().includes(searchLower) || false
-
-          // Search in categories
-          const categoriesMatch = Array.isArray(item.categories)
-            ? item.categories.some((cat) => cat?.toLowerCase().includes(searchLower))
-            : false
-
-          // Search in tags
-          const tagsMatch = Array.isArray(item.tags)
-            ? item.tags.some((tag) => tag?.toLowerCase().includes(searchLower))
-            : false
-
-          // Search in type
-          const typeMatch = item.type?.toLowerCase().includes(searchLower) || false
-
-          // Search in connections
-          const connectionsMatch = Array.isArray(item.connections)
-            ? item.connections.some((conn) => conn?.toLowerCase().includes(searchLower))
-            : false
-
-          return (
-            titleMatch || excerptMatch || regionMatch || categoriesMatch || tagsMatch || typeMatch || connectionsMatch
-          )
-        })
-      }
-
-      // Category filter
-      if (selectedCategories.length > 0) {
-        filtered = filtered.filter((item) => {
-          if (!item || !Array.isArray(item.categories)) return false
-          return selectedCategories.every((cat) => item.categories.includes(cat))
-        })
-      }
-
-      // Type filter
-      if (selectedType) {
-        filtered = filtered.filter((item) => item && item.type === selectedType)
-      }
-
-      // Region filter
-      if (selectedRegion) {
-        filtered = filtered.filter((item) => item && item.region === selectedRegion)
-      }
-
-      // Status filter
-      if (selectedStatus) {
-        filtered = filtered.filter((item) => item && item.status === selectedStatus)
-      }
-
-      onFilterChange(filtered)
-    } catch (error) {
-      console.error("Error filtering content:", error)
-      onFilterChange(content || [])
+  const filterContent = useCallback(() => {
+    if (!Array.isArray(content) || content.length === 0) {
+      onFilterChange([])
+      return
     }
-  }
 
-  // Trigger filtering when any filter changes
+    let filtered = [...content]
+
+    // Search filter
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase().trim()
+      filtered = filtered.filter((item) => {
+        if (!item) return false
+
+        const searchableText = [
+          item.title || "",
+          item.excerpt || "",
+          item.region || "",
+          item.type || "",
+          ...(Array.isArray(item.categories) ? item.categories : []),
+          ...(Array.isArray(item.tags) ? item.tags : []),
+          ...(Array.isArray(item.connections) ? item.connections : []),
+        ]
+          .join(" ")
+          .toLowerCase()
+
+        return searchableText.includes(searchLower)
+      })
+    }
+
+    // Category filter
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((item) => {
+        if (!item || !Array.isArray(item.categories)) return false
+        return selectedCategories.every((cat) => item.categories.includes(cat))
+      })
+    }
+
+    // Type filter
+    if (selectedType) {
+      filtered = filtered.filter((item) => item && item.type === selectedType)
+    }
+
+    // Region filter
+    if (selectedRegion) {
+      filtered = filtered.filter((item) => item && item.region === selectedRegion)
+    }
+
+    // Status filter
+    if (selectedStatus) {
+      filtered = filtered.filter((item) => item && item.status === selectedStatus)
+    }
+
+    onFilterChange(filtered)
+  }, [content, searchTerm, selectedCategories, selectedType, selectedRegion, selectedStatus, onFilterChange])
+
+  // Apply filters when any filter changes
   useEffect(() => {
     filterContent()
-  }, [searchTerm, selectedCategories, selectedType, selectedRegion, selectedStatus, content])
+  }, [filterContent])
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
 
   const handleCategoryToggle = (category: string) => {
-    const newCategories = selectedCategories.includes(category)
-      ? selectedCategories.filter((c) => c !== category)
-      : [...selectedCategories, category]
-    setSelectedCategories(newCategories)
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
+    )
   }
 
   const clearFilters = () => {
@@ -134,13 +111,6 @@ export function ArtumiContentFilter({
     setSelectedRegion("")
     setSelectedStatus("")
   }
-
-  // Clear filters will trigger useEffect which will call onFilterChange with original content
-  useEffect(() => {
-    if (!searchTerm && selectedCategories.length === 0 && !selectedType && !selectedRegion && !selectedStatus) {
-      onFilterChange(content || [])
-    }
-  }, [searchTerm, selectedCategories, selectedType, selectedRegion, selectedStatus, content, onFilterChange])
 
   const hasActiveFilters =
     searchTerm.trim() || selectedCategories.length > 0 || selectedType || selectedRegion || selectedStatus
@@ -178,7 +148,7 @@ export function ArtumiContentFilter({
       {/* Filters */}
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Type Filter */}
-        {Array.isArray(allTypes) && allTypes.length > 0 && (
+        {allTypes.length > 0 && (
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-300">Content Type</label>
             <Select value={selectedType} onValueChange={setSelectedType}>
@@ -197,7 +167,7 @@ export function ArtumiContentFilter({
         )}
 
         {/* Region Filter */}
-        {Array.isArray(allRegions) && allRegions.length > 0 && (
+        {allRegions.length > 0 && (
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-300">Region</label>
             <Select value={selectedRegion} onValueChange={setSelectedRegion}>
@@ -216,7 +186,7 @@ export function ArtumiContentFilter({
         )}
 
         {/* Status Filter */}
-        {Array.isArray(allStatuses) && allStatuses.length > 0 && (
+        {allStatuses.length > 0 && (
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-300">Status</label>
             <Select value={selectedStatus} onValueChange={setSelectedStatus}>
@@ -236,7 +206,7 @@ export function ArtumiContentFilter({
       </div>
 
       {/* Categories */}
-      {Array.isArray(allCategories) && allCategories.length > 0 && (
+      {allCategories.length > 0 && (
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-slate-300">Categories & Themes</h4>
           <div className="flex flex-wrap gap-2">
@@ -267,41 +237,6 @@ export function ArtumiContentFilter({
           {selectedRegion && <span>• {selectedRegion} </span>}
           {selectedStatus && <span>• {selectedStatus} </span>}
           {selectedCategories.length > 0 && <span>• {selectedCategories.join(", ")}</span>}
-        </div>
-      )}
-
-      {/* Search results count */}
-      {searchTerm && (
-        <div className="text-sm text-purple-400">
-          {
-            content.filter((item) => {
-              if (!item) return false
-              const searchLower = searchTerm.toLowerCase().trim()
-              const titleMatch = item.title?.toLowerCase().includes(searchLower) || false
-              const excerptMatch = item.excerpt?.toLowerCase().includes(searchLower) || false
-              const regionMatch = item.region?.toLowerCase().includes(searchLower) || false
-              const categoriesMatch = Array.isArray(item.categories)
-                ? item.categories.some((cat) => cat?.toLowerCase().includes(searchLower))
-                : false
-              const tagsMatch = Array.isArray(item.tags)
-                ? item.tags.some((tag) => tag?.toLowerCase().includes(searchLower))
-                : false
-              const typeMatch = item.type?.toLowerCase().includes(searchLower) || false
-              const connectionsMatch = Array.isArray(item.connections)
-                ? item.connections.some((conn) => conn?.toLowerCase().includes(searchLower))
-                : false
-              return (
-                titleMatch ||
-                excerptMatch ||
-                regionMatch ||
-                categoriesMatch ||
-                tagsMatch ||
-                typeMatch ||
-                connectionsMatch
-              )
-            }).length
-          }{" "}
-          results found for "{searchTerm}"
         </div>
       )}
     </div>
