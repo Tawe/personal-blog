@@ -9,7 +9,7 @@ export default function Contact() {
 
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Email</h2>
-        <p>john.munn.dev@gmail.com</p>
+        <p>john@johnmunn.tech</p>
       </div>
 
       <div>
