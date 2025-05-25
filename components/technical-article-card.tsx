@@ -1,1 +1,2 @@
-export { TechnicalArticleCard } from "./content-card"
+import { TechnicalArticleCard } from "./content-card"
+export { TechnicalArticleCard }

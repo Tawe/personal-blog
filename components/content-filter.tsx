@@ -349,7 +349,3 @@ export function ContentFilter<T extends BaseContentMetadata>(props: ContentFilte
 export { ContentFilter as TechnicalContentFilter }
 export { ContentFilter as ArtumiContentFilter }
 export { ContentFilter as DndContentFilter }
-
-// Additional legacy exports for backward compatibility with specific file imports
-export { ContentFilter as ArtumiContentFilter }
-export { ContentFilter as DndContentFilter }

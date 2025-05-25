@@ -1,1 +1,2 @@
-export { ArticleCard } from "./content-card"
+import { ArticleCard } from "./content-card"
+export { ArticleCard }

@@ -1,1 +1,2 @@
-export { ArtumiContentCard } from "./content-card"
+import { ArtumiContentCard } from "./content-card"
+export { ArtumiContentCard }

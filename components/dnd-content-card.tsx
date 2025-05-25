@@ -1,1 +1,2 @@
-export { DndContentCard } from "./content-card"
+import { DndContentCard } from "./content-card"
+export { DndContentCard }
