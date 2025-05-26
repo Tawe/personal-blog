@@ -27,14 +27,20 @@ export async function GET() {
         title: frontmatter.title || filename.replace(".md", ""),
         date: frontmatter.date || new Date().toISOString(),
         excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
-        content: marked(content),
+        content: marked(content), // Convert markdown to HTML
         tags: frontmatter.tags || [],
         featured_image: frontmatter.featured_image || frontmatter.image,
         reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
-        featured: frontmatter.featured || false,
-        medium_link: frontmatter.medium_link,
-        devto_link: frontmatter.devto_link,
-        substack_link: frontmatter.substack_link,
+        type: frontmatter.type || "homebrew",
+        system: frontmatter.system || "D&D 5e",
+        level_range: frontmatter.level_range,
+        availability: frontmatter.availability || "free",
+        duration: frontmatter.duration,
+        price: frontmatter.price,
+        platform: frontmatter.platform,
+        external_url: frontmatter.external_url,
+        rating: frontmatter.rating,
+        playtested: frontmatter.playtested || false,
       }
     })
 

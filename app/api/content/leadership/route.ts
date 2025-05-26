@@ -27,7 +27,7 @@ export async function GET() {
         title: frontmatter.title || filename.replace(".md", ""),
         date: frontmatter.date || new Date().toISOString(),
         excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
-        content: marked(content),
+        content: marked(content), // Convert markdown to HTML
         tags: frontmatter.tags || [],
         featured_image: frontmatter.featured_image || frontmatter.image,
         reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
