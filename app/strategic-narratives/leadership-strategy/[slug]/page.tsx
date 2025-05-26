@@ -1,68 +1,72 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useParams, notFound } from "next/navigation"
 import { ArticleClientPage } from "./ArticleClientPage"
+import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
-interface Article {
-  slug: string
-  title: string
-  date: string
-  excerpt: string
-  content: string
-  tags: string[]
-  featured_image?: string
-  reading_time: number
-  medium_link?: string
-  devto_link?: string
-  substack_link?: string
-}
-
-export default function LeadershipStrategyArticlePage() {
+export default function ArticlePage() {
   const params = useParams()
-  const [article, setArticle] = useState<Article | null>(null)
+  const slug = params.slug as string
+  const [article, setArticle] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    async function fetchArticle() {
+    const fetchArticle = async () => {
       try {
-        const slug = decodeURIComponent(params.slug as string)
+        console.log("Fetching article with slug:", slug)
         const response = await fetch(`/api/content/leadership/${slug}`)
+        console.log("API response status:", response.status)
 
         if (!response.ok) {
-          setError(true)
-          return
+          const errorText = await response.text()
+          console.error("API error:", errorText)
+          throw new Error(`Failed to fetch article: ${response.status}`)
         }
 
         const data = await response.json()
-        setArticle(data.article)
+        console.log("API response data:", data)
+
+        if (data.article) {
+          setArticle(data.article)
+        } else {
+          throw new Error("No article data received")
+        }
       } catch (err) {
         console.error("Error fetching article:", err)
-        setError(true)
+        setError(err.message)
       } finally {
         setLoading(false)
       }
     }
 
-    if (params.slug) {
+    if (slug) {
       fetchArticle()
     }
-  }, [params.slug])
+  }, [slug])
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p>Loading article...</p>
-        </div>
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-slate-400">Loading article...</div>
       </div>
     )
   }
 
-  if (error || !article) {
-    notFound()
+  if (error) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-red-400">Error: {error}</div>
+      </div>
+    )
+  }
+
+  if (!article) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-slate-400">Article not found</div>
+      </div>
+    )
   }
 
   return <ArticleClientPage article={article} />
