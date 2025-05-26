@@ -6,12 +6,47 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, X, Filter, Target, FileText } from "lucide-react"
-import type {
-  BaseContentMetadata,
-  TechnicalArticleMetadata,
-  ArtumiContentMetadata,
-  DndContentMetadata,
-} from "@/lib/content"
+
+// Define types inline to avoid imports
+interface BaseContentMetadata {
+  title: string
+  date: string
+  excerpt?: string
+  tags: string[]
+  featured_image?: string
+  reading_time?: number
+  draft?: boolean
+  slug: string
+}
+
+interface TechnicalArticleMetadata extends BaseContentMetadata {
+  updated?: string
+  difficulty: "beginner" | "intermediate" | "advanced"
+  type: "tutorial" | "guide" | "analysis" | "documentation"
+  code_languages?: string[]
+  recently_updated?: boolean
+}
+
+interface ArtumiContentMetadata extends BaseContentMetadata {
+  type: "story" | "lore" | "character" | "location" | "history" | "organization"
+  categories: string[]
+  region?: string
+  status: "complete" | "in-progress" | "planned"
+  connections?: string[]
+}
+
+interface DndContentMetadata extends BaseContentMetadata {
+  type: "thought-piece" | "mechanic" | "monster" | "magic-item" | "npc" | "adventure" | "product"
+  system: "5e" | "pathfinder" | "system-agnostic"
+  level_range?: string
+  availability: "free" | "premium" | "commercial"
+  duration?: string
+  price?: string
+  platform?: "dmsguild" | "drivethrurpg" | "itch"
+  external_url?: string
+  rating?: string
+  playtested?: boolean
+}
 
 interface BaseFilterProps<T extends BaseContentMetadata> {
   content: T[]

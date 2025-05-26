@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
@@ -5,46 +8,74 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, Lightbulb, Target, Dice6, Users } from "lucide-react"
-import { getAllArticles, getAllTechnicalArticles, getAllArtumiContent, getAllDndContent } from "@/lib/content"
 
-export default async function HomePage() {
-  // Load recent articles from all content sources
-  const [leadership, technical, artumin, dnd] = await Promise.all([
-    getAllArticles(),
-    getAllTechnicalArticles(),
-    getAllArtumiContent(),
-    getAllDndContent(),
-  ])
+interface Article {
+  slug: string
+  title: string
+  date: string
+  excerpt?: string
+  readingTime?: number
+  category: string
+  categoryColor: string
+  href: string
+}
 
-  // Combine and sort all articles by date, take the 3 most recent
-  const allArticles = [
-    ...leadership.map((article) => ({
-      ...article,
-      category: "Leadership",
-      categoryColor: "text-green-400",
-      href: `/strategic-narratives/leadership-strategy/${article.slug}`,
-    })),
-    ...technical.map((article) => ({
-      ...article,
-      category: "Technical",
-      categoryColor: "text-blue-400",
-      href: `/strategic-narratives/technical-architecture/${article.slug}`,
-    })),
-    ...artumin.map((article) => ({
-      ...article,
-      category: "Artumin",
-      categoryColor: "text-purple-400",
-      href: `/strategic-narratives/world-of-artumin/${article.slug}`,
-    })),
-    ...dnd.map((article) => ({
-      ...article,
-      category: "D&D",
-      categoryColor: "text-red-400",
-      href: `/strategic-narratives/dnd-ttrpgs/${article.slug}`,
-    })),
-  ]
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3)
+export default function HomePage() {
+  const [allArticles, setAllArticles] = useState<Article[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch data from all content APIs
+        const [leadership, technical, artumin, dnd] = await Promise.all([
+          fetch("/api/content/leadership").then((r) => r.json()),
+          fetch("/api/content/technical").then((r) => r.json()),
+          fetch("/api/content/artumin").then((r) => r.json()),
+          fetch("/api/content/dnd").then((r) => r.json()),
+        ])
+
+        // Combine and sort all articles by date, take the 3 most recent
+        const combined = [
+          ...(leadership.articles || []).map((article: any) => ({
+            ...article,
+            category: "Leadership",
+            categoryColor: "text-green-400",
+            href: `/strategic-narratives/leadership-strategy/${article.slug}`,
+          })),
+          ...(technical.articles || []).map((article: any) => ({
+            ...article,
+            category: "Technical",
+            categoryColor: "text-blue-400",
+            href: `/strategic-narratives/technical-architecture/${article.slug}`,
+          })),
+          ...(artumin.articles || []).map((article: any) => ({
+            ...article,
+            category: "Artumin",
+            categoryColor: "text-purple-400",
+            href: `/strategic-narratives/world-of-artumin/${article.slug}`,
+          })),
+          ...(dnd.articles || []).map((article: any) => ({
+            ...article,
+            category: "D&D",
+            categoryColor: "text-red-400",
+            href: `/strategic-narratives/dnd-ttrpgs/${article.slug}`,
+          })),
+        ]
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          .slice(0, 3)
+
+        setAllArticles(combined)
+      } catch (error) {
+        console.error("Error fetching articles:", error)
+        setAllArticles([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -111,7 +142,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-2">
@@ -204,7 +235,7 @@ export default async function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {allArticles.length > 0 ? (
+            {!isLoading && allArticles.length > 0 ? (
               allArticles.map((article) => (
                 <Card
                   key={article.slug}
@@ -233,6 +264,10 @@ export default async function HomePage() {
                   </CardContent>
                 </Card>
               ))
+            ) : isLoading ? (
+              <div className="col-span-full text-center text-slate-400">
+                <p>Loading recent articles...</p>
+              </div>
             ) : (
               <div className="col-span-full text-center text-slate-400">
                 <p>No recent articles available.</p>

@@ -1,81 +1,71 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
-import { ArticleFilter } from "@/components/article-filter"
-import { ArticleDisplay } from "@/components/article-display"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getAllArticles, getAllTags, filterArticles, sortArticles } from "@/lib/content-unified"
-import type { Article, FilterOptions, SortOption, ViewMode, HubConfig } from "@/lib/types"
+
+interface Article {
+  slug: string
+  title: string
+  description: string
+  date: string
+  tags: string[]
+  readingTime: number
+  featured?: boolean
+}
+
+interface HubConfig {
+  title: string
+  description: string
+  contentFolder: string
+  baseUrl: string
+}
 
 interface HubPageTemplateProps {
   config: HubConfig
   children?: React.ReactNode
 }
 
-const defaultFilters: FilterOptions = {
-  search: "",
-  tags: [],
-  dateRange: { start: "", end: "" },
-  readingTime: { min: 0, max: 60 },
-  featured: null,
-}
-
-const defaultSort: SortOption = {
-  field: "date",
-  direction: "desc",
-}
-
 export function HubPageTemplate({ config, children }: HubPageTemplateProps) {
-  const [allArticles, setAllArticles] = useState<Article[]>([])
-  const [availableTags, setAvailableTags] = useState<string[]>([])
-  const [filters, setFilters] = useState<FilterOptions>(defaultFilters)
-  const [sortOption, setSortOption] = useState<SortOption>(defaultSort)
-  const [viewMode, setViewMode] = useState<ViewMode>("grid")
+  const [articles, setArticles] = useState<Article[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Load articles and tags
   useEffect(() => {
-    try {
-      setIsLoading(true)
-      const articles = getAllArticles(config.contentFolder)
-      const tags = getAllTags(config.contentFolder)
+    const fetchArticles = async () => {
+      try {
+        setIsLoading(true)
+        // Determine which API endpoint to use based on content folder
+        let apiEndpoint = "/api/content/leadership"
+        if (config.contentFolder === "technical-writings") {
+          apiEndpoint = "/api/content/technical"
+        } else if (config.contentFolder === "artumin") {
+          apiEndpoint = "/api/content/artumin"
+        } else if (config.contentFolder === "dnd-musings") {
+          apiEndpoint = "/api/content/dnd"
+        }
 
-      setAllArticles(articles)
-      setAvailableTags(tags)
-      setError(null)
-    } catch (err) {
-      console.error("Error loading articles:", err)
-      setError("Failed to load articles")
-      setAllArticles([])
-      setAvailableTags([])
-    } finally {
-      setIsLoading(false)
+        const response = await fetch(apiEndpoint)
+        if (!response.ok) {
+          throw new Error("Failed to fetch articles")
+        }
+        const data = await response.json()
+        setArticles(data.articles || [])
+        setError(null)
+      } catch (err) {
+        console.error("Error loading articles:", err)
+        setError("Failed to load articles")
+        setArticles([])
+      } finally {
+        setIsLoading(false)
+      }
     }
+
+    fetchArticles()
   }, [config.contentFolder])
-
-  // Filter and sort articles
-  const processedArticles = useMemo(() => {
-    const filtered = filterArticles(allArticles, filters)
-    return sortArticles(filtered, sortOption)
-  }, [allArticles, filters, sortOption])
-
-  const handleFiltersChange = (newFilters: FilterOptions) => {
-    setFilters(newFilters)
-  }
-
-  const handleClearFilters = () => {
-    setFilters(defaultFilters)
-  }
-
-  const handleTagClick = (tag: string) => {
-    const newTags = filters.tags.includes(tag) ? filters.tags.filter((t) => t !== tag) : [...filters.tags, tag]
-    setFilters({ ...filters, tags: newTags })
-  }
 
   if (isLoading) {
     return (
@@ -132,26 +122,36 @@ export function HubPageTemplate({ config, children }: HubPageTemplateProps) {
             {/* Custom Content */}
             {children}
 
-            {/* Filter Component */}
-            <ArticleFilter
-              availableTags={availableTags}
-              filters={filters}
-              onFiltersChange={handleFiltersChange}
-              onClearFilters={handleClearFilters}
-              resultCount={processedArticles.length}
-              totalCount={allArticles.length}
-            />
+            {/* Articles List */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {articles.map((article) => (
+                <div
+                  key={article.slug}
+                  className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-blue-500/50 transition-colors"
+                >
+                  <h3 className="text-xl font-semibold text-slate-200 mb-2">{article.title}</h3>
+                  <p className="text-slate-400 mb-4">{article.description}</p>
+                  <div className="flex items-center justify-between text-sm text-slate-500">
+                    <span>{article.date}</span>
+                    <span>{article.readingTime} min read</span>
+                  </div>
+                  <div className="mt-4">
+                    <Link
+                      href={`${config.baseUrl}/${article.slug}`}
+                      className="text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      Read more →
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-            {/* Article Display */}
-            <ArticleDisplay
-              articles={processedArticles}
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-              sortOption={sortOption}
-              onSortChange={setSortOption}
-              baseUrl={config.baseUrl}
-              onTagClick={handleTagClick}
-            />
+            {articles.length === 0 && !isLoading && (
+              <div className="text-center py-12">
+                <div className="text-slate-400">No articles found.</div>
+              </div>
+            )}
           </div>
         </ContentLayout>
       </div>

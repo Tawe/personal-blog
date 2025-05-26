@@ -8,8 +8,18 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getAllArticles } from "@/lib/content-unified"
-import type { Article } from "@/lib/types"
+
+interface Article {
+  slug: string
+  title: string
+  date: string
+  excerpt?: string
+  tags: string[]
+  featured_image?: string
+  reading_time?: number
+  content?: string
+  featured?: boolean
+}
 
 interface ArticlePageTemplateProps {
   article: Article
@@ -21,37 +31,105 @@ interface ArticlePageTemplateProps {
 export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder }: ArticlePageTemplateProps) {
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [shareState, setShareState] = useState<"idle" | "sharing" | "copied" | "error">("idle")
 
   useEffect(() => {
-    try {
-      const allArticles = getAllArticles(contentFolder)
-      const related = allArticles
-        .filter((a) => a.slug !== article.slug)
-        .filter((a) => a.tags.some((tag) => article.tags.includes(tag)))
-        .slice(0, 2)
+    const fetchRelatedArticles = async () => {
+      try {
+        // Determine which API endpoint to use based on content folder
+        let apiEndpoint = ""
+        switch (contentFolder) {
+          case "leadership":
+            apiEndpoint = "/api/content/leadership"
+            break
+          case "technical-writings":
+            apiEndpoint = "/api/content/technical"
+            break
+          case "artumin":
+            apiEndpoint = "/api/content/artumin"
+            break
+          case "dnd-musings":
+            apiEndpoint = "/api/content/dnd"
+            break
+          default:
+            apiEndpoint = "/api/content/leadership"
+        }
 
-      setRelatedArticles(related)
-    } catch (error) {
-      console.error("Error loading related articles:", error)
-      setRelatedArticles([])
-    } finally {
-      setIsLoading(false)
+        const response = await fetch(apiEndpoint)
+        const data = await response.json()
+        const allArticles = data.articles || []
+
+        const related = allArticles
+          .filter((a: Article) => a.slug !== article.slug)
+          .filter((a: Article) => a.tags.some((tag: string) => article.tags.includes(tag)))
+          .slice(0, 2)
+
+        setRelatedArticles(related)
+      } catch (error) {
+        console.error("Error loading related articles:", error)
+        setRelatedArticles([])
+      } finally {
+        setIsLoading(false)
+      }
     }
+
+    fetchRelatedArticles()
   }, [article.slug, article.tags, contentFolder])
 
   const handleShare = async () => {
     const url = window.location.href
     const title = article.title
 
+    setShareState("sharing")
+
     try {
-      if (navigator.share) {
+      if (navigator.share && navigator.canShare?.({ title, url })) {
         await navigator.share({ title, url })
-      } else {
+        setShareState("idle")
+      } else if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(url)
-        // You could add a toast notification here
+        setShareState("copied")
+        setTimeout(() => setShareState("idle"), 2000)
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea")
+        textArea.value = url
+        textArea.style.position = "fixed"
+        textArea.style.left = "-999999px"
+        textArea.style.top = "-999999px"
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+
+        try {
+          document.execCommand("copy")
+          setShareState("copied")
+          setTimeout(() => setShareState("idle"), 2000)
+        } catch (err) {
+          console.error("Fallback copy failed:", err)
+          setShareState("error")
+          setTimeout(() => setShareState("idle"), 2000)
+        } finally {
+          textArea.remove()
+        }
       }
     } catch (error) {
       console.error("Error sharing:", error)
+      setShareState("error")
+      setTimeout(() => setShareState("idle"), 2000)
+    }
+  }
+
+  const getShareButtonText = () => {
+    switch (shareState) {
+      case "sharing":
+        return "Sharing..."
+      case "copied":
+        return "Copied!"
+      case "error":
+        return "Error"
+      default:
+        return "Share"
     }
   }
 
@@ -108,9 +186,15 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
                 <Clock className="h-4 w-4" />
                 <span>{article.reading_time} min read</span>
               </div>
-              <Button variant="ghost" size="sm" className="text-slate-400 hover:text-slate-200" onClick={handleShare}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-slate-400 hover:text-slate-200"
+                onClick={handleShare}
+                disabled={shareState === "sharing"}
+              >
                 <Share2 className="mr-2 h-4 w-4" />
-                Share
+                {getShareButtonText()}
               </Button>
             </div>
 
