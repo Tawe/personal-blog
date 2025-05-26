@@ -45,22 +45,17 @@ export function ArticleClientPage({
     setShareState("copying")
 
     try {
-      // Try Web Share API first (mobile/modern browsers)
       if (navigator.share && navigator.canShare && navigator.canShare({ title, url })) {
         await navigator.share({ title, url })
-        setShareState("idle") // Reset state after successful share
+        setShareState("idle")
         return
       }
 
-      // Fallback to clipboard
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(url)
         setShareState("copied")
-
-        // Reset state after 2 seconds
         setTimeout(() => setShareState("idle"), 2000)
       } else {
-        // Fallback for older browsers
         const textArea = document.createElement("textarea")
         textArea.value = url
         textArea.style.position = "fixed"
@@ -237,8 +232,8 @@ export function ArticleClientPage({
         </header>
 
         {/* Article Content */}
-        <article className="prose prose-invert prose-blue max-w-none mb-12">
-          <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
+        <article className="prose prose-invert prose-slate max-w-none mb-12 prose-headings:text-slate-100 prose-p:text-slate-300 prose-strong:text-slate-200 prose-em:text-slate-300 prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-8 prose-h2:mb-4 prose-p:mb-4 prose-p:leading-relaxed">
+          <div dangerouslySetInnerHTML={{ __html: article.content }} className="prose-content" />
         </article>
 
         {/* Related Articles */}
