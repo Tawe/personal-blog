@@ -1,12 +1,21 @@
 "use client"
 
-import { useState } from "react"
-import { ArticlePreviewCard } from "@/components/article-preview-card"
+import { useState, useMemo } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Search, X, BookOpen } from "lucide-react"
-import type { ArticleMetadata } from "@/lib/content"
+import { Calendar, Clock, Search, X } from "lucide-react"
+import Link from "next/link"
+
+interface ArticleMetadata {
+  slug: string
+  title: string
+  date: string
+  excerpt?: string
+  tags: string[]
+  reading_time?: number
+}
 
 interface LeadershipStrategyClientProps {
   articles: ArticleMetadata[]
@@ -14,140 +23,142 @@ interface LeadershipStrategyClientProps {
 }
 
 export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyClientProps) {
-  const [filteredArticles, setFilteredArticles] = useState<ArticleMetadata[]>(articles)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
-  const handleSearch = (value: string) => {
-    setSearchTerm(value)
-    filterArticles(value, selectedTags)
-  }
+  const filteredArticles = useMemo(() => {
+    return articles.filter((article) => {
+      const matchesSearch =
+        searchTerm.trim() === "" ||
+        article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        article.excerpt?.toLowerCase().includes(searchTerm.toLowerCase())
+
+      const matchesTags = selectedTags.length === 0 || selectedTags.every((tag) => article.tags.includes(tag))
+
+      return matchesSearch && matchesTags
+    })
+  }, [articles, searchTerm, selectedTags])
 
   const handleTagToggle = (tag: string) => {
-    const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]
-    setSelectedTags(newTags)
-    filterArticles(searchTerm, newTags)
-  }
-
-  const filterArticles = (search: string, tags: string[]) => {
-    let filtered = [...articles]
-
-    if (search.trim()) {
-      const searchLower = search.toLowerCase()
-      filtered = filtered.filter((article) => {
-        const titleMatch = article.title?.toLowerCase().includes(searchLower) || false
-        const excerptMatch = article.excerpt?.toLowerCase().includes(searchLower) || false
-        const tagMatch = (article.tags || []).some((tag) => tag.toLowerCase().includes(searchLower))
-        return titleMatch || excerptMatch || tagMatch
-      })
-    }
-
-    if (tags.length > 0) {
-      filtered = filtered.filter((article) => tags.every((tag) => (article.tags || []).includes(tag)))
-    }
-
-    setFilteredArticles(filtered)
+    setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]))
   }
 
   const clearFilters = () => {
     setSearchTerm("")
     setSelectedTags([])
-    setFilteredArticles(articles)
   }
 
-  const hasActiveFilters = searchTerm.trim() || selectedTags.length > 0
+  const hasActiveFilters = searchTerm.trim() !== "" || selectedTags.length > 0
 
   return (
-    <>
-      {/* Filter Component */}
-      {articles.length > 0 && (
-        <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-blue-900/20 rounded-xl border border-slate-700">
-          <div className="flex items-center gap-2 mb-4">
-            <Search className="h-5 w-5 text-blue-400" />
-            <h3 className="text-lg font-semibold text-slate-100">Filter Articles</h3>
-            {hasActiveFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearFilters}
-                className="text-slate-400 hover:text-slate-200 ml-auto"
-              >
-                <X className="h-4 w-4 mr-1" />
-                Clear all
-              </Button>
-            )}
-          </div>
-
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-            <Input
-              type="text"
-              placeholder="Search articles, topics, or concepts..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-blue-500"
-            />
-          </div>
-
-          {tags.length > 0 && (
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant={selectedTags.includes(tag) ? "default" : "secondary"}
-                    className={`cursor-pointer transition-colors text-xs ${
-                      selectedTags.includes(tag)
-                        ? "bg-blue-600 hover:bg-blue-700 text-white"
-                        : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
-                    }`}
-                    onClick={() => handleTagToggle(tag)}
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </div>
+    <div className="space-y-8">
+      {/* Filter Section */}
+      <div className="bg-slate-800/30 p-6 rounded-xl border border-slate-700">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-slate-100">Filter Articles</h3>
+          {hasActiveFilters && (
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-slate-400">
+              <X className="h-4 w-4 mr-1" />
+              Clear
+            </Button>
           )}
-
-          <div className="text-sm text-slate-400">
-            Showing {filteredArticles.length} of {articles.length} articles
-            {hasActiveFilters && (
-              <span className="ml-2">
-                • Filtered by: {searchTerm && `"${searchTerm}"`} {selectedTags.length > 0 && selectedTags.join(", ")}
-              </span>
-            )}
-          </div>
         </div>
-      )}
+
+        {/* Search */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Input
+            type="text"
+            placeholder="Search articles..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100"
+          />
+        </div>
+
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium text-slate-300">Topics</h4>
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant={selectedTags.includes(tag) ? "default" : "secondary"}
+                  className={`cursor-pointer transition-colors ${
+                    selectedTags.includes(tag)
+                      ? "bg-green-600 hover:bg-green-700 text-white"
+                      : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                  }`}
+                  onClick={() => handleTagToggle(tag)}
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Results count */}
+        <div className="text-sm text-slate-400 mt-4">
+          Showing {filteredArticles.length} of {articles.length} articles
+        </div>
+      </div>
 
       {/* Articles Grid */}
-      {filteredArticles.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredArticles.map((article) => (
-            <ArticlePreviewCard
-              key={article.slug}
-              article={article}
-              section="strategic-narratives/leadership-strategy"
-            />
-          ))}
-        </div>
-      ) : articles.length === 0 ? (
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredArticles.map((article) => (
+          <Card
+            key={article.slug}
+            className="bg-slate-800/50 border-slate-600 hover:border-green-500/50 transition-all duration-300"
+          >
+            <CardHeader>
+              <CardTitle className="text-slate-100 text-lg leading-tight">
+                <Link
+                  href={`/strategic-narratives/leadership-strategy/${article.slug}`}
+                  className="hover:text-green-400 transition-colors"
+                >
+                  {article.title}
+                </Link>
+              </CardTitle>
+              <CardDescription className="text-slate-400">{article.excerpt}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between text-sm text-slate-500 mb-3">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-3 w-3" />
+                  <span>{new Date(article.date).toLocaleDateString()}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-3 w-3" />
+                  <span>{article.reading_time} min</span>
+                </div>
+              </div>
+              {article.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {article.tags.slice(0, 3).map((tag) => (
+                    <Badge key={tag} variant="outline" className="text-xs border-slate-600 text-slate-400">
+                      {tag}
+                    </Badge>
+                  ))}
+                  {article.tags.length > 3 && (
+                    <Badge variant="outline" className="text-xs border-slate-600 text-slate-400">
+                      +{article.tags.length - 3}
+                    </Badge>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {filteredArticles.length === 0 && (
         <div className="text-center py-12">
-          <BookOpen className="h-12 w-12 text-slate-500 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-slate-300 mb-2">No articles available</h3>
-          <p className="text-slate-400">Leadership articles will appear here once they are published.</p>
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <BookOpen className="h-12 w-12 text-slate-500 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-slate-300 mb-2">No articles found</h3>
-          <p className="text-slate-400">
-            Try adjusting your search terms or clearing the filters to see more articles.
-          </p>
+          <div className="text-slate-400 mb-2">No articles found</div>
+          <p className="text-sm text-slate-500">Try adjusting your search or filter criteria</p>
         </div>
       )}
-    </>
+    </div>
   )
 }

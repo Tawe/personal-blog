@@ -1,16 +1,25 @@
 "use client"
 
-import { useState } from "react"
-import { ArticlePreviewCard } from "@/components/article-preview-card"
+import { useState, useMemo } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, X, Target, FileText, Code } from "lucide-react"
-import type { TechnicalArticleMetadata } from "@/lib/content"
+import { Calendar, Clock, Search, X, Code } from "lucide-react"
+import Link from "next/link"
 
-const allDifficulties = ["beginner", "intermediate", "advanced"]
-const allTypes = ["tutorial", "guide", "analysis", "documentation"]
+interface TechnicalArticleMetadata {
+  slug: string
+  title: string
+  date: string
+  excerpt?: string
+  tags: string[]
+  reading_time?: number
+  difficulty: "beginner" | "intermediate" | "advanced"
+  type: "tutorial" | "guide" | "analysis" | "documentation"
+  code_languages?: string[]
+}
 
 interface TechnicalArchitectureClientProps {
   articles: TechnicalArticleMetadata[]
@@ -18,62 +27,33 @@ interface TechnicalArchitectureClientProps {
 }
 
 export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchitectureClientProps) {
-  const [filteredArticles, setFilteredArticles] = useState<TechnicalArticleMetadata[]>(articles)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("")
   const [selectedType, setSelectedType] = useState<string>("")
 
-  const handleSearch = (value: string) => {
-    setSearchTerm(value)
-    filterArticles(value, selectedTags, selectedDifficulty, selectedType)
-  }
+  const difficulties = ["beginner", "intermediate", "advanced"]
+  const types = ["tutorial", "guide", "analysis", "documentation"]
+
+  const filteredArticles = useMemo(() => {
+    return articles.filter((article) => {
+      const matchesSearch =
+        searchTerm.trim() === "" ||
+        article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        article.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        article.code_languages?.some((lang) => lang.toLowerCase().includes(searchTerm.toLowerCase()))
+
+      const matchesTags = selectedTags.length === 0 || selectedTags.every((tag) => article.tags.includes(tag))
+
+      const matchesDifficulty = selectedDifficulty === "" || article.difficulty === selectedDifficulty
+      const matchesType = selectedType === "" || article.type === selectedType
+
+      return matchesSearch && matchesTags && matchesDifficulty && matchesType
+    })
+  }, [articles, searchTerm, selectedTags, selectedDifficulty, selectedType])
 
   const handleTagToggle = (tag: string) => {
-    const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]
-    setSelectedTags(newTags)
-    filterArticles(searchTerm, newTags, selectedDifficulty, selectedType)
-  }
-
-  const handleDifficultyChange = (value: string) => {
-    setSelectedDifficulty(value)
-    filterArticles(searchTerm, selectedTags, value, selectedType)
-  }
-
-  const handleTypeChange = (value: string) => {
-    setSelectedType(value)
-    filterArticles(searchTerm, selectedTags, selectedDifficulty, value)
-  }
-
-  const filterArticles = (search: string, tags: string[], difficulty: string, type: string) => {
-    let filtered = [...articles]
-
-    if (search.trim()) {
-      const searchLower = search.toLowerCase()
-      filtered = filtered.filter((article) => {
-        const titleMatch = article.title?.toLowerCase().includes(searchLower) || false
-        const excerptMatch = article.excerpt?.toLowerCase().includes(searchLower) || false
-        const tagMatch = (article.tags || []).some((tag) => tag.toLowerCase().includes(searchLower))
-        const languageMatch = (article.code_languages || []).some((lang) => lang.toLowerCase().includes(searchLower))
-        const difficultyMatch = article.difficulty?.toLowerCase().includes(searchLower) || false
-        const typeMatch = article.type?.toLowerCase().includes(searchLower) || false
-        return titleMatch || excerptMatch || tagMatch || languageMatch || difficultyMatch || typeMatch
-      })
-    }
-
-    if (tags.length > 0) {
-      filtered = filtered.filter((article) => tags.every((tag) => (article.tags || []).includes(tag)))
-    }
-
-    if (difficulty) {
-      filtered = filtered.filter((article) => article.difficulty === difficulty)
-    }
-
-    if (type) {
-      filtered = filtered.filter((article) => article.type === type)
-    }
-
-    setFilteredArticles(filtered)
+    setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]))
   }
 
   const clearFilters = () => {
@@ -81,144 +61,195 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
     setSelectedTags([])
     setSelectedDifficulty("")
     setSelectedType("")
-    setFilteredArticles(articles)
   }
 
-  const hasActiveFilters = searchTerm.trim() || selectedTags.length > 0 || selectedDifficulty || selectedType
+  const hasActiveFilters =
+    searchTerm.trim() !== "" || selectedTags.length > 0 || selectedDifficulty !== "" || selectedType !== ""
+
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case "beginner":
+        return "bg-green-600"
+      case "intermediate":
+        return "bg-yellow-600"
+      case "advanced":
+        return "bg-red-600"
+      default:
+        return "bg-slate-600"
+    }
+  }
 
   return (
-    <>
-      {/* Filter Component */}
-      {articles.length > 0 && (
-        <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-blue-900/20 rounded-xl border border-slate-700">
-          <div className="flex items-center gap-2 mb-4">
-            <Search className="h-5 w-5 text-blue-400" />
-            <h3 className="text-lg font-semibold text-slate-100">Filter Technical Articles</h3>
-            {hasActiveFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearFilters}
-                className="text-slate-400 hover:text-slate-200 ml-auto"
-              >
-                <X className="h-4 w-4 mr-1" />
-                Clear all
-              </Button>
-            )}
-          </div>
-
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-            <Input
-              type="text"
-              placeholder="Search articles, technologies, or concepts..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-blue-500"
-            />
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Target className="h-4 w-4 text-slate-400" />
-                <label className="text-sm font-medium text-slate-300">Difficulty Level</label>
-              </div>
-              <Select value={selectedDifficulty} onValueChange={handleDifficultyChange}>
-                <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
-                  <SelectValue placeholder="All levels" />
-                </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-600">
-                  {allDifficulties.map((difficulty) => (
-                    <SelectItem key={difficulty} value={difficulty} className="text-slate-100">
-                      {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-slate-400" />
-                <label className="text-sm font-medium text-slate-300">Article Type</label>
-              </div>
-              <Select value={selectedType} onValueChange={handleTypeChange}>
-                <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
-                  <SelectValue placeholder="All types" />
-                </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-600">
-                  {allTypes.map((type) => (
-                    <SelectItem key={type} value={type} className="text-slate-100">
-                      {type.charAt(0).toUpperCase() + type.slice(1)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {tags.length > 0 && (
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant={selectedTags.includes(tag) ? "default" : "secondary"}
-                    className={`cursor-pointer transition-colors text-xs ${
-                      selectedTags.includes(tag)
-                        ? "bg-blue-600 hover:bg-blue-700 text-white"
-                        : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
-                    }`}
-                    onClick={() => handleTagToggle(tag)}
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </div>
+    <div className="space-y-8">
+      {/* Filter Section */}
+      <div className="bg-slate-800/30 p-6 rounded-xl border border-slate-700">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-slate-100">Filter Technical Articles</h3>
+          {hasActiveFilters && (
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-slate-400">
+              <X className="h-4 w-4 mr-1" />
+              Clear
+            </Button>
           )}
+        </div>
 
-          <div className="text-sm text-slate-400">
-            Showing {filteredArticles.length} of {articles.length} articles
-            {hasActiveFilters && (
-              <span className="ml-2">
-                • Filtered by: {searchTerm && `"${searchTerm}"`} {selectedTags.length > 0 && selectedTags.join(", ")}
-                {selectedDifficulty && ` • ${selectedDifficulty}`}
-                {selectedType && ` • ${selectedType}`}
-              </span>
-            )}
+        {/* Search */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Input
+            type="text"
+            placeholder="Search articles, technologies..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100"
+          />
+        </div>
+
+        {/* Filters */}
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="text-sm font-medium text-slate-300 mb-2 block">Difficulty</label>
+            <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
+              <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
+                <SelectValue placeholder="All levels" />
+              </SelectTrigger>
+              <SelectContent>
+                {difficulties.map((difficulty) => (
+                  <SelectItem key={difficulty} value={difficulty}>
+                    {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-slate-300 mb-2 block">Type</label>
+            <Select value={selectedType} onValueChange={setSelectedType}>
+              <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
+                <SelectValue placeholder="All types" />
+              </SelectTrigger>
+              <SelectContent>
+                {types.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
-      )}
+
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium text-slate-300">Technologies & Topics</h4>
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant={selectedTags.includes(tag) ? "default" : "secondary"}
+                  className={`cursor-pointer transition-colors ${
+                    selectedTags.includes(tag)
+                      ? "bg-blue-600 hover:bg-blue-700 text-white"
+                      : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                  }`}
+                  onClick={() => handleTagToggle(tag)}
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Results count */}
+        <div className="text-sm text-slate-400 mt-4">
+          Showing {filteredArticles.length} of {articles.length} articles
+        </div>
+      </div>
 
       {/* Articles Grid */}
-      {filteredArticles.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredArticles.map((article) => (
-            <ArticlePreviewCard
-              key={article.slug}
-              article={article}
-              section="strategic-narratives/technical-architecture"
-            />
-          ))}
-        </div>
-      ) : articles.length === 0 ? (
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredArticles.map((article) => (
+          <Card
+            key={article.slug}
+            className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300"
+          >
+            <CardHeader>
+              <div className="flex items-center gap-2 mb-2">
+                <Badge className={`${getDifficultyColor(article.difficulty)} text-white text-xs`}>
+                  {article.difficulty}
+                </Badge>
+                <Badge variant="outline" className="border-slate-600 text-slate-400 text-xs">
+                  {article.type}
+                </Badge>
+              </div>
+              <CardTitle className="text-slate-100 text-lg leading-tight">
+                <Link
+                  href={`/strategic-narratives/technical-architecture/${article.slug}`}
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  {article.title}
+                </Link>
+              </CardTitle>
+              <CardDescription className="text-slate-400">{article.excerpt}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between text-sm text-slate-500 mb-3">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-3 w-3" />
+                  <span>{new Date(article.date).toLocaleDateString()}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-3 w-3" />
+                  <span>{article.reading_time} min</span>
+                </div>
+              </div>
+
+              {article.code_languages && article.code_languages.length > 0 && (
+                <div className="flex items-center gap-2 mb-3">
+                  <Code className="h-3 w-3 text-slate-400" />
+                  <div className="flex flex-wrap gap-1">
+                    {article.code_languages.slice(0, 3).map((lang) => (
+                      <Badge key={lang} variant="outline" className="text-xs border-slate-600 text-slate-400">
+                        {lang}
+                      </Badge>
+                    ))}
+                    {article.code_languages.length > 3 && (
+                      <Badge variant="outline" className="text-xs border-slate-600 text-slate-400">
+                        +{article.code_languages.length - 3}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {article.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {article.tags.slice(0, 2).map((tag) => (
+                    <Badge key={tag} variant="outline" className="text-xs border-slate-600 text-slate-400">
+                      {tag}
+                    </Badge>
+                  ))}
+                  {article.tags.length > 2 && (
+                    <Badge variant="outline" className="text-xs border-slate-600 text-slate-400">
+                      +{article.tags.length - 2}
+                    </Badge>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {filteredArticles.length === 0 && (
         <div className="text-center py-12">
-          <Code className="h-12 w-12 text-slate-500 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-slate-300 mb-2">No articles available</h3>
-          <p className="text-slate-400">Technical articles will appear here once they are published.</p>
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <Code className="h-12 w-12 text-slate-500 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-slate-300 mb-2">No articles found</h3>
-          <p className="text-slate-400">
-            Try adjusting your search terms or clearing the filters to see more articles.
-          </p>
+          <div className="text-slate-400 mb-2">No articles found</div>
+          <p className="text-sm text-slate-500">Try adjusting your search or filter criteria</p>
         </div>
       )}
-    </>
+    </div>
   )
 }
