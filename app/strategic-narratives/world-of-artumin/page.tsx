@@ -1,112 +1,13 @@
-"use client"
-
-import { useState, useEffect, useMemo } from "react"
 import { ContentLayout } from "@/components/content-layout"
-import { ArticleFilter } from "@/components/article-filter"
-import { ArticleDisplay } from "@/components/article-display"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Crown, Sword, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { getAllArtumiContent, getAllTags } from "@/lib/content"
-import { filterArticles, sortArticles } from "@/lib/content-unified"
-import type { ArtumiContentMetadata, FilterOptions, SortOption, ViewMode } from "@/lib/types"
-
-const defaultFilters: FilterOptions = {
-  search: "",
-  tags: [],
-  dateRange: { start: "", end: "" },
-  readingTime: { min: 0, max: 60 },
-  featured: null,
-}
-
-const defaultSort: SortOption = {
-  field: "date",
-  direction: "desc",
-}
+import { WorldOfArtuminClient } from "./client"
 
 export default function WorldOfArtuminPage() {
-  const [allArticles, setAllArticles] = useState<ArtumiContentMetadata[]>([])
-  const [availableTags, setAvailableTags] = useState<string[]>([])
-  const [filters, setFilters] = useState<FilterOptions>(defaultFilters)
-  const [sortOption, setSortOption] = useState<SortOption>(defaultSort)
-  const [viewMode, setViewMode] = useState<ViewMode>("grid")
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  // Load articles and tags
-  useEffect(() => {
-    try {
-      setIsLoading(true)
-      const articles = getAllArtumiContent()
-      const tags = getAllTags("artumin")
-
-      setAllArticles(articles)
-      setAvailableTags(tags)
-      setError(null)
-    } catch (err) {
-      console.error("Error loading articles:", err)
-      setError("Failed to load articles")
-      setAllArticles([])
-      setAvailableTags([])
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
-  // Filter and sort articles
-  const processedArticles = useMemo(() => {
-    const filtered = filterArticles(allArticles, filters)
-    return sortArticles(filtered, sortOption)
-  }, [allArticles, filters, sortOption])
-
-  const handleFiltersChange = (newFilters: FilterOptions) => {
-    setFilters(newFilters)
-  }
-
-  const handleClearFilters = () => {
-    setFilters(defaultFilters)
-  }
-
-  const handleTagClick = (tag: string) => {
-    const newTags = filters.tags.includes(tag) ? filters.tags.filter((t) => t !== tag) : [...filters.tags, tag]
-    setFilters({ ...filters, tags: newTags })
-  }
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-950">
-        <div className="absolute inset-0 bg-tech-pattern opacity-20"></div>
-        <div className="relative">
-          <ContentLayout>
-            <div className="max-w-6xl mx-auto">
-              <div className="flex items-center justify-center py-12">
-                <div className="text-slate-400">Loading articles...</div>
-              </div>
-            </div>
-          </ContentLayout>
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-slate-950">
-        <div className="absolute inset-0 bg-tech-pattern opacity-20"></div>
-        <div className="relative">
-          <ContentLayout>
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center py-12">
-                <div className="text-red-400 mb-4">⚠️ Error</div>
-                <h3 className="text-xl font-semibold text-slate-300 mb-2">Failed to load articles</h3>
-                <p className="text-slate-400">{error}</p>
-              </div>
-            </div>
-          </ContentLayout>
-        </div>
-      </div>
-    )
-  }
+  const allArticles = getAllArtumiContent()
+  const availableTags = getAllTags("artumin")
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -180,26 +81,8 @@ export default function WorldOfArtuminPage() {
               </div>
             </div>
 
-            {/* Filter Component */}
-            <ArticleFilter
-              availableTags={availableTags}
-              filters={filters}
-              onFiltersChange={handleFiltersChange}
-              onClearFilters={handleClearFilters}
-              resultCount={processedArticles.length}
-              totalCount={allArticles.length}
-            />
-
-            {/* Article Display */}
-            <ArticleDisplay
-              articles={processedArticles}
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-              sortOption={sortOption}
-              onSortChange={setSortOption}
-              baseUrl="/strategic-narratives/world-of-artumin"
-              onTagClick={handleTagClick}
-            />
+            {/* Client Component for Interactive Features */}
+            <WorldOfArtuminClient articles={allArticles} availableTags={availableTags} />
           </div>
         </ContentLayout>
       </div>
