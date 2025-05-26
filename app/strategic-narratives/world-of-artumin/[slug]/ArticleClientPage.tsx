@@ -9,7 +9,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import type { TechnicalArticleMetadata } from "@/lib/content"
-import { marked } from "marked"
 
 interface ArticleClientPageProps {
   article: any
@@ -111,25 +110,6 @@ export function ArticleClientPage({
     } catch (error) {
       console.error("Clipboard operation failed:", error)
       throw error
-    }
-  }
-
-  // Parse markdown content if it's not already HTML
-  const parseContent = (content: string) => {
-    if (!content) return ""
-
-    // Check if content is already HTML (contains HTML tags)
-    if (content.includes("<") && content.includes(">")) {
-      return content
-    }
-
-    // Otherwise, parse as markdown
-    try {
-      return marked(content)
-    } catch (error) {
-      console.error("Error parsing markdown:", error)
-      // Fallback: return content with line breaks converted to <br>
-      return content.replace(/\n/g, "<br />")
     }
   }
 
@@ -279,7 +259,7 @@ export function ArticleClientPage({
 
         {/* Article Content */}
         <article className="prose prose-invert prose-blue max-w-none mb-12">
-          <div dangerouslySetInnerHTML={{ __html: parseContent(article.content || "") }} />
+          <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
         </article>
 
         {/* Related Articles */}

@@ -7,9 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getAllArticles } from "@/lib/content"
 import { useEffect, useState } from "react"
-import { marked } from "marked"
 
 interface ArticleClientPageProps {
   article: any
@@ -27,9 +25,15 @@ export function ArticleClientPage({
 
   useEffect(() => {
     const loadRelatedArticles = async () => {
-      const allArticles = await getAllArticles()
-      const related = allArticles.filter((a) => a.slug !== article.slug).slice(0, 2)
-      setRelatedArticles(related)
+      try {
+        const response = await fetch("/api/content/leadership")
+        const data = await response.json()
+        const allArticles = data.articles || []
+        const related = allArticles.filter((a) => a.slug !== article.slug).slice(0, 2)
+        setRelatedArticles(related)
+      } catch (error) {
+        console.error("Error loading related articles:", error)
+      }
     }
     loadRelatedArticles()
   }, [article.slug])
@@ -124,25 +128,6 @@ export function ArticleClientPage({
         return "text-red-400 hover:text-red-300"
       default:
         return baseClass
-    }
-  }
-
-  // Parse markdown content if it's not already HTML
-  const parseContent = (content: string) => {
-    if (!content) return ""
-
-    // Check if content is already HTML (contains HTML tags)
-    if (content.includes("<") && content.includes(">")) {
-      return content
-    }
-
-    // Otherwise, parse as markdown
-    try {
-      return marked(content)
-    } catch (error) {
-      console.error("Error parsing markdown:", error)
-      // Fallback: return content with line breaks converted to <br>
-      return content.replace(/\n/g, "<br />")
     }
   }
 
@@ -253,7 +238,7 @@ export function ArticleClientPage({
 
         {/* Article Content */}
         <article className="prose prose-invert prose-blue max-w-none mb-12">
-          <div dangerouslySetInnerHTML={{ __html: parseContent(article.content || "") }} />
+          <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
         </article>
 
         {/* Related Articles */}

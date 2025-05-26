@@ -7,10 +7,21 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getAllDndContent } from "@/lib/content"
-import type { DndContent } from "@/lib/content"
 import { useEffect, useState } from "react"
-import { marked } from "marked"
+
+interface DndContent {
+  slug: string
+  title: string
+  content: string
+  excerpt: string
+  date: string
+  tags?: string[]
+  reading_time?: number
+  featured_image?: string
+  medium_link?: string
+  devto_link?: string
+  substack_link?: string
+}
 
 interface ArticleClientPageProps {
   article: DndContent
@@ -23,14 +34,21 @@ export function ArticleClientPage({
   backUrl = "/strategic-narratives/dnd-ttrpgs",
   backLabel = "Back to D&D and TTRPGs",
 }: ArticleClientPageProps) {
-  const [relatedArticles, setRelatedArticles] = useState<any[]>([])
+  const [relatedArticles, setRelatedArticles] = useState<DndContent[]>([])
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
 
   useEffect(() => {
     const loadRelatedArticles = async () => {
-      const allArticles = getAllDndContent()
-      const related = allArticles.filter((a) => a.slug !== article.slug).slice(0, 2)
-      setRelatedArticles(related)
+      try {
+        const response = await fetch("/api/content/dnd")
+        if (response.ok) {
+          const allArticles = await response.json()
+          const related = allArticles.filter((a: DndContent) => a.slug !== article.slug).slice(0, 2)
+          setRelatedArticles(related)
+        }
+      } catch (error) {
+        console.error("Failed to load related articles:", error)
+      }
     }
     loadRelatedArticles()
   }, [article.slug])
@@ -235,7 +253,7 @@ export function ArticleClientPage({
 
         {/* Article Content */}
         <article className="prose prose-invert prose-blue max-w-none mb-12">
-          <div dangerouslySetInnerHTML={{ __html: marked(article.content || "") }} />
+          <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
         </article>
 
         {/* Related Articles */}
