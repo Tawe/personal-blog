@@ -6,6 +6,7 @@ import { ContentLayout } from "@/components/content-layout"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { Crown, Sword, BookOpen } from "lucide-react"
 
 interface ArtumiContentMetadata {
   slug: string
@@ -68,6 +69,53 @@ export default function WorldOfArtuminPage() {
                   Back to Strategic Narratives
                 </Link>
               </Button>
+            </div>
+
+            {/* Description Section */}
+            <div className="mb-16">
+              <p className="text-lg text-slate-300 text-center max-w-5xl mx-auto leading-relaxed">
+                The World of Artumin weaves together fantasy storytelling with profound leadership insights, creating
+                fables that explore the complexities of power, responsibility, and moral courage. These tales examine
+                how individuals navigate difficult decisions, build meaningful connections, and discover their true
+                worth in a world where magic and politics intertwine. Each story serves as both entertainment and
+                reflection, offering timeless lessons wrapped in compelling narratives.
+              </p>
+            </div>
+
+            {/* Feature Cards */}
+            <div className="grid md:grid-cols-3 gap-8 mb-16">
+              <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                  <Crown className="w-8 h-8 text-purple-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-100 mb-4">Leadership Fables</h3>
+                <p className="text-slate-400">
+                  Stories that explore the weight of command, the burden of difficult decisions, and the courage
+                  required to lead with integrity.
+                </p>
+              </div>
+
+              <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                  <Sword className="w-8 h-8 text-purple-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-100 mb-4">Character Studies</h3>
+                <p className="text-slate-400">
+                  Deep explorations of individuals facing moral complexity, personal growth, and the challenge of
+                  staying true to their values.
+                </p>
+              </div>
+
+              <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                  <BookOpen className="w-8 h-8 text-purple-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-100 mb-4">World Building</h3>
+                <p className="text-slate-400">
+                  Rich explorations of Artumin's cultures, politics, and magical systems that create the backdrop for
+                  meaningful storytelling.
+                </p>
+              </div>
             </div>
 
             <WorldOfArtuminClient articles={articles} availableTags={availableTags} />

@@ -79,34 +79,43 @@ export default function StrategicNarrativesPage() {
     {
       title: "Leadership & Strategy",
       description: "Insights on building teams, driving innovation, and leading through complexity",
-      icon: <BookOpen className="h-8 w-8 text-green-400" />,
+      icon: BookOpen,
       href: "/strategic-narratives/leadership-strategy",
       color: "green",
       stats: categoryData.leadership,
+      features: [
+        "Team building frameworks",
+        "Strategic decision-making",
+        "Organizational transformation",
+        "Executive communication",
+      ],
     },
     {
       title: "Technical Architecture",
       description: "Deep dives into system design, scalability, and technology decisions",
-      icon: <Code className="h-8 w-8 text-blue-400" />,
+      icon: Code,
       href: "/strategic-narratives/technical-architecture",
       color: "blue",
       stats: categoryData.technical,
+      features: ["Architecture patterns", "Performance optimization", "Technology strategy", "Best practices"],
     },
     {
       title: "World of Artumin",
       description: "Reflective fantasy and leadership fables exploring worth, power, and courage",
-      icon: <Crown className="h-8 w-8 text-purple-400" />,
+      icon: Crown,
       href: "/strategic-narratives/world-of-artumin",
       color: "purple",
       stats: categoryData.artumin,
+      features: ["Leadership fables", "Fantasy storytelling", "Reflective narratives", "Truth told sideways"],
     },
     {
       title: "D&D and TTRPGs",
       description: "Creative mechanics, homebrew content, and tabletop innovations",
-      icon: <Dice6 className="h-8 w-8 text-red-400" />,
+      icon: Dice6,
       href: "/strategic-narratives/dnd-ttrpgs",
       color: "red",
       stats: categoryData.dnd,
+      features: ["Homebrew content", "Game mechanics", "Adventure design", "System analysis"],
     },
   ]
 
@@ -130,55 +139,109 @@ export default function StrategicNarrativesPage() {
 
             {/* Categories Grid */}
             <div className="grid md:grid-cols-2 gap-8">
-              {categories.map((category) => (
-                <Card
-                  key={category.title}
-                  className={`bg-slate-900/50 border-slate-700 hover:border-${category.color}-500/50 transition-all duration-300 group`}
-                >
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 rounded-lg bg-slate-800/50">{category.icon}</div>
-                        <div>
-                          <CardTitle
-                            className={`text-slate-100 group-hover:text-${category.color}-400 transition-colors`}
-                          >
-                            {category.title}
-                          </CardTitle>
-                          <CardDescription className="text-slate-400 mt-2">{category.description}</CardDescription>
+              {categories.map((category) => {
+                const IconComponent = category.icon
+                return (
+                  <Card
+                    key={category.title}
+                    className={`${
+                      category.color === "green"
+                        ? "border-green-500/50 hover:border-green-400 bg-green-900/10"
+                        : category.color === "blue"
+                          ? "border-blue-500/50 hover:border-blue-400 bg-blue-900/10"
+                          : category.color === "purple"
+                            ? "border-purple-500/50 hover:border-purple-400 bg-purple-900/10"
+                            : "border-red-500/50 hover:border-red-400 bg-red-900/10"
+                    } border-2 transition-all duration-300 hover:scale-[1.02] group`}
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <IconComponent
+                            className={`h-8 w-8 ${
+                              category.color === "green"
+                                ? "text-green-400"
+                                : category.color === "blue"
+                                  ? "text-blue-400"
+                                  : category.color === "purple"
+                                    ? "text-purple-400"
+                                    : "text-red-400"
+                            }`}
+                          />
+                          <div>
+                            <CardTitle className="text-slate-100 text-xl group-hover:text-blue-300 transition-colors">
+                              {category.title}
+                            </CardTitle>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Badge
+                                variant="outline"
+                                className={`${
+                                  category.color === "green"
+                                    ? "bg-green-900/30 text-green-400 border-green-500/30"
+                                    : category.color === "blue"
+                                      ? "bg-blue-900/30 text-blue-400 border-blue-500/30"
+                                      : category.color === "purple"
+                                        ? "bg-purple-900/30 text-purple-400 border-purple-500/30"
+                                        : "bg-red-900/30 text-red-400 border-red-500/30"
+                                }`}
+                              >
+                                {category.stats.count} pieces
+                              </Badge>
+                              {category.stats.lastUpdated && (
+                                <span className="text-xs text-slate-500">
+                                  Updated {new Date(category.stats.lastUpdated).toLocaleDateString()}
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        {!isLoading && (
-                          <>
-                            <Badge variant="secondary" className="bg-slate-700/50 text-slate-300">
-                              {category.stats.count} {category.stats.count === 1 ? "article" : "articles"}
-                            </Badge>
-                            {category.stats.lastUpdated && (
-                              <span className="text-sm text-slate-500">
-                                Updated {new Date(category.stats.lastUpdated).toLocaleDateString()}
-                              </span>
-                            )}
-                          </>
-                        )}
+                      <CardDescription className="text-slate-400 leading-relaxed">
+                        {category.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-2">
+                          {category.features?.map((feature) => (
+                            <div key={feature} className="text-sm text-slate-300 flex items-center gap-1">
+                              <div
+                                className={`w-1.5 h-1.5 rounded-full ${
+                                  category.color === "green"
+                                    ? "bg-green-400"
+                                    : category.color === "blue"
+                                      ? "bg-blue-400"
+                                      : category.color === "purple"
+                                        ? "bg-purple-400"
+                                        : "bg-red-400"
+                                }`}
+                              ></div>
+                              {feature}
+                            </div>
+                          ))}
+                        </div>
+                        <Button
+                          className={`w-full ${
+                            category.color === "green"
+                              ? "bg-green-600 hover:bg-green-700"
+                              : category.color === "blue"
+                                ? "bg-blue-600 hover:bg-blue-700"
+                                : category.color === "purple"
+                                  ? "bg-purple-600 hover:bg-purple-700"
+                                  : "bg-red-600 hover:bg-red-700"
+                          }`}
+                          asChild
+                        >
+                          <Link href={category.href}>
+                            Explore {category.title}
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Link>
+                        </Button>
                       </div>
-                      <Button
-                        variant="ghost"
-                        className={`text-${category.color}-400 hover:text-${category.color}-300`}
-                        asChild
-                      >
-                        <Link href={category.href}>
-                          Explore <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                )
+              })}
             </div>
 
             {/* Call to Action */}

@@ -127,6 +127,25 @@ export function ArticleClientPage({
     }
   }
 
+  // Parse markdown content if it's not already HTML
+  const parseContent = (content: string) => {
+    if (!content) return ""
+
+    // Check if content is already HTML (contains HTML tags)
+    if (content.includes("<") && content.includes(">")) {
+      return content
+    }
+
+    // Otherwise, parse as markdown
+    try {
+      return marked(content)
+    } catch (error) {
+      console.error("Error parsing markdown:", error)
+      // Fallback: return content with line breaks converted to <br>
+      return content.replace(/\n/g, "<br />")
+    }
+  }
+
   return (
     <ContentLayout>
       <div className="max-w-4xl mx-auto">
@@ -234,7 +253,7 @@ export function ArticleClientPage({
 
         {/* Article Content */}
         <article className="prose prose-invert prose-blue max-w-none mb-12">
-          <div dangerouslySetInnerHTML={{ __html: marked(article.content || "") }} />
+          <div dangerouslySetInnerHTML={{ __html: parseContent(article.content || "") }} />
         </article>
 
         {/* Related Articles */}

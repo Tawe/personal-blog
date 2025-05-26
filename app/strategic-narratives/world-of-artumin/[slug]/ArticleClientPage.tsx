@@ -7,7 +7,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Copy, Check } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getAllTechnicalArticles } from "@/lib/content"
 import { useEffect, useState } from "react"
 import type { TechnicalArticleMetadata } from "@/lib/content"
 import { marked } from "marked"
@@ -20,8 +19,8 @@ interface ArticleClientPageProps {
 
 export function ArticleClientPage({
   article,
-  backUrl = "/strategic-narratives/technical-architecture",
-  backLabel = "Back to Technical Architecture",
+  backUrl = "/strategic-narratives/world-of-artumin",
+  backLabel = "Back to World of Artumin",
 }: ArticleClientPageProps) {
   const [relatedArticles, setRelatedArticles] = useState<TechnicalArticleMetadata[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -30,7 +29,9 @@ export function ArticleClientPage({
   useEffect(() => {
     const loadRelatedArticles = async () => {
       try {
-        const allArticles = await getAllTechnicalArticles()
+        const response = await fetch("/api/content/artumin")
+        const data = await response.json()
+        const allArticles = data.articles || []
         const related = allArticles.filter((a) => a.slug !== article.slug).slice(0, 2)
         setRelatedArticles(related)
       } catch (error) {
@@ -290,7 +291,7 @@ export function ArticleClientPage({
                 {relatedArticles.map((relatedArticle) => (
                   <Link
                     key={relatedArticle.slug}
-                    href={`/strategic-narratives/technical-architecture/${relatedArticle.slug}`}
+                    href={`/strategic-narratives/world-of-artumin/${relatedArticle.slug}`}
                     className="block p-4 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
                   >
                     <h4 className="font-medium text-slate-200 mb-2">{relatedArticle.title}</h4>

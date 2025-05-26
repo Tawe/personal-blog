@@ -19,6 +19,7 @@ interface TechnicalArticleMetadata {
   difficulty: "beginner" | "intermediate" | "advanced"
   type: "tutorial" | "guide" | "analysis" | "documentation"
   code_languages?: string[]
+  image?: string
 }
 
 interface TechnicalArchitectureClientProps {
@@ -174,8 +175,17 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
         {filteredArticles.map((article) => (
           <Card
             key={article.slug}
-            className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300"
+            className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300 overflow-hidden"
           >
+            {article.image && (
+              <div className="aspect-video w-full overflow-hidden">
+                <img
+                  src={article.image || "/placeholder.svg"}
+                  alt={article.title}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+            )}
             <CardHeader>
               <div className="flex items-center gap-2 mb-2">
                 <Badge className={`${getDifficultyColor(article.difficulty)} text-white text-xs`}>

@@ -6,6 +6,8 @@ import { ContentLayout } from "@/components/content-layout"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { Card, CardContent } from "@/components/ui/card"
+import { Code, Cloud, Zap } from "lucide-react"
 
 interface TechnicalArticleMetadata {
   slug: string
@@ -67,6 +69,48 @@ export default function TechnicalArchitecturePage() {
                   Back to Strategic Narratives
                 </Link>
               </Button>
+            </div>
+
+            {/* Introduction */}
+            <div className="mb-12 text-center">
+              <p className="text-lg text-slate-300 leading-relaxed max-w-4xl mx-auto">
+                Technical communication is about translating complex concepts into actionable insights. These articles
+                focus on practical solutions, architectural patterns, and best practices drawn from real-world
+                experience building and scaling software systems.
+              </p>
+            </div>
+
+            {/* Technical Focus Areas */}
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-6 text-center">
+                  <Code className="h-8 w-8 text-blue-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Architecture & Design</h3>
+                  <p className="text-slate-400 text-sm">
+                    System design patterns, microservices, and scalable architecture principles.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-6 text-center">
+                  <Zap className="h-8 w-8 text-blue-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Performance & Optimization</h3>
+                  <p className="text-slate-400 text-sm">
+                    Strategies for building fast, efficient applications that scale under load.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-6 text-center">
+                  <Cloud className="h-8 w-8 text-blue-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Cloud & DevOps</h3>
+                  <p className="text-slate-400 text-sm">
+                    Modern deployment strategies, containerization, and cloud-native development.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
             <TechnicalArchitectureClient articles={articles} tags={tags} />

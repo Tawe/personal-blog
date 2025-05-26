@@ -6,6 +6,8 @@ import { ContentLayout } from "@/components/content-layout"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { Card, CardContent } from "@/components/ui/card"
+import { BookOpen, Users, Target } from "lucide-react"
 
 interface ArticleMetadata {
   slug: string
@@ -64,6 +66,50 @@ export default function LeadershipStrategyPage() {
                   Back to Strategic Narratives
                 </Link>
               </Button>
+            </div>
+
+            {/* Introduction */}
+            <div className="mb-12 text-center">
+              <p className="text-lg text-slate-300 leading-relaxed max-w-4xl mx-auto">
+                Technical leadership is about more than just code and architecture—it's about building teams that can
+                tackle complex challenges, fostering innovation while maintaining operational excellence, and
+                translating technical possibilities into business outcomes. These insights explore the intersection of
+                technology and leadership, drawing from real-world experience building and scaling engineering
+                organizations.
+              </p>
+            </div>
+
+            {/* Key Focus Areas */}
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-6 text-center">
+                  <Users className="h-8 w-8 text-green-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Team Building</h3>
+                  <p className="text-slate-400 text-sm">
+                    Creating high-performing teams through clear communication, psychological safety, and shared vision.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-6 text-center">
+                  <Target className="h-8 w-8 text-green-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Strategic Thinking</h3>
+                  <p className="text-slate-400 text-sm">
+                    Aligning technical decisions with business objectives and long-term organizational goals.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-6 text-center">
+                  <BookOpen className="h-8 w-8 text-green-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Continuous Learning</h3>
+                  <p className="text-slate-400 text-sm">
+                    Fostering growth mindsets and building learning organizations that adapt to change.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
             <LeadershipStrategyClient articles={articles} tags={tags} />

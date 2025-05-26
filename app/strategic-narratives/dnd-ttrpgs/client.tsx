@@ -21,6 +21,7 @@ interface DndContentMetadata {
   availability: "free" | "premium" | "commercial"
   external_url?: string
   playtested?: boolean
+  image?: string
 }
 
 interface DndTtrpgsClientProps {
@@ -221,8 +222,17 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
         {filteredArticles.map((article) => (
           <Card
             key={article.slug}
-            className="bg-slate-800/50 border-slate-600 hover:border-red-500/50 transition-all duration-300"
+            className="bg-slate-800/50 border-slate-600 hover:border-red-500/50 transition-all duration-300 overflow-hidden"
           >
+            {article.image && (
+              <div className="aspect-video w-full overflow-hidden">
+                <img
+                  src={article.image || "/placeholder.svg"}
+                  alt={article.title}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+            )}
             <CardHeader>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-lg">{getTypeIcon(article.type)}</span>
