@@ -1,13 +1,59 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Crown, Sword, BookOpen } from "lucide-react"
 import Link from "next/link"
-import { getAllArtumiContent, getAllTags } from "@/lib/content"
 import { WorldOfArtuminClient } from "./client"
 
+interface ArtumiContentMetadata {
+  slug: string
+  title: string
+  date: string
+  excerpt?: string
+  tags: string[]
+  featured_image?: string
+  reading_time?: number
+  draft?: boolean
+  type: "story" | "lore" | "character" | "location" | "history" | "organization"
+  categories: string[]
+  region?: string
+  status: "complete" | "in-progress" | "planned"
+  connections?: string[]
+}
+
 export default function WorldOfArtuminPage() {
-  const allArticles = getAllArtumiContent()
-  const availableTags = getAllTags("artumin")
+  const [articles, setArticles] = useState<ArtumiContentMetadata[]>([])
+  const [tags, setTags] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/content/artumin")
+        const data = await response.json()
+        setArticles(data.articles || [])
+        setTags(data.tags || [])
+      } catch (error) {
+        console.error("Error fetching data:", error)
+        setArticles([])
+        setTags([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-slate-400">Loading articles...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -82,7 +128,7 @@ export default function WorldOfArtuminPage() {
             </div>
 
             {/* Client Component for Interactive Features */}
-            <WorldOfArtuminClient articles={allArticles} availableTags={availableTags} />
+            <WorldOfArtuminClient articles={articles} availableTags={tags} />
           </div>
         </ContentLayout>
       </div>

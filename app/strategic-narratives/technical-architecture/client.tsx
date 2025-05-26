@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Code, Search, X, Target, FileText } from "lucide-react"
+import { Search, X, Target, FileText, Code } from "lucide-react"
 import type { TechnicalArticleMetadata } from "@/lib/content"
 
 const allDifficulties = ["beginner", "intermediate", "advanced"]
@@ -18,7 +18,7 @@ interface TechnicalArchitectureClientProps {
 }
 
 export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchitectureClientProps) {
-  const [filteredArticles, setFilteredArticles] = useState(articles)
+  const [filteredArticles, setFilteredArticles] = useState<TechnicalArticleMetadata[]>(articles)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("")
@@ -48,7 +48,6 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
   const filterArticles = (search: string, tags: string[], difficulty: string, type: string) => {
     let filtered = [...articles]
 
-    // Search filter
     if (search.trim()) {
       const searchLower = search.toLowerCase()
       filtered = filtered.filter((article) => {
@@ -62,17 +61,14 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
       })
     }
 
-    // Tag filter
     if (tags.length > 0) {
       filtered = filtered.filter((article) => tags.every((tag) => (article.tags || []).includes(tag)))
     }
 
-    // Difficulty filter
     if (difficulty) {
       filtered = filtered.filter((article) => article.difficulty === difficulty)
     }
 
-    // Type filter
     if (type) {
       filtered = filtered.filter((article) => article.type === type)
     }
@@ -111,7 +107,6 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
             )}
           </div>
 
-          {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
             <Input
@@ -123,7 +118,6 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
             />
           </div>
 
-          {/* Filters */}
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
@@ -164,7 +158,6 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
             </div>
           </div>
 
-          {/* Tags */}
           {tags.length > 0 && (
             <div className="space-y-3">
               <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
@@ -187,7 +180,6 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
             </div>
           )}
 
-          {/* Results count */}
           <div className="text-sm text-slate-400">
             Showing {filteredArticles.length} of {articles.length} articles
             {hasActiveFilters && (

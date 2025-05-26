@@ -5,7 +5,7 @@ import { ArticlePreviewCard } from "@/components/article-preview-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Dice6, Search, X } from "lucide-react"
+import { Search, X, Dice6 } from "lucide-react"
 import type { DndContentMetadata } from "@/lib/content"
 
 const contentTypes = ["thought-piece", "mechanic", "monster", "magic-item", "npc", "adventure", "product"]
@@ -17,7 +17,7 @@ interface DndTtrpgsClientProps {
 }
 
 export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProps) {
-  const [filteredArticles, setFilteredArticles] = useState(articles)
+  const [filteredArticles, setFilteredArticles] = useState<DndContentMetadata[]>(articles)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [selectedSystems, setSelectedSystems] = useState<string[]>([])
@@ -51,7 +51,6 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
   const filterArticles = (search: string, tags: string[], systems: string[], types: string[]) => {
     let filtered = [...articles]
 
-    // Search filter
     if (search.trim()) {
       const searchLower = search.toLowerCase()
       filtered = filtered.filter((article) => {
@@ -62,17 +61,14 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
       })
     }
 
-    // Tag filter
     if (tags.length > 0) {
       filtered = filtered.filter((article) => tags.every((tag) => (article.tags || []).includes(tag)))
     }
 
-    // System filter
     if (systems.length > 0) {
       filtered = filtered.filter((article) => systems.includes(article.system))
     }
 
-    // Type filter
     if (types.length > 0) {
       filtered = filtered.filter((article) => types.includes(article.type))
     }
@@ -112,7 +108,6 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
             )}
           </div>
 
-          {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
             <Input
@@ -124,7 +119,6 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
             />
           </div>
 
-          {/* Content Types */}
           {contentTypes.length > 0 && (
             <div className="space-y-3">
               <h4 className="text-sm font-medium text-slate-300">Content Type</h4>
@@ -147,7 +141,6 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
             </div>
           )}
 
-          {/* Game Systems */}
           {systems.length > 0 && (
             <div className="space-y-3">
               <h4 className="text-sm font-medium text-slate-300">Game System</h4>
@@ -170,7 +163,6 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
             </div>
           )}
 
-          {/* Tags */}
           {tags.length > 0 && (
             <div className="space-y-3">
               <h4 className="text-sm font-medium text-slate-300">Tags</h4>
@@ -193,7 +185,6 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
             </div>
           )}
 
-          {/* Results count */}
           <div className="text-sm text-slate-400">
             Showing {filteredArticles.length} of {articles.length} pieces
             {hasActiveFilters && (

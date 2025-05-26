@@ -1,14 +1,60 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Code, Cloud, Zap, ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getAllTechnicalArticles, getAllTechnicalTags } from "@/lib/content"
 import { TechnicalArchitectureClient } from "./client"
 
+interface TechnicalArticleMetadata {
+  slug: string
+  title: string
+  date: string
+  excerpt?: string
+  tags: string[]
+  featured_image?: string
+  reading_time?: number
+  draft?: boolean
+  updated?: string
+  difficulty: "beginner" | "intermediate" | "advanced"
+  type: "tutorial" | "guide" | "analysis" | "documentation"
+  code_languages?: string[]
+  recently_updated?: boolean
+}
+
 export default function TechnicalArchitecturePage() {
-  const allArticles = getAllTechnicalArticles()
-  const allTags = getAllTechnicalTags()
+  const [articles, setArticles] = useState<TechnicalArticleMetadata[]>([])
+  const [tags, setTags] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/content/technical")
+        const data = await response.json()
+        setArticles(data.articles || [])
+        setTags(data.tags || [])
+      } catch (error) {
+        console.error("Error fetching data:", error)
+        setArticles([])
+        setTags([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-slate-400">Loading technical articles...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -72,7 +118,7 @@ export default function TechnicalArchitecturePage() {
             </div>
 
             {/* Client Component for Interactive Features */}
-            <TechnicalArchitectureClient articles={allArticles} tags={allTags} />
+            <TechnicalArchitectureClient articles={articles} tags={tags} />
           </div>
         </ContentLayout>
       </div>

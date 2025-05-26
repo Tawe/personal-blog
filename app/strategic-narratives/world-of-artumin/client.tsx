@@ -3,9 +3,9 @@
 import { useState, useMemo } from "react"
 import { ArticleFilter } from "@/components/article-filter"
 import { ArticleDisplay } from "@/components/article-display"
-import { filterArticles, sortArticles } from "@/lib/client-utils"
 import type { ArtumiContentMetadata } from "@/lib/content"
-import type { FilterOptions, SortOption, ViewMode } from "@/lib/client-utils"
+import type { FilterOptions, SortOption, ViewMode } from "@/lib/types"
+import { filterArticles, sortArticles } from "@/lib/client-utils"
 
 const defaultFilters: FilterOptions = {
   search: "",

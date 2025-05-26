@@ -5,7 +5,7 @@ import { ArticlePreviewCard } from "@/components/article-preview-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { BookOpen, Search, X } from "lucide-react"
+import { Search, X, BookOpen } from "lucide-react"
 import type { ArticleMetadata } from "@/lib/content"
 
 interface LeadershipStrategyClientProps {
@@ -14,7 +14,7 @@ interface LeadershipStrategyClientProps {
 }
 
 export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyClientProps) {
-  const [filteredArticles, setFilteredArticles] = useState(articles)
+  const [filteredArticles, setFilteredArticles] = useState<ArticleMetadata[]>(articles)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
@@ -32,7 +32,6 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
   const filterArticles = (search: string, tags: string[]) => {
     let filtered = [...articles]
 
-    // Search filter
     if (search.trim()) {
       const searchLower = search.toLowerCase()
       filtered = filtered.filter((article) => {
@@ -43,7 +42,6 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
       })
     }
 
-    // Tag filter
     if (tags.length > 0) {
       filtered = filtered.filter((article) => tags.every((tag) => (article.tags || []).includes(tag)))
     }
@@ -80,7 +78,6 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
             )}
           </div>
 
-          {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
             <Input
@@ -92,7 +89,6 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
             />
           </div>
 
-          {/* Tags */}
           {tags.length > 0 && (
             <div className="space-y-3">
               <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
@@ -115,7 +111,6 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
             </div>
           )}
 
-          {/* Results count */}
           <div className="text-sm text-slate-400">
             Showing {filteredArticles.length} of {articles.length} articles
             {hasActiveFilters && (

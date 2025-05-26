@@ -1,15 +1,68 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Dice6, Scroll, Wand2, ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { getAllDndContent, getAllDndTags, getAllDndSystems } from "@/lib/content"
 import { DndTtrpgsClient } from "./client"
 
+interface DndContentMetadata {
+  slug: string
+  title: string
+  date: string
+  excerpt?: string
+  tags: string[]
+  featured_image?: string
+  reading_time?: number
+  draft?: boolean
+  type: "thought-piece" | "mechanic" | "monster" | "magic-item" | "npc" | "adventure" | "product"
+  system: "5e" | "pathfinder" | "system-agnostic"
+  level_range?: string
+  availability: "free" | "premium" | "commercial"
+  duration?: string
+  price?: string
+  platform?: "dmsguild" | "drivethrurpg" | "itch"
+  external_url?: string
+  rating?: string
+  playtested?: boolean
+}
+
 export default function DndTtrpgsPage() {
-  const allArticles = getAllDndContent()
-  const allTags = getAllDndTags()
-  const allSystems = getAllDndSystems()
+  const [articles, setArticles] = useState<DndContentMetadata[]>([])
+  const [tags, setTags] = useState<string[]>([])
+  const [systems, setSystems] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/content/dnd")
+        const data = await response.json()
+        setArticles(data.articles || [])
+        setTags(data.tags || [])
+        setSystems(data.systems || [])
+      } catch (error) {
+        console.error("Error fetching data:", error)
+        setArticles([])
+        setTags([])
+        setSystems([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-slate-400">Loading D&D content...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -77,7 +130,7 @@ export default function DndTtrpgsPage() {
             </div>
 
             {/* Client Component for Interactive Features */}
-            <DndTtrpgsClient articles={allArticles} tags={allTags} systems={allSystems} />
+            <DndTtrpgsClient articles={articles} tags={tags} systems={systems} />
           </div>
         </ContentLayout>
       </div>
