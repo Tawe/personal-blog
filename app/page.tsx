@@ -124,7 +124,7 @@ export default function HomePage() {
                   src="/me.jpeg"
                   width={400}
                   height={400}
-                  alt="John Munn - Professional Headshot"
+                  alt="John Munn - Technical Leader & Engineering Strategist"
                   className="relative rounded-full border-4 border-slate-700 shadow-2xl object-cover"
                   priority
                 />
