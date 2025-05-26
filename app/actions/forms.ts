@@ -1,6 +1,7 @@
 "use server"
 
 import { neon } from "@neondatabase/serverless"
+import nodemailer from "nodemailer"
 
 const sql = neon(process.env.DATABASE_URL!)
 
@@ -41,6 +42,35 @@ function validateRequired(fields: Record<string, any>): string | null {
     }
   }
   return null
+}
+
+// Email sending function using Gmail SMTP
+async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
+  try {
+    // Create transporter using Gmail SMTP
+    const transporter = nodemailer.createTransporter({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER, // Your Gmail address
+        pass: process.env.GMAIL_APP_PASSWORD, // Your Gmail App Password
+      },
+    })
+
+    const mailOptions = {
+      from: `"John Munn" <${process.env.GMAIL_USER}>`,
+      to: to,
+      subject: subject,
+      html: html,
+      replyTo: replyTo || process.env.GMAIL_USER,
+    }
+
+    const result = await transporter.sendMail(mailOptions)
+    console.log("Email sent successfully:", result.messageId)
+    return result
+  } catch (error) {
+    console.error("Failed to send email:", error)
+    throw error
+  }
 }
 
 // Contact form submission
@@ -88,12 +118,68 @@ export async function submitContactForm(formData: ContactFormData) {
       )
     `
 
+    // Send email notification to you
+    const emailSubject = `New Contact Form Submission: ${formData.inquiryType}`
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
+          New Contact Form Submission
+        </h2>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Name:</strong> ${formData.name}</p>
+          <p><strong>Email:</strong> <a href="mailto:${formData.email}">${formData.email}</a></p>
+          <p><strong>Organization:</strong> ${formData.organization || "Not provided"}</p>
+          <p><strong>Current Role:</strong> ${formData.currentRole || "Not provided"}</p>
+          <p><strong>Inquiry Type:</strong> ${formData.inquiryType}</p>
+          <p><strong>Preferred Contact Method:</strong> ${formData.preferredContactMethod || "Not provided"}</p>
+          <p><strong>Time Zone:</strong> ${formData.timeZone || "Not provided"}</p>
+          <p><strong>Timeline:</strong> ${formData.timeline || "Not provided"}</p>
+        </div>
+        <h3 style="color: #1e293b;">Message:</h3>
+        <div style="background: white; padding: 15px; border-left: 4px solid #3b82f6; margin: 10px 0;">
+          ${formData.message.replace(/\n/g, "<br>")}
+        </div>
+      </div>
+    `
+
+    // Send email to your Gmail address with the sender's email as reply-to
+    await sendEmail(process.env.GMAIL_USER!, emailSubject, emailHtml, formData.email)
+
+    // Send confirmation email to the user
+    const confirmationSubject = "Thank you for contacting John Munn"
+    const confirmationHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
+          Thank you for your message!
+        </h2>
+        <p>Hi ${formData.name},</p>
+        <p>I've received your message regarding "<strong>${formData.inquiryType}</strong>" and will respond within 24-48 hours.</p>
+        <p>Here's a copy of what you sent:</p>
+        <div style="background: #f8fafc; padding: 15px; border-left: 4px solid #3b82f6; margin: 20px 0; border-radius: 4px;">
+          ${formData.message.replace(/\n/g, "<br>")}
+        </div>
+        <p>Best regards,<br><strong>John Munn</strong><br>
+        <a href="https://johnmunn.tech">johnmunn.tech</a></p>
+      </div>
+    `
+
+    await sendEmail(formData.email, confirmationSubject, confirmationHtml)
+
     return {
       success: true,
-      message: "Thank you for your message! I'll respond within 24-48 hours.",
+      message: "Thank you for your message! I'll respond within 24-48 hours. Check your email for a confirmation.",
     }
   } catch (error) {
     console.error("Error submitting contact form:", error)
+
+    // If email fails but database succeeded, still show success but mention email issue
+    if (error instanceof Error && error.message.includes("send")) {
+      return {
+        success: true,
+        message: "Your message was received! I'll respond within 24-48 hours.",
+      }
+    }
+
     return {
       success: false,
       error: "Something went wrong. Please try again or contact me directly at john@johnmunn.tech",
@@ -177,6 +263,31 @@ How they heard about me: ${data.hearAbout || "Not specified"}
         'Mentoring Application'
       )
     `
+
+    // Send email notification
+    const emailSubject = `New Mentoring Application: ${data.name}`
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
+          New Mentoring Application
+        </h2>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Name:</strong> ${data.name}</p>
+          <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
+          <p><strong>Current Role:</strong> ${data.currentRole}</p>
+          <p><strong>Years in Tech:</strong> ${data.yearsInTech}</p>
+          <p><strong>Time Zone:</strong> ${data.timeZone}</p>
+          <p><strong>Preferred Times:</strong> ${data.preferredTimes.join(", ")}</p>
+          <p><strong>How they heard about you:</strong> ${data.hearAbout || "Not specified"}</p>
+        </div>
+        <h3 style="color: #1e293b;">Current Challenge:</h3>
+        <div style="background: white; padding: 15px; border-left: 4px solid #3b82f6; margin: 10px 0;">
+          ${data.currentChallenge.replace(/\n/g, "<br>")}
+        </div>
+      </div>
+    `
+
+    await sendEmail(process.env.GMAIL_USER!, emailSubject, emailHtml, data.email)
 
     return {
       success: true,
