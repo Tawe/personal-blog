@@ -7,31 +7,39 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { BookOpen, Users, Target, ArrowLeft, Search, X } from "lucide-react"
+import { Dice6, Scroll, Wand2, ArrowLeft, Search, X } from "lucide-react"
 import Link from "next/link"
-import { getAllArticles, getAllTags, type ArticleMetadata } from "@/lib/content"
+import { getAllDndContent, getAllDndTags, getAllDndSystems, type DndContentMetadata } from "@/lib/content"
 
-export default function LeadershipStrategyPage() {
-  const [allArticles, setAllArticles] = useState<ArticleMetadata[]>([])
-  const [filteredArticles, setFilteredArticles] = useState<ArticleMetadata[]>([])
+export default function DndTtrpgsPage() {
+  const [allArticles, setAllArticles] = useState<DndContentMetadata[]>([])
+  const [filteredArticles, setFilteredArticles] = useState<DndContentMetadata[]>([])
   const [allTags, setAllTags] = useState<string[]>([])
+  const [allSystems, setAllSystems] = useState<string[]>([])
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedSystems, setSelectedSystems] = useState<string[]>([])
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
+
+  const contentTypes = ["thought-piece", "mechanic", "monster", "magic-item", "npc", "adventure", "product"]
 
   useEffect(() => {
     try {
-      const articles = getAllArticles()
-      const tags = getAllTags("leadership")
+      const articles = getAllDndContent()
+      const tags = getAllDndTags()
+      const systems = getAllDndSystems()
 
       setAllArticles(articles)
       setFilteredArticles(articles)
       setAllTags(tags)
+      setAllSystems(systems)
     } catch (error) {
-      console.error("Error loading articles:", error)
+      console.error("Error loading D&D content:", error)
       setAllArticles([])
       setFilteredArticles([])
       setAllTags([])
+      setAllSystems([])
     } finally {
       setIsLoading(false)
     }
@@ -39,16 +47,30 @@ export default function LeadershipStrategyPage() {
 
   const handleSearch = (value: string) => {
     setSearchTerm(value)
-    filterArticles(value, selectedTags)
+    filterArticles(value, selectedTags, selectedSystems, selectedTypes)
   }
 
   const handleTagToggle = (tag: string) => {
     const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]
     setSelectedTags(newTags)
-    filterArticles(searchTerm, newTags)
+    filterArticles(searchTerm, newTags, selectedSystems, selectedTypes)
   }
 
-  const filterArticles = (search: string, tags: string[]) => {
+  const handleSystemToggle = (system: string) => {
+    const newSystems = selectedSystems.includes(system)
+      ? selectedSystems.filter((s) => s !== system)
+      : [...selectedSystems, system]
+    setSelectedSystems(newSystems)
+    filterArticles(searchTerm, selectedTags, newSystems, selectedTypes)
+  }
+
+  const handleTypeToggle = (type: string) => {
+    const newTypes = selectedTypes.includes(type) ? selectedTypes.filter((t) => t !== type) : [...selectedTypes, type]
+    setSelectedTypes(newTypes)
+    filterArticles(searchTerm, selectedTags, selectedSystems, newTypes)
+  }
+
+  const filterArticles = (search: string, tags: string[], systems: string[], types: string[]) => {
     let filtered = [...allArticles]
 
     // Search filter
@@ -67,21 +89,34 @@ export default function LeadershipStrategyPage() {
       filtered = filtered.filter((article) => tags.every((tag) => (article.tags || []).includes(tag)))
     }
 
+    // System filter
+    if (systems.length > 0) {
+      filtered = filtered.filter((article) => systems.includes(article.system))
+    }
+
+    // Type filter
+    if (types.length > 0) {
+      filtered = filtered.filter((article) => types.includes(article.type))
+    }
+
     setFilteredArticles(filtered)
   }
 
   const clearFilters = () => {
     setSearchTerm("")
     setSelectedTags([])
+    setSelectedSystems([])
+    setSelectedTypes([])
     setFilteredArticles(allArticles)
   }
 
-  const hasActiveFilters = searchTerm.trim() || selectedTags.length > 0
+  const hasActiveFilters =
+    searchTerm.trim() || selectedTags.length > 0 || selectedSystems.length > 0 || selectedTypes.length > 0
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="text-slate-400">Loading articles...</div>
+        <div className="text-slate-400">Loading D&D content...</div>
       </div>
     )
   }
@@ -90,14 +125,17 @@ export default function LeadershipStrategyPage() {
     <div className="min-h-screen bg-slate-950">
       <div className="absolute inset-0 bg-tech-pattern opacity-20"></div>
       <div className="relative">
-        <ContentLayout
-          title="Leadership & Strategy"
-          description="Insights on building teams, driving innovation, and leading through complexity"
-        >
+        <ContentLayout>
           <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-4xl lg:text-5xl font-bold text-slate-100 mb-4">D&D and TTRPGs</h1>
+              <p className="text-xl text-slate-400">Creative mechanics, homebrew content, and tabletop innovations</p>
+            </div>
+
             {/* Breadcrumb */}
             <div className="mb-8">
-              <Button variant="ghost" className="text-slate-400 hover:text-blue-400 p-0" asChild>
+              <Button variant="ghost" className="text-slate-400 hover:text-red-400 p-0" asChild>
                 <Link href="/strategic-narratives">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Back to Strategic Narratives
@@ -108,11 +146,10 @@ export default function LeadershipStrategyPage() {
             {/* Introduction */}
             <div className="mb-12 text-center">
               <p className="text-lg text-slate-300 leading-relaxed max-w-4xl mx-auto">
-                Technical leadership is about more than just code and architecture—it's about building teams that can
-                tackle complex challenges, fostering innovation while maintaining operational excellence, and
-                translating technical possibilities into business outcomes. These insights explore the intersection of
-                technology and leadership, drawing from real-world experience building and scaling engineering
-                organizations.
+                Explore my collection of D&D homebrew content, game mechanics, and tabletop RPG creations. From custom
+                monsters and magical items to innovative mechanics and character options, these pieces blend creative
+                storytelling with balanced gameplay design. Each creation is crafted with both narrative depth and
+                mechanical integrity in mind.
               </p>
             </div>
 
@@ -120,30 +157,30 @@ export default function LeadershipStrategyPage() {
             <div className="grid md:grid-cols-3 gap-6 mb-12">
               <Card className="bg-slate-800/30 border-slate-700">
                 <CardContent className="p-6 text-center">
-                  <Users className="h-8 w-8 text-green-400 mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Team Building</h3>
+                  <Dice6 className="h-8 w-8 text-red-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Game Mechanics</h3>
                   <p className="text-slate-400 text-sm">
-                    Creating high-performing teams through clear communication, psychological safety, and shared vision.
+                    Innovative rules, systems, and mechanics that enhance gameplay and create new possibilities.
                   </p>
                 </CardContent>
               </Card>
 
               <Card className="bg-slate-800/30 border-slate-700">
                 <CardContent className="p-6 text-center">
-                  <Target className="h-8 w-8 text-green-400 mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Strategic Thinking</h3>
+                  <Wand2 className="h-8 w-8 text-red-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Homebrew Content</h3>
                   <p className="text-slate-400 text-sm">
-                    Aligning technical decisions with business objectives and long-term organizational goals.
+                    Custom monsters, spells, items, and character options designed for balanced and engaging play.
                   </p>
                 </CardContent>
               </Card>
 
               <Card className="bg-slate-800/30 border-slate-700">
                 <CardContent className="p-6 text-center">
-                  <BookOpen className="h-8 w-8 text-green-400 mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Continuous Learning</h3>
+                  <Scroll className="h-8 w-8 text-red-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">Design Philosophy</h3>
                   <p className="text-slate-400 text-sm">
-                    Fostering growth mindsets and building learning organizations that adapt to change.
+                    Thoughtful analysis of game design principles and the craft of creating memorable experiences.
                   </p>
                 </CardContent>
               </Card>
@@ -151,10 +188,10 @@ export default function LeadershipStrategyPage() {
 
             {/* Filter Component */}
             {allArticles.length > 0 && (
-              <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-blue-900/20 rounded-xl border border-slate-700">
+              <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-red-900/20 rounded-xl border border-slate-700">
                 <div className="flex items-center gap-2 mb-4">
-                  <Search className="h-5 w-5 text-blue-400" />
-                  <h3 className="text-lg font-semibold text-slate-100">Filter Articles</h3>
+                  <Search className="h-5 w-5 text-red-400" />
+                  <h3 className="text-lg font-semibold text-slate-100">Filter Content</h3>
                   {hasActiveFilters && (
                     <Button
                       variant="ghost"
@@ -173,17 +210,63 @@ export default function LeadershipStrategyPage() {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <Input
                     type="text"
-                    placeholder="Search articles, topics, or concepts..."
+                    placeholder="Search content, mechanics, or concepts..."
                     value={searchTerm}
                     onChange={(e) => handleSearch(e.target.value)}
-                    className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-blue-500"
+                    className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-red-500"
                   />
                 </div>
+
+                {/* Content Types */}
+                {contentTypes.length > 0 && (
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-slate-300">Content Type</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {contentTypes.map((type) => (
+                        <Badge
+                          key={type}
+                          variant={selectedTypes.includes(type) ? "default" : "secondary"}
+                          className={`cursor-pointer transition-colors text-xs ${
+                            selectedTypes.includes(type)
+                              ? "bg-red-600 hover:bg-red-700 text-white"
+                              : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                          }`}
+                          onClick={() => handleTypeToggle(type)}
+                        >
+                          {type.replace("-", " ")}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Game Systems */}
+                {allSystems.length > 0 && (
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-slate-300">Game System</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {allSystems.map((system) => (
+                        <Badge
+                          key={system}
+                          variant={selectedSystems.includes(system) ? "default" : "secondary"}
+                          className={`cursor-pointer transition-colors text-xs ${
+                            selectedSystems.includes(system)
+                              ? "bg-red-600 hover:bg-red-700 text-white"
+                              : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                          }`}
+                          onClick={() => handleSystemToggle(system)}
+                        >
+                          {system}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Tags */}
                 {allTags.length > 0 && (
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
+                    <h4 className="text-sm font-medium text-slate-300">Tags</h4>
                     <div className="flex flex-wrap gap-2">
                       {allTags.map((tag) => (
                         <Badge
@@ -191,7 +274,7 @@ export default function LeadershipStrategyPage() {
                           variant={selectedTags.includes(tag) ? "default" : "secondary"}
                           className={`cursor-pointer transition-colors text-xs ${
                             selectedTags.includes(tag)
-                              ? "bg-blue-600 hover:bg-blue-700 text-white"
+                              ? "bg-red-600 hover:bg-red-700 text-white"
                               : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
                           }`}
                           onClick={() => handleTagToggle(tag)}
@@ -205,10 +288,12 @@ export default function LeadershipStrategyPage() {
 
                 {/* Results count */}
                 <div className="text-sm text-slate-400">
-                  Showing {filteredArticles.length} of {allArticles.length} articles
+                  Showing {filteredArticles.length} of {allArticles.length} pieces
                   {hasActiveFilters && (
                     <span className="ml-2">
                       • Filtered by: {searchTerm && `"${searchTerm}"`}{" "}
+                      {selectedTypes.length > 0 && selectedTypes.join(", ")}{" "}
+                      {selectedSystems.length > 0 && selectedSystems.join(", ")}{" "}
                       {selectedTags.length > 0 && selectedTags.join(", ")}
                     </span>
                   )}
@@ -220,25 +305,21 @@ export default function LeadershipStrategyPage() {
             {filteredArticles.length > 0 ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredArticles.map((article) => (
-                  <ArticlePreviewCard
-                    key={article.slug}
-                    article={article}
-                    section="strategic-narratives/leadership-strategy"
-                  />
+                  <ArticlePreviewCard key={article.slug} article={article} section="strategic-narratives/dnd-ttrpgs" />
                 ))}
               </div>
             ) : allArticles.length === 0 ? (
               <div className="text-center py-12">
-                <BookOpen className="h-12 w-12 text-slate-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-300 mb-2">No articles available</h3>
-                <p className="text-slate-400">Leadership articles will appear here once they are published.</p>
+                <Dice6 className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-slate-300 mb-2">No content available</h3>
+                <p className="text-slate-400">D&D and TTRPG content will appear here once published.</p>
               </div>
             ) : (
               <div className="text-center py-12">
-                <BookOpen className="h-12 w-12 text-slate-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-300 mb-2">No articles found</h3>
+                <Dice6 className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-slate-300 mb-2">No content found</h3>
                 <p className="text-slate-400">
-                  Try adjusting your search terms or clearing the filters to see more articles.
+                  Try adjusting your search terms or clearing the filters to see more content.
                 </p>
               </div>
             )}

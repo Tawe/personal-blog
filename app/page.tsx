@@ -4,9 +4,48 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Code, Users, Lightbulb, Target, BookOpen, Dice6 } from "lucide-react"
+import { ArrowRight, Lightbulb, Target, Dice6, Users } from "lucide-react"
+import { getAllArticles, getAllTechnicalArticles, getAllArtumiContent, getAllDndContent } from "@/lib/content"
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Load recent articles from all content sources
+  const [leadership, technical, artumin, dnd] = await Promise.all([
+    getAllArticles(),
+    getAllTechnicalArticles(),
+    getAllArtumiContent(),
+    getAllDndContent(),
+  ])
+
+  // Combine and sort all articles by date, take the 3 most recent
+  const allArticles = [
+    ...leadership.map((article) => ({
+      ...article,
+      category: "Leadership",
+      categoryColor: "text-green-400",
+      href: `/strategic-narratives/leadership-strategy/${article.slug}`,
+    })),
+    ...technical.map((article) => ({
+      ...article,
+      category: "Technical",
+      categoryColor: "text-blue-400",
+      href: `/strategic-narratives/technical-architecture/${article.slug}`,
+    })),
+    ...artumin.map((article) => ({
+      ...article,
+      category: "Artumin",
+      categoryColor: "text-purple-400",
+      href: `/strategic-narratives/world-of-artumin/${article.slug}`,
+    })),
+    ...dnd.map((article) => ({
+      ...article,
+      category: "D&D",
+      categoryColor: "text-red-400",
+      href: `/strategic-narratives/dnd-ttrpgs/${article.slug}`,
+    })),
+  ]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3)
+
   return (
     <div className="min-h-screen bg-slate-950">
       <div className="absolute inset-0 bg-tech-pattern opacity-30"></div>
@@ -95,69 +134,6 @@ export default function HomePage() {
             <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-2">
-                  <Code className="h-6 w-6 text-blue-400" />
-                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
-                    Technical Strategy
-                  </CardTitle>
-                </div>
-                <CardDescription className="text-slate-400">
-                  Architecture decisions, technology choices, and engineering excellence
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
-                  <Link href="/technical-strategy">
-                    View Strategy <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
-              <CardHeader>
-                <div className="flex items-center gap-3 mb-2">
-                  <Users className="h-6 w-6 text-blue-400" />
-                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
-                    Leadership & Strategy
-                  </CardTitle>
-                </div>
-                <CardDescription className="text-slate-400">
-                  Team building, culture development, and leadership philosophy
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
-                  <Link href="/strategic-narratives/leadership-strategy">
-                    Read Insights <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
-              <CardHeader>
-                <div className="flex items-center gap-3 mb-2">
-                  <BookOpen className="h-6 w-6 text-blue-400" />
-                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
-                    Technical Architecture
-                  </CardTitle>
-                </div>
-                <CardDescription className="text-slate-400">
-                  Deep dives into technology, architecture patterns, and best practices
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
-                  <Link href="/strategic-narratives/technical-architecture">
-                    Read Articles <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
-              <CardHeader>
-                <div className="flex items-center gap-3 mb-2">
                   <Lightbulb className="h-6 w-6 text-blue-400" />
                   <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
                     Team Building
@@ -196,6 +172,27 @@ export default function HomePage() {
                 </Button>
               </CardContent>
             </Card>
+
+            <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 group">
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <Users className="h-6 w-6 text-blue-400" />
+                  <CardTitle className="text-slate-100 group-hover:text-blue-400 transition-colors">
+                    Mentoring
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-slate-400">
+                  One-on-one guidance for technical leaders and aspiring engineering managers
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0" asChild>
+                  <Link href="/mentoring">
+                    Schedule Session <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
@@ -207,66 +204,40 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Sample recent articles - these would be dynamically loaded from markdown */}
-            <Card className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300">
-              <CardHeader>
-                <div className="text-sm text-blue-400 mb-2">Technical Strategy • 5 min read</div>
-                <CardTitle className="text-slate-100 text-xl leading-tight">
-                  Building Resilient Microservices Architecture
-                </CardTitle>
-                <CardDescription className="text-slate-400">
-                  Key principles for designing fault-tolerant distributed systems that scale with your organization.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-500">March 15, 2024</span>
-                  <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300" asChild>
-                    <Link href="/strategic-narratives/technical-architecture/resilient-microservices">Read More</Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300">
-              <CardHeader>
-                <div className="text-sm text-blue-400 mb-2">Leadership • 7 min read</div>
-                <CardTitle className="text-slate-100 text-xl leading-tight">
-                  The Art of Technical Decision Making
-                </CardTitle>
-                <CardDescription className="text-slate-400">
-                  How to balance technical debt, innovation, and business objectives in complex engineering decisions.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-500">March 10, 2024</span>
-                  <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300" asChild>
-                    <Link href="/strategic-narratives/leadership-strategy/technical-decision-making">Read More</Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300">
-              <CardHeader>
-                <div className="text-sm text-blue-400 mb-2">D&D Musings • 4 min read</div>
-                <CardTitle className="text-slate-100 text-xl leading-tight">
-                  Lessons from the Dungeon Master's Chair
-                </CardTitle>
-                <CardDescription className="text-slate-400">
-                  How running D&D campaigns has made me a better technical leader and strategic thinker.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-500">March 5, 2024</span>
-                  <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300" asChild>
-                    <Link href="/strategic-narratives">Read More</Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {allArticles.length > 0 ? (
+              allArticles.map((article) => (
+                <Card
+                  key={article.slug}
+                  className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300"
+                >
+                  <CardHeader>
+                    <div className={`text-sm ${article.categoryColor} mb-2`}>
+                      {article.category} • {article.readingTime || "5 min read"}
+                    </div>
+                    <CardTitle className="text-slate-100 text-xl leading-tight">{article.title}</CardTitle>
+                    <CardDescription className="text-slate-400">{article.excerpt}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500">
+                        {new Date(article.date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </span>
+                      <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300" asChild>
+                        <Link href={article.href}>Read More</Link>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <div className="col-span-full text-center text-slate-400">
+                <p>No recent articles available.</p>
+              </div>
+            )}
           </div>
         </section>
 

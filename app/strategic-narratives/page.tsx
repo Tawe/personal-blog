@@ -19,50 +19,53 @@ import {
 
 import { getAllArticles, getAllTechnicalArticles, getAllArtumiContent, getAllDndContent } from "@/lib/content"
 
-// Sample recent activity data - in production, this would aggregate from all content sources
-const recentActivity = [
-  {
-    title: "Building Resilient Microservices Architecture",
-    category: "Technical Architecture",
-    type: "internal",
-    date: "2024-03-15",
-    excerpt: "Key principles for designing fault-tolerant distributed systems that scale with your organization.",
-    readTime: "8 min read",
-    slug: "/strategic-narratives/technical-architecture/resilient-microservices",
-    categoryColor: "blue",
-  },
-  {
-    title: "The Art of Technical Decision Making",
+// Get recent articles from all content sources
+const allArticles = [
+  ...getAllArticles().map((article) => ({
+    title: article.title,
     category: "Leadership & Strategy",
-    type: "internal",
-    date: "2024-03-10",
-    excerpt: "How to balance technical debt, innovation, and business objectives in complex engineering decisions.",
-    readTime: "7 min read",
-    slug: "/strategic-narratives/leadership-strategy/technical-decision-making",
-    categoryColor: "green",
-  },
-  {
-    title: "The Crystal Spires of Valdris",
+    type: "internal" as const,
+    date: article.date,
+    excerpt: article.excerpt,
+    readTime: article.readingTime,
+    slug: `/strategic-narratives/leadership-strategy/${article.slug}`,
+    categoryColor: "green" as const,
+  })),
+  ...getAllTechnicalArticles().map((article) => ({
+    title: article.title,
+    category: "Technical Architecture",
+    type: "internal" as const,
+    date: article.date,
+    excerpt: article.excerpt,
+    readTime: article.readingTime,
+    slug: `/strategic-narratives/technical-architecture/${article.slug}`,
+    categoryColor: "blue" as const,
+  })),
+  ...getAllArtumiContent().map((article) => ({
+    title: article.title,
     category: "World of Artumin",
-    type: "external",
-    date: "2024-03-08",
-    excerpt:
-      "High in the northern mountains, ancient Crystal Spires hold secrets of forgotten magic and lost civilizations.",
-    readTime: "6 min read",
-    slug: "https://artumin.substack.com/crystal-spires",
-    categoryColor: "purple",
-  },
-  {
-    title: "Advanced Social Encounter Mechanics",
-    category: "Game Design & Systems",
-    type: "external",
-    date: "2024-03-05",
-    excerpt: "A comprehensive system for running engaging social encounters with clear stakes and meaningful choices.",
-    readTime: "12 min read",
-    slug: "https://gamedesign.substack.com/social-encounters",
-    categoryColor: "red",
-  },
+    type: "internal" as const,
+    date: article.date,
+    excerpt: article.excerpt,
+    readTime: article.readingTime,
+    slug: `/strategic-narratives/world-of-artumin/${article.slug}`,
+    categoryColor: "purple" as const,
+  })),
+  ...getAllDndContent().map((article) => ({
+    title: article.title,
+    category: "D&D and TTRPGs",
+    type: "internal" as const,
+    date: article.date,
+    excerpt: article.excerpt,
+    readTime: article.readingTime,
+    slug: `/strategic-narratives/dnd-ttrpgs/${article.slug}`,
+    categoryColor: "red" as const,
+  })),
 ]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 4)
+
+const recentActivity = allArticles
 
 const categories = [
   {
@@ -303,38 +306,45 @@ export default function StrategicNarrativesPage() {
                 <Clock className="h-6 w-6 text-blue-400" />
                 <h2 className="text-2xl font-bold text-slate-100">Latest Across All Narratives</h2>
               </div>
-              <div className="grid md:grid-cols-2 gap-6">
-                {recentActivity.map((item, index) => (
-                  <Card
-                    key={index}
-                    className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300"
-                  >
-                    <CardHeader>
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge
-                          variant="outline"
-                          className={badgeColorMap[item.categoryColor as keyof typeof badgeColorMap]}
-                        >
-                          {item.category}
-                        </Badge>
-                        {item.type === "external" && <ExternalLink className="h-4 w-4 text-slate-400" />}
-                      </div>
-                      <CardTitle className="text-slate-100 text-lg leading-tight hover:text-blue-400 transition-colors">
-                        <Link href={item.slug} target={item.type === "external" ? "_blank" : "_self"}>
-                          {item.title}
-                        </Link>
-                      </CardTitle>
-                      <CardDescription className="text-slate-400">{item.excerpt}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex justify-between items-center text-sm text-slate-500">
-                        <span>{new Date(item.date).toLocaleDateString()}</span>
-                        <span>{item.readTime}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              {recentActivity.length > 0 ? (
+                <div className="grid md:grid-cols-2 gap-6">
+                  {recentActivity.map((item, index) => (
+                    <Card
+                      key={index}
+                      className="bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-all duration-300"
+                    >
+                      <CardHeader>
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge
+                            variant="outline"
+                            className={badgeColorMap[item.categoryColor as keyof typeof badgeColorMap]}
+                          >
+                            {item.category}
+                          </Badge>
+                          {item.type === "external" && <ExternalLink className="h-4 w-4 text-slate-400" />}
+                        </div>
+                        <CardTitle className="text-slate-100 text-lg leading-tight hover:text-blue-400 transition-colors">
+                          <Link href={item.slug} target={item.type === "external" ? "_blank" : "_self"}>
+                            {item.title}
+                          </Link>
+                        </CardTitle>
+                        <CardDescription className="text-slate-400">{item.excerpt}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex justify-between items-center text-sm text-slate-500">
+                          <span>{new Date(item.date).toLocaleDateString()}</span>
+                          <span>{item.readTime}</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <BookOpen className="h-12 w-12 text-slate-600 mx-auto mb-4" />
+                  <p className="text-slate-400">No articles available yet. Check back soon for new content!</p>
+                </div>
+              )}
             </div>
 
             {/* Call to Action */}

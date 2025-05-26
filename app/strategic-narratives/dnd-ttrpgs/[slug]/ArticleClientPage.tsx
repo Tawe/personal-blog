@@ -7,27 +7,28 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getAllArticles } from "@/lib/content"
+import { getAllDndContent } from "@/lib/content"
+import type { DndContent } from "@/lib/content"
 import { useEffect, useState } from "react"
 import { marked } from "marked"
 
 interface ArticleClientPageProps {
-  article: any
+  article: DndContent
   backUrl?: string
   backLabel?: string
 }
 
 export function ArticleClientPage({
   article,
-  backUrl = "/strategic-narratives/leadership-strategy",
-  backLabel = "Back to Leadership Strategy",
+  backUrl = "/strategic-narratives/dnd-ttrpgs",
+  backLabel = "Back to D&D and TTRPGs",
 }: ArticleClientPageProps) {
   const [relatedArticles, setRelatedArticles] = useState<any[]>([])
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
 
   useEffect(() => {
     const loadRelatedArticles = async () => {
-      const allArticles = await getAllArticles()
+      const allArticles = getAllDndContent()
       const related = allArticles.filter((a) => a.slug !== article.slug).slice(0, 2)
       setRelatedArticles(related)
     }
@@ -246,7 +247,7 @@ export function ArticleClientPage({
                 {relatedArticles.map((relatedArticle) => (
                   <Link
                     key={relatedArticle.slug}
-                    href={`/strategic-narratives/leadership-strategy/${relatedArticle.slug}`}
+                    href={`/strategic-narratives/dnd-ttrpgs/${relatedArticle.slug}`}
                     className="block p-4 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
                   >
                     <h4 className="font-medium text-slate-200 mb-2">{relatedArticle.title}</h4>

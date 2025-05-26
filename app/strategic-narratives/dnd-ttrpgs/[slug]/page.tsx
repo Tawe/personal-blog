@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { getArticleBySlug, getAllArticles } from "@/lib/content"
+import { getDndContentBySlug, getAllDndContent } from "@/lib/content"
 import { ArticleClientPage } from "./ArticleClientPage"
 
 interface PageProps {
@@ -9,14 +9,14 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const articles = getAllArticles()
+  const articles = getAllDndContent()
   return articles.map((article) => ({
     slug: article.slug,
   }))
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const article = getArticleBySlug(decodeURIComponent(params.slug))
+  const article = getDndContentBySlug(decodeURIComponent(params.slug))
 
   if (!article) {
     return {
@@ -35,8 +35,8 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
-export default function LeadershipStrategyArticlePage({ params }: PageProps) {
-  const article = getArticleBySlug(decodeURIComponent(params.slug))
+export default function DndTtrpgsArticlePage({ params }: PageProps) {
+  const article = getDndContentBySlug(decodeURIComponent(params.slug))
 
   if (!article) {
     notFound()
