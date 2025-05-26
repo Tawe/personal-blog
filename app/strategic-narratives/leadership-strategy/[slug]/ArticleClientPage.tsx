@@ -1,58 +1,141 @@
 "use client"
 
-import { notFound } from "next/navigation"
 import { ContentLayout } from "@/components/content-layout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Calendar, Clock, ArrowLeft, Share2, ExternalLink } from "lucide-react"
+import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getTechnicalArticleBySlug, getAllTechnicalArticles } from "@/lib/content"
+import { getAllArticles } from "@/lib/content"
+import { useEffect, useState } from "react"
+import { marked } from "marked"
 
-interface PageProps {
-  params: {
-    slug: string
-  }
+interface ArticleClientPageProps {
+  article: any
+  backUrl?: string
+  backLabel?: string
 }
 
-export default async function TechnicalArticlePage({ params }: PageProps) {
-  const decodedSlug = decodeURIComponent(params.slug)
-  const article = await getTechnicalArticleBySlug(decodedSlug)
+export function ArticleClientPage({
+  article,
+  backUrl = "/strategic-narratives/leadership-strategy",
+  backLabel = "Back to Leadership Strategy",
+}: ArticleClientPageProps) {
+  const [relatedArticles, setRelatedArticles] = useState<any[]>([])
+  const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
 
-  if (!article) {
-    notFound()
-  }
-
-  // Get related articles
-  const allArticles = await getAllTechnicalArticles()
-  const relatedArticles = allArticles.filter((a) => a.slug !== article.slug).slice(0, 2)
+  useEffect(() => {
+    const loadRelatedArticles = async () => {
+      const allArticles = await getAllArticles()
+      const related = allArticles.filter((a) => a.slug !== article.slug).slice(0, 2)
+      setRelatedArticles(related)
+    }
+    loadRelatedArticles()
+  }, [article.slug])
 
   const handleShare = async () => {
     const url = window.location.href
     const title = article.title
 
-    if (navigator.share) {
-      try {
+    setShareState("copying")
+
+    try {
+      // Try Web Share API first (mobile/modern browsers)
+      if (navigator.share && navigator.canShare && navigator.canShare({ title, url })) {
         await navigator.share({ title, url })
-      } catch (error) {
-        // Fallback to clipboard
-        await navigator.clipboard.writeText(url)
+        setShareState("idle") // Reset state after successful share
+        return
       }
-    } else {
-      await navigator.clipboard.writeText(url)
+
+      // Fallback to clipboard
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url)
+        setShareState("copied")
+
+        // Reset state after 2 seconds
+        setTimeout(() => setShareState("idle"), 2000)
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea")
+        textArea.value = url
+        textArea.style.position = "fixed"
+        textArea.style.left = "-999999px"
+        textArea.style.top = "-999999px"
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+
+        if (document.execCommand("copy")) {
+          setShareState("copied")
+          setTimeout(() => setShareState("idle"), 2000)
+        } else {
+          throw new Error("Copy command failed")
+        }
+
+        document.body.removeChild(textArea)
+      }
+    } catch (error) {
+      console.error("Share failed:", error)
+      setShareState("error")
+      setTimeout(() => setShareState("idle"), 3000)
+    }
+  }
+
+  const getShareButtonContent = () => {
+    switch (shareState) {
+      case "copying":
+        return (
+          <>
+            <Copy className="mr-2 h-4 w-4 animate-pulse" />
+            Copying...
+          </>
+        )
+      case "copied":
+        return (
+          <>
+            <Check className="mr-2 h-4 w-4 text-green-400" />
+            Copied!
+          </>
+        )
+      case "error":
+        return (
+          <>
+            <Share2 className="mr-2 h-4 w-4 text-red-400" />
+            Try again
+          </>
+        )
+      default:
+        return (
+          <>
+            <Share2 className="mr-2 h-4 w-4" />
+            Share
+          </>
+        )
+    }
+  }
+
+  const getShareButtonClass = () => {
+    const baseClass = "text-slate-400 hover:text-slate-200 transition-colors"
+    switch (shareState) {
+      case "copied":
+        return "text-green-400 hover:text-green-300"
+      case "error":
+        return "text-red-400 hover:text-red-300"
+      default:
+        return baseClass
     }
   }
 
   return (
-    <ContentLayout title={article.title}>
+    <ContentLayout>
       <div className="max-w-4xl mx-auto">
         {/* Back Navigation */}
         <div className="mb-8">
           <Button variant="ghost" className="text-slate-400 hover:text-slate-200" asChild>
-            <Link href="/technical-writing">
+            <Link href={backUrl}>
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Technical Writing
+              {backLabel}
             </Link>
           </Button>
         </div>
@@ -94,9 +177,14 @@ export default async function TechnicalArticlePage({ params }: PageProps) {
                   <span>{article.reading_time} min read</span>
                 </div>
               )}
-              <Button variant="ghost" size="sm" className="text-slate-400 hover:text-slate-200" onClick={handleShare}>
-                <Share2 className="mr-2 h-4 w-4" />
-                Share
+              <Button
+                variant="ghost"
+                size="sm"
+                className={getShareButtonClass()}
+                onClick={handleShare}
+                disabled={shareState === "copying"}
+              >
+                {getShareButtonContent()}
               </Button>
             </div>
 
@@ -146,7 +234,7 @@ export default async function TechnicalArticlePage({ params }: PageProps) {
 
         {/* Article Content */}
         <article className="prose prose-invert prose-blue max-w-none mb-12">
-          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          <div dangerouslySetInnerHTML={{ __html: marked(article.content || "") }} />
         </article>
 
         {/* Related Articles */}
@@ -158,7 +246,7 @@ export default async function TechnicalArticlePage({ params }: PageProps) {
                 {relatedArticles.map((relatedArticle) => (
                   <Link
                     key={relatedArticle.slug}
-                    href={`/technical-writing/${relatedArticle.slug}`}
+                    href={`/strategic-narratives/leadership-strategy/${relatedArticle.slug}`}
                     className="block p-4 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
                   >
                     <h4 className="font-medium text-slate-200 mb-2">{relatedArticle.title}</h4>

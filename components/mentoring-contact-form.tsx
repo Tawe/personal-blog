@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { useFormState } from "react-dom"
+import { useActionState } from "react-dom"
 import { submitMentoringForm } from "@/app/actions/forms"
 
 interface MentoringContactFormProps {
@@ -10,7 +10,7 @@ interface MentoringContactFormProps {
 
 function MentoringContactForm({ mentorName, mentorEmail }: MentoringContactFormProps) {
   const initialState = { message: null }
-  const [state, dispatch] = useFormState(submitMentoringForm, initialState)
+  const [state, dispatch] = useActionState(submitMentoringForm, initialState)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")

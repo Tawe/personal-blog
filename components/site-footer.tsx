@@ -60,10 +60,10 @@ export function SiteFooter() {
                 Technical Architecture
               </Link>
               <Link
-                href="https://tawe.substack.com/"
+                href="/strategic-narratives/world-of-artumin"
                 className="text-slate-400 hover:text-blue-400 transition-colors text-sm"
               >
-                World of Artumin ↗
+                World of Artumin
               </Link>
               <Link
                 href="https://tawe.substack.com/"

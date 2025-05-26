@@ -1,58 +1,69 @@
 "use client"
 
-import { notFound } from "next/navigation"
+import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Calendar, Clock, ArrowLeft, Share2, ExternalLink } from "lucide-react"
+import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getTechnicalArticleBySlug, getAllTechnicalArticles } from "@/lib/content"
+import { getAllArticles } from "@/lib/content-unified"
+import type { Article } from "@/lib/types"
 
-interface PageProps {
-  params: {
-    slug: string
-  }
+interface ArticlePageTemplateProps {
+  article: Article
+  backUrl: string
+  backLabel: string
+  contentFolder: string
 }
 
-export default async function TechnicalArticlePage({ params }: PageProps) {
-  const decodedSlug = decodeURIComponent(params.slug)
-  const article = await getTechnicalArticleBySlug(decodedSlug)
+export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder }: ArticlePageTemplateProps) {
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  if (!article) {
-    notFound()
-  }
+  useEffect(() => {
+    try {
+      const allArticles = getAllArticles(contentFolder)
+      const related = allArticles
+        .filter((a) => a.slug !== article.slug)
+        .filter((a) => a.tags.some((tag) => article.tags.includes(tag)))
+        .slice(0, 2)
 
-  // Get related articles
-  const allArticles = await getAllTechnicalArticles()
-  const relatedArticles = allArticles.filter((a) => a.slug !== article.slug).slice(0, 2)
+      setRelatedArticles(related)
+    } catch (error) {
+      console.error("Error loading related articles:", error)
+      setRelatedArticles([])
+    } finally {
+      setIsLoading(false)
+    }
+  }, [article.slug, article.tags, contentFolder])
 
   const handleShare = async () => {
     const url = window.location.href
     const title = article.title
 
-    if (navigator.share) {
-      try {
+    try {
+      if (navigator.share) {
         await navigator.share({ title, url })
-      } catch (error) {
-        // Fallback to clipboard
+      } else {
         await navigator.clipboard.writeText(url)
+        // You could add a toast notification here
       }
-    } else {
-      await navigator.clipboard.writeText(url)
+    } catch (error) {
+      console.error("Error sharing:", error)
     }
   }
 
   return (
-    <ContentLayout title={article.title}>
+    <ContentLayout>
       <div className="max-w-4xl mx-auto">
         {/* Back Navigation */}
         <div className="mb-8">
           <Button variant="ghost" className="text-slate-400 hover:text-slate-200" asChild>
-            <Link href="/technical-writing">
+            <Link href={backUrl}>
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Technical Writing
+              {backLabel}
             </Link>
           </Button>
         </div>
@@ -70,6 +81,11 @@ export default async function TechnicalArticlePage({ params }: PageProps) {
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
+              {article.featured && (
+                <div className="absolute top-4 right-4">
+                  <Badge className="bg-yellow-600 text-yellow-100">Featured</Badge>
+                </div>
+              )}
             </div>
           )}
 
@@ -88,12 +104,10 @@ export default async function TechnicalArticlePage({ params }: PageProps) {
                   })}
                 </span>
               </div>
-              {article.reading_time && (
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  <span>{article.reading_time} min read</span>
-                </div>
-              )}
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>{article.reading_time} min read</span>
+              </div>
               <Button variant="ghost" size="sm" className="text-slate-400 hover:text-slate-200" onClick={handleShare}>
                 <Share2 className="mr-2 h-4 w-4" />
                 Share
@@ -101,7 +115,7 @@ export default async function TechnicalArticlePage({ params }: PageProps) {
             </div>
 
             {/* Tags */}
-            {article.tags && article.tags.length > 0 && (
+            {article.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {article.tags.map((tag) => (
                   <Badge key={tag} variant="secondary" className="bg-slate-700/50 text-slate-300">
@@ -110,47 +124,16 @@ export default async function TechnicalArticlePage({ params }: PageProps) {
                 ))}
               </div>
             )}
-
-            {/* External Links */}
-            {(article.medium_link || article.devto_link || article.substack_link) && (
-              <div className="flex items-center gap-4">
-                <span className="text-sm text-slate-300">View On:</span>
-                {article.medium_link && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={article.medium_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Medium
-                    </Link>
-                  </Button>
-                )}
-                {article.devto_link && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={article.devto_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Dev.to
-                    </Link>
-                  </Button>
-                )}
-                {article.substack_link && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={article.substack_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Substack
-                    </Link>
-                  </Button>
-                )}
-              </div>
-            )}
           </div>
         </header>
 
         {/* Article Content */}
         <article className="prose prose-invert prose-blue max-w-none mb-12">
-          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
         </article>
 
         {/* Related Articles */}
-        {relatedArticles.length > 0 && (
+        {!isLoading && relatedArticles.length > 0 && (
           <Card className="bg-slate-800/30 border-slate-700">
             <CardContent className="p-6">
               <h3 className="text-xl font-semibold text-slate-100 mb-4">Continue Reading</h3>
@@ -158,11 +141,17 @@ export default async function TechnicalArticlePage({ params }: PageProps) {
                 {relatedArticles.map((relatedArticle) => (
                   <Link
                     key={relatedArticle.slug}
-                    href={`/technical-writing/${relatedArticle.slug}`}
+                    href={`${backUrl}/${relatedArticle.slug}`}
                     className="block p-4 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
                   >
                     <h4 className="font-medium text-slate-200 mb-2">{relatedArticle.title}</h4>
                     <p className="text-sm text-slate-400">{relatedArticle.excerpt}</p>
+                    <div className="flex items-center gap-2 mt-2 text-xs text-slate-500">
+                      <Calendar className="h-3 w-3" />
+                      <span>{new Date(relatedArticle.date).toLocaleDateString()}</span>
+                      <Clock className="h-3 w-3 ml-2" />
+                      <span>{relatedArticle.reading_time} min</span>
+                    </div>
                   </Link>
                 ))}
               </div>

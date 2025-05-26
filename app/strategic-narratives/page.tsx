@@ -17,6 +17,8 @@ import {
   TrendingUp,
 } from "lucide-react"
 
+import { getAllArticles, getAllTechnicalArticles, getAllArtumiContent, getAllDndContent } from "@/lib/content"
+
 // Sample recent activity data - in production, this would aggregate from all content sources
 const recentActivity = [
   {
@@ -76,7 +78,7 @@ const categories = [
       "Organizational transformation",
       "Executive communication",
     ],
-    contentCount: 12,
+    contentCount: getAllArticles().length,
     recentUpdate: "2 days ago",
   },
   {
@@ -87,7 +89,7 @@ const categories = [
     type: "internal",
     slug: "/strategic-narratives/technical-architecture",
     features: ["Architecture patterns", "Performance optimization", "Technology strategy", "Best practices"],
-    contentCount: 18,
+    contentCount: getAllTechnicalArticles().length,
     recentUpdate: "1 week ago",
   },
   {
@@ -96,10 +98,10 @@ const categories = [
       "Reflective fantasy and leadership fables exploring worth, power, and the quiet courage it takes to change",
     icon: Scroll,
     color: "purple",
-    type: "external",
-    slug: "https://tawe.substack.com",
+    type: "internal",
+    slug: "/strategic-narratives/world-of-artumin",
     features: ["Leadership fables", "Fantasy storytelling", "Reflective narratives", "Truth told sideways"],
-    contentCount: "New",
+    contentCount: getAllArtumiContent().length,
     recentUpdate: "9 days ago",
   },
   {
@@ -107,10 +109,10 @@ const categories = [
     description: "Creating mechanics, adventures, and tools for tabletop gaming",
     icon: Dice6,
     color: "red",
-    type: "external",
-    slug: "https://gamedesign.substack.com",
+    type: "internal",
+    slug: "/strategic-narratives/dnd-ttrpgs",
     features: ["Homebrew content", "Game mechanics", "Adventure design", "System analysis"],
-    contentCount: 15,
+    contentCount: getAllDndContent().length,
     recentUpdate: "5 days ago",
   },
 ]

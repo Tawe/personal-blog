@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { ArticlePreviewCard } from "@/components/article-preview-card"
 import { Card, CardContent } from "@/components/ui/card"
@@ -9,78 +9,33 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { BookOpen, Users, Target, ArrowLeft, Search, X } from "lucide-react"
 import Link from "next/link"
-import type { ArticleMetadata } from "@/lib/content"
-
-// Sample articles data - in production, this would come from getAllArticles('leadership-strategy')
-const sampleArticles: ArticleMetadata[] = [
-  {
-    slug: "technical-decision-making",
-    title: "The Art of Technical Decision Making",
-    date: "2024-03-10",
-    excerpt:
-      "How to balance technical debt, innovation, and business objectives in complex engineering decisions. A framework for making choices that serve both immediate needs and long-term vision.",
-    tags: ["Leadership", "Decision Making", "Strategy", "Technical Debt"],
-    reading_time: 7,
-    featured_image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    slug: "high-performance-teams",
-    title: "Building High-Performance Engineering Teams",
-    date: "2024-03-03",
-    excerpt:
-      "Strategies for recruiting, developing, and retaining top engineering talent in competitive markets. Creating environments where technical excellence thrives.",
-    tags: ["Team Building", "Hiring", "Culture", "Performance"],
-    reading_time: 12,
-    featured_image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    slug: "technical-transformation",
-    title: "Leading Through Technical Transformation",
-    date: "2024-02-25",
-    excerpt:
-      "Navigating organizational change when modernizing legacy systems and adopting new technologies. Managing risk while driving innovation.",
-    tags: ["Change Management", "Legacy Systems", "Modernization", "Risk"],
-    reading_time: 10,
-    featured_image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    slug: "stakeholder-communication",
-    title: "The CTO's Guide to Stakeholder Communication",
-    date: "2024-02-18",
-    excerpt:
-      "Translating technical complexity into business value for executives, investors, and cross-functional teams. Building bridges between technology and business.",
-    tags: ["Communication", "Business Value", "Stakeholders", "Leadership"],
-    reading_time: 8,
-    featured_image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    slug: "remote-engineering-culture",
-    title: "Engineering Culture and Remote Teams",
-    date: "2024-02-10",
-    excerpt:
-      "Building strong engineering culture and maintaining team cohesion in distributed work environments. Lessons from leading remote-first organizations.",
-    tags: ["Culture", "Remote Work", "Team Dynamics", "Collaboration"],
-    reading_time: 9,
-    featured_image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    slug: "innovation-execution-balance",
-    title: "Innovation vs. Execution: Finding the Balance",
-    date: "2024-02-02",
-    excerpt:
-      "How to foster innovation while maintaining delivery commitments and operational excellence. Creating space for experimentation without sacrificing reliability.",
-    tags: ["Innovation", "Execution", "Strategy", "Balance"],
-    reading_time: 11,
-    featured_image: "/placeholder.svg?height=200&width=400",
-  },
-]
-
-const allTags = Array.from(new Set(sampleArticles.flatMap((article) => article.tags || []))).sort()
+import { getAllArticles, getAllTags, type ArticleMetadata } from "@/lib/content"
 
 export default function LeadershipStrategyPage() {
-  const [filteredArticles, setFilteredArticles] = useState<ArticleMetadata[]>(sampleArticles)
+  const [allArticles, setAllArticles] = useState<ArticleMetadata[]>([])
+  const [filteredArticles, setFilteredArticles] = useState<ArticleMetadata[]>([])
+  const [allTags, setAllTags] = useState<string[]>([])
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    try {
+      const articles = getAllArticles()
+      const tags = getAllTags("leadership")
+
+      setAllArticles(articles)
+      setFilteredArticles(articles)
+      setAllTags(tags)
+    } catch (error) {
+      console.error("Error loading articles:", error)
+      setAllArticles([])
+      setFilteredArticles([])
+      setAllTags([])
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
   const handleSearch = (value: string) => {
     setSearchTerm(value)
@@ -94,7 +49,7 @@ export default function LeadershipStrategyPage() {
   }
 
   const filterArticles = (search: string, tags: string[]) => {
-    let filtered = [...sampleArticles]
+    let filtered = [...allArticles]
 
     // Search filter
     if (search.trim()) {
@@ -118,10 +73,18 @@ export default function LeadershipStrategyPage() {
   const clearFilters = () => {
     setSearchTerm("")
     setSelectedTags([])
-    setFilteredArticles(sampleArticles)
+    setFilteredArticles(allArticles)
   }
 
   const hasActiveFilters = searchTerm.trim() || selectedTags.length > 0
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-slate-400">Loading articles...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -186,70 +149,72 @@ export default function LeadershipStrategyPage() {
               </Card>
             </div>
 
-            {/* Simple Filter Component */}
-            <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-blue-900/20 rounded-xl border border-slate-700">
-              <div className="flex items-center gap-2 mb-4">
-                <Search className="h-5 w-5 text-blue-400" />
-                <h3 className="text-lg font-semibold text-slate-100">Filter Articles</h3>
-                {hasActiveFilters && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearFilters}
-                    className="text-slate-400 hover:text-slate-200 ml-auto"
-                  >
-                    <X className="h-4 w-4 mr-1" />
-                    Clear all
-                  </Button>
-                )}
-              </div>
-
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-                <Input
-                  type="text"
-                  placeholder="Search articles, topics, or concepts..."
-                  value={searchTerm}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-blue-500"
-                />
-              </div>
-
-              {/* Tags */}
-              {allTags.length > 0 && (
-                <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {allTags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant={selectedTags.includes(tag) ? "default" : "secondary"}
-                        className={`cursor-pointer transition-colors text-xs ${
-                          selectedTags.includes(tag)
-                            ? "bg-blue-600 hover:bg-blue-700 text-white"
-                            : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
-                        }`}
-                        onClick={() => handleTagToggle(tag)}
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
+            {/* Filter Component */}
+            {allArticles.length > 0 && (
+              <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-blue-900/20 rounded-xl border border-slate-700">
+                <div className="flex items-center gap-2 mb-4">
+                  <Search className="h-5 w-5 text-blue-400" />
+                  <h3 className="text-lg font-semibold text-slate-100">Filter Articles</h3>
+                  {hasActiveFilters && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearFilters}
+                      className="text-slate-400 hover:text-slate-200 ml-auto"
+                    >
+                      <X className="h-4 w-4 mr-1" />
+                      Clear all
+                    </Button>
+                  )}
                 </div>
-              )}
 
-              {/* Results count */}
-              <div className="text-sm text-slate-400">
-                Showing {filteredArticles.length} of {sampleArticles.length} articles
-                {hasActiveFilters && (
-                  <span className="ml-2">
-                    • Filtered by: {searchTerm && `"${searchTerm}"`}{" "}
-                    {selectedTags.length > 0 && selectedTags.join(", ")}
-                  </span>
+                {/* Search */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <Input
+                    type="text"
+                    placeholder="Search articles, topics, or concepts..."
+                    value={searchTerm}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-blue-500"
+                  />
+                </div>
+
+                {/* Tags */}
+                {allTags.length > 0 && (
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {allTags.map((tag) => (
+                        <Badge
+                          key={tag}
+                          variant={selectedTags.includes(tag) ? "default" : "secondary"}
+                          className={`cursor-pointer transition-colors text-xs ${
+                            selectedTags.includes(tag)
+                              ? "bg-blue-600 hover:bg-blue-700 text-white"
+                              : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                          }`}
+                          onClick={() => handleTagToggle(tag)}
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
                 )}
+
+                {/* Results count */}
+                <div className="text-sm text-slate-400">
+                  Showing {filteredArticles.length} of {allArticles.length} articles
+                  {hasActiveFilters && (
+                    <span className="ml-2">
+                      • Filtered by: {searchTerm && `"${searchTerm}"`}{" "}
+                      {selectedTags.length > 0 && selectedTags.join(", ")}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Articles Grid */}
             {filteredArticles.length > 0 ? (
@@ -261,6 +226,12 @@ export default function LeadershipStrategyPage() {
                     section="strategic-narratives/leadership-strategy"
                   />
                 ))}
+              </div>
+            ) : allArticles.length === 0 ? (
+              <div className="text-center py-12">
+                <BookOpen className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-slate-300 mb-2">No articles available</h3>
+                <p className="text-slate-400">Leadership articles will appear here once they are published.</p>
               </div>
             ) : (
               <div className="text-center py-12">

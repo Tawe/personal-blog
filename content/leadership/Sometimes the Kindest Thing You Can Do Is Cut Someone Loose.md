@@ -10,14 +10,14 @@ tags:
   - softwareengineering
 featured_image: /sometimes.webp?height=400&width=800
 reading_time: 3
+medium_link: https://medium.com/@johnmunn/sometimes-the-kindest-thing-you-can-do-is-cut-someone-loose-edf93d095297
+devto_link:
+substack:
 draft: false
 ---
 
 
 *When good people become wrong people*
-
-![Sometimes the Kindest Thing You Can Do Is Cut Someone Loose](sometimes.webp)
-
 
 The most brutal leadership lesson I've ever learned? Every day you keep someone in the wrong role, you're betraying everyone else on your team.
 

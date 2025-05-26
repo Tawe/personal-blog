@@ -17,6 +17,9 @@ export interface BaseContentMetadata {
 // Extended interfaces for specific content types
 export interface ArticleMetadata extends BaseContentMetadata {
   // Leadership insights specific fields
+  medium_link?: string
+  devto_link?: string
+  substack_link?: string
 }
 
 export interface TechnicalArticleMetadata extends BaseContentMetadata {
@@ -185,11 +188,19 @@ export function getAllTags(section: string): string[] {
 
 // Specific content type functions
 export function getAllArticles(): ArticleMetadata[] {
-  return getAllContent<ArticleMetadata>("leadership")
+  return getAllContent<ArticleMetadata>("leadership", (data) => ({
+    medium_link: data.medium_link,
+    devto_link: data.devto_link,
+    substack_link: data.substack_link,
+  }))
 }
 
 export function getArticleBySlug(slug: string): Article | null {
-  return getContentBySlug<ArticleMetadata, Article>("leadership", slug)
+  return getContentBySlug<ArticleMetadata, Article>("leadership", slug, (data) => ({
+    medium_link: data.medium_link,
+    devto_link: data.devto_link,
+    substack_link: data.substack_link,
+  }))
 }
 
 export function getAllTechnicalArticles(): TechnicalArticleMetadata[] {
