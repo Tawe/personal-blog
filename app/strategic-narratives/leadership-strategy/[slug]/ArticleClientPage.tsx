@@ -126,6 +126,11 @@ export function ArticleClientPage({
     }
   }
 
+  // Debug: Log the article content
+  console.log("Article content:", article.content)
+  console.log("Article content type:", typeof article.content)
+  console.log("Article content length:", article.content?.length)
+
   return (
     <ContentLayout>
       <div className="max-w-4xl mx-auto">
@@ -231,9 +236,26 @@ export function ArticleClientPage({
           </div>
         </header>
 
-        {/* Article Content */}
-        <article className="prose prose-invert prose-slate max-w-none mb-12 prose-headings:text-slate-100 prose-p:text-slate-300 prose-strong:text-slate-200 prose-em:text-slate-300 prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-8 prose-h2:mb-4 prose-p:mb-4 prose-p:leading-relaxed">
-          <div dangerouslySetInnerHTML={{ __html: article.content }} className="prose-content" />
+        {/* Debug Section - Remove this after testing */}
+        <div className="mb-8 p-4 bg-red-900/20 border border-red-500 rounded">
+          <h3 className="text-red-400 font-bold mb-2">Debug Info:</h3>
+          <p className="text-red-300 text-sm">Content type: {typeof article.content}</p>
+          <p className="text-red-300 text-sm">Content length: {article.content?.length}</p>
+          <p className="text-red-300 text-sm">First 100 chars: {article.content?.substring(0, 100)}</p>
+        </div>
+
+        {/* Article Content - Multiple approaches */}
+        <article className="mb-12">
+          <h2 className="text-2xl font-bold text-slate-100 mb-4">Approach 1: dangerouslySetInnerHTML</h2>
+          <div dangerouslySetInnerHTML={{ __html: article.content || "" }} className="text-slate-300 mb-8" />
+
+          <h2 className="text-2xl font-bold text-slate-100 mb-4">Approach 2: Direct text</h2>
+          <div className="text-slate-300 whitespace-pre-wrap mb-8">{article.content}</div>
+
+          <h2 className="text-2xl font-bold text-slate-100 mb-4">Approach 3: Raw JSON</h2>
+          <pre className="text-slate-300 text-xs bg-slate-800 p-4 rounded overflow-auto">
+            {JSON.stringify(article, null, 2)}
+          </pre>
         </article>
 
         {/* Related Articles */}
