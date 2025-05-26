@@ -6,7 +6,7 @@ import { faLinkedin } from "@fortawesome/free-brands-svg-icons"
 import { faCopy, faCheck, faEnvelope, faClock, faGlobe, faPaperPlane } from "@fortawesome/free-solid-svg-icons"
 import Link from "next/link"
 import { ContentLayout } from "@/components/content-layout"
-import { ContactForm } from "@/components/contact-form"
+import { ContactForm } from "@/components/forms/contact-form"
 
 export default function Contact() {
   const [copied, setCopied] = useState(false)
