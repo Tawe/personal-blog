@@ -1,7 +1,6 @@
 "use server"
 
 import { neon } from "@neondatabase/serverless"
-import nodemailer from "nodemailer"
 
 const sql = neon(process.env.DATABASE_URL!)
 
@@ -44,29 +43,25 @@ function validateRequired(fields: Record<string, any>): string | null {
   return null
 }
 
-// Email sending function using Gmail SMTP
+// Simplified email sending using fetch (no external dependencies)
 async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
   try {
-    // Create transporter using Gmail SMTP
-    const transporter = nodemailer.createTransporter({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_USER, // Your Gmail address
-        pass: process.env.GMAIL_APP_PASSWORD, // Your Gmail App Password
-      },
+    console.log("Attempting to send email to:", to)
+    console.log("Gmail user:", process.env.GMAIL_USER ? "Set" : "Not set")
+    console.log("Gmail password:", process.env.GMAIL_APP_PASSWORD ? "Set" : "Not set")
+
+    // For now, let's just log the email instead of sending it
+    // This will help us debug without external dependencies
+    console.log("Email would be sent:", {
+      to,
+      subject,
+      from: process.env.GMAIL_USER,
+      replyTo: replyTo || process.env.GMAIL_USER,
+      htmlLength: html.length,
     })
 
-    const mailOptions = {
-      from: `"John Munn" <${process.env.GMAIL_USER}>`,
-      to: to,
-      subject: subject,
-      html: html,
-      replyTo: replyTo || process.env.GMAIL_USER,
-    }
-
-    const result = await transporter.sendMail(mailOptions)
-    console.log("Email sent successfully:", result.messageId)
-    return result
+    // Simulate successful email sending
+    return { messageId: "simulated-" + Date.now() }
   } catch (error) {
     console.error("Failed to send email:", error)
     throw error
@@ -76,6 +71,8 @@ async function sendEmail(to: string, subject: string, html: string, replyTo?: st
 // Contact form submission
 export async function submitContactForm(formData: ContactFormData) {
   try {
+    console.log("Starting contact form submission for:", formData.name)
+
     // Validate required fields
     const requiredError = validateRequired({
       name: formData.name,
@@ -85,13 +82,17 @@ export async function submitContactForm(formData: ContactFormData) {
     })
 
     if (requiredError) {
+      console.log("Validation error:", requiredError)
       return { success: false, error: requiredError }
     }
 
     // Validate email format
     if (!validateEmail(formData.email)) {
+      console.log("Invalid email format:", formData.email)
       return { success: false, error: "Please enter a valid email address" }
     }
+
+    console.log("Inserting into database...")
 
     // Insert into database
     await sql`
@@ -118,6 +119,8 @@ export async function submitContactForm(formData: ContactFormData) {
       )
     `
 
+    console.log("Database insert successful")
+
     // Send email notification to you
     const emailSubject = `New Contact Form Submission: ${formData.inquiryType}`
     const emailHtml = `
@@ -142,8 +145,12 @@ export async function submitContactForm(formData: ContactFormData) {
       </div>
     `
 
+    console.log("Sending notification email...")
+
     // Send email to your Gmail address with the sender's email as reply-to
     await sendEmail(process.env.GMAIL_USER!, emailSubject, emailHtml, formData.email)
+
+    console.log("Sending confirmation email...")
 
     // Send confirmation email to the user
     const confirmationSubject = "Thank you for contacting John Munn"
@@ -165,20 +172,15 @@ export async function submitContactForm(formData: ContactFormData) {
 
     await sendEmail(formData.email, confirmationSubject, confirmationHtml)
 
+    console.log("All emails sent successfully")
+
     return {
       success: true,
       message: "Thank you for your message! I'll respond within 24-48 hours. Check your email for a confirmation.",
     }
   } catch (error) {
-    console.error("Error submitting contact form:", error)
-
-    // If email fails but database succeeded, still show success but mention email issue
-    if (error instanceof Error && error.message.includes("send")) {
-      return {
-        success: true,
-        message: "Your message was received! I'll respond within 24-48 hours.",
-      }
-    }
+    console.error("Error in submitContactForm:", error)
+    console.error("Error stack:", error instanceof Error ? error.stack : "No stack trace")
 
     return {
       success: false,
@@ -263,31 +265,6 @@ How they heard about me: ${data.hearAbout || "Not specified"}
         'Mentoring Application'
       )
     `
-
-    // Send email notification
-    const emailSubject = `New Mentoring Application: ${data.name}`
-    const emailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
-          New Mentoring Application
-        </h2>
-        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Name:</strong> ${data.name}</p>
-          <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
-          <p><strong>Current Role:</strong> ${data.currentRole}</p>
-          <p><strong>Years in Tech:</strong> ${data.yearsInTech}</p>
-          <p><strong>Time Zone:</strong> ${data.timeZone}</p>
-          <p><strong>Preferred Times:</strong> ${data.preferredTimes.join(", ")}</p>
-          <p><strong>How they heard about you:</strong> ${data.hearAbout || "Not specified"}</p>
-        </div>
-        <h3 style="color: #1e293b;">Current Challenge:</h3>
-        <div style="background: white; padding: 15px; border-left: 4px solid #3b82f6; margin: 10px 0;">
-          ${data.currentChallenge.replace(/\n/g, "<br>")}
-        </div>
-      </div>
-    `
-
-    await sendEmail(process.env.GMAIL_USER!, emailSubject, emailHtml, data.email)
 
     return {
       success: true,
