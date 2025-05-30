@@ -8,7 +8,7 @@ tags:
     - leadership
     - techleadership
     - dungeonmastering
-featured_image: /sayingno.png?height=400&width=800
+featured_image: /SayingNo.png?height=400&width=800
 reading_time: 4
 medium_link: https://medium.com/@johnmunn/what-being-a-dm-taught-me-about-leadership-and-saying-no-2e5ec463151f
 devto_link:
