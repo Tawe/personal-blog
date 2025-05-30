@@ -1,6 +1,6 @@
 ---
 title: What Being a DM Taught Me About Leadership (and Seeking First to Understand)
-date: 2025-05-08
+date: 2025-05-16
 excerpt: I’ve been running tabletop games for most of my life, 28 years and counting. I started in middle school, just trying to have fun with my friends. Somewhere along the way, I realized that sitting…
 tags:
     - communication
