@@ -3,11 +3,11 @@ title: What Being a DM Taught Me About Leadership (and Seeking First to Understa
 date: 2025-05-16
 excerpt: What a D&D table taught me about real leadership: if you’re not truly listening, you’re not leading. A story about empathy, disengagement, and growth.
 tags:
-    - leadership
-    - dnd
-    - teammanagement
-    - techleadership
-    - workplaceculture
+	- leadership
+	- dnd
+	- teammanagement
+	- techleadership
+	- workplaceculture
 featured_image: /SeekingFirsttoUnderstand.webp?height=400&width=800
 reading_time: 5
 medium_link: https://medium.com/@johnmunn/what-being-a-dm-taught-me-about-leadership-and-seeking-first-to-understand-e2694b4cf69c
