@@ -3,12 +3,12 @@ title: What Being a DM Taught Me About Leadership (and Saying No)
 date: 2025-05-08
 excerpt: I’ve been running tabletop games for most of my life, 28 years and counting. I started in middle school, just trying to have fun with my friends. Somewhere along the way, I realized that sitting…
 tags:
-  - communication
-  - dnd
-  - leadership
-  - techleadership
-  - dungeonmastering
-featured_image: /WhatBeingaDMTaughtMeAboutLeadership(and Saying No).png?height=400&width=800
+    - communication
+    - dnd
+    - leadership
+    - techleadership
+    - dungeonmastering
+featured_image: /sayingno.png?height=400&width=800
 reading_time: 4
 medium_link: https://medium.com/@johnmunn/what-being-a-dm-taught-me-about-leadership-and-saying-no-2e5ec463151f
 devto_link:
