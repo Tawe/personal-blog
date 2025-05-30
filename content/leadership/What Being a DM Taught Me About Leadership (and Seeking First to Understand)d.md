@@ -1,16 +1,16 @@
 ---
-title: What Being a DM Taught Me About Leadership (and Saying No)
-date: 2025-05-08
-excerpt: I’ve been running tabletop games for most of my life, 28 years and counting. I started in middle school, just trying to have fun with my friends. Somewhere along the way, I realized that sitting…
+title: What Being a DM Taught Me About Leadership (and Seeking First to Understand)
+date: 2025-05-16
+excerpt: What a D&D table taught me about real leadership: if you're not truly listening, you're not leading. A story about empathy, disengagement, and growth.
 tags:
-    - communication
+    - workplaceculture
     - dnd
     - leadership
     - techleadership
-    - dungeonmastering
-featured_image: /SayingNo.png?height=400&width=800
-reading_time: 4
-medium_link: https://medium.com/@johnmunn/what-being-a-dm-taught-me-about-leadership-and-saying-no-2e5ec463151f
+    - teammanagement
+featured_image: /SeekingFirsttoUnderstand.webp?height=400&width=800
+reading_time: 5
+medium_link: https://medium.com/@johnmunn/what-being-a-dm-taught-me-about-leadership-and-seeking-first-to-understand-e2694b4cf69c
 devto_link:
 substack:
 draft: false
