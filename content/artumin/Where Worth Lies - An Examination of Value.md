@@ -4,16 +4,19 @@ date: 2025-05-12
 type: story
 excerpt: A fantasy short story where two leaders clash over value, impact, and what truly deserves recognition inside a growing adventurer’s guild.
 categories:
-  - leadership
-  - fantasy
-  - culture
-  - impact
-  - workplaceculture
+  - Leadership
+  - Fantasy
+  - Culture
+  - Impact
+  - Workplace Culture
 region: Artumin
 featured_image: /whereworthlies.webp?height=400&width=800
 status: 
 connections: 
 reading_time: 6
+medium_link: https://medium.com/@johnmunn/where-worth-lies-an-examination-of-value-44ae76404d38
+devto_link:
+substack: https://tawe.substack.com/p/where-worth-lies
 draft: false
 ---
 

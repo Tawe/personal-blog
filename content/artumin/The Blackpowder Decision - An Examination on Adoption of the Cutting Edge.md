@@ -15,6 +15,9 @@ status:
 connections: 
 reading_time: 6
 draft: false
+medium_link: https://medium.com/@johnmunn/the-blackpowder-decision-an-examination-on-adoption-of-the-cutting-edge-ce7dacb920cc
+devto_link:
+substack: https://tawe.substack.com/p/the-blackpowder-decision-an-examination
 ---
 
 
