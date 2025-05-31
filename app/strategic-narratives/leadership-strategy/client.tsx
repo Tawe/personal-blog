@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Calendar, Clock, Search, X, Tag } from "lucide-react"
+import { Calendar, Clock, Search, X } from "lucide-react"
 import Link from "next/link"
 
 interface ArticleMetadata {
@@ -81,10 +81,7 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
         {/* Tags */}
         {tags.length > 0 && (
           <div className="space-y-2">
-            <div className="flex items-center gap-2 mb-2">
-              <Tag className="h-4 w-4 text-slate-400" />
-              <h4 className="text-sm font-medium text-slate-300">Filter by Tags</h4>
-            </div>
+            <h4 className="text-sm font-medium text-slate-300">Topics</h4>
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
                 <Badge
@@ -107,7 +104,6 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
         {/* Results count */}
         <div className="text-sm text-slate-400 mt-4">
           Showing {filteredArticles.length} of {articles.length} articles
-          {selectedTags.length > 0 && <span className="ml-1">filtered by tags: {selectedTags.join(", ")}</span>}
         </div>
       </div>
 
@@ -128,13 +124,19 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
               </div>
             )}
             <CardHeader>
-              {!article.image && (
+              {!article.image && article.featured_image && (
                 <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
                   <img
-                    src={
-                      article.featured_image ||
-                      `/placeholder.svg?height=200&width=400&text=${encodeURIComponent(article.title) || "/placeholder.svg"}`
-                    }
+                    src={article.featured_image || "/placeholder.svg"}
+                    alt={article.title}
+                    className="w-full h-full object-cover bg-slate-700"
+                  />
+                </div>
+              )}
+              {!article.image && !article.featured_image && (
+                <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
+                  <img
+                    src={`/placeholder.svg?height=200&width=400&text=${encodeURIComponent(article.title)}`}
                     alt={article.title}
                     className="w-full h-full object-cover bg-slate-700"
                   />
@@ -164,14 +166,7 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
               {article.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {article.tags.slice(0, 3).map((tag) => (
-                    <Badge
-                      key={tag}
-                      variant="outline"
-                      className={`text-xs border-slate-600 text-slate-400 cursor-pointer hover:bg-slate-700 ${
-                        selectedTags.includes(tag) ? "bg-slate-700" : ""
-                      }`}
-                      onClick={() => handleTagToggle(tag)}
-                    >
+                    <Badge key={tag} variant="outline" className="text-xs border-slate-600 text-slate-400">
                       {tag}
                     </Badge>
                   ))}

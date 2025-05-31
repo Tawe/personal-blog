@@ -11,13 +11,12 @@ categories:
   - Change Management
 region: Artumin
 featured_image: /theblackpowdercover.png?height=400&width=800
-status: complete
+status: 
 connections: 
 reading_time: 6
 draft: false
 ---
 
-![The Blackpowder Decision - An Examination on Adoption of the Cutting Edge](TheBlackpowderDecision.png)
 
 The sun baked the stone yard as Captain Nora Greyhelm stood with arms crossed, eyes narrowed beneath her helm. The sound of crackling echoed sharply as the unfamiliar weapon fire, a sharp crack and recoil, louder than any crossbow. A heartbeat later, the armor-clad dummy fifty paces out snapped backward, its breastplate torn open.
 

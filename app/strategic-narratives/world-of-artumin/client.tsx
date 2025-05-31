@@ -20,6 +20,7 @@ interface ArtumiContentMetadata {
   region?: string
   status: "complete" | "in-progress" | "planned"
   image?: string
+  featured_image?: string
 }
 
 interface WorldOfArtuminClientProps {
@@ -163,10 +164,19 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
               </div>
             )}
             <CardHeader>
-              {article.image && (
+              {article.featured_image && (
                 <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
                   <img
-                    src={article.image || "/placeholder.svg"}
+                    src={article.featured_image || "/placeholder.svg"}
+                    alt={article.title}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+              )}
+              {!article.featured_image && (
+                <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
+                  <img
+                    src={`/placeholder.svg?height=200&width=400&text=${encodeURIComponent(article.title)}`}
                     alt={article.title}
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                   />
