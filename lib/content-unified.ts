@@ -1,53 +1,8 @@
-import fs from "fs"
-import path from "path"
-import matter from "gray-matter"
-import { marked } from "marked"
+// NOTE: All content fetching and markdown parsing should be done via API routes or server functions, not in this file. This file should only contain client-safe utilities and types.
+
 import type { Article, FilterOptions, SortOption } from "./types"
 
-const contentDirectory = path.join(process.cwd(), "content")
-
-function getContentDirectory(folder: string) {
-  return path.join(contentDirectory, folder)
-}
-
-function calculateReadingTime(content: string, providedTime?: number): number {
-  if (providedTime) return providedTime
-  const wordsPerMinute = 200
-  const wordCount = content.split(/\s+/).length
-  return Math.ceil(wordCount / wordsPerMinute)
-}
-
-function generateExcerpt(content: string, providedExcerpt?: string, length = 150): string {
-  if (providedExcerpt) return providedExcerpt
-  return content.slice(0, length).replace(/[#*`]/g, "").trim() + "..."
-}
-
-function processMarkdownFile(fileName: string, folderPath: string): Article {
-  const slug = fileName.replace(/\.(md|mdx)$/, "")
-  const fullPath = path.join(folderPath, fileName)
-  const fileContents = fs.readFileSync(fullPath, "utf8")
-  const { data, content } = matter(fileContents)
-
-  const readingTime = calculateReadingTime(content, data.reading_time)
-  const excerpt = generateExcerpt(content, data.excerpt)
-
-  return {
-    slug,
-    title: data.title || "Untitled",
-    date: data.date || new Date().toISOString().split("T")[0],
-    excerpt,
-    tags: data.tags || [],
-    featured_image: data.featured_image,
-    reading_time: readingTime,
-    draft: data.draft || false,
-    featured: data.featured || false,
-    medium_link: data.medium_link,
-    devto_link: data.devto_link,
-    substack_link: data.substack_link,
-    content: marked(content),
-  }
-}
-
+// Example client-safe utility functions (implement as needed)
 export function getAllArticles(contentFolder: string) {
   // Fetch from API route instead
   return [];
@@ -59,14 +14,8 @@ export function getArticleBySlug(contentFolder: string, slug: string) {
 }
 
 export function getAllTags(contentFolder: string): string[] {
-  try {
-    const articles = getAllArticles(contentFolder)
-    const allTags = articles.flatMap((article) => article.tags)
-    return Array.from(new Set(allTags)).sort()
-  } catch (error) {
-    console.error(`Error loading tags from ${contentFolder}:`, error)
-    return []
-  }
+  // Fetch from API route instead
+  return [];
 }
 
 export function filterArticles(articles: any[], filters: any) {
@@ -86,7 +35,7 @@ export function sortArticles(articles: Article[], sort: SortOption): Article[] {
         comparison = a.title.localeCompare(b.title)
         break
       case "reading_time":
-        comparison = a.reading_time - b.reading_time
+        comparison = (a.reading_time || 0) - (b.reading_time || 0)
         break
     }
 
