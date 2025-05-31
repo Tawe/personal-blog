@@ -7,10 +7,24 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Calendar, Clock, Search, X, Dice6, ExternalLink } from "lucide-react"
-import type { DndContentMetadata } from "@/lib/content"
 import Link from "next/link"
 
 const contentTypes = ["thought-piece", "mechanic", "monster", "magic-item", "npc", "adventure", "product"]
+
+interface DndContentMetadata {
+  slug: string
+  title: string
+  excerpt: string
+  date: string
+  reading_time: number
+  tags: string[]
+  system: string
+  type: string
+  availability: string
+  playtested: boolean
+  image?: string
+  external_url?: string
+}
 
 interface DndTtrpgsClientProps {
   articles: DndContentMetadata[]
