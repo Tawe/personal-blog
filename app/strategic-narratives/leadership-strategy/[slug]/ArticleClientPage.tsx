@@ -232,7 +232,7 @@ export function ArticleClientPage({
         </header>
 
         {/* Article Content */}
-        <article className="prose prose-invert prose-slate max-w-none mb-12">
+        <article className="prose prose-invert prose-blue max-w-none mb-12">
           <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
         </article>
 

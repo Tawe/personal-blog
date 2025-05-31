@@ -1,28 +1,16 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Calendar, Clock, Search, X, Dice6, ExternalLink } from "lucide-react"
+import type { DndContentMetadata } from "@/lib/content"
 import Link from "next/link"
 
-interface DndContentMetadata {
-  slug: string
-  title: string
-  date: string
-  excerpt?: string
-  tags: string[]
-  reading_time?: number
-  type: "thought-piece" | "mechanic" | "monster" | "magic-item" | "npc" | "adventure" | "product"
-  system: "5e" | "pathfinder" | "system-agnostic"
-  availability: "free" | "premium" | "commercial"
-  external_url?: string
-  playtested?: boolean
-  image?: string
-}
+const contentTypes = ["thought-piece", "mechanic", "monster", "magic-item", "npc", "adventure", "product"]
 
 interface DndTtrpgsClientProps {
   articles: DndContentMetadata[]
@@ -31,67 +19,110 @@ interface DndTtrpgsClientProps {
 }
 
 export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProps) {
+  const [filteredArticles, setFilteredArticles] = useState<DndContentMetadata[]>(articles)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [selectedSystem, setSelectedSystem] = useState<string>("")
-  const [selectedType, setSelectedType] = useState<string>("")
+  const [selectedSystems, setSelectedSystems] = useState<string[]>([])
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+  const [selectedSystem, setSelectedSystem] = useState<string | undefined>(undefined)
+  const [selectedType, setSelectedType] = useState<string | undefined>(undefined)
   const [playtestedOnly, setPlaytestedOnly] = useState(false)
 
-  const types = ["thought-piece", "mechanic", "monster", "magic-item", "npc", "adventure", "product"]
-
-  const filteredArticles = useMemo(() => {
-    return articles.filter((article) => {
-      const matchesSearch =
-        searchTerm.trim() === "" ||
-        article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        article.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        article.system.toLowerCase().includes(searchTerm.toLowerCase())
-
-      const matchesTags = selectedTags.length === 0 || selectedTags.every((tag) => article.tags.includes(tag))
-
-      const matchesSystem = selectedSystem === "" || article.system === selectedSystem
-      const matchesType = selectedType === "" || article.type === selectedType
-      const matchesPlaytested = !playtestedOnly || article.playtested
-
-      return matchesSearch && matchesTags && matchesSystem && matchesType && matchesPlaytested
-    })
-  }, [articles, searchTerm, selectedTags, selectedSystem, selectedType, playtestedOnly])
+  const handleSearch = (value: string) => {
+    setSearchTerm(value)
+    filterArticles(value, selectedTags, selectedSystems, selectedTypes)
+  }
 
   const handleTagToggle = (tag: string) => {
-    setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]))
+    const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]
+    setSelectedTags(newTags)
+    filterArticles(searchTerm, newTags, selectedSystems, selectedTypes)
+  }
+
+  const handleSystemToggle = (system: string) => {
+    const newSystems = selectedSystems.includes(system)
+      ? selectedSystems.filter((s) => s !== system)
+      : [...selectedSystems, system]
+    setSelectedSystems(newSystems)
+    filterArticles(searchTerm, selectedTags, newSystems, selectedTypes)
+  }
+
+  const handleTypeToggle = (type: string) => {
+    const newTypes = selectedTypes.includes(type) ? selectedTypes.filter((t) => t !== type) : [...selectedTypes, type]
+    setSelectedTypes(newTypes)
+    filterArticles(searchTerm, selectedTags, selectedSystems, newTypes)
+  }
+
+  const filterArticles = (search: string, tags: string[], systems: string[], types: string[]) => {
+    let filtered = [...articles]
+
+    if (search.trim()) {
+      const searchLower = search.toLowerCase()
+      filtered = filtered.filter((article) => {
+        const titleMatch = article.title?.toLowerCase().includes(searchLower) || false
+        const excerptMatch = article.excerpt?.toLowerCase().includes(searchLower) || false
+        const tagMatch = (article.tags || []).some((tag) => tag.toLowerCase().includes(searchLower))
+        return titleMatch || excerptMatch || tagMatch
+      })
+    }
+
+    if (tags.length > 0) {
+      filtered = filtered.filter((article) => tags.every((tag) => (article.tags || []).includes(tag)))
+    }
+
+    if (systems.length > 0) {
+      filtered = filtered.filter((article) => systems.includes(article.system))
+    }
+
+    if (types.length > 0) {
+      filtered = filtered.filter((article) => types.includes(article.type))
+    }
+
+    if (playtestedOnly) {
+      filtered = filtered.filter((article) => article.playtested === true)
+    }
+
+    setFilteredArticles(filtered)
   }
 
   const clearFilters = () => {
     setSearchTerm("")
     setSelectedTags([])
-    setSelectedSystem("")
-    setSelectedType("")
+    setSelectedSystems([])
+    setSelectedTypes([])
+    setSelectedSystem(undefined)
+    setSelectedType(undefined)
     setPlaytestedOnly(false)
+    setFilteredArticles(articles)
   }
 
   const hasActiveFilters =
-    searchTerm.trim() !== "" ||
+    searchTerm.trim() ||
     selectedTags.length > 0 ||
-    selectedSystem !== "" ||
-    selectedType !== "" ||
+    selectedSystems.length > 0 ||
+    selectedTypes.length > 0 ||
+    selectedSystem ||
+    selectedType ||
     playtestedOnly
 
   const getTypeIcon = (type: string) => {
     switch (type) {
+      case "thought-piece":
+        return "💡"
+      case "mechanic":
+        return "⚙️"
       case "monster":
         return "👹"
       case "magic-item":
         return "✨"
       case "npc":
-        return "👤"
+        return "🎭"
       case "adventure":
         return "🗺️"
-      case "mechanic":
-        return "⚙️"
       case "product":
         return "📦"
       default:
-        return "💭"
+        return "🎲"
     }
   }
 
@@ -99,12 +130,12 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
     switch (availability) {
       case "free":
         return "bg-green-600"
-      case "premium":
+      case "pay-what-you-want":
         return "bg-blue-600"
-      case "commercial":
-        return "bg-purple-600"
+      case "paid":
+        return "bg-red-600"
       default:
-        return "bg-slate-600"
+        return "bg-gray-600"
     }
   }
 
@@ -132,7 +163,7 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
             type="text"
             placeholder="Search mechanics, monsters, adventures..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100"
           />
         </div>
@@ -162,7 +193,7 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
                 <SelectValue placeholder="All types" />
               </SelectTrigger>
               <SelectContent>
-                {types.map((type) => (
+                {contentTypes.map((type) => (
                   <SelectItem key={type} value={type}>
                     {type
                       .split("-")
@@ -197,7 +228,7 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
                 <Badge
                   key={tag}
                   variant={selectedTags.includes(tag) ? "default" : "secondary"}
-                  className={`cursor-pointer transition-colors ${
+                  className={`cursor-pointer transition-colors text-xs ${
                     selectedTags.includes(tag)
                       ? "bg-red-600 hover:bg-red-700 text-white"
                       : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
