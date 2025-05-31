@@ -1,7 +1,3 @@
-import fs from "fs"
-import path from "path"
-import matter from "gray-matter"
-
 // Base content metadata interface
 export interface BaseContentMetadata {
   title: string
@@ -118,66 +114,14 @@ function processContentFile<T extends BaseContentMetadata>(
 }
 
 // Generic content fetching functions
-export function getAllContent<T extends BaseContentMetadata>(
-  section: string,
-  processor?: (data: any, content: string) => Partial<T>,
-): T[] {
-  const sectionDir = getContentDirectory(section)
-
-  if (!fs.existsSync(sectionDir)) {
-    fs.mkdirSync(sectionDir, { recursive: true })
-    return []
-  }
-
-  const fileNames = fs.readdirSync(sectionDir)
-  const content = fileNames
-    .filter((name) => name.endsWith(".md") || name.endsWith(".mdx"))
-    .map((fileName) => processContentFile<T>(fileName, sectionDir, processor))
-    .filter((item) => !item.draft)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-
-  return content
+export function getAllContent<T>(section: string, processor?: (data: any, content: string) => Partial<T>): T[] {
+  // Fetch from API route instead
+  return [];
 }
 
-export function getContentBySlug<T extends BaseContentMetadata, U extends T & { content: string }>(
-  section: string,
-  slug: string,
-  processor?: (data: any, content: string) => Partial<T>,
-): U | null {
-  try {
-    const sectionDir = getContentDirectory(section)
-    const fullPath = path.join(sectionDir, `${slug}.md`)
-    const finalPath = fs.existsSync(fullPath) ? fullPath : path.join(sectionDir, `${slug}.mdx`)
-
-    if (!fs.existsSync(finalPath)) {
-      return null
-    }
-
-    const fileContents = fs.readFileSync(finalPath, "utf8")
-    const { data, content } = matter(fileContents)
-
-    const readingTime = calculateReadingTime(content, data.reading_time)
-    const excerpt = generateExcerpt(content, data.excerpt)
-
-    const baseMetadata = {
-      slug,
-      title: data.title || "Untitled",
-      date: data.date || new Date().toISOString().split("T")[0],
-      excerpt,
-      tags: data.tags || [],
-      featured_image: data.featured_image,
-      reading_time: readingTime,
-      draft: data.draft || false,
-      content,
-    }
-
-    const additionalData = processor ? processor(data, content) : {}
-
-    return { ...baseMetadata, ...additionalData } as U
-  } catch (error) {
-    console.error(`Error loading content ${slug}:`, error)
-    return null
-  }
+export function getContentBySlug<T, U>(section: string, slug: string, processor?: (data: any, content: string) => Partial<T>): U | null {
+  // Fetch from API route instead
+  return null;
 }
 
 export function getAllTags(section: string): string[] {

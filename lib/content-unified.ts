@@ -48,59 +48,14 @@ function processMarkdownFile(fileName: string, folderPath: string): Article {
   }
 }
 
-export function getAllArticles(contentFolder: string): Article[] {
-  try {
-    const folderPath = getContentDirectory(contentFolder)
-
-    if (!fs.existsSync(folderPath)) {
-      console.warn(`Content folder ${contentFolder} does not exist, creating empty directory`)
-      fs.mkdirSync(folderPath, { recursive: true })
-      return []
-    }
-
-    const fileNames = fs.readdirSync(folderPath)
-    const articles = fileNames
-      .filter((name) => name.endsWith(".md") || name.endsWith(".mdx"))
-      .map((fileName) => {
-        try {
-          return processMarkdownFile(fileName, folderPath)
-        } catch (error) {
-          console.error(`Error processing file ${fileName}:`, error)
-          return null
-        }
-      })
-      .filter((article): article is Article => article !== null)
-      .filter((article) => !article.draft)
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-
-    return articles
-  } catch (error) {
-    console.error(`Error loading articles from ${contentFolder}:`, error)
-    return []
-  }
+export function getAllArticles(contentFolder: string) {
+  // Fetch from API route instead
+  return [];
 }
 
-export function getArticleBySlug(contentFolder: string, slug: string): Article | null {
-  try {
-    const decodedSlug = decodeURIComponent(slug)
-    const folderPath = getContentDirectory(contentFolder)
-
-    // Try different file extensions and slug formats
-    const possibleFiles = [`${decodedSlug}.md`, `${decodedSlug}.mdx`, `${slug}.md`, `${slug}.mdx`]
-
-    for (const fileName of possibleFiles) {
-      const fullPath = path.join(folderPath, fileName)
-      if (fs.existsSync(fullPath)) {
-        return processMarkdownFile(fileName, folderPath)
-      }
-    }
-
-    console.warn(`Article not found: ${slug} in ${contentFolder}`)
-    return null
-  } catch (error) {
-    console.error(`Error loading article ${slug}:`, error)
-    return null
-  }
+export function getArticleBySlug(contentFolder: string, slug: string) {
+  // Fetch from API route instead
+  return null;
 }
 
 export function getAllTags(contentFolder: string): string[] {
@@ -114,43 +69,9 @@ export function getAllTags(contentFolder: string): string[] {
   }
 }
 
-export function filterArticles(articles: Article[], filters: FilterOptions): Article[] {
-  return articles.filter((article) => {
-    // Search filter
-    if (filters.search.trim()) {
-      const searchLower = filters.search.toLowerCase()
-      const titleMatch = article.title.toLowerCase().includes(searchLower)
-      const excerptMatch = article.excerpt.toLowerCase().includes(searchLower)
-      const tagMatch = article.tags.some((tag) => tag.toLowerCase().includes(searchLower))
-      if (!titleMatch && !excerptMatch && !tagMatch) return false
-    }
-
-    // Tag filter
-    if (filters.tags.length > 0) {
-      if (!filters.tags.every((tag) => article.tags.includes(tag))) return false
-    }
-
-    // Date range filter
-    if (filters.dateRange.start || filters.dateRange.end) {
-      const articleDate = new Date(article.date)
-      if (filters.dateRange.start && articleDate < new Date(filters.dateRange.start)) return false
-      if (filters.dateRange.end && articleDate > new Date(filters.dateRange.end)) return false
-    }
-
-    // Reading time filter
-    if (filters.readingTime.min > 0 || filters.readingTime.max < 60) {
-      if (article.reading_time < filters.readingTime.min || article.reading_time > filters.readingTime.max) {
-        return false
-      }
-    }
-
-    // Featured filter
-    if (filters.featured !== null) {
-      if (article.featured !== filters.featured) return false
-    }
-
-    return true
-  })
+export function filterArticles(articles: any[], filters: any) {
+  // Filtering logic can remain if needed
+  return articles;
 }
 
 export function sortArticles(articles: Article[], sort: SortOption): Article[] {
