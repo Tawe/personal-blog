@@ -1,7 +1,6 @@
 import { ContentLayout } from "@/components/content-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MentoringContactForm } from "@/components/mentoring-contact-form"
 import { Users, Target, Lightbulb, TrendingUp, MessageSquare, Clock, MapPin, CheckCircle, Star } from "lucide-react"
 
 export default function MentoringPage() {
@@ -35,24 +34,6 @@ export default function MentoringPage() {
       description: "Storytelling, gaming principles, innovative leadership approaches",
       icon: Lightbulb,
       topics: ["Narrative Thinking", "Team Dynamics", "Creative Solutions"],
-    },
-  ]
-
-  const successStories = [
-    {
-      title: "Senior Dev → Engineering Manager",
-      description: "Guided transition from individual contributor to leading a team of 8 developers",
-      outcome: "Successful promotion within 6 months",
-    },
-    {
-      title: "CTO Promotion Success",
-      description: "Prepared VP Engineering for CTO role at growing startup",
-      outcome: "Promoted to CTO within 18 months",
-    },
-    {
-      title: "Team Communication Breakthrough",
-      description: "Improved team dynamics and reduced turnover from 40% to 10%",
-      outcome: "Sustained high-performance culture",
     },
   ]
 
@@ -257,24 +238,6 @@ export default function MentoringPage() {
         </Card>
       </section>
 
-      {/* Success Stories */}
-      <section className="mb-16">
-        <h2 className="text-3xl font-bold text-slate-100 mb-8 text-center">Success Stories</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {successStories.map((story, index) => (
-            <Card key={index} className="bg-slate-800/50 border-slate-600">
-              <CardHeader>
-                <CardTitle className="text-lg text-slate-100">{story.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="text-slate-300">
-                <p className="mb-4">{story.description}</p>
-                <Badge className="bg-green-600/20 text-green-300">{story.outcome}</Badge>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
       {/* Investment */}
       <section className="mb-16">
         <Card className="bg-slate-800/50 border-slate-600">
@@ -305,23 +268,6 @@ export default function MentoringPage() {
                 </ul>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* Contact Form */}
-      <section className="mb-16">
-        <Card className="bg-slate-800/50 border-slate-600">
-          <CardHeader>
-            <CardTitle className="text-2xl text-slate-100 text-center">
-              Ready to Accelerate Your Leadership Journey?
-            </CardTitle>
-            <CardDescription className="text-slate-400 text-center">
-              Let's discuss how mentoring can help you achieve your leadership goals
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <MentoringContactForm />
           </CardContent>
         </Card>
       </section>
