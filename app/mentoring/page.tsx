@@ -1,7 +1,6 @@
 import { ContentLayout } from "@/components/content-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MentoringContactForm } from "@/components/mentoring-contact-form"
 import { Users, Target, Lightbulb, TrendingUp, MessageSquare, Clock, MapPin, CheckCircle, Star } from "lucide-react"
 
 export default function MentoringPage() {
@@ -305,23 +304,6 @@ export default function MentoringPage() {
                 </ul>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* Contact Form */}
-      <section className="mb-16">
-        <Card className="bg-slate-800/50 border-slate-600">
-          <CardHeader>
-            <CardTitle className="text-2xl text-slate-100 text-center">
-              Ready to Accelerate Your Leadership Journey?
-            </CardTitle>
-            <CardDescription className="text-slate-400 text-center">
-              Let's discuss how mentoring can help you achieve your leadership goals
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <MentoringContactForm />
           </CardContent>
         </Card>
       </section>

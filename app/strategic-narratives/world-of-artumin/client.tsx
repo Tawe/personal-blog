@@ -163,6 +163,15 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
               </div>
             )}
             <CardHeader>
+              {article.image && (
+                <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
+                  <img
+                    src={article.image || "/placeholder.svg"}
+                    alt={article.title}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+              )}
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-lg">{getTypeIcon(article.type)}</span>
                 <Badge variant="outline" className="border-slate-600 text-slate-400 text-xs">
