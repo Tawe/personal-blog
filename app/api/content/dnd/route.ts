@@ -10,7 +10,7 @@ export async function GET() {
 
     if (!fs.existsSync(contentDir)) {
       return NextResponse.json({ articles: [] })
-    }
+    } 
 
     const files = fs.readdirSync(contentDir)
     const markdownFiles = files.filter((file) => file.endsWith(".md"))
