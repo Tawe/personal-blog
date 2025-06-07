@@ -1,7 +1,7 @@
 ---
 title: "Cursor AI Security - Deep Dive into Risk, Policy, and Practice"
 date: "2025-05-14"
-excerpt: "A comprehensive guide to designing and implementing microservices that scale with your business needs"
+excerpt: "Cursor helps you move fast. It scaffolds, refactors, and rewrites with confidence, but that confidence isn’t always deserved. Prompt injection, context leakage, typo-squatting, and agent misuse are…"
 tags: ["Cursor", "Security", "AI Security", "Secure Coding", "Software Engineering"]
 difficulty: "intermediate"
 type: "guide"
