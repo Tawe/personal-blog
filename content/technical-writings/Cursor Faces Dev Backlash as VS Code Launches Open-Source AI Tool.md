@@ -1,7 +1,7 @@
 ---
 title: "Cursor Faces Dev Backlash as VS Code Launches Open-Source AI Tool"
 date: "2025-05-19"
-excerpt: "A comprehensive guide to designing and implementing microservices that scale with your business needs"
+excerpt: "Cursor is under fire for degraded service and poor communication—then Microsoft dropped a bomb: VS Code just went open-source with integrated AI."
 tags: ["Cursor", "Devtools", "Developer Tools", "AI", "Software Engineering"]
 difficulty: "intermediate"
 type: "guide"
