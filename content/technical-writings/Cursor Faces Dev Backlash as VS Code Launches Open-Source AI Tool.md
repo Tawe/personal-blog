@@ -6,7 +6,7 @@ tags: ["Cursor", "Devtools", "Developer Tools", "AI", "Software Engineering"]
 difficulty: "intermediate"
 type: "guide"
 reading_time: 3
-featured_image: /cursoraideepdive.webp?height=400&width=800
+featured_image: /CursorFacesDevBacklash.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/cursor-faces-backlash-devs-call-out-slowness-silence-and-broken-trust-8cbb7655054a
 devto_link: https://dev.to/tawe/cursor-backlash-grows-as-devs-flee-to-vs-codes-new-ai-tool-236d
 substack:
