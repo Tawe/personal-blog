@@ -301,7 +301,6 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
           )}
         </div>
 
-        {content.featured_image && (
           <div className="relative overflow-hidden">
             <Image
               src={content.featured_image ? content.featured_image : "/placeholder.svg"}
@@ -313,7 +312,6 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
             <div className="absolute bottom-3 left-3">{renderTypeInfo()}</div>
           </div>
-        )}
 
         <CardHeader className="pb-3">
           <div className="flex items-center gap-4 text-sm text-slate-400 mb-2">
