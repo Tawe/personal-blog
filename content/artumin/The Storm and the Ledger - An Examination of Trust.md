@@ -2,8 +2,8 @@
 title: The Storm and the Ledger - An Examination of Trust
 date: 2025-05-17
 type: story
-excerpt: Storms test a leader's resolve. Experience vs. potential in this fantasy
-short story about trust & leadership.
+excerpt: "Storms test a leader's resolve. Experience vs. potential in this fantasy
+short story about trust & leadership."
 categories:
   - Leadership
   - Fantasy Fiction
