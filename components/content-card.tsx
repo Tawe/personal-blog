@@ -304,7 +304,7 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
         {content.featured_image && (
           <div className="relative overflow-hidden">
             <Image
-              src={content.featured_image || "/placeholder.svg"}
+              src={content.featured_image ? content.featured_image : "/placeholder.svg"}
               alt={content.title}
               width={500}
               height={300}
