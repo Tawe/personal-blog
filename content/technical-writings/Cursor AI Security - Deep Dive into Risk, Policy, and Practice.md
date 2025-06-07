@@ -18,7 +18,7 @@ draft: false
 
 ## The Quick Take
 
-Cursor helps you move fast. It scaffolds, refactors, and rewrites with confidence, but that confidence isn’t always deserved. Prompt injection, context leakage, typo-squatting, and agent misuse are real threats. And they’re not theoretical — they’re happening.
+Cursor helps you move fast. It scaffolds, refactors, and rewrites with confidence, but that confidence isn't always deserved. Prompt injection, context leakage, typo-squatting, and agent misuse are real threats. And they're not theoretical — they're happening.
 
 This guide is about rolling out Cursor safely without sacrificing speed or opening the door to chaos.
 
@@ -31,33 +31,33 @@ This guide is about rolling out Cursor safely without sacrificing speed or openi
 
 ## What You Should Be Doing Today
 
-These aren’t suggestions. These are table stakes:
+These aren't suggestions. These are table stakes:
 
 - Use `.cursorignore` and `.cursorindexingignore` aggressively
 	- Exclude files like `.env`, `secrets/`, `*.key`, `infra/`, and any credential-bearing file.
 	- Use `.cursorindexingignore` to prevent indexing, not just suggestion exclusion.
 - Close Sensitive Files Before Prompting
-	- If it’s open in your IDE, it’s part of the AI’s context.
+	- If it's open in your IDE, it's part of the AI's context.
 - Redact Logs and Prompts
 	- Strip out stack traces, tokens, customer data, and internal URLs before feeding anything in.
-- Don’t Trust Package Suggestions
+- Don't Trust Package Suggestions
 	- Vet every dependency. Look for GitHub activity, clear maintainers, and no obfuscation.
 	- Run `npm audit`, use `socket.dev`, or static analysis tools before merging.
 - Disable YOLO Mode in Critical Repos
 	- Lock it down in `.cursorrules`. Restrict to sandboxes only.
 - Log Prompts Like You Log API Access
-	- If you’re logging prompts, treat them as sensitive data.
+	- If you're logging prompts, treat them as sensitive data.
 
 ## Treat Cursor Like a Junior Dev with Root Access
 
-Imagine the most eager junior engineer you’ve ever worked with. Now imagine they can:
+Imagine the most eager junior engineer you've ever worked with. Now imagine they can:
 
 - Modify code
 - Suggest new dependencies
 - Commit changes without review
 - Update your Terraform configs
 
-That’s Cursor without constraints. It’s not dangerous by design — it’s only as safe as the context and access you give it.
+That's Cursor without constraints. It's not dangerous by design — it's only as safe as the context and access you give it.
 
 ## Role-Based Responsibilities with Teeth
 
@@ -80,15 +80,15 @@ A dev drops unfiltered logs into a prompt. Buried inside is:
 Cursor reads it as an instruction and offers a code edit removing the login check.
 
 **Root Cause**: AI treats all input as intentional.  
-**Mitigation**: Always sanitize logs. Don’t trust strings from stack traces.  
-**Detection**: Flag prompts containing control words: “disable”, “delete”, “bypass”.
+**Mitigation**: Always sanitize logs. Don't trust strings from stack traces.  
+**Detection**: Flag prompts containing control words: "disable", "delete", "bypass".
 
 ### 2. Typo-Squatting Package
 
 Cursor suggests `jsonwebtoken-fast`, a package that mimics the trusted `jsonwebtoken` but has none of its history, transparency, or accountability. It lacks a legitimate repository, has no identifiable maintainer, and its source code is obfuscated—hallmarks of a malicious or typo-squatted package.
 
 **Root Cause**: AI has no vetting layer for dependency safety.  
-**Mitigation**: Never install directly from a prompt. Vet it like you’d vet code from a stranger.  
+**Mitigation**: Never install directly from a prompt. Vet it like you'd vet code from a stranger.  
 **Detection**: Use `socket.dev` or GitHub diffing bots to spot new dependencies.
 
 ### 3. YOLO Mode Rewrite
@@ -111,13 +111,13 @@ A new hire enables YOLO mode—Cursor's aggressive apply-changes feature—on a 
 
 ## Final Thought
 
-AI tools like Cursor aren’t risky because they’re malicious. They’re risky because they’re helpful without judgment.
+AI tools like Cursor aren't risky because they're malicious. They're risky because they're helpful without judgment.
 
 Treat them like teammates. Coach them. Gate them. Audit them.
 
 Cursor evolves quickly. Revisit policies quarterly, and keep an eye on docs, GitHub, and trusted security blogs.
 
-And when in doubt, assume they’ll do exactly what you said — and nothing you meant.
+And when in doubt, assume they'll do exactly what you said — and nothing you meant.
 
 # 📚 Sources & Further Reading
 
