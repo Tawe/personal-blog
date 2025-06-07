@@ -4,11 +4,11 @@ date: 2025-05-17
 type: story
 excerpt: Storms test a leader's resolve. Experience vs. potential in this fantasy short story about trust & leadership. 
 categories:
-    - Leadership
-    - Fantasy Fiction
-    - Short Story
-    - Character Development
-    - Trust
+  - Leadership
+  - Fantasy Fiction
+  - Short Story
+  - Character Development
+  - Trust
 region: Artumin
 featured_image: /stormnovelcovers.png?height=400&width=800
 status: 
