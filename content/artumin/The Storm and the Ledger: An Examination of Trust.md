@@ -12,7 +12,7 @@ categories:
   - Trust
 region: Artumin
 featured_image: /stormnovelcovers.png?height=400&width=800
-status: 
+status:
 connections:
 reading_time: 7
 draft: false
