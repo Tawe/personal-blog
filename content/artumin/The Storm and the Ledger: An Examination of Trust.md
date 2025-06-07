@@ -3,7 +3,7 @@ title: The Storm and the Ledger: An Examination of Trust
 date: 2025-05-17
 type: story
 excerpt: Storms test a leader's resolve. Experience vs. potential in this fantasy
-short story about trust & leadership. 
+short story about trust & leadership.
 categories:
   - Leadership
   - Fantasy Fiction
@@ -20,6 +20,7 @@ medium_link: https://medium.com/@johnmunn/the-storm-and-the-ledger-an-examinatio
 devto_link:
 substack: https://tawe.substack.com/p/the-storm-and-the-ledger-an-examination
 ---
+
 
 Thunder rolled across a bruised sky as the wind tugged at the oilskin flaps of Argus Leyline's saddlebag. He sat motionless atop his mount, watching the horizon crack and boil. Somewhere out there, east, maybe north — was shelter. The wagons behind him groaned beneath crates of alchemical goods and sealed grain. They could not afford to tip, to drown, or to be late.
 
