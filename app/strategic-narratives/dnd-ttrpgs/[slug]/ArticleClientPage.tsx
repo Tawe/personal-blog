@@ -21,6 +21,7 @@ interface DndContent {
   medium_link?: string
   devto_link?: string
   substack_link?: string
+  subtitle?: string
 }
 
 interface ArticleClientPageProps {
@@ -177,6 +178,9 @@ export function ArticleClientPage({
 
           <div className="space-y-6">
             <h1 className="text-4xl lg:text-5xl font-bold text-slate-100 leading-tight">{article.title}</h1>
+            {article.subtitle && (
+              <h2 className="text-2xl text-slate-300 font-medium mt-2 mb-4">{article.subtitle}</h2>
+            )}
 
             {/* Article Meta */}
             <div className="flex flex-wrap items-center gap-6 text-slate-400">
