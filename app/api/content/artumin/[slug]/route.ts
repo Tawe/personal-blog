@@ -1,0 +1,15 @@
+const article = {
+  slug: params.slug,
+  title: frontmatter.title || matchingFile.replace(".md", ""),
+  subtitle: frontmatter.subtitle,
+  date: frontmatter.date || new Date().toISOString(),
+  excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
+  content: htmlContent,
+  tags: frontmatter.tags || [],
+  featured_image: frontmatter.featured_image || frontmatter.image,
+  reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
+  featured: frontmatter.featured || false,
+  medium_link: frontmatter.medium_link,
+  devto_link: frontmatter.devto_link,
+  substack_link: frontmatter.substack_link,
+} 

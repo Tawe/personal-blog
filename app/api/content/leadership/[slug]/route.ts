@@ -56,6 +56,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
     const article = {
       slug: params.slug,
       title: frontmatter.title || matchingFile.replace(".md", ""),
+      subtitle: frontmatter.subtitle,
       date: frontmatter.date || new Date().toISOString(),
       excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
       content: htmlContent,
