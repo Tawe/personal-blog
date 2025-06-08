@@ -8,7 +8,7 @@ tags:
     - Leadership
     - Personal Development
     - Dungeon Mastering
-featured_image: /TrapofTryingtoPleaseEveryone.png?height=400&width=800
+featured_image: /TrapofTryingtoPleaseEveryone.webp?height=400&width=800
 reading_time: 3
 medium_link: https://medium.com/@johnmunn/what-being-a-dm-taught-me-about-leadership-and-the-trap-of-trying-to-please-everyone-0560256a254d
 devto_link:
