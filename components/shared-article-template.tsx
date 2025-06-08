@@ -177,6 +177,9 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                 <div className="absolute bottom-0 left-0 right-0 p-8">
                   <div className="space-y-4">
                     <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">{article.title}</h1>
+                    {article.subtitle && (
+                      <h2 className="text-2xl text-slate-300 font-medium mt-2 mb-4">{article.subtitle}</h2>
+                    )}
 
                     {/* Article Metadata Bar */}
                     <div className="flex flex-wrap items-center gap-6 text-slate-200">
@@ -220,6 +223,9 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
               <header className="mb-8">
                 <div className="space-y-6">
                   <h1 className="text-4xl lg:text-5xl font-bold text-slate-100 leading-tight">{article.title}</h1>
+                  {article.subtitle && (
+                    <h2 className="text-2xl text-slate-300 font-medium mt-2 mb-4">{article.subtitle}</h2>
+                  )}
 
                   {/* Article Metadata Bar */}
                   <div className="flex flex-wrap items-center gap-6 text-slate-400">

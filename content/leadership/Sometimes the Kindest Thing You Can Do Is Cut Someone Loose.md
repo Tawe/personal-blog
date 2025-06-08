@@ -1,5 +1,6 @@
 ---
 title: Sometimes the Kindest Thing You Can Do Is Cut Someone Loose
+subtitle: "When good people become wrong people"
 date: 2025-05-24
 excerpt: Every day you keep someone in the wrong role, you're betraying everyone else on your team. Here's why the hardest leadership decisions aren't about firing bad people.
 tags:
@@ -16,8 +17,6 @@ substack:
 draft: false
 ---
 
-
-*When good people become wrong people*
 
 The most brutal leadership lesson I've ever learned? Every day you keep someone in the wrong role, you're betraying everyone else on your team.
 

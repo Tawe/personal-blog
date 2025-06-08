@@ -2,6 +2,7 @@
 
 export interface BaseContentMetadata {
   title: string
+  subtitle?: string
   date: string
   excerpt?: string
   tags: string[]

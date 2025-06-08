@@ -342,6 +342,9 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
           >
             {content.title}
           </CardTitle>
+          {content.subtitle && (
+            <div className="text-slate-400 text-base mb-2 line-clamp-2">{content.subtitle}</div>
+          )}
 
           <CardDescription className="text-slate-400 leading-relaxed line-clamp-3">{content.excerpt}</CardDescription>
         </CardHeader>

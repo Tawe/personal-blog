@@ -8,6 +8,7 @@ export interface BaseContentMetadata {
   reading_time?: number
   draft?: boolean
   slug: string
+  subtitle?: string
 }
 
 // Extended interfaces for specific content types
@@ -100,6 +101,7 @@ function processContentFile<T extends BaseContentMetadata>(
   const baseMetadata = {
     slug,
     title: data.title || "Untitled",
+    subtitle: data.subtitle,
     date: data.date || new Date().toISOString().split("T")[0],
     excerpt,
     tags: data.tags || [],
