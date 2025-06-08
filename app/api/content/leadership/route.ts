@@ -25,6 +25,7 @@ export async function GET() {
       return {
         slug,
         title: frontmatter.title || filename.replace(".md", ""),
+        subtitle: frontmatter.subtitle,
         date: frontmatter.date || new Date().toISOString(),
         excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
         content: marked(content), // Convert markdown to HTML
