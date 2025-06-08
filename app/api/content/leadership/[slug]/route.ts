@@ -53,25 +53,23 @@ export async function GET(request: Request, { params }: { params: { slug: string
     console.log("HTML content length:", htmlContent.length)
     console.log("HTML preview:", htmlContent.substring(0, 200))
 
-    const article = {
-      slug: params.slug,
-      title: frontmatter.title || matchingFile.replace(".md", ""),
-      subtitle: frontmatter.subtitle,
-      date: frontmatter.date || new Date().toISOString(),
-      excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
-      content: htmlContent,
-      tags: frontmatter.tags || [],
-      featured_image: frontmatter.featured_image || frontmatter.image,
-      reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
-      featured: frontmatter.featured || false,
-      medium_link: frontmatter.medium_link,
-      devto_link: frontmatter.devto_link,
-      substack_link: frontmatter.substack_link,
-    }
-
-    console.log("Returning article:", { ...article, content: article.content.substring(0, 100) + "..." })
-
-    return NextResponse.json({ article })
+    return NextResponse.json({
+      article: {
+        slug: params.slug,
+        title: frontmatter.title || matchingFile.replace(".md", ""),
+        subtitle: frontmatter.subtitle,
+        date: frontmatter.date || new Date().toISOString(),
+        excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
+        content: htmlContent,
+        tags: frontmatter.tags || [],
+        featured_image: frontmatter.featured_image || frontmatter.image,
+        reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
+        featured: frontmatter.featured || false,
+        medium_link: frontmatter.medium_link,
+        devto_link: frontmatter.devto_link,
+        substack_link: frontmatter.substack_link,
+      },
+    })
   } catch (error) {
     console.error("Error loading article:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
