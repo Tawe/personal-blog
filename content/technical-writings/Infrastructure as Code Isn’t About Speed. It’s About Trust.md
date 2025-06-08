@@ -113,16 +113,16 @@ Here’s how I think about it:
 _When to use it:_ Ideal for multi-cloud or standardized infra across teams. Strong ecosystem and provider support.  
 _Trade-offs:_ Proven DSL, broad community support. Manual state file management unless using backends like S3/DynamoDB. Limited type safety.
 
-**Pulumi  
-**_When to use it:_ Great for teams that prefer using general-purpose languages (TypeScript, Python, Go).  
+**Pulumi**
+_When to use it:_ Great for teams that prefer using general-purpose languages (TypeScript, Python, Go).  
 _Trade-offs:_ Type-safe and testable. Easier to build abstractions. Smaller ecosystem. Requires more language discipline.
 
-**AWS CDK  
-**_When to use it:_ Best for AWS-native teams that want higher-level abstractions in familiar programming languages.  
+**AWS CDK**
+_When to use it:_ Best for AWS-native teams that want higher-level abstractions in familiar programming languages.  
 _Trade-offs:_ Strong AWS integration. Limited multi-cloud support.️ Evolving quickly, which may introduce churn.
 
-**CloudFormation  
-**_When to use it:_ Useful for regulated environments or legacy systems requiring AWS-native tooling.  
+**CloudFormation**
+_When to use it:_ Useful for regulated environments or legacy systems requiring AWS-native tooling.  
 _Trade-offs:_ No external dependencies. Verbose syntax. Difficult to modularize or scale in complex environments.
 
 Each has its place, but the key is **consistency and clarity across your teams.**
