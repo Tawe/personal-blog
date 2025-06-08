@@ -10,7 +10,7 @@ categories:
   - Decision Making
   - Creative Writing
 region: Artumin
-featured_image: /threshold.png?height=400&width=800
+featured_image: /threshold.webp?height=400&width=800
 status:
 connections:
 reading_time: 9
