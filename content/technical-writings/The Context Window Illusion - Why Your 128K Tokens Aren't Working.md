@@ -115,6 +115,7 @@ Otherwise? Optimize for 32K or less.
 
 ## Code Snippet: Measuring Position Sensitivity
 
+```python
 import openai  
   
 TEMPLATE = """  
@@ -133,6 +134,7 @@ def generate_response(text_block, question):
         temperature=0  
     )  
     return response.choices[0].message['content']
+```
 
 Run this by embedding your target fact at different token positions and logging whether the answer remains correct. Graph the accuracy against token offset to visualize degradation.
 
@@ -150,16 +152,19 @@ Want to visualize attention patterns in your own prompts? Use bertviz or Hugging
 from transformers import AutoTokenizer, AutoModel, BertModel  
 from bertviz import head_view  
   
+```python
 model_name = 'bert-base-uncased'  
 tokenizer = AutoTokenizer.from_pretrained(model_name)  
 model = AutoModel.from_pretrained(model_name, output_attentions=True)  
-  
+```
+```python  
 sentence = "Your long-context example here."  
 inputs = tokenizer.encode_plus(sentence, return_tensors='pt')  
 outputs = model(**inputs)  
 attention = outputs.attentions  
   
 head_view(attention, tokens=tokenizer.convert_ids_to_tokens(inputs['input_ids'][0]))
+```
 
 This won’t work directly with GPT-4, but is valuable for debugging positional bias in open models or fine-tuned agents. Similar tools exist for Llama and Mistral variants.
 
