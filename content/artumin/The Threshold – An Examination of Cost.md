@@ -17,7 +17,7 @@ reading_time: 9
 draft: false
 medium_link: https://medium.com/@johnmunn/the-threshold-an-examination-of-cost-5f9d13f5dbe8
 devto_link:
-substack: https://tawe.substack.com/p/the-storm-and-the-ledger-an-examination
+substack: https://tawe.substack.com/p/the-threshold
 ---
 
 The torch burned low, flickering against stone walls slick with moisture. The scent of mildew and burnt marrow clung to the air, and the distant drip of water echoed like a countdown in the dark. In a ruined side chamber deep within the Skeleton King’s crypt, four members of the Ravenguard sat surrounded by the silence of death—and the weight of decision.
