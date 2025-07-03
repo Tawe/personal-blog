@@ -60,7 +60,7 @@ If every message needs to be delivered hard, it’s often because the softer cha
 
 # What You’re Really Building (or Not)
 
-==Every team builds something invisible over time:== ==**influence equity**== ==or== ==**influence debt**====.==
+Every team builds something invisible over time: **influence equity** or **influence debt**.
 
 ==Influence equity comes from small, early investments. Clear expectations, relationship trust, shared wins. It means when a hard conversation== ==_does_== ==happen, it lands softly. It’s interpreted through trust, not threat.==
 
