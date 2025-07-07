@@ -2,17 +2,17 @@
 title: "Yes, You Have to Play Office Politics. Because Your Team Can’t Afford for You Not To."
 subtitle: 'It’s not about self-interest. It’s about stewardship.'
 date: 2025-05-03
-excerpt: "Not all great developers are loud or visible. This piece challenges how we define impact, and how to recognize the ones we often overlook."
+excerpt: "Office politics has a branding problem. It conjures images of manipulation, ego-stroking, and ladder-climbing. So, some leaders wear political abstinence like a badge of honor. Except, you do. If you…"
 tags:
   - Leadership
-  - Software Development
-  - Team Culture
-  - Development
+  - Office Politics
+  - Office Culture
+  - Career Advice
   - Team Management
 featured_image: /yesyouhavetoplayofficepolitics.webp?height=400&width=800
 reading_time: 5
 medium_link: https://medium.com/@johnmunn/yes-you-have-to-play-office-politics-because-your-team-cant-afford-for-you-not-to-c492ccad5735
-devto_link: 
+devto_link: https://dev.to/tawe/yes-you-have-to-play-office-politics-because-your-team-cant-afford-for-you-not-to-hfp
 substack:
 draft: false
 ---
