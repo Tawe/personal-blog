@@ -9,7 +9,7 @@ tags:
   - Team Culture
   - Development
   - Team Management
-featured_image: /whyirethoughtwhatmakes.webp?height=400&width=800
+featured_image: /yesyouhavetoplayofficepolitics.webp?height=400&width=800
 reading_time: 5
 medium_link: https://medium.com/@johnmunn/yes-you-have-to-play-office-politics-because-your-team-cant-afford-for-you-not-to-c492ccad5735
 devto_link: 
