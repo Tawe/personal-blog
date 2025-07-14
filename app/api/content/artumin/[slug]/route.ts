@@ -19,8 +19,9 @@ export async function GET(request: Request, { params }: { params: { slug: string
     const filePath = path.join(contentDir, matchingFile)
     const fileContent = fs.readFileSync(filePath, "utf8")
     const { data: frontmatter, content } = matter(fileContent)
-    const htmlContent = marked(content)
-    return NextResponse.json({
+    const htmlContent = await marked(content)
+    
+    const response = NextResponse.json({
       article: {
         slug: params.slug,
         title: frontmatter.title || matchingFile.replace(".md", ""),
@@ -37,6 +38,13 @@ export async function GET(request: Request, { params }: { params: { slug: string
         substack_link: frontmatter.substack_link,
       },
     })
+    
+    // Add caching headers for Vercel
+    response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400')
+    response.headers.set('CDN-Cache-Control', 'public, s-maxage=3600')
+    response.headers.set('Vercel-CDN-Cache-Control', 'public, s-maxage=3600')
+    
+    return response
   } catch (error) {
     console.error("Error loading article:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

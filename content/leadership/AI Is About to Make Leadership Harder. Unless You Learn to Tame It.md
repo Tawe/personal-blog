@@ -10,7 +10,7 @@ tags:
   - Team Management
   - Artifical Intelligence
 featured_image: /AIIsAbouttoMakeLeadershipHarder.webp?height=400&width=800
-reading_time: 3
+reading_time: 5
 medium_link: https://medium.com/@johnmunn/ai-is-about-to-make-leadership-harder-unless-you-learn-to-tame-it-d55cc06a74ac
 devto_link:
 substack:

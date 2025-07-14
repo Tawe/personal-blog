@@ -1,0 +1,73 @@
+{
+  "functions": {
+    "app/strategic-narratives/**/*.tsx": {
+      "maxDuration": 30
+    },
+    "app/api/content/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/strategic-narratives/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, s-maxage=3600"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "public, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/api/content/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, s-maxage=3600"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "public, s-maxage=3600"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|webp))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/strategic-narratives/technical-architecture/:slug",
+      "destination": "/strategic-narratives/technical-architecture/[slug]"
+    },
+    {
+      "source": "/strategic-narratives/leadership-strategy/:slug",
+      "destination": "/strategic-narratives/leadership-strategy/[slug]"
+    },
+    {
+      "source": "/strategic-narratives/dnd-ttrpgs/:slug",
+      "destination": "/strategic-narratives/dnd-ttrpgs/[slug]"
+    },
+    {
+      "source": "/strategic-narratives/world-of-artumin/:slug",
+      "destination": "/strategic-narratives/world-of-artumin/[slug]"
+    }
+  ]
+} 

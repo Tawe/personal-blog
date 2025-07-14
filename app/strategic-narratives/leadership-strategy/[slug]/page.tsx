@@ -1,72 +1,134 @@
-"use client"
-
+import { notFound } from "next/navigation"
 import { ArticleClientPage } from "./ArticleClientPage"
-import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import fs from "fs"
+import path from "path"
+import matter from "gray-matter"
+import { marked } from "marked"
 
-export default function ArticlePage() {
-  const params = useParams()
-  const slug = params.slug as string
-  const [article, setArticle] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+interface Article {
+  slug: string
+  title: string
+  subtitle?: string
+  date: string
+  excerpt: string
+  content: string
+  tags: string[]
+  featured_image?: string
+  reading_time: number
+  difficulty: string
+  type: string
+  code_languages?: string[]
+  updated?: string
+  medium_link?: string
+  devto_link?: string
+  substack_link?: string
+  featured?: boolean
+}
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        console.log("Fetching article with slug:", slug)
-        const response = await fetch(`/api/content/leadership/${slug}`)
-        console.log("API response status:", response.status)
+// Generate static params for all articles
+export async function generateStaticParams() {
+  const contentDir = path.join(process.cwd(), "content/leadership")
+  const files = fs.readdirSync(contentDir)
+  const markdownFiles = files.filter((file) => file.endsWith(".md"))
+  
+  return markdownFiles.map((filename) => {
+    const slug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
+    return { slug }
+  })
+}
 
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.error("API error:", errorText)
-          throw new Error(`Failed to fetch article: ${response.status}`)
-        }
-
-        const data = await response.json()
-        console.log("API response data:", data)
-
-        if (data.article) {
-          setArticle(data.article)
-        } else {
-          throw new Error("No article data received")
-        }
-      } catch (err) {
-        console.error("Error fetching article:", err)
-        setError(err.message)
-      } finally {
-        setLoading(false)
+// Generate metadata for SEO
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  try {
+    const contentDir = path.join(process.cwd(), "content/leadership")
+    const files = fs.readdirSync(contentDir)
+    const markdownFiles = files.filter((file) => file.endsWith(".md"))
+    const matchingFile = markdownFiles.find((filename) => {
+      const fileSlug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
+      return fileSlug === params.slug
+    })
+    
+    if (!matchingFile) {
+      return {
+        title: "Article Not Found",
+        description: "The requested article could not be found."
       }
     }
-
-    if (slug) {
-      fetchArticle()
+    
+    const filePath = path.join(contentDir, matchingFile)
+    const fileContent = fs.readFileSync(filePath, "utf8")
+    const { data: frontmatter } = matter(fileContent)
+    
+    return {
+      title: frontmatter.title || matchingFile.replace(".md", ""),
+      description: frontmatter.excerpt || frontmatter.subtitle || "Leadership strategy article",
+      openGraph: {
+        title: frontmatter.title || matchingFile.replace(".md", ""),
+        description: frontmatter.excerpt || frontmatter.subtitle || "Leadership strategy article",
+        images: frontmatter.featured_image || frontmatter.image ? [frontmatter.featured_image || frontmatter.image] : [],
+      },
     }
-  }, [slug])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-slate-400">Loading article...</div>
-      </div>
-    )
+  } catch (error) {
+    return {
+      title: "Article Not Found",
+      description: "The requested article could not be found."
+    }
   }
+}
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-red-400">Error: {error}</div>
-      </div>
-    )
+async function getArticle(slug: string): Promise<Article | null> {
+  try {
+    const contentDir = path.join(process.cwd(), "content/leadership")
+    const files = fs.readdirSync(contentDir)
+    const markdownFiles = files.filter((file) => file.endsWith(".md"))
+    const matchingFile = markdownFiles.find((filename) => {
+      const fileSlug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
+      return fileSlug === slug
+    })
+    
+    if (!matchingFile) {
+      return null
+    }
+    
+    const filePath = path.join(contentDir, matchingFile)
+    const fileContent = fs.readFileSync(filePath, "utf8")
+    const { data: frontmatter, content } = matter(fileContent)
+    const htmlContent = await marked(content)
+    
+    return {
+      slug: slug,
+      title: frontmatter.title || matchingFile.replace(".md", ""),
+      subtitle: frontmatter.subtitle,
+      date: frontmatter.date || new Date().toISOString(),
+      excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
+      content: htmlContent,
+      tags: frontmatter.tags || [],
+      featured_image: frontmatter.featured_image || frontmatter.image,
+      reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
+      featured: frontmatter.featured || false,
+      medium_link: frontmatter.medium_link,
+      devto_link: frontmatter.devto_link,
+      substack_link: frontmatter.substack_link,
+      difficulty: frontmatter.difficulty || "intermediate",
+      type: "leadership",
+      code_languages: frontmatter.code_languages || [],
+      updated: frontmatter.updated,
+    }
+  } catch (error) {
+    console.error("Error loading article:", error)
+    return null
   }
+}
 
+export default async function LeadershipStrategyArticlePage({ 
+  params 
+}: { 
+  params: { slug: string } 
+}) {
+  const article = await getArticle(params.slug)
+  
   if (!article) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-slate-400">Article not found</div>
-      </div>
-    )
+    notFound()
   }
 
   return <ArticleClientPage article={article} />

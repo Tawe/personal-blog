@@ -6,42 +6,28 @@ import { marked } from "marked"
 
 export async function GET(request: Request, { params }: { params: { slug: string } }) {
   try {
-    console.log("API called with slug:", params.slug)
-
     const contentDir = path.join(process.cwd(), "content/leadership")
-    console.log("Content directory:", contentDir)
 
     if (!fs.existsSync(contentDir)) {
-      console.log("Content directory does not exist")
       return NextResponse.json({ error: "Content directory not found" }, { status: 404 })
     }
 
     const files = fs.readdirSync(contentDir)
-    console.log("Files found:", files)
-
     const markdownFiles = files.filter((file) => file.endsWith(".md"))
-    console.log("Markdown files:", markdownFiles)
 
     // Find the file that matches the slug
     const matchingFile = markdownFiles.find((filename) => {
       const fileSlug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
-      console.log(`Comparing slug "${params.slug}" with file slug "${fileSlug}"`)
       return fileSlug === params.slug
     })
 
     if (!matchingFile) {
-      console.log("No matching file found for slug:", params.slug)
       return NextResponse.json({ error: "Article not found" }, { status: 404 })
     }
-
-    console.log("Found matching file:", matchingFile)
 
     const filePath = path.join(contentDir, matchingFile)
     const fileContent = fs.readFileSync(filePath, "utf8")
     const { data: frontmatter, content } = matter(fileContent)
-
-    console.log("Raw content length:", content.length)
-    console.log("Content preview:", content.substring(0, 200))
 
     // Configure marked for better HTML output
     marked.setOptions({
@@ -49,11 +35,9 @@ export async function GET(request: Request, { params }: { params: { slug: string
       gfm: true,
     })
 
-    const htmlContent = marked(content)
-    console.log("HTML content length:", htmlContent.length)
-    console.log("HTML preview:", htmlContent.substring(0, 200))
-
-    return NextResponse.json({
+    const htmlContent = await marked(content)
+    
+    const response = NextResponse.json({
       article: {
         slug: params.slug,
         title: frontmatter.title || matchingFile.replace(".md", ""),
@@ -70,6 +54,13 @@ export async function GET(request: Request, { params }: { params: { slug: string
         substack_link: frontmatter.substack_link,
       },
     })
+    
+    // Add caching headers for Vercel
+    response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400')
+    response.headers.set('CDN-Cache-Control', 'public, s-maxage=3600')
+    response.headers.set('Vercel-CDN-Cache-Control', 'public, s-maxage=3600')
+    
+    return response
   } catch (error) {
     console.error("Error loading article:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

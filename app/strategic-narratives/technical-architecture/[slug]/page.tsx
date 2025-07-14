@@ -1,12 +1,14 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { useParams, notFound } from "next/navigation"
+import { notFound } from "next/navigation"
 import { ArticleClientPage } from "./ArticleClientPage"
+import fs from "fs"
+import path from "path"
+import matter from "gray-matter"
+import { marked } from "marked"
 
 interface Article {
   slug: string
   title: string
+  subtitle?: string
   date: string
   excerpt: string
   content: string
@@ -17,52 +19,115 @@ interface Article {
   type: string
   code_languages?: string[]
   updated?: string
+  medium_link?: string
+  devto_link?: string
+  substack_link?: string
+  featured?: boolean
 }
 
-export default function TechnicalArchitectureArticlePage() {
-  const params = useParams()
-  const [article, setArticle] = useState<Article | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+// Generate static params for all articles
+export async function generateStaticParams() {
+  const contentDir = path.join(process.cwd(), "content/technical-writings")
+  const files = fs.readdirSync(contentDir)
+  const markdownFiles = files.filter((file) => file.endsWith(".md"))
+  
+  return markdownFiles.map((filename) => {
+    const slug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
+    return { slug }
+  })
+}
 
-  useEffect(() => {
-    async function fetchArticle() {
-      try {
-        const slug = decodeURIComponent(params.slug as string)
-        const response = await fetch(`/api/content/technical/${slug}`)
-
-        if (!response.ok) {
-          setError(true)
-          return
-        }
-
-        const data = await response.json()
-        setArticle(data.article)
-      } catch (err) {
-        console.error("Error fetching article:", err)
-        setError(true)
-      } finally {
-        setLoading(false)
+// Generate metadata for SEO
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  try {
+    const contentDir = path.join(process.cwd(), "content/technical-writings")
+    const files = fs.readdirSync(contentDir)
+    const markdownFiles = files.filter((file) => file.endsWith(".md"))
+    const matchingFile = markdownFiles.find((filename) => {
+      const fileSlug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
+      return fileSlug === params.slug
+    })
+    
+    if (!matchingFile) {
+      return {
+        title: "Article Not Found",
+        description: "The requested article could not be found."
       }
     }
-
-    if (params.slug) {
-      fetchArticle()
+    
+    const filePath = path.join(contentDir, matchingFile)
+    const fileContent = fs.readFileSync(filePath, "utf8")
+    const { data: frontmatter } = matter(fileContent)
+    
+    return {
+      title: frontmatter.title || matchingFile.replace(".md", ""),
+      description: frontmatter.excerpt || frontmatter.subtitle || "Technical architecture article",
+      openGraph: {
+        title: frontmatter.title || matchingFile.replace(".md", ""),
+        description: frontmatter.excerpt || frontmatter.subtitle || "Technical architecture article",
+        images: frontmatter.featured_image || frontmatter.image ? [frontmatter.featured_image || frontmatter.image] : [],
+      },
     }
-  }, [params.slug])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p>Loading article...</p>
-        </div>
-      </div>
-    )
+  } catch (error) {
+    return {
+      title: "Article Not Found",
+      description: "The requested article could not be found."
+    }
   }
+}
 
-  if (error || !article) {
+async function getArticle(slug: string): Promise<Article | null> {
+  try {
+    const contentDir = path.join(process.cwd(), "content/technical-writings")
+    const files = fs.readdirSync(contentDir)
+    const markdownFiles = files.filter((file) => file.endsWith(".md"))
+    const matchingFile = markdownFiles.find((filename) => {
+      const fileSlug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
+      return fileSlug === slug
+    })
+    
+    if (!matchingFile) {
+      return null
+    }
+    
+    const filePath = path.join(contentDir, matchingFile)
+    const fileContent = fs.readFileSync(filePath, "utf8")
+    const { data: frontmatter, content } = matter(fileContent)
+    const htmlContent = await marked(content)
+    
+    return {
+      slug: slug,
+      title: frontmatter.title || matchingFile.replace(".md", ""),
+      subtitle: frontmatter.subtitle,
+      date: frontmatter.date || new Date().toISOString(),
+      excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
+      content: htmlContent,
+      tags: frontmatter.tags || [],
+      featured_image: frontmatter.featured_image || frontmatter.image,
+      reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
+      featured: frontmatter.featured || false,
+      medium_link: frontmatter.medium_link,
+      devto_link: frontmatter.devto_link,
+      substack_link: frontmatter.substack_link,
+      difficulty: frontmatter.difficulty || "intermediate",
+      type: "technical",
+      code_languages: frontmatter.code_languages || [],
+      updated: frontmatter.updated,
+    }
+  } catch (error) {
+    console.error("Error loading article:", error)
+    return null
+  }
+}
+
+export default async function TechnicalArchitectureArticlePage({ 
+  params 
+}: { 
+  params: { slug: string } 
+}) {
+  const article = await getArticle(params.slug)
+  
+  if (!article) {
     notFound()
   }
 
