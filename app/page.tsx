@@ -1,6 +1,3 @@
-"use client"
-
-import { useState, useEffect } from "react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
@@ -8,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, Lightbulb, Target, Dice6, Users } from "lucide-react"
+import { Metadata } from "next"
 
 interface Article {
   slug: string
@@ -20,65 +18,136 @@ interface Article {
   href: string
 }
 
-export default function HomePage() {
-  const [allArticles, setAllArticles] = useState<Article[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+async function getRecentArticles(): Promise<Article[]> {
+  try {
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : 'http://localhost:3000'
+    
+    // Fetch data from all content APIs
+    const [leadership, technical, artumin, dnd] = await Promise.all([
+      fetch(`${baseUrl}/api/content/leadership`).then((r) => r.json()),
+      fetch(`${baseUrl}/api/content/technical`).then((r) => r.json()),
+      fetch(`${baseUrl}/api/content/artumin`).then((r) => r.json()),
+      fetch(`${baseUrl}/api/content/dnd`).then((r) => r.json()),
+    ])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch data from all content APIs
-        const [leadership, technical, artumin, dnd] = await Promise.all([
-          fetch("/api/content/leadership").then((r) => r.json()),
-          fetch("/api/content/technical").then((r) => r.json()),
-          fetch("/api/content/artumin").then((r) => r.json()),
-          fetch("/api/content/dnd").then((r) => r.json()),
-        ])
+    // Combine and sort all articles by date, take the 3 most recent
+    const combined = [
+      ...(leadership.articles || []).map((article: any) => ({
+        ...article,
+        category: "Leadership",
+        categoryColor: "text-green-400",
+        href: `/strategic-narratives/leadership-strategy/${article.slug}`,
+      })),
+      ...(technical.articles || []).map((article: any) => ({
+        ...article,
+        category: "Technical",
+        categoryColor: "text-blue-400",
+        href: `/strategic-narratives/technical-architecture/${article.slug}`,
+      })),
+      ...(artumin.articles || []).map((article: any) => ({
+        ...article,
+        category: "Artumin",
+        categoryColor: "text-purple-400",
+        href: `/strategic-narratives/world-of-artumin/${article.slug}`,
+      })),
+      ...(dnd.articles || []).map((article: any) => ({
+        ...article,
+        category: "D&D",
+        categoryColor: "text-red-400",
+        href: `/strategic-narratives/dnd-ttrpgs/${article.slug}`,
+      })),
+    ]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 3)
 
-        // Combine and sort all articles by date, take the 3 most recent
-        const combined = [
-          ...(leadership.articles || []).map((article: any) => ({
-            ...article,
-            category: "Leadership",
-            categoryColor: "text-green-400",
-            href: `/strategic-narratives/leadership-strategy/${article.slug}`,
-          })),
-          ...(technical.articles || []).map((article: any) => ({
-            ...article,
-            category: "Technical",
-            categoryColor: "text-blue-400",
-            href: `/strategic-narratives/technical-architecture/${article.slug}`,
-          })),
-          ...(artumin.articles || []).map((article: any) => ({
-            ...article,
-            category: "Artumin",
-            categoryColor: "text-purple-400",
-            href: `/strategic-narratives/world-of-artumin/${article.slug}`,
-          })),
-          ...(dnd.articles || []).map((article: any) => ({
-            ...article,
-            category: "D&D",
-            categoryColor: "text-red-400",
-            href: `/strategic-narratives/dnd-ttrpgs/${article.slug}`,
-          })),
-        ]
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          .slice(0, 3)
+    return combined
+  } catch (error) {
+    console.error("Error fetching articles:", error)
+    return []
+  }
+}
 
-        setAllArticles(combined)
-      } catch (error) {
-        console.error("Error fetching articles:", error)
-        setAllArticles([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
+export const metadata: Metadata = {
+  title: "John Munn - Technical Leader & Engineering Strategist",
+  description: "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving. Dungeon Master applying storytelling to leadership.",
+  keywords: [
+    "technical leadership",
+    "engineering strategy", 
+    "software architecture",
+    "team building",
+    "technical mentoring",
+    "engineering management",
+    "scalable systems",
+    "cloud architecture",
+    "DevOps",
+    "strategic thinking",
+    "dungeon master",
+    "leadership development",
+  ],
+  openGraph: {
+    title: "John Munn - Technical Leader & Engineering Strategist",
+    description: "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving.",
+    url: "https://johnmunn.dev",
+    siteName: "John Munn - Technical Leader",
+    images: [
+      {
+        url: "/me.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "John Munn - Technical Leader & Engineering Strategist",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "John Munn - Technical Leader & Engineering Strategist",
+    description: "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving.",
+    images: ["/me.jpeg"],
+  },
+}
 
-    fetchData()
-  }, [])
+export default async function HomePage() {
+  const allArticles = await getRecentArticles()
 
   return (
     <div className="min-h-screen bg-slate-950">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "John Munn",
+            "url": "https://johnmunn.dev",
+            "image": "https://johnmunn.dev/me.jpeg",
+            "jobTitle": "Technical Leader & Engineering Strategist",
+            "description": "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving. Dungeon Master applying storytelling to leadership.",
+            "sameAs": [
+              "https://johnmunn.dev",
+            ],
+            "knowsAbout": [
+              "Technical Leadership",
+              "Engineering Strategy", 
+              "Software Architecture",
+              "Team Building",
+              "Scalable Systems",
+              "Cloud Architecture",
+              "DevOps",
+              "Strategic Thinking",
+              "Dungeon Master",
+              "Leadership Development"
+            ],
+            "worksFor": {
+              "@type": "Organization",
+              "name": "Independent Consultant"
+            }
+          }).replace(/</g, '\\u003c')
+        }}
+      />
       <div className="absolute inset-0 bg-tech-pattern opacity-30"></div>
       <div className="relative">
         <SiteHeader />
@@ -235,7 +304,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {!isLoading && allArticles.length > 0 ? (
+            {allArticles.length > 0 ? (
               allArticles.map((article) => (
                 <Card
                   key={article.slug}
@@ -264,10 +333,6 @@ export default function HomePage() {
                   </CardContent>
                 </Card>
               ))
-            ) : isLoading ? (
-              <div className="col-span-full text-center text-slate-400">
-                <p>Loading recent articles...</p>
-              </div>
             ) : (
               <div className="col-span-full text-center text-slate-400">
                 <p>No recent articles available.</p>
