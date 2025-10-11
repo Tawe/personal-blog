@@ -14,9 +14,19 @@ function generateSlug(filename: string): string {
     .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
 }
 
-export async function GET() {
-  const baseUrl = "https://johnmunn.dev"
+export async function GET(request: Request) {
+  // Get the base URL from the request to handle different environments
+  const url = new URL(request.url)
+  const baseUrl = `${url.protocol}//${url.host}`
   const urls = []
+
+  // Add robots.txt reference
+  urls.push({
+    loc: `${baseUrl}/robots.txt`,
+    lastmod: new Date().toISOString(),
+    changefreq: "yearly",
+    priority: "0.1",
+  })
 
   // Static pages
   const staticPages = [
@@ -97,7 +107,7 @@ ${urls
 
   return new NextResponse(sitemap, {
     headers: {
-      "Content-Type": "application/xml",
+      "Content-Type": "application/xml; charset=utf-8",
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
     },
   })
