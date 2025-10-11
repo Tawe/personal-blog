@@ -32,20 +32,33 @@ export async function generateStaticParams() {
   const markdownFiles = files.filter((file) => file.endsWith(".md"))
   
   return markdownFiles.map((filename) => {
-    const slug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
+    const slug = filename
+      .replace(".md", "")
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+      .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
     return { slug }
   })
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params
     const contentDir = path.join(process.cwd(), "content/leadership")
     const files = fs.readdirSync(contentDir)
     const markdownFiles = files.filter((file) => file.endsWith(".md"))
     const matchingFile = markdownFiles.find((filename) => {
-      const fileSlug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
-      return fileSlug === params.slug
+      const fileSlug = filename
+        .replace(".md", "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
+        .replace(/\s+/g, "-") // Replace spaces with hyphens
+        .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+        .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
+      return fileSlug === slug
     })
     
     if (!matchingFile) {
@@ -82,7 +95,13 @@ async function getArticle(slug: string): Promise<Article | null> {
     const files = fs.readdirSync(contentDir)
     const markdownFiles = files.filter((file) => file.endsWith(".md"))
     const matchingFile = markdownFiles.find((filename) => {
-      const fileSlug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
+      const fileSlug = filename
+        .replace(".md", "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
+        .replace(/\s+/g, "-") // Replace spaces with hyphens
+        .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+        .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
       return fileSlug === slug
     })
     
@@ -123,9 +142,10 @@ async function getArticle(slug: string): Promise<Article | null> {
 export default async function LeadershipStrategyArticlePage({ 
   params 
 }: { 
-  params: { slug: string } 
+  params: Promise<{ slug: string }> 
 }) {
-  const article = await getArticle(params.slug)
+  const { slug } = await params
+  const article = await getArticle(slug)
   
   if (!article) {
     notFound()
