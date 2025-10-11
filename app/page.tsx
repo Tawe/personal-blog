@@ -34,8 +34,8 @@ export default function HomePage() {
           fetch("/api/content/dnd").then((r) => r.json()),
         ])
 
-        // Combine and sort all articles by date, take the 3 most recent
-        const combined = [
+        // Combine all articles and randomly select 3 for variety
+        const allArticles = [
           ...(leadership.articles || []).map((article: any) => ({
             ...article,
             category: "Leadership",
@@ -61,8 +61,14 @@ export default function HomePage() {
             href: `/strategic-narratives/dnd-ttrpgs/${article.slug}`,
           })),
         ]
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          .slice(0, 3)
+
+        // Sort by date first, then randomly select 3 from the most recent 10
+        const sortedByDate = allArticles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        const recentArticles = sortedByDate.slice(0, Math.min(10, sortedByDate.length))
+        
+        // Shuffle and take 3 for variety
+        const shuffled = recentArticles.sort(() => Math.random() - 0.5)
+        const combined = shuffled.slice(0, 3)
 
         setAllArticles(combined)
       } catch (error) {

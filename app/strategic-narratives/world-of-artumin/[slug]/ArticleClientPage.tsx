@@ -31,7 +31,13 @@ export function ArticleClientPage({
         const response = await fetch("/api/content/artumin")
         const data = await response.json()
         const allArticles = data.articles || []
-        const related = allArticles.filter((a) => a.slug !== article.slug).slice(0, 2)
+        
+        // Filter out current article and shuffle for variety
+        const related = allArticles
+          .filter((a) => a.slug !== article.slug)
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 2)
+        
         setRelatedArticles(related)
       } catch (error) {
         console.error("Error loading related articles:", error)

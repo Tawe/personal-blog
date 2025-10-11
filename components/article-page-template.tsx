@@ -59,10 +59,22 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
         const data = await response.json()
         const allArticles = data.articles || []
 
-        const related = allArticles
+        // First try to find articles with matching tags, excluding current article
+        let related = allArticles
           .filter((a: Article) => a.slug !== article.slug)
           .filter((a: Article) => a.tags.some((tag: string) => article.tags.includes(tag)))
-          .slice(0, 2)
+        
+        // If we don't have enough tag-matched articles, add other articles from the same category
+        if (related.length < 2) {
+          const otherArticles = allArticles
+            .filter((a: Article) => a.slug !== article.slug)
+            .filter((a: Article) => !related.some((r: Article) => r.slug === a.slug))
+          
+          related = [...related, ...otherArticles]
+        }
+        
+        // Shuffle and take 2 for variety
+        related = related.sort(() => Math.random() - 0.5).slice(0, 2)
 
         setRelatedArticles(related)
       } catch (error) {

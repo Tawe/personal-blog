@@ -45,7 +45,13 @@ export function ArticleClientPage({
         const response = await fetch("/api/content/dnd")
         if (response.ok) {
           const allArticles = await response.json()
-          const related = allArticles.filter((a: DndContent) => a.slug !== article.slug).slice(0, 2)
+          
+          // Filter out current article and shuffle for variety
+          const related = allArticles
+            .filter((a: DndContent) => a.slug !== article.slug)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 2)
+          
           setRelatedArticles(related)
         }
       } catch (error) {
