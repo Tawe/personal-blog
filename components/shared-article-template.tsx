@@ -8,7 +8,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getAllArticles } from "@/lib/content-unified"
 import type { Article, HubConfig } from "@/lib/types"
 
 interface SharedArticleTemplateProps {
@@ -22,20 +21,42 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    try {
-      const allArticles = getAllArticles(config.contentFolder)
-      const related = allArticles
-        .filter((a) => a.slug !== article.slug)
-        .filter((a) => a.tags.some((tag) => article.tags.includes(tag)))
-        .slice(0, 2)
+    const loadRelatedArticles = async () => {
+      try {
+        // Map content folder to API endpoint
+        const apiEndpoint = config.contentFolder === 'dnd-musings' ? '/api/content/dnd' :
+                          config.contentFolder === 'leadership' ? '/api/content/leadership' :
+                          config.contentFolder === 'technical-writings' ? '/api/content/technical' :
+                          config.contentFolder === 'artumin' ? '/api/content/artumin' : null
 
-      setRelatedArticles(related)
-    } catch (error) {
-      console.error("Error loading related articles:", error)
-      setRelatedArticles([])
-    } finally {
-      setIsLoading(false)
+        if (!apiEndpoint) {
+          setRelatedArticles([])
+          setIsLoading(false)
+          return
+        }
+
+        const response = await fetch(apiEndpoint)
+        if (response.ok) {
+          const data = await response.json()
+          const allArticles = data.articles || []
+          const related = allArticles
+            .filter((a: Article) => a.slug !== article.slug)
+            .filter((a: Article) => a.tags.some((tag: string) => article.tags.includes(tag)))
+            .slice(0, 2)
+
+          setRelatedArticles(related)
+        } else {
+          setRelatedArticles([])
+        }
+      } catch (error) {
+        console.error("Error loading related articles:", error)
+        setRelatedArticles([])
+      } finally {
+        setIsLoading(false)
+      }
     }
+
+    loadRelatedArticles()
   }, [article.slug, article.tags, config.contentFolder])
 
   const handleShare = async () => {

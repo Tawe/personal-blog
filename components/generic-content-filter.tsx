@@ -6,25 +6,39 @@ import { Badge } from "@/components/ui/badge"
 import { Search, X, Calendar, Clock, Star } from "lucide-react"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import type { FilterOptions } from "@/lib/types"
 
-interface ArticleFilterProps {
+export interface FilterOptions {
+  search: string
+  tags: string[]
+  dateRange: { start: string; end: string }
+  readingTime: { min: number; max: number }
+  featured: boolean | null
+  [key: string]: any // Allow for content-type specific filters
+}
+
+interface GenericContentFilterProps {
+  title?: string
   availableTags: string[]
   filters: FilterOptions
   onFiltersChange: (filters: FilterOptions) => void
   onClearFilters: () => void
   resultCount: number
   totalCount: number
+  contentType?: string // e.g., "articles", "content", "posts"
+  customFilters?: React.ReactNode // Allow for content-type specific filter UI
 }
 
-export function ArticleFilter({
+export function GenericContentFilter({
+  title = "Filter Content",
   availableTags,
   filters,
   onFiltersChange,
   onClearFilters,
   resultCount,
   totalCount,
-}: ArticleFilterProps) {
+  contentType = "items",
+  customFilters,
+}: GenericContentFilterProps) {
   const hasActiveFilters =
     filters.search.trim() ||
     filters.tags.length > 0 ||
@@ -66,7 +80,7 @@ export function ArticleFilter({
     <div className="space-y-6 mb-8 p-6 bg-gradient-to-r from-slate-800/30 to-purple-900/20 rounded-xl border border-slate-700">
       <div className="flex items-center gap-2 mb-4">
         <Search className="h-5 w-5 text-purple-400" />
-        <h3 className="text-lg font-semibold text-slate-100">Filter Articles</h3>
+        <h3 className="text-lg font-semibold text-slate-100">{title}</h3>
         {hasActiveFilters && (
           <Button
             variant="ghost"
@@ -85,14 +99,14 @@ export function ArticleFilter({
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
         <Input
           type="text"
-          placeholder="Search articles, topics, or concepts..."
+          placeholder={`Search ${contentType}, topics, or concepts...`}
           value={filters.search}
           onChange={(e) => handleSearchChange(e.target.value)}
           className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-purple-500"
         />
       </div>
 
-      {/* Filters Grid */}
+      {/* Standard Filters Grid */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Date Range */}
         <div className="space-y-3">
@@ -131,7 +145,7 @@ export function ArticleFilter({
             </SelectTrigger>
             <SelectContent className="bg-slate-800 border-slate-600">
               <SelectItem value="all" className="text-slate-100">
-                All Articles
+                All {contentType}
               </SelectItem>
               <SelectItem value="featured" className="text-slate-100">
                 Featured Only
@@ -162,6 +176,13 @@ export function ArticleFilter({
         />
       </div>
 
+      {/* Custom Filters (for content-type specific filtering) */}
+      {customFilters && (
+        <div className="space-y-3">
+          {customFilters}
+        </div>
+      )}
+
       {/* Tags */}
       {availableTags.length > 0 && (
         <div className="space-y-3">
@@ -187,7 +208,7 @@ export function ArticleFilter({
 
       {/* Results count */}
       <div className="text-sm text-slate-400">
-        Showing {resultCount} of {totalCount} articles
+        Showing {resultCount} of {totalCount} {contentType}
         {hasActiveFilters && (
           <span className="ml-2">
             • Filtered by: {filters.search && `"${filters.search}"`}{" "}

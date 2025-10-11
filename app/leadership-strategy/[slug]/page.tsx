@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
-import { getArticleBySlug, getAllArticles } from "@/lib/content-unified"
+import { getArticleBySlug, getAllArticles } from "@/lib/content-api"
+import { LEADERSHIP_CONFIG } from "@/lib/content-configs"
 import { SharedArticleTemplate } from "@/components/shared-article-template"
 import type { HubConfig } from "@/lib/types"
 
@@ -23,7 +24,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const articles = getAllArticles("leadership")
+  const articles = getAllArticles(LEADERSHIP_CONFIG)
   return articles.map((article) => ({
     slug: article.slug,
   }))
@@ -31,7 +32,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps) {
   const decodedSlug = decodeURIComponent(params.slug)
-  const article = getArticleBySlug("leadership", decodedSlug)
+  const article = getArticleBySlug(LEADERSHIP_CONFIG, decodedSlug)
 
   if (!article) {
     return {
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default function LeadershipStrategyArticlePage({ params }: PageProps) {
   const decodedSlug = decodeURIComponent(params.slug)
-  const article = getArticleBySlug("leadership", decodedSlug)
+  const article = getArticleBySlug(LEADERSHIP_CONFIG, decodedSlug)
 
   if (!article) {
     notFound()

@@ -13,7 +13,7 @@ const nextConfig = {
   output: 'standalone',
   experimental: {
     // Enable static generation for dynamic routes
-    staticPageGenerationTimeout: 120,
+    // staticPageGenerationTimeout: 120, // Removed - not valid in Next.js 15
   },
   // Optimize for Vercel
   compress: true,
