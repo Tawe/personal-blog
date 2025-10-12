@@ -8,12 +8,15 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 31536000, // 1 year
   },
   // Enable static generation for better caching
   output: 'standalone',
   experimental: {
     // Enable static generation for dynamic routes
     // staticPageGenerationTimeout: 120, // Removed - not valid in Next.js 15
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   // Optimize for Vercel
   compress: true,
@@ -21,6 +24,10 @@ const nextConfig = {
   generateEtags: true,
   // SEO optimizations
   trailingSlash: false,
+  // Performance optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   async headers() {
     return [
       {

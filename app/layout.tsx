@@ -83,6 +83,18 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="canonical" href="https://johnmunn.dev" />
+        {/* Preconnect to external domains for faster loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* DNS prefetch for external resources */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        {/* Preload critical resources */}
+        <link rel="preload" href="/me.jpeg" as="image" type="image/jpeg" />
+        <link rel="preload" href="/pentagon-growth.svg" as="image" type="image/svg+xml" />
+        {/* Resource hints for better performance */}
+        <link rel="prefetch" href="/strategic-narratives" />
+        <link rel="prefetch" href="/contact" />
       </head>
       <body>{children}</body>
     </html>
