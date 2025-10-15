@@ -55,7 +55,7 @@ export default function TeamBuildingPage() {
               <div className="flex items-center justify-center">
                 <div className="relative">
                   <Image
-                    src="/placeholder.svg?height=400&width=400&text=Technical+Team+Adventure"
+                    src="/teambuilding.png"
                     width={400}
                     height={400}
                     alt="Technical Team Adventure"
