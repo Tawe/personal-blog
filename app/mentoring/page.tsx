@@ -1,7 +1,11 @@
-import { ContentLayout } from "@/components/content-layout"
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Users, Target, Lightbulb, TrendingUp, MessageSquare, Clock, MapPin, CheckCircle, Star } from "lucide-react"
+import Link from "next/link"
+import Image from "next/image"
+import { Users, Target, Lightbulb, TrendingUp, MessageSquare, Clock, MapPin, CheckCircle, Star, GraduationCap, Building2 } from "lucide-react"
 
 export default function MentoringPage() {
   const mentoringAreas = [
@@ -35,13 +39,66 @@ export default function MentoringPage() {
       icon: Lightbulb,
       topics: ["Narrative Thinking", "Team Dynamics", "Creative Solutions"],
     },
+    {
+      title: "Organizational Culture & Change",
+      description: "Building engineering culture, driving technical transformation, managing change",
+      icon: Building2,
+      topics: ["Culture Building", "Change Management", "Technical Transformation"],
+    },
   ]
 
   return (
-    <ContentLayout
-      title="Technical Leadership Mentoring"
-      description="Accelerating careers in technology leadership through practical guidance and proven frameworks"
-    >
+    <div className="flex min-h-screen flex-col">
+      <SiteHeader />
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_500px]">
+              <div className="flex flex-col justify-center space-y-4">
+                <div className="space-y-2">
+                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                    Technical Leadership Mentoring
+                  </h1>
+                  <p className="text-xl text-primary font-semibold">
+                    Accelerating careers in technology leadership through practical guidance and proven frameworks
+                  </p>
+                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                    Early in my career, a mentor helped me see that technical excellence alone wasn't enough for leadership
+                    success. That guidance transformed my trajectory from a skilled developer to a strategic technical leader.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                  <Button size="lg" asChild>
+                    <Link href="#mentoring-areas">Explore Mentoring Areas</Link>
+                  </Button>
+                  <Button variant="outline" size="lg" asChild>
+                    <Link href="/contact">Schedule Consultation</Link>
+                  </Button>
+                </div>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="relative">
+                  <Image
+                    src="/mentoring.png"
+                    width={400}
+                    height={400}
+                    alt="John Munn - Technical Leadership Mentor"
+                    className="rounded-xl object-cover"
+                    priority
+                  />
+                  <div className="absolute -bottom-4 -right-4 bg-primary text-primary-foreground p-3 rounded-full">
+                    <GraduationCap className="h-8 w-8" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Main Content */}
+        <div className="container mx-auto px-6 py-12">
+          <div className="max-w-7xl mx-auto space-y-16">
       {/* Value Proposition Section */}
       <section className="mb-16">
         <Card className="bg-slate-800/50 border-slate-600">
@@ -120,7 +177,7 @@ export default function MentoringPage() {
       </section>
 
       {/* Mentoring Areas */}
-      <section className="mb-16">
+      <section id="mentoring-areas" className="mb-16">
         <h2 className="text-3xl font-bold text-slate-100 mb-8 text-center">Mentoring Areas</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {mentoringAreas.map((area, index) => {
@@ -344,6 +401,10 @@ export default function MentoringPage() {
           </CardContent>
         </Card>
       </section>
-    </ContentLayout>
+          </div>
+        </div>
+      </main>
+      <SiteFooter />
+    </div>
   )
 }

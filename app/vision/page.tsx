@@ -1,16 +1,63 @@
-import { ContentLayout } from "@/components/content-layout"
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
-import { ArrowRight, MessageSquare, Calendar } from "lucide-react"
+import Image from "next/image"
+import { ArrowRight, MessageSquare, Calendar, Eye } from "lucide-react"
 
 export default function VisionPage() {
   return (
-    <ContentLayout
-      title="Vision"
-      description="My philosophy on technology leadership and the future of engineering organizations"
-    >
-      <div className="max-w-4xl mx-auto">
+    <div className="flex min-h-screen flex-col">
+      <SiteHeader />
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_500px]">
+              <div className="flex flex-col justify-center space-y-4">
+                <div className="space-y-2">
+                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                    Vision
+                  </h1>
+                  <p className="text-xl text-primary font-semibold">
+                    My philosophy on technology leadership and the future of engineering organizations
+                  </p>
+                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                    The future belongs to technology leaders who tell better stories. The best leaders don't just architect systems—they architect narratives that align teams, inspire innovation, and transform business possibilities.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                  <Button size="lg" asChild>
+                    <Link href="#philosophy">Explore Philosophy</Link>
+                  </Button>
+                  <Button variant="outline" size="lg" asChild>
+                    <Link href="/contact">Start Conversation</Link>
+                  </Button>
+                </div>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="relative">
+                  <Image
+                    src="/vision.png"
+                    width={400}
+                    height={400}
+                    alt="John Munn - Technology Leadership Vision"
+                    className="rounded-xl object-cover"
+                    priority
+                  />
+                  <div className="absolute -bottom-4 -right-4 bg-primary text-primary-foreground p-3 rounded-full">
+                    <Eye className="h-8 w-8" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Main Content */}
+        <div className="container mx-auto px-6 py-12">
+          <div className="max-w-4xl mx-auto">
         {/* Opening Hook */}
         <div className="mb-12 p-8 bg-gradient-to-r from-blue-900/20 to-purple-900/20 rounded-xl border border-slate-700">
           <h2 className="text-3xl font-bold text-slate-100 mb-4 leading-tight">
@@ -25,7 +72,7 @@ export default function VisionPage() {
         </div>
 
         {/* Technology Philosophy */}
-        <section className="mb-12">
+        <section id="philosophy" className="mb-12">
           <h2 className="text-3xl font-bold text-slate-100 mb-6 border-b border-slate-700 pb-4">
             Technology Philosophy: Building for Tomorrow, Delivering Today
           </h2>
@@ -236,7 +283,10 @@ export default function VisionPage() {
             </Button>
           </div>
         </section>
-      </div>
-    </ContentLayout>
+          </div>
+        </div>
+      </main>
+      <SiteFooter />
+    </div>
   )
 }
