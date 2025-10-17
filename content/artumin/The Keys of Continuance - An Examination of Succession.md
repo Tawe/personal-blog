@@ -17,7 +17,7 @@ reading_time: 7
 draft: false
 medium_link: https://medium.com/@johnmunn/the-keys-of-continuance-an-examination-of-succession-11ff13be12eb
 devto_link:
-substack: 
+substack: https://tawe.substack.com/p/the-keys-of-continuance?sort=top
 ---
 
 The forge groaned like a sleeping beast.
