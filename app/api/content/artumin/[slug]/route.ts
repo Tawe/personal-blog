@@ -10,7 +10,13 @@ export async function GET(request: Request, { params }: { params: { slug: string
     const files = fs.readdirSync(contentDir)
     const markdownFiles = files.filter((file) => file.endsWith(".md"))
     const matchingFile = markdownFiles.find((filename) => {
-      const fileSlug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
+      const fileSlug = filename
+        .replace(".md", "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
+        .replace(/\s+/g, "-") // Replace spaces with hyphens
+        .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+        .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
       return fileSlug === params.slug
     })
     if (!matchingFile) {
