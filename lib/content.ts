@@ -21,8 +21,6 @@ export interface ArticleMetadata extends BaseContentMetadata {
 
 export interface TechnicalArticleMetadata extends BaseContentMetadata {
   updated?: string
-  difficulty: "beginner" | "intermediate" | "advanced"
-  type: "tutorial" | "guide" | "analysis" | "documentation"
   code_languages?: string[]
   recently_updated?: boolean
 }
@@ -152,8 +150,6 @@ export function getArticleBySlug(slug: string): Article | null {
 export function getAllTechnicalArticles(): TechnicalArticleMetadata[] {
   return getAllContent<TechnicalArticleMetadata>("technical-writings", (data, content) => ({
     updated: data.updated,
-    difficulty: data.difficulty || "intermediate",
-    type: data.type || "guide",
     code_languages: data.code_languages || [],
     recently_updated: data.updated ? new Date(data.updated) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) : false,
   }))
@@ -164,8 +160,6 @@ export function getTechnicalArticleBySlug(slug: string): TechnicalArticle | null
     const codeBlockMatch = content.match(/```[\s\S]*?```/)
     return {
       updated: data.updated,
-      difficulty: data.difficulty || "intermediate",
-      type: data.type || "guide",
       code_languages: data.code_languages || [],
       recently_updated: data.updated ? new Date(data.updated) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) : false,
       code_preview: codeBlockMatch ? codeBlockMatch[0] : undefined,

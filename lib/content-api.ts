@@ -59,11 +59,6 @@ export function processContentDirectory(config: ContentConfig): ProcessedArticle
       reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
     }
 
-    // Add default type if provided
-    if (defaultType) {
-      baseArticle.type = frontmatter.type || defaultType
-    }
-
     // Add any additional custom fields from frontmatter
     Object.keys(customFields).forEach((key) => {
       if (frontmatter[key] !== undefined) {

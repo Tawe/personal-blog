@@ -22,7 +22,7 @@ substack: https://tawe.substack.com/p/the-storm-and-the-ledger-an-examination
 ---
 
 
-Thunder rolled across a bruised sky as the wind tugged at the oilskin flaps of Argus Leyline's saddlebag. He sat motionless atop his mount, watching the horizon crack and boil. Somewhere out there, east, maybe north — was shelter. The wagons behind him groaned beneath crates of alchemical goods and sealed grain. They could not afford to tip, to drown, or to be late.
+Thunder rolled across a bruised sky as the wind tugged at the oilskin flaps of Argus Leyline's saddlebag. He sat motionless atop his mount, watching the horizon crack and boil. Somewhere out there, east, maybe north  -  was shelter. The wagons behind him groaned beneath crates of alchemical goods and sealed grain. They could not afford to tip, to drown, or to be late.
 
 They waited on him. Every second of silence was a decision deferred. He could feel the weight of it pressing against his chest, heavier than the storm itself.
 
@@ -54,7 +54,7 @@ Cora remembered how Brenn had earned his place: a bandit ambush turned by fast t
 
 Sarah, so far, had only proven that she wasn't him.
 
-It wasn't the map that bothered Cora — it was how Sarah held it. Too casually, as if knowing the path were enough to survive it.
+It wasn't the map that bothered Cora  -  it was how Sarah held it. Too casually, as if knowing the path were enough to survive it.
 
 Cora's alternative was clear: the watchtower. Old and cracked, but known. It had weathered storms before. The walls were stone. The footing, high. Not comfortable, but dependable. It would take time to reach and they might lose a wagon, but once inside, they'd likely be safe. The cave, on the other hand, was unmarked and unmapped. If it didn't exist, or wasn't big enough, they'd be caught in the open. Cora hadn't argued. She'd warned.
 
@@ -66,7 +66,7 @@ Then there was Jacob. Older than he looked. Sharper than most realized. He'd bee
 
 Jacob didn't speak often. But when he did, Argus listened. Not because he was loud. Because he was usually right.
 
-So when Jacob backed Sarah, Argus paid attention. Not just because it was Jacob — but because it stood in contrast to Cora. She wanted certainty. He saw potential. And in that difference, Argus saw the true dilemma. Not cave or ruin. But proven ground or untapped promise.
+So when Jacob backed Sarah, Argus paid attention. Not just because it was Jacob  -  but because it stood in contrast to Cora. She wanted certainty. He saw potential. And in that difference, Argus saw the true dilemma. Not cave or ruin. But proven ground or untapped promise.
 
 Jacob hadn't been casual. He'd watched Sarah the whole trip. Observed, not indulged. He didn't ignore her errors, but he saw past them. There was something steady there. An edge of calm that surfaced when it mattered.
 
@@ -136,7 +136,7 @@ And what he chose to write in it.
 He didn't look back.  
 Didn't speak.
 
-Just rode forward — through the wind, the doubt, and into whatever waited.
+Just rode forward  -  through the wind, the doubt, and into whatever waited.
 
 Some things you measure in coin.  
 Others, only in hindsight.

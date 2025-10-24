@@ -25,7 +25,7 @@ The sun baked the stone yard as Captain Nora Greyhelm stood with arms crossed, e
 
 The weapon hadn’t come from Guild stores. William had bought it himself, quietly, out of his personal stipend. No requisition. No signature. Just a long ride east, a modest payment, and the gamble that this time, something would land.
 
-William had pitched other initiatives before — some clever, some costly. A few showed promise. Most did not. Each time, he’d been heard, but never followed.
+William had pitched other initiatives before  -  some clever, some costly. A few showed promise. Most did not. Each time, he’d been heard, but never followed.
 
 This time, he brought proof instead of proposals.
 
@@ -101,7 +101,7 @@ She thought of the senior stewards; those who praised stability, who saw the dan
 
 ‘One day,’ she thought, ‘someone will ask how we vanished. And they’ll find a ledger. Columns neat. No alarm raised. Until the foundation cracked beneath us.’
 
-“And if we don’t? The Adventurer’s Guild gets there first. They’ll source it themselves. And we’re not just behind — we’re humiliated.”
+“And if we don’t? The Adventurer’s Guild gets there first. They’ll source it themselves. And we’re not just behind  -  we’re humiliated.”
 
 Nora exhaled slowly. Her voice, when it came, was quiet.
 
@@ -157,7 +157,7 @@ Nora turned back toward the yard. In the distance, the recruit still worked at t
 
 “Go.”
 
- — -
+  -  -
 
 **Author’s Note**
 
@@ -167,7 +167,7 @@ Nora is the leader who’s seen what hasty change can cost. William is the repor
 
 This isn’t a story that tells you when to jump on a new technology. It’s a story that asks: how do you _know_? How do you tell the difference between a lasting shift and a passing trend? Between prudent skepticism and fear wearing armor?
 
-I wrote this because I’ve been in Nora’s seat — responsible for something that still technically works. And I’ve been William too, trying to prove a change that felt obvious, but wasn’t safe.
+I wrote this because I’ve been in Nora’s seat  -  responsible for something that still technically works. And I’ve been William too, trying to prove a change that felt obvious, but wasn’t safe.
 
 There’s no clean answer. Only tension. Only tradeoffs. Only trust.
 

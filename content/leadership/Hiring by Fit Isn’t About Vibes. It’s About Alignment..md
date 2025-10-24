@@ -94,7 +94,7 @@ It just helps us stack candidates by the qualities we said matter most. It remov
 
 And sometimes the best hire isn’t the highest score. It’s the one whose edges sharpen the team in the right direction.
 
-> _🧮 Want to go deeper? Assign weight multipliers to each trait based on role needs. For example: Communication ×1.5, Initiative ×1.0, Feedback Resilience ×0.8. Multiply scores before totaling. This forces clarity on what success looks like in_ this _role — not just in theory._
+> _🧮 Want to go deeper? Assign weight multipliers to each trait based on role needs. For example: Communication ×1.5, Initiative ×1.0, Feedback Resilience ×0.8. Multiply scores before totaling. This forces clarity on what success looks like in_ this _role  -  not just in theory._
 
 ---
 

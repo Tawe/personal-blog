@@ -1,10 +1,8 @@
 ---
 title: "Cursor Faces Dev Backlash as VS Code Launches Open-Source AI Tool"
 date: "2025-05-19"
-excerpt: "Cursor is under fire for degraded service and poor communication—then Microsoft dropped a bomb: VS Code just went open-source with integrated AI."
+excerpt: "Cursor is under fire for degraded service and poor communication - then Microsoft dropped a bomb: VS Code just went open-source with integrated AI."
 tags: ["Cursor", "Devtools", "Developer Tools", "AI", "Software Engineering"]
-difficulty: "intermediate"
-type: "guide"
 reading_time: 3
 featured_image: /CursorFacesDevBacklash.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/cursor-faces-backlash-devs-call-out-slowness-silence-and-broken-trust-8cbb7655054a
@@ -14,7 +12,7 @@ code_languages: []
 draft: false
 ---
 
- In just 24 hours, Cursor's developer community has erupted in frustration. Reddit threads and forum posts are lighting up with one shared theme: something's off—and the silence from the team isn't helping.
+ In just 24 hours, Cursor's developer community has erupted in frustration. Reddit threads and forum posts are lighting up with one shared theme: something's off - and the silence from the team isn't helping.
 
 ## 🚨 The Performance Slowdown
 
@@ -24,17 +22,17 @@ The biggest issue? Cursor has become painfully slow, especially for anyone not o
 - "Cursor is unusable now"
 - "Cursor isn't generating anything"
 
-These aren't one-off gripes. The volume and tone suggest a deeper shift—something changed behind the scenes, and it hasn't been communicated.
+These aren't one-off gripes. The volume and tone suggest a deeper shift - something changed behind the scenes, and it hasn't been communicated.
 
 ## 💸 Paying Users Are Frustrated
 
-Many of those raising concerns are long-time supporters—people who were paying users well before Cursor took off. Some have already canceled their subscriptions. Others are hanging back, waiting to see if it gets fixed.
+Many of those raising concerns are long-time supporters - people who were paying users well before Cursor took off. Some have already canceled their subscriptions. Others are hanging back, waiting to see if it gets fixed.
 
 One user summed it up:
 
-"I used to love this tool. Now I sit waiting 45 seconds for a simple autocomplete—I canceled this morning."
+"I used to love this tool. Now I sit waiting 45 seconds for a simple autocomplete - I canceled this morning."
 
-## 🤐 Transparency—or the Lack Thereof
+## 🤐 Transparency - or the Lack Thereof
 
 Cursor seems to have changed how its backend handles requests. But there's been no announcement. No changelog. No in-app heads-up. That silence is damaging.
 
@@ -44,7 +42,7 @@ Speculation is growing:
 - Is the student free-tier initiative overwhelming the infrastructure?
 - Is usage outpacing revenue?
 
-Nobody knows—and that's the problem.
+Nobody knows - and that's the problem.
 
 ## 🧨 VS Code Just Dropped a Bomb
 
@@ -52,9 +50,9 @@ The timing couldn't be more significant: on May 19, 2025, Microsoft announced th
 
 It's a big move:
 
-- More openness — a stark contrast to Cursor's current silence
-- More customization — developers regain control
-- More transparency — directly addressing the key complaint Cursor is facing
+- More openness  -  a stark contrast to Cursor's current silence
+- More customization  -  developers regain control
+- More transparency  -  directly addressing the key complaint Cursor is facing
 
 For many devs, this could be a turning point.
 
@@ -64,7 +62,7 @@ This may be a pivotal misstep for Cursor. Tools like Windsurf, Claude Code, and 
 
 Cursor's model may be running up against cost ceilings. But without communication, all devs see is a once-great tool that now feels slow, unpredictable, and closed off.
 
-And once trust breaks—it's hard to earn back.
+And once trust breaks - it's hard to earn back.
 
 ## 🧵 Live Discussions From the Community
 
@@ -86,7 +84,7 @@ With Microsoft stepping in with a more open and transparent AI editor today, the
 - Be honest about what changed
 - Set expectations for each tier
 - Offer credits or refunds to those affected
-- Rebuild communication channels—fast
+- Rebuild communication channels - fast
 
 In dev tools, performance is table stakes. Transparency is the edge.
 

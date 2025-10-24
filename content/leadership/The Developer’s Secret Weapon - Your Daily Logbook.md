@@ -111,4 +111,4 @@ That’s your first logbook entry.
 
 That’s the start of something useful.
 
-_Have you ever kept a logbook or developer journal? What helped you stick with it — or what made it fall off? I’d love to hear in the comments_
+_Have you ever kept a logbook or developer journal? What helped you stick with it  -  or what made it fall off? I’d love to hear in the comments_

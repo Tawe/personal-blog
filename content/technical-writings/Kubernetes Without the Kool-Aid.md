@@ -3,8 +3,6 @@ title: "Kubernetes Without the Kool-Aid"
 date: "2025-06-09"
 excerpt: "Kubernetes promised simplicity at scale. What I got was 400 lines of YAML, a sidecar crash that took down prod, and an education in organizational politics"
 tags: ["Kubernetes", "Devops Tool", "DevOps", "Infrastructure", "Software Engineering"]
-difficulty: "beginner"
-type: "analysis"
 reading_time: 14
 featured_image: /kuberneteswithoutthekoolaid.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/kubernetes-without-the-kool-aid-2ca212b3b97b

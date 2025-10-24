@@ -7,10 +7,6 @@ import {
   Clock,
   ArrowRight,
   Tag,
-  Code,
-  Zap,
-  AlertCircle,
-  Scroll,
   Map,
   Users,
   Crown,
@@ -32,19 +28,6 @@ import type {
 } from "@/lib/content"
 
 // Type configurations
-const difficultyConfig = {
-  beginner: { color: "bg-green-600/20 text-green-400 border-green-600/30", icon: "●" },
-  intermediate: { color: "bg-yellow-600/20 text-yellow-400 border-yellow-600/30", icon: "●●" },
-  advanced: { color: "bg-red-600/20 text-red-400 border-red-600/30", icon: "●●●" },
-}
-
-const technicalTypeConfig = {
-  tutorial: { color: "bg-blue-600/20 text-blue-400 border-blue-600/30", icon: Code },
-  guide: { color: "bg-purple-600/20 text-purple-400 border-purple-600/30", icon: Zap },
-  analysis: { color: "bg-orange-600/20 text-orange-400 border-orange-600/30", icon: AlertCircle },
-  documentation: { color: "bg-slate-600/20 text-slate-400 border-slate-600/30", icon: Code },
-}
-
 const artumiTypeConfig = {
   story: { color: "bg-purple-600/20 text-purple-400 border-purple-600/30", icon: Scroll, label: "Story" },
   lore: { color: "bg-blue-600/20 text-blue-400 border-blue-600/30", icon: BookOpen, label: "Lore" },
@@ -115,25 +98,6 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
 
   const renderTypeInfo = () => {
     switch (section) {
-      case "technical": {
-        const tech = content as TechnicalArticleMetadata
-        const difficultyStyle = difficultyConfig[tech.difficulty]
-        const typeStyle = technicalTypeConfig[tech.type]
-        const TypeIcon = typeStyle.icon
-
-        return (
-          <div className="flex gap-2">
-            <Badge className={`${difficultyStyle.color} text-xs font-mono`}>
-              {difficultyStyle.icon} {tech.difficulty}
-            </Badge>
-            <Badge className={`${typeStyle.color} text-xs`}>
-              <TypeIcon className="h-3 w-3 mr-1" />
-              {tech.type}
-            </Badge>
-          </div>
-        )
-      }
-
       case "artumin": {
         const artumi = content as ArtumiContentMetadata
         const typeStyle = artumiTypeConfig[artumi.type]

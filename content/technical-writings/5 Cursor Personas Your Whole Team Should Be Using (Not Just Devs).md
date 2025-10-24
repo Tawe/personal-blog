@@ -3,8 +3,6 @@ title: "5 Cursor Personas Your Whole Team Should Be Using (Not Just Devs)"
 date: "2025-06-26"
 excerpt: "Transform Cursor into a multi-role assistant with 5 powerful personas for product, SEO, DevOps, and beyond. Build smarter workflows with AI."
 tags: ["Cursor", "Prompt Engineering", "Developer Tools", "Productivity", "Software Engineering"]
-difficulty: "intermediate"
-type: "guide"
 reading_time: 6
 featured_image: /5cursorpersonas.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/5-cursor-personas-your-whole-team-should-be-using-not-just-devs-a4c21c84b46b
@@ -98,7 +96,7 @@ _“This works. But does it scale? Does it belong here?”_
 
 ## The Database Sage (a.k.a. The Guardian of State)
 
-_“It’s not about the query — it’s about the long-term cost of the query.”_
+_“It’s not about the query  -  it’s about the long-term cost of the query.”_
 
 **Why this works:** Query performance and schema drift are invisible until they hurt. This persona puts the brakes on shipping risky DB changes by default.
 

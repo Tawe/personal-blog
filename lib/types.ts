@@ -20,8 +20,6 @@ export interface ArticleMetadata extends BaseContentMetadata {
 
 export interface TechnicalArticleMetadata extends BaseContentMetadata {
   updated?: string
-  difficulty: "beginner" | "intermediate" | "advanced"
-  type: "tutorial" | "guide" | "analysis" | "documentation"
   code_languages?: string[]
   recently_updated?: boolean
 }

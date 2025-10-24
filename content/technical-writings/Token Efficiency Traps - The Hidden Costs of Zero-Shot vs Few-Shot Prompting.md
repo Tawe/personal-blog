@@ -1,10 +1,8 @@
 ---
 title: "Token Efficiency Traps - The Hidden Costs of Zero-Shot vs Few-Shot Prompting"
 date: "2025-05-22"
-excerpt: "Discover when few-shot prompts are worth the token cost—and when they aren’t. A practical guide to optimizing LLM prompts for performance and price."
+excerpt: "Discover when few-shot prompts are worth the token cost - and when they aren’t. A practical guide to optimizing LLM prompts for performance and price."
 tags: ["Artificial Intelligence", "Machine Learning", "Natural Language Processing", "Llm", "Prompt Engineering"]
-difficulty: "beginner"
-type: "analysis"
 reading_time: 5
 featured_image: /tokeneffencity.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/token-efficiency-traps-the-hidden-costs-of-zero-shot-vs-few-shot-prompting-8fdc7f2e3d29
@@ -19,7 +17,7 @@ _Prompt engineering is often seen as a craft of clever wording, but behind the s
 
 ## The Quick Take
 
-You didn't write a bad prompt—your model just read too much. That's the hidden danger of few-shot prompting: it feels efficient, but it might be costing you far more tokens than it returns in quality.
+You didn't write a bad prompt - your model just read too much. That's the hidden danger of few-shot prompting: it feels efficient, but it might be costing you far more tokens than it returns in quality.
 
 A simple keyword extraction task uses ~26 tokens with zero-shot but ~88 tokens with few-shot prompting. Same task. Over 3x the tokens. Multiply this by 10,000 API calls and you're burning $80 instead of $24.
 
@@ -43,7 +41,7 @@ Not all tokens are created equal. The format of your prompt can add invisible we
 - **Markdown Format**: `- Name: Alice\n- Role: engineer` → ~15 tokens  
 - **Plain Text**: `Name: Alice, Role: engineer` → ~13 tokens
 
-JSON includes quotes, colons, and braces—all of which consume tokens unnecessarily.
+JSON includes quotes, colons, and braces - all of which consume tokens unnecessarily.
 
 ## Strategic Token Budgeting
 
@@ -91,7 +89,7 @@ High-quality examples can do what verbose instructions can't. Here, paying the t
 
 ## Model-Specific Considerations
 
-Different models tokenize differently—even for the same text:
+Different models tokenize differently - even for the same text:
 
 | Model      | Tokenizer                    | Token Count for "John loves writing technical articles." |
 |------------|------------------------------|----------------------------------------------------------|
@@ -129,11 +127,11 @@ If your example solves one of these, it's likely worth the tokens.
 - **Anthropic, Mistral tokenizers**: Model-specific analysis tools
 - **API metadata logging**: Most providers return token counts per request
 
-Remember: You're not just feeding a model. You're buying its attention—one token at a time.
+Remember: You're not just feeding a model. You're buying its attention - one token at a time.
 
 ## Final Thought
 
-The most expensive prompt isn't the one that costs the most tokens—it's the one that wastes them. Start lean, add strategically, and always measure the trade-off between token cost and quality gain.
+The most expensive prompt isn't the one that costs the most tokens - it's the one that wastes them. Start lean, add strategically, and always measure the trade-off between token cost and quality gain.
 
 # 📚 Sources & Further Reading
 

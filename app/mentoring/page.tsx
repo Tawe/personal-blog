@@ -113,7 +113,7 @@ export default function MentoringPage() {
             <p>
               I bring a unique perspective combining deep technical expertise, proven leadership experience, and
               creative problem-solving approaches. My focus is on practical, actionable guidance that delivers real
-              results—not theoretical advice that sits on a shelf.
+              results - not theoretical advice that sits on a shelf.
             </p>
             <div className="flex flex-wrap gap-2 mt-4">
               <Badge variant="secondary" className="bg-blue-600/20 text-blue-300">
@@ -353,7 +353,7 @@ export default function MentoringPage() {
             <div>
               <h4 className="font-semibold text-slate-100 mb-2">How do you measure success?</h4>
               <p>
-                We'll set clear, measurable goals at the start—whether that's a promotion, improved team performance, or
+                We'll set clear, measurable goals at the start - whether that's a promotion, improved team performance, or
                 specific leadership skills development.
               </p>
             </div>

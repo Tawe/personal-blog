@@ -2,10 +2,8 @@
 title: "Why Your AI Outputs Are Wrong - The Hidden Impact of Tokenization"
 subtitle: "You paid for 128,000 tokens of context. You’re using maybe 30,000 effectively."
 date: "2025-05-31"
-excerpt: "Most of your 128K context is being ignored. This guide breaks down why—and how to structure prompts for real token efficiency and ROI."
+excerpt: "Most of your 128K context is being ignored. This guide breaks down why - and how to structure prompts for real token efficiency and ROI."
 tags: ["Artificial Intelligence", "Machine Learning", "Programming", "Llm", "Software Engineering"]
-difficulty: "beginner"
-type: "analysis"
 reading_time: 6
 featured_image: /contextwindow.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/the-context-window-illusion-why-your-128k-tokens-arent-working-d224d8219baewhy-your-ai-outputs-are-wrong-the-hidden-impact-of-tokenization-3gh3
@@ -16,7 +14,7 @@ draft: false
 ---
 
 
-> “You paid for 128,000 tokens of context. You’re using maybe 30,000 effectively. The rest? Your model is ignoring them — and charging you anyway.”
+> “You paid for 128,000 tokens of context. You’re using maybe 30,000 effectively. The rest? Your model is ignoring them  -  and charging you anyway.”
 
 # Part 1: The Utilization Gap
 
@@ -80,7 +78,7 @@ This strategy exploits the attention bias head-on: place your most critical cont
 
 You are a contract summarizer. Highlight key dates and deliverables.
 
-[Full contract text — 40K tokens]
+[Full contract text  -  40K tokens]
 
 Reminder: Your goal is to extract all important dates and deliverables.
 
@@ -91,7 +89,7 @@ Reminder: Your goal is to extract all important dates and deliverables.
 
 ![Prompt Restructuring Impact on QA Accuray](/qaaccuracy.webp)
 
-**Repetition isn’t redundant — it’s reinforcement.**
+**Repetition isn’t redundant  -  it’s reinforcement.**
 
 Chunking vs. Compression
 

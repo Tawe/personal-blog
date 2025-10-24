@@ -4,8 +4,6 @@ subtitle: "What Your Infrastructure Strategy Says About Your Org, and Why It Mat
 date: "2025-06-02"
 excerpt: "A strategic look at how Infrastructure as Code builds safer systems, scales trust, and aligns platforms with team structure and long-term growth."
 tags: ["DevOps", "Infrastructure", "Infrastructure As Code", "Technical Strategy", "Software Engineering"]
-difficulty: "beginner"
-type: "analysis"
 reading_time: 5
 featured_image: /iacspeedtrust.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/infrastructure-as-code-isnt-about-speed-it-s-about-trust-6b8118eb5b4a

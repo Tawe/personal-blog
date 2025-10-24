@@ -2,7 +2,7 @@
 title: "The Culture Flag Bearers (And the Weight They Carry)"
 subtitle: "Why your team’s emotional backbone is both your greatest asset, and at greatest risk"
 date: 2025-06-30
-excerpt: How to spot, support, and protect the people quietly holding your culture together—before burnout or misalignment breaks your team.
+excerpt: How to spot, support, and protect the people quietly holding your culture together - before burnout or misalignment breaks your team.
 tags:
   - Leadership
   - Company Culture
@@ -166,10 +166,10 @@ Some are loud. Some are almost invisible. But they shape culture all the same.
 
 Here are a few I’ve seen most often:
 
-- **The Anchor** — calm, consistent, the person people rely on when things wobble
-- **The Connector** — always introducing teammates, remembering birthdays, stitching people together
-- **The Firestarter** — rallies energy, keeps spirits high, makes the team feel alive
-- **The Watcher** — quiet but deeply tuned in; they notice who’s drifting, and bring them back
+- **The Anchor**  -  calm, consistent, the person people rely on when things wobble
+- **The Connector**  -  always introducing teammates, remembering birthdays, stitching people together
+- **The Firestarter**  -  rallies energy, keeps spirits high, makes the team feel alive
+- **The Watcher**  -  quiet but deeply tuned in; they notice who’s drifting, and bring them back
 
 Sometimes you need more than one.  
 Sometimes you only have one, and they’re carrying more than they should.

@@ -206,7 +206,7 @@ This is where culture meets coaching.
 
 ## The Security Gatekeeper
 
-They flinch every time someone says “agent” or “automated.” They’ve seen what happens when a test key hits prod — or when logs leak credentials.
+They flinch every time someone says “agent” or “automated.” They’ve seen what happens when a test key hits prod  -  or when logs leak credentials.
 
 They don’t need evangelism. They need visibility. And control.
 

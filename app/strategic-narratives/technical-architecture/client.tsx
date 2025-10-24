@@ -31,11 +31,6 @@ interface TechnicalArchitectureClientProps {
 export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchitectureClientProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string>("")
-  const [selectedType, setSelectedType] = useState<string>("")
-
-  const difficulties = ["beginner", "intermediate", "advanced"]
-  const types = ["tutorial", "guide", "analysis", "documentation"]
 
   const filteredArticles = useMemo(() => {
     return articles.filter((article) => {
@@ -47,12 +42,9 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
 
       const matchesTags = selectedTags.length === 0 || selectedTags.every((tag) => article.tags.includes(tag))
 
-      const matchesDifficulty = selectedDifficulty === "" || article.difficulty === selectedDifficulty
-      const matchesType = selectedType === "" || article.type === selectedType
-
-      return matchesSearch && matchesTags && matchesDifficulty && matchesType
+      return matchesSearch && matchesTags
     })
-  }, [articles, searchTerm, selectedTags, selectedDifficulty, selectedType])
+  }, [articles, searchTerm, selectedTags])
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]))
@@ -61,25 +53,10 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
   const clearFilters = () => {
     setSearchTerm("")
     setSelectedTags([])
-    setSelectedDifficulty("")
-    setSelectedType("")
   }
 
   const hasActiveFilters =
-    searchTerm.trim() !== "" || selectedTags.length > 0 || selectedDifficulty !== "" || selectedType !== ""
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case "beginner":
-        return "bg-green-600"
-      case "intermediate":
-        return "bg-yellow-600"
-      case "advanced":
-        return "bg-red-600"
-      default:
-        return "bg-slate-600"
-    }
-  }
+    searchTerm.trim() !== "" || selectedTags.length > 0
 
   return (
     <div className="space-y-8">
@@ -105,41 +82,6 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100"
           />
-        </div>
-
-        {/* Filters */}
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="text-sm font-medium text-slate-300 mb-2 block">Difficulty</label>
-            <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-              <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
-                <SelectValue placeholder="All levels" />
-              </SelectTrigger>
-              <SelectContent>
-                {difficulties.map((difficulty) => (
-                  <SelectItem key={difficulty} value={difficulty}>
-                    {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium text-slate-300 mb-2 block">Type</label>
-            <Select value={selectedType} onValueChange={setSelectedType}>
-              <SelectTrigger className="bg-slate-800/50 border-slate-600 text-slate-100">
-                <SelectValue placeholder="All types" />
-              </SelectTrigger>
-              <SelectContent>
-                {types.map((type) => (
-                  <SelectItem key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
         </div>
 
         {/* Tags */}
@@ -186,14 +128,6 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
               />
             </div>
             <CardHeader>
-              <div className="flex items-center gap-2 mb-2">
-                <Badge className={`${getDifficultyColor(article.difficulty)} text-white text-xs`}>
-                  {article.difficulty}
-                </Badge>
-                <Badge variant="outline" className="border-slate-600 text-slate-400 text-xs">
-                  {article.type}
-                </Badge>
-              </div>
               <CardTitle className="text-slate-100 text-lg leading-tight">
                 <Link
                   href={`/strategic-narratives/technical-architecture/${article.slug}`}

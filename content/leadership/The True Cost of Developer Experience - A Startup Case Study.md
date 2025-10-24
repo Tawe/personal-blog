@@ -26,7 +26,7 @@ This is their story.
 
 # Meet the Players
 
-## ShipFast Inc. — “We’ll Optimize Later”
+## ShipFast Inc.  -  “We’ll Optimize Later”
 
 These guys believed in moving fast and breaking things. Fifteen developers and this one guy Dave who somehow ended up doing all the deployments even though he was hired to build React components.
 
@@ -34,7 +34,7 @@ Dave’s process was beautiful in its simplicity: FTP files to the server, click
 
 The thing about Dave was that he never took vacations. Not because he was dedicated, but because the entire company’s infrastructure lived on his laptop. Like, literally. Their database backups were in his Dropbox folder.
 
-## ProcessPro Solutions — “We Do Things Right”
+## ProcessPro Solutions  -  “We Do Things Right”
 
 ProcessPro loved processes. They had processes for creating processes. Their Scrum Master treated Jira like it was the Constitution, and honestly, he might have been onto something because their workflow was about as easy to change.
 
@@ -44,7 +44,7 @@ Nobody had bothered to remove Todd from the approval chain because changing the 
 
 Their CI/CD pipeline was basically just Jenkins creating Jira tickets that would sit in a backlog forever. They could technically deploy whenever they wanted, as long as it was a Tuesday between 10 AM and 2 PM, assuming no federal holidays, and Mercury wasn’t in retrograde.
 
-## CloudNative Corp — “Best Practices From Day One”
+## CloudNative Corp  -  “Best Practices From Day One”
 
 If Google did it, CloudNative wanted to do it too. Forty developers who could recite the Twelve-Factor App methodology from memory, plus this one architect who insisted everything had to be “cloud-native” and “horizontally scalable.”
 
@@ -52,7 +52,7 @@ Setting up their local dev environment was like assembling IKEA furniture, if IK
 
 They had monitoring for their monitoring systems. Their documentation was so thorough it crashed browsers. The security team once flagged a “Hello World” app as a potential security risk because it contained the word “Hello,” which could theoretically be used to establish unauthorized communication channels.
 
-## FlowState Labs — “Developer Happiness Is Everything”
+## FlowState Labs  -  “Developer Happiness Is Everything”
 
 FlowState was all about developer happiness. Thirty developers with MacBook Pros, standing desks, meditation rooms, and a coffee setup that probably cost more than most people’s cars.
 
@@ -66,7 +66,7 @@ _Deploy successful_
 
 Sometimes developers would accidentally spin up forty-seven different versions of the same service and forget which one was production. But hey, at least they could fix it quickly.
 
-## AIFirst Systems — “The Future Is Now”
+## AIFirst Systems  -  “The Future Is Now”
 
 AIFirst believed the future was AI doing everything humans were bad at, which turned out to be everything. Twenty developers who pair-programmed with ChatGPT more than each other, plus a CTO who was convinced they were building the singularity.
 

@@ -24,7 +24,7 @@ export default function VisionPage() {
                     My philosophy on technology leadership and the future of engineering organizations
                   </p>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    The future belongs to technology leaders who tell better stories. The best leaders don't just architect systems—they architect narratives that align teams, inspire innovation, and transform business possibilities.
+                    The future belongs to technology leaders who tell better stories. The best leaders don't just architect systems - they architect narratives that align teams, inspire innovation, and transform business possibilities.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -64,7 +64,7 @@ export default function VisionPage() {
             The Future Belongs to Technology Leaders Who Tell Better Stories
           </h2>
           <p className="text-xl text-slate-300 leading-relaxed">
-            The best Leaders don't just architect systems—they architect narratives that align teams, inspire innovation,
+            The best Leaders don't just architect systems - they architect narratives that align teams, inspire innovation,
             and transform business possibilities. In an era where technology drives every competitive advantage, the
             most successful organizations will be led by technical leaders who can weave together complex technical
             realities with compelling business visions.
@@ -79,18 +79,18 @@ export default function VisionPage() {
           <div className="space-y-6 text-slate-300 leading-relaxed">
             <p>
               Technology should be an enabler, not an obstacle. My approach centers on{" "}
-              <strong className="text-blue-400">pragmatic innovation</strong>—making bold architectural decisions that
+              <strong className="text-blue-400">pragmatic innovation</strong> - making bold architectural decisions that
               serve long-term vision while delivering immediate business value.
             </p>
             <p>
               I believe in <strong className="text-blue-400">systems thinking at every level</strong>: from code
               architecture to team structure to organizational design. Great technology organizations mirror great
-              software systems—they're modular, resilient, and designed for change. Technical debt isn't just a code
+              software systems - they're modular, resilient, and designed for change. Technical debt isn't just a code
               problem; it's an organizational challenge that requires strategic thinking and clear communication to
               address effectively.
             </p>
             <p>
-              <strong className="text-blue-400">Scaling isn't just about infrastructure</strong>—it's about building
+              <strong className="text-blue-400">Scaling isn't just about infrastructure</strong> - it's about building
               systems and teams that can evolve. The architectures I champion are designed for adaptability, with clear
               boundaries that allow teams to innovate independently while maintaining system coherence. Like a
               well-designed D&D campaign, the best technical systems provide structure that enables creativity rather
@@ -107,7 +107,7 @@ export default function VisionPage() {
           <div className="space-y-6 text-slate-300 leading-relaxed">
             <p>
               The most powerful teams are those where every member understands not just what they're building, but why
-              it matters. I lead through <strong className="text-blue-400">narrative clarity</strong>—helping teams see
+              it matters. I lead through <strong className="text-blue-400">narrative clarity</strong> - helping teams see
               how their technical work connects to larger business objectives and user outcomes.
             </p>
             <p>My leadership philosophy draws from both engineering principles and storytelling craft:</p>
@@ -118,7 +118,7 @@ export default function VisionPage() {
               </li>
               <li>
                 <strong className="text-blue-400">Mentorship as force multiplication</strong>: Developing technical
-                talent isn't just about code reviews—it's about helping engineers see the strategic implications of
+                talent isn't just about code reviews - it's about helping engineers see the strategic implications of
                 their decisions
               </li>
               <li>
@@ -128,7 +128,7 @@ export default function VisionPage() {
               </li>
             </ul>
             <p>
-              I believe in <strong className="text-blue-400">distributed leadership</strong>—building teams where
+              I believe in <strong className="text-blue-400">distributed leadership</strong> - building teams where
               technical expertise and decision-making authority align. The best technical organizations are those where
               senior engineers feel empowered to make architectural decisions within clear strategic boundaries.
             </p>
@@ -144,7 +144,7 @@ export default function VisionPage() {
             <p>
               Every technical decision is a business decision. My approach to technology strategy starts with deep
               understanding of business objectives, market dynamics, and user needs. I don't just evaluate technologies
-              based on technical merit—I assess them based on their ability to accelerate business outcomes.
+              based on technical merit - I assess them based on their ability to accelerate business outcomes.
             </p>
             <div className="bg-slate-800/50 p-6 rounded-lg border border-slate-700">
               <h3 className="text-xl font-semibold text-slate-100 mb-4">My Decision-Making Framework:</h3>
@@ -169,7 +169,7 @@ export default function VisionPage() {
             </div>
             <p>
               I'm particularly excited about the convergence of AI, cloud-native architectures, and developer experience
-              tools. These aren't just technical trends—they represent fundamental shifts in how we build and scale
+              tools. These aren't just technical trends - they represent fundamental shifts in how we build and scale
               technology organizations.
             </p>
           </div>
@@ -257,8 +257,8 @@ export default function VisionPage() {
         <section className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 p-8 rounded-xl border border-slate-700">
           <h2 className="text-3xl font-bold text-slate-100 mb-4">Let's Build the Future Together</h2>
           <p className="text-slate-300 leading-relaxed mb-6">
-            If you're excited about the intersection of technical excellence and strategic thinking—or if you're curious
-            about how storytelling principles can enhance technology leadership—I'd love to connect. Whether you're an
+            If you're excited about the intersection of technical excellence and strategic thinking - or if you're curious
+            about how storytelling principles can enhance technology leadership - I'd love to connect. Whether you're an
             aspiring technical leader looking for mentorship, a business leader seeking to understand how technology can
             accelerate your objectives, or a fellow technologist interested in exploring new approaches to engineering
             leadership, let's start a conversation.

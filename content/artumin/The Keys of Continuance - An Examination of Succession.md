@@ -54,7 +54,7 @@ Beside him stood Claina Boltstump, a Kalidor: graceful as tide-slick coral and s
 
 If Rendin was the memory of the Guild’s first locks, Claina was the pattern in the next wave: keen, adaptive, and swift to act before the tide turned against them.
 
-“You know they’ll both try to speak with you again before the next vote,” she said. “And they’ll offer more than words. Jolek’s couriers have already begun whispering of commissions lost to Cashmei, that their pattern-wrights are outpacing ours in both innovation and cost. Valora’s camp has called it fearmongering — but you know as well as I do, the Outer Ring houses are watching this vote with ledgers open, not hearts. The wrong signal, and contracts drift. The right one… and we might hold the trade routes another decade. You’ve got the key, and they’ve got their stories ready.”
+“You know they’ll both try to speak with you again before the next vote,” she said. “And they’ll offer more than words. Jolek’s couriers have already begun whispering of commissions lost to Cashmei, that their pattern-wrights are outpacing ours in both innovation and cost. Valora’s camp has called it fearmongering  -  but you know as well as I do, the Outer Ring houses are watching this vote with ledgers open, not hearts. The wrong signal, and contracts drift. The right one… and we might hold the trade routes another decade. You’ve got the key, and they’ve got their stories ready.”
 
 Galous didn’t turn. “Let them try.” His voice was quiet, not dismissive, like a tumbler falling into place.
 

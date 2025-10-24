@@ -22,7 +22,7 @@ export default function LeadershipStrategyPage() {
       {/* Introduction */}
       <div className="mb-12 text-center">
         <p className="text-lg text-slate-300 leading-relaxed max-w-4xl mx-auto">
-          Technical leadership is about more than just code and architecture—it's about building teams that can tackle
+          Technical leadership is about more than just code and architecture - it's about building teams that can tackle
           complex challenges, fostering innovation while maintaining operational excellence, and translating technical
           possibilities into business outcomes. These insights explore the intersection of technology and leadership,
           drawing from real-world experience building and scaling engineering organizations.

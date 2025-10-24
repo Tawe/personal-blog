@@ -39,7 +39,7 @@ At work, I’ve been in the same spot.
 
 A dev team asks for more ownership, so you loosen your grip. Then someone says they feel adrift. You remove recurring meetings to protect deep work, someone says they feel out of the loop. You build a roadmap based on feedback, someone quietly wonders why it doesn’t look bolder.
 
-These aren’t failures. They’re just the reality of leading a group where not everyone wants the same thing — or even the same thing they wanted last week.
+These aren’t failures. They’re just the reality of leading a group where not everyone wants the same thing  -  or even the same thing they wanted last week.
 
 And if you contort every decision around the latest comment or concern, you lose direction. You stop leading and start shape-shifting.
 

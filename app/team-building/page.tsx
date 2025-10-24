@@ -38,7 +38,7 @@ export default function TeamBuildingPage() {
                     Your team is already an adventuring party. Let's help them level up.
                   </p>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    The best technical teams operate like well-coordinated adventuring parties—facing complex challenges
+                    The best technical teams operate like well-coordinated adventuring parties - facing complex challenges
                     together, leveraging individual strengths, and making critical decisions under pressure. D&D reveals
                     and strengthens these natural dynamics in ways traditional team building simply can't replicate.
                   </p>
@@ -93,7 +93,7 @@ export default function TeamBuildingPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Navigate challenges with limited information and time pressure—just like production incidents
+                    Navigate challenges with limited information and time pressure - just like production incidents
                   </p>
                 </CardContent>
               </Card>
@@ -149,7 +149,7 @@ export default function TeamBuildingPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Think outside the box when standard approaches fail—essential for innovation
+                    Think outside the box when standard approaches fail - essential for innovation
                   </p>
                 </CardContent>
               </Card>
@@ -180,7 +180,7 @@ export default function TeamBuildingPage() {
                   Your Team is Already an Adventuring Party
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl">
-                  Technical teams naturally align with classic RPG roles—understanding these dynamics improves
+                  Technical teams naturally align with classic RPG roles - understanding these dynamics improves
                   collaboration
                 </p>
               </div>
@@ -566,7 +566,7 @@ export default function TeamBuildingPage() {
                   </h2>
                   <p className="text-muted-foreground md:text-xl">
                     Transform your technical team's collaboration with strategic D&D team building. No gaming experience
-                    required—just a willingness to try something innovative.
+                    required - just a willingness to try something innovative.
                   </p>
                 </div>
                 <div className="space-y-4">

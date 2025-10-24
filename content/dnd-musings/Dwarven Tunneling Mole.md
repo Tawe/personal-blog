@@ -13,21 +13,21 @@ playtested: true
 draft: false
 ---
 
-_"Stone sings. You just have to know how to listen." — Old miner’s saying_
+_"Stone sings. You just have to know how to listen."  -  Old miner’s saying_
 
 ---
 
 ### Overview
 
-A fusion of dwarven ingenuity and natural adaptation, the **Dwarven Tunneling Mole** is a bioengineered or magically-altered subterranean beast bred for precision excavation. Native to ancient dwarven holds long since collapsed or sealed, these massive creatures once served as living tools—burrowing through bedrock with uncanny precision. Now, many roam free beneath the earth, their programming blurred by time, their instincts mutated into dangerous habits.
+A fusion of dwarven ingenuity and natural adaptation, the **Dwarven Tunneling Mole** is a bioengineered or magically-altered subterranean beast bred for precision excavation. Native to ancient dwarven holds long since collapsed or sealed, these massive creatures once served as living tools - burrowing through bedrock with uncanny precision. Now, many roam free beneath the earth, their programming blurred by time, their instincts mutated into dangerous habits.
 
 ---
 
 ### Physical Description
 
-Roughly the size of an elephant, the Dwarven Tunneling Mole bears armored plates of metallic chitin, etched with ancient dwarven runes once used to program or control it. Its forelimbs end in rotary claw-drills—natural augers evolved (or crafted) to displace stone, not just dirt. Their snouts vibrate at high frequencies, capable of detecting minute air pockets, fault lines, or distant echoes in the rock.
+Roughly the size of an elephant, the Dwarven Tunneling Mole bears armored plates of metallic chitin, etched with ancient dwarven runes once used to program or control it. Its forelimbs end in rotary claw-drills - natural augers evolved (or crafted) to displace stone, not just dirt. Their snouts vibrate at high frequencies, capable of detecting minute air pockets, fault lines, or distant echoes in the rock.
 
-The faint glimmer of geodes or gemstones may be seen embedded in their hides—a result of decades spent nosing through mineral veins.
+The faint glimmer of geodes or gemstones may be seen embedded in their hides - a result of decades spent nosing through mineral veins.
 
 ---
 
@@ -43,7 +43,7 @@ These creatures are most common in regions with dense mineral compositions, part
 
 Originally docile and obedient, centuries of neglect or exposure to wild magic have made many moles territorial or erratic. Some operate in near-mechanical cycles, endlessly carving spirals or labyrinths with no discernible purpose. Others form loose colonies, communicating through seismic pulses and pheromonal trails.
 
-They are not inherently aggressive—but they **will defend a chosen excavation zone with lethal force**, seeing intruders as threats to structural integrity or dig-site “objectives.”
+They are not inherently aggressive - but they **will defend a chosen excavation zone with lethal force**, seeing intruders as threats to structural integrity or dig-site “objectives.”
 
 Despite their intimidating size, these moles are intelligent. They can navigate complex tunnel systems with perfect memory and react to cave-ins or threats with engineered precision.
 
@@ -51,7 +51,7 @@ Despite their intimidating size, these moles are intelligent. They can navigate 
 
 ### Diet
 
-Dwarven Tunneling Moles consume certain minerals and fungi for sustenance. They are especially drawn to **crystal formations**, **metal-rich stones**, and **deep lichen**. When minerals are scarce, they may grind down and extract trace elements from old dwarven masonry or enchanted stone—often destroying relics in the process.
+Dwarven Tunneling Moles consume certain minerals and fungi for sustenance. They are especially drawn to **crystal formations**, **metal-rich stones**, and **deep lichen**. When minerals are scarce, they may grind down and extract trace elements from old dwarven masonry or enchanted stone - often destroying relics in the process.
 
 ---
 
@@ -67,9 +67,9 @@ Some believe a now-lost dwarven song or ritual was once required to trigger hatc
 
 Once revered as the pinnacle of dwarven bioengineering, Tunneling Moles were used to dig ventilation shafts, forge escape tunnels, or lay the groundwork for entire cities.
 
-They were guided using harmonic tools—pipes, tuning forks, and drums—that resonated with specific frequencies. Only dwarves of certain clans knew the full suite of control tones.
+They were guided using harmonic tools - pipes, tuning forks, and drums - that resonated with specific frequencies. Only dwarves of certain clans knew the full suite of control tones.
 
-When the Holds fell—due to war, collapse, or abandonment—the moles were forgotten… or sealed away.
+When the Holds fell - due to war, collapse, or abandonment - the moles were forgotten… or sealed away.
 
 ---
 
@@ -78,7 +78,7 @@ When the Holds fell—due to war, collapse, or abandonment—the moles were forg
 - **Drow and Duergar** have attempted to harness or clone the species with limited success.
 - **Purple Worms** view the moles as competition and will attack on sight.
 - **Myconids** sometimes cohabitate with dormant moles, especially if they've grown fungal crusts in hibernation.
-- Adventurers occasionally stumble on “fossilized” moles—stone-coated and seemingly inert—only to awaken them with noise or light.
+- Adventurers occasionally stumble on “fossilized” moles - stone-coated and seemingly inert - only to awaken them with noise or light.
     
 
 ---
@@ -99,7 +99,7 @@ Certain parts of the Dwarven Tunneling Mole are highly prized by alchemists, smi
 
 ### Adventure Hooks
 
-- A dwarven city has begun collapsing—investigations reveal a mole is still digging below, following ancient orders.
+- A dwarven city has begun collapsing - investigations reveal a mole is still digging below, following ancient orders.
 - A noble wants to recover a legendary control flute said to tame a sleeping mole deep within the underdark.
 - A mine has struck a sealed egg chamber, awakening defensive instincts in nearby adult moles.
 

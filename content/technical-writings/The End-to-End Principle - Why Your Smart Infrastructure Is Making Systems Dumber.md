@@ -3,8 +3,6 @@ title: "The End-to-End Principle - Why Your Smart Infrastructure Is Making Syste
 date: "2025-05-04"
 excerpt: "Many modern systems violate the End-to-End Principle. Creating brittle infra, slower teams, and hidden logic that’s hard to debug or scale."
 tags: ["Software Architecture", "DevOps", "Engineering Management", "Sysem Design Concepts", "Software Engineering"]
-difficulty: "intermediate"
-type: "guide"
 reading_time: 6
 featured_image: /theendtoendprinciplewhyyoursmart.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/the-end-to-end-principle-why-your-smart-infrastructure-is-making-systems-dumber-e4025c335471
@@ -97,7 +95,7 @@ Lesson: what starts as helpful standardization can quickly evolve into a brittle
 
 # A Concrete Pattern That Works
 
-Contrast that with a recent approach we took for request tracing. Instead of building centralized observability logic into the service mesh, we provided a lightweight tracing library that each service imported and configured with its own needs. The library handled the mechanics — span creation, correlation IDs, log injection — but all the context decisions (like what to trace, what to sample, and how to tag events) stayed in the services.
+Contrast that with a recent approach we took for request tracing. Instead of building centralized observability logic into the service mesh, we provided a lightweight tracing library that each service imported and configured with its own needs. The library handled the mechanics  -  span creation, correlation IDs, log injection  -  but all the context decisions (like what to trace, what to sample, and how to tag events) stayed in the services.
 
 The result? Each team had autonomy to tailor tracing to their flow, and debugging became dramatically easier. Central tooling could still collect and visualize, but the intelligence stayed local. That’s what the end-to-end principle looks like when it works: smart edges, simple pipes.
 
