@@ -1,6 +1,7 @@
 ---
 title: "The Drift Dilemma: Why Great Models Go Bad Over Time"
 subtitle: "How Quiet Changes in Data Can Wreck Your Best Models Without Warning"
+date: "2025-07-01"
 excerpt: "Your model didn’t break, it just stayed still while the world changed. A deep dive into data drift, model decay, and what you can do about it."
 tags: ["AI", "Machine Learning", "Data Science", "Analytics", "Engineering Mangement"]
 reading_time: 4
