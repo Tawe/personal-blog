@@ -7,7 +7,7 @@ tags: ["AI Security", "Devtools", "Cursor", "Prompt Engineering", "Data Governan
 reading_time: 8
 featured_image: /YoureLeakingInternalStrategyThroughAIPrompts   .webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/youre-leaking-internal-strategy-through-ai-prompts-here-s-how-to-stop-967ab55a628e
-devto_link: https://dev.to/tawe/the-temperature-trap-why-your-ai-keeps-giving-the-same-wrong-answer-3h88
+devto_link: 
 substack:
 code_languages: []
 draft: false
