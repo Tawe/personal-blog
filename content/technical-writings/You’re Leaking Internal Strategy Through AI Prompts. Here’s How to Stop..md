@@ -5,7 +5,7 @@ date: "2025-06-23"
 excerpt: "AI prompts are the new attack surface. Learn how to protect business logic, client info, and strategy before it leaks."
 tags: ["AI Security", "Devtools", "Cursor", "Prompt Engineering", "Data Governance"]
 reading_time: 8
-featured_image: /YoureLeakingInternalStrategyThroughAIPrompts   .webp?height=400&width=800
+featured_image: /YoureLeakingInternalStrategyThroughAIPrompts.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/youre-leaking-internal-strategy-through-ai-prompts-here-s-how-to-stop-967ab55a628e
 devto_link: 
 substack:
