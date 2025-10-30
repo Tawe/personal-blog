@@ -9,7 +9,7 @@ tags:
   - AI Workflow
   - Self Advocacy
   - Personal Growth
-featured_image: /Thehiddencostsofyourworkdoesntspeakforitself.png?height=400&width=800
+featured_image: /yourworkdoesntspeakforitself.png?height=400&width=800
 reading_time: 6
 medium_link: https://medium.com/@johnmunn/yes-you-have-to-self-promote-because-your-work-doesnt-speak-for-itself-e57993eb9f3f
 devto_link:
