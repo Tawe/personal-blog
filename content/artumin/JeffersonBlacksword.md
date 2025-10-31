@@ -8,7 +8,7 @@ categories:
   - Fantasy Fiction
   - Fantasy
 region:
-featured_image: /JeffersonBlacksword2.png?height=400&width=800
+featured_image: /jeffersonblacksword2.png?height=400&width=800
 status: 
 connections: 
 reading_time:
