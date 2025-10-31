@@ -59,22 +59,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
 
   const hasActiveFilters = searchTerm.trim() !== "" || selectedTags.length > 0
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "story":
-        return "📖"
-      case "character":
-        return "👤"
-      case "location":
-        return "🏰"
-      case "history":
-        return "📜"
-      case "organization":
-        return "⚔️"
-      default:
-        return "✨"
-    }
-  }
+  // No emoji icons on cards
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -159,7 +144,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                 <img
                   src={article.image || "/placeholder.svg"}
                   alt={article.title}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                 />
               </div>
             )}
@@ -169,7 +154,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                   <img
                     src={article.featured_image || "/placeholder.svg"}
                     alt={article.title}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                   />
                 </div>
               )}
@@ -178,16 +163,17 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                   <img
                     src={`/placeholder.svg?height=200&width=400&text=${encodeURIComponent(article.title)}`}
                     alt={article.title}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                   />
                 </div>
               )}
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-lg">{getTypeIcon(article.type)}</span>
                 <Badge variant="outline" className="border-slate-600 text-slate-400 text-xs">
                   {article.type}
                 </Badge>
-                <Badge className={`${getStatusColor(article.status)} text-white text-xs`}>{article.status}</Badge>
+                {article.status && (
+                  <Badge className={`${getStatusColor(article.status)} text-white text-xs`}>{article.status}</Badge>
+                )}
               </div>
               <CardTitle className="text-slate-100 text-lg leading-tight">
                 <Link
@@ -211,7 +197,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                 </div>
               </div>
 
-              {article.region && <div className="text-sm text-slate-400 mb-3">📍 {article.region}</div>}
+              {article.region && <div className="text-sm text-slate-400 mb-3">{article.region}</div>}
 
               {article.categories.length > 0 && (
                 <div className="flex flex-wrap gap-1 mb-2">

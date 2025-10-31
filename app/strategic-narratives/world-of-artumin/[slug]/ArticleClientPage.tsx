@@ -174,7 +174,7 @@ export function ArticleClientPage({
                 alt={article.title}
                 width={800}
                 height={400}
-                className="aspect-video w-full object-cover"
+                className="aspect-video w-full object-cover object-center"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
