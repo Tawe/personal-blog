@@ -87,7 +87,7 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
       leadership: "/leadership-insights",
       technical: "/technical-writing",
       artumin: "/artumin",
-      dnd: "/dnd-musings",
+      dnd: "/strategic-narratives/dnd-ttrpgs",
     }
 
     return `${sectionPaths[section]}/${content.slug}`
@@ -118,19 +118,13 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
       case "dnd": {
         const dnd = content as DndContentMetadata
         const typeStyle = dndTypeConfig[dnd.type]
-        const availabilityStyle = availabilityConfig[dnd.availability]
         const TypeIcon = typeStyle.icon
-        const AvailabilityIcon = availabilityStyle.icon
 
         return (
           <div className="flex gap-2">
             <Badge className={`${typeStyle.color} text-xs`}>
               <TypeIcon className="mr-1 h-3 w-3" />
               {typeStyle.label}
-            </Badge>
-            <Badge className={`${availabilityStyle.color} text-xs`}>
-              <AvailabilityIcon className="mr-1 h-3 w-3" />
-              {availabilityStyle.label}
             </Badge>
           </div>
         )
@@ -253,9 +247,6 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
         <div className="absolute top-3 right-3 z-10">
           {section === "technical" && (content as TechnicalArticleMetadata).recently_updated && (
             <Badge className="bg-green-600/20 text-green-400 border-green-600/30 text-xs">Recently Updated</Badge>
-          )}
-          {section === "dnd" && (content as DndContentMetadata).playtested && !isExternal && (
-            <Badge className="bg-green-600/20 text-green-400 border-green-600/30 text-xs">Playtested</Badge>
           )}
           {isExternal && (
             <Badge className="bg-blue-600/20 text-blue-400 border-blue-600/30 text-xs">

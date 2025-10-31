@@ -23,6 +23,17 @@ export interface ProcessedArticle {
   [key: string]: any // Allow for content-type specific fields
 }
 
+function sanitizeExcerpt(raw: string, length = 150): string {
+  const text = raw
+    .replace(/`{1,3}[\s\S]*?`{1,3}/g, "") // inline/code blocks
+    .replace(/^>\s?/gm, "") // blockquotes
+    .replace(/^#{1,6}\s*/gm, "") // headings
+    .replace(/[\*_~\[\]#>]/g, "") // emphasis and misc md chars
+    .replace(/\n+/g, " ")
+    .trim()
+  return (text.slice(0, length).trim() + (text.length > length ? "..." : ""))
+}
+
 export function processContentDirectory(config: ContentConfig): ProcessedArticle[] {
   const { contentDir, defaultType, customFields = {} } = config
 
@@ -52,7 +63,7 @@ export function processContentDirectory(config: ContentConfig): ProcessedArticle
       title: frontmatter.title || filename.replace(".md", ""),
       subtitle: frontmatter.subtitle,
       date: frontmatter.date || new Date().toISOString(),
-      excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
+      excerpt: frontmatter.excerpt || sanitizeExcerpt(content, 180),
       content: marked(content), // Convert markdown to HTML
       tags: frontmatter.tags || [],
       featured_image: frontmatter.featured_image || frontmatter.image,

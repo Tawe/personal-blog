@@ -4,6 +4,7 @@ import { ArticleClientPage } from "./ArticleClientPage"
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
+import { marked } from "marked"
 
 interface Article {
   slug: string
@@ -50,7 +51,7 @@ async function getArticle(slug: string): Promise<Article | null> {
       subtitle: frontmatter.subtitle,
       date: frontmatter.date || new Date().toISOString(),
       excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
-      content,
+      content: await marked(content),
       tags: frontmatter.tags || [],
       featured_image: frontmatter.featured_image || frontmatter.image,
       reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
@@ -58,6 +59,7 @@ async function getArticle(slug: string): Promise<Article | null> {
       medium_link: frontmatter.medium_link,
       devto_link: frontmatter.devto_link,
       substack_link: frontmatter.substack_link,
+      dndbeyond_link: frontmatter.ddb_link || frontmatter.dndbeyond_link,
       type: frontmatter.type || "thought-piece",
       system: frontmatter.system || "system-agnostic",
       level_range: frontmatter.level_range,

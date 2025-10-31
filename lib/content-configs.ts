@@ -36,7 +36,7 @@ export const DND_CONFIG: ContentConfig = {
   contentDir: path.join(process.cwd(), "content/dnd-musings"),
   defaultType: "homebrew",
   customFields: {
-    system: "D&D 5e",
+    system: "5e",
     level_range: undefined,
     availability: "free",
     duration: undefined,

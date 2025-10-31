@@ -9,6 +9,7 @@ tags: ["monster", "beast"]
 featured_image: "/dwarventunnelingmole.png?height=400&width=800"
 availability: "free"
 duration: 
+dndbeyond_link: https://www.dndbeyond.com/monsters/5910813-dwarven-tunneling-mole
 playtested: true
 draft: false
 ---
@@ -123,23 +124,19 @@ __
 > - **Languages** understands Dwarvish but Can't speak
 > - **Challenge** 8 (3,900 XP)
 > ___
-> ***Keen Hearing and Smell.*** The wolf has advantage on Wisdom (Perception) checks that rely on hearing or smell.
->
-> ***Pack Tactics.*** The wolf has advantage on an attack roll against a creature if at least one of the wolf's allies is within 5 ft. of the creature and the ally isn't incapacitated.
->
-> ***TRAITS.*** Echo Mapping. The mole emits low-frequency vibrations as it moves. It can sense structures, voids, and creatures through solid stone using tremorsense. It automatically knows the location of all creatures and objects in contact with the ground within 90 feet.<br>
+> ***TRAITS.*** 
+**Echo Mapping.** The mole emits low-frequency vibrations as it moves. It can sense structures, voids, and creatures through solid stone using tremorsense. It automatically knows the location of all creatures and objects in contact with the ground within 90 feet.<br>
 > <br>
-> &nbsp;&nbsp;&nbsp;&nbsp;Siege Monster. The mole deals double damage to objects and structures.<br>
+**Siege Monster.** The mole deals double damage to objects and structures.<br>
 > <br>
-> &nbsp;&nbsp;&nbsp;&nbsp;Stone-Fused Biology. When the mole takes force or thunder damage, it emits a resonant burst. All creatures within 10 feet must succeed on a DC 15 Constitution saving throw or be deafened for 1 minute.<br>
+**Stone-Fused Biology.** When the mole takes force or thunder damage, it emits a resonant burst. All creatures within 10 feet must succeed on a DC 15 Constitution saving throw or be deafened for 1 minute.<br>
 > <br>
-> &nbsp;&nbsp;&nbsp;&nbsp;Control Rune Node. If a creature uses an action to make a DC 20 Intelligence (Arcana) check while adjacent to the mole and in possession of a control tuning fork or dwarven harmonic flute, it can attempt to issue a command (as command spell). Success allows temporary control of the mole’s actions for 1 minute.
+**Control Rune Node.** If a creature uses an action to make a DC 20 Intelligence (Arcana) check while adjacent to the mole and in possession of a control tuning fork or dwarven harmonic flute, it can attempt to issue a command (as command spell). Success allows temporary control of the mole’s actions for 1 minute.
 > ### Actions
 > ***ACTIONS.*** Multiattack. The mole makes two Drill Claw attacks.<br>
 > <br>
-> &nbsp;&nbsp;&nbsp;&nbsp;Drill Claw. Melee Weapon Attack: +10 to hit, reach 10 ft., one target.<br>
-> &nbsp;&nbsp;&nbsp;&nbsp;Hit: 21 (3d8 + 7) slashing damage. If the target is Large or smaller, it must succeed on a DC 16 Strength saving throw or be knocked prone.<br>
+**Drill Claw.** Melee Weapon Attack: +10 to hit, reach 10 ft., one target. Hit: 21 (3d8 + 7) slashing damage. If the target is Large or smaller, it must succeed on a DC 16 Strength saving throw or be knocked prone.<br>
 > <br>
-> &nbsp;&nbsp;&nbsp;&nbsp;Burrowing Charge (Recharge 5–6). The mole burrows in a straight line up to 60 feet, emerging with a tremor. Each creature in a 10-foot-wide line must make a DC 16 Dexterity saving throw, taking 35 (10d6) bludgeoning damage and being knocked prone on a failed save, or half damage on a success. The terrain in the path becomes difficult terrain and lightly obscured with dust and rubble.<br>
+**Burrowing Charge (Recharge 5–6).** The mole burrows in a straight line up to 60 feet, emerging with a tremor. Each creature in a 10-foot-wide line must make a DC 16 Dexterity saving throw, taking 35 (10d6) bludgeoning damage and being knocked prone on a failed save, or half damage on a success. The terrain in the path becomes difficult terrain and lightly obscured with dust and rubble.<br>
 > <br>
-> &nbsp;&nbsp;&nbsp;&nbsp;Vibrational Roar (Recharge 6). The mole emits a thunderous pulse in a 30-foot radius. All creatures other than constructs must make a DC 16 Constitution saving throw or be stunned until the end of their next turn.
+**Vibrational Roar (Recharge 6).** The mole emits a thunderous pulse in a 30-foot radius. All creatures other than constructs must make a DC 16 Constitution saving throw or be stunned until the end of their next turn.

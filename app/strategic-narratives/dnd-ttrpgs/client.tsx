@@ -22,7 +22,7 @@ interface DndContentMetadata {
   type: string
   availability: string
   playtested: boolean
-  image?: string
+  featured_image?: string
   external_url?: string
 }
 
@@ -119,39 +119,9 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
     selectedType ||
     playtestedOnly
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "thought-piece":
-        return "💡"
-      case "mechanic":
-        return "⚙️"
-      case "monster":
-        return "👹"
-      case "magic-item":
-        return "✨"
-      case "npc":
-        return "🎭"
-      case "adventure":
-        return "🗺️"
-      case "product":
-        return "📦"
-      default:
-        return "🎲"
-    }
-  }
+  // No emoji icons on cards
 
-  const getAvailabilityColor = (availability: string) => {
-    switch (availability) {
-      case "free":
-        return "bg-green-600"
-      case "pay-what-you-want":
-        return "bg-blue-600"
-      case "paid":
-        return "bg-red-600"
-      default:
-        return "bg-gray-600"
-    }
-  }
+  // Availability not displayed on cards
 
   return (
     <div className="space-y-8">
@@ -269,10 +239,10 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
             key={article.slug}
             className="bg-slate-800/50 border-slate-600 hover:border-red-500/50 transition-all duration-300 overflow-hidden"
           >
-            {article.image && (
+            {article.featured_image && (
               <div className="aspect-video w-full overflow-hidden">
                 <img
-                  src={article.image || "/placeholder.svg"}
+                  src={article.featured_image || "/placeholder.svg"}
                   alt={article.title}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 />
@@ -280,18 +250,10 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
             )}
             <CardHeader>
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-lg">{getTypeIcon(article.type)}</span>
                 <Badge variant="outline" className="border-slate-600 text-slate-400 text-xs">
                   {article.system.toUpperCase()}
                 </Badge>
-                <Badge className={`${getAvailabilityColor(article.availability)} text-white text-xs`}>
-                  {article.availability}
-                </Badge>
-                {article.playtested && (
-                  <Badge variant="outline" className="border-green-600/30 text-green-400 text-xs">
-                    ✓ Tested
-                  </Badge>
-                )}
+                {/* availability removed */}
               </div>
               <CardTitle className="text-slate-100 text-lg leading-tight">
                 {article.external_url ? (

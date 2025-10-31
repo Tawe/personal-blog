@@ -22,6 +22,7 @@ interface DndContent {
   medium_link?: string
   devto_link?: string
   substack_link?: string
+  dndbeyond_link?: string
   subtitle?: string
 }
 
@@ -44,14 +45,13 @@ export function ArticleClientPage({
       try {
         const response = await fetch("/api/content/dnd")
         if (response.ok) {
-          const allArticles = await response.json()
-          
-          // Filter out current article and shuffle for variety
-          const related = allArticles
+          const { articles } = await response.json()
+
+          const related = (articles || [])
             .filter((a: DndContent) => a.slug !== article.slug)
             .sort(() => Math.random() - 0.5)
             .slice(0, 2)
-          
+
           setRelatedArticles(related)
         }
       } catch (error) {
@@ -231,7 +231,7 @@ export function ArticleClientPage({
             )}
 
             {/* External Links */}
-            {(article.medium_link || article.devto_link || article.substack_link) && (
+            {(article.medium_link || article.devto_link || article.substack_link || article.dndbeyond_link) && (
               <div className="flex items-center gap-4">
                 <span className="text-sm text-slate-300">View On:</span>
                 {article.medium_link && (
@@ -255,6 +255,14 @@ export function ArticleClientPage({
                     <Link href={article.substack_link} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-2 h-4 w-4" />
                       Substack
+                    </Link>
+                  </Button>
+                )}
+                {article.dndbeyond_link && (
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href={article.dndbeyond_link} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      D&D Beyond
                     </Link>
                   </Button>
                 )}
