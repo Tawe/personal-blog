@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { ExclusiveRibbon } from "@/components/exclusive-ribbon"
 import {
   Calendar,
   Clock,
@@ -215,8 +216,10 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
         {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
       >
         <Card
-          className={`bg-slate-800/30 border-slate-600 hover:border-${hoverColor}-500/50 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-${hoverColor}-500/10`}
+          className={`bg-slate-800/30 border-slate-600 hover:border-${hoverColor}-500/50 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-${hoverColor}-500/10 relative overflow-hidden`}
         >
+          {/* Website Exclusive Ribbon for compact cards */}
+          {content.website_exclusive && <ExclusiveRibbon label="Exclusive" />}
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 mb-2">
               {renderTypeInfo()}
@@ -243,8 +246,11 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
       <Card
         className={`bg-gradient-to-br from-slate-800/50 to-slate-900/30 border-slate-600 hover:border-${hoverColor}-500/50 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-${hoverColor}-500/10 h-full relative overflow-hidden`}
       >
+        {/* Website Exclusive Ribbon */}
+        {content.website_exclusive && <ExclusiveRibbon />}
+
         {/* Status indicators */}
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
           {section === "technical" && (content as TechnicalArticleMetadata).recently_updated && (
             <Badge className="bg-green-600/20 text-green-400 border-green-600/30 text-xs">Recently Updated</Badge>
           )}

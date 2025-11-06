@@ -9,6 +9,7 @@ export interface BaseContentMetadata {
   draft?: boolean
   slug: string
   subtitle?: string
+  website_exclusive?: boolean
 }
 
 // Extended interfaces for specific content types

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Calendar, Clock, Search, X, Dice6, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import { ExclusiveRibbon } from "@/components/exclusive-ribbon"
 
 const contentTypes = ["thought-piece", "mechanic", "monster", "magic-item", "npc", "adventure", "product"]
 
@@ -24,6 +25,7 @@ interface DndContentMetadata {
   playtested: boolean
   featured_image?: string
   external_url?: string
+  website_exclusive?: boolean
 }
 
 interface DndTtrpgsClientProps {
@@ -237,14 +239,16 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
         {filteredArticles.map((article) => (
           <Card
             key={article.slug}
-            className="bg-slate-800/50 border-slate-600 hover:border-red-500/50 transition-all duration-300 overflow-hidden"
+            className="bg-slate-800/50 border-slate-600 hover:border-red-500/50 transition-all duration-300 overflow-hidden relative"
           >
+            {/* Website Exclusive Ribbon */}
+            {article.website_exclusive && <ExclusiveRibbon />}
             {article.featured_image && (
-              <div className="aspect-video w-full overflow-hidden">
+              <div className="aspect-video w-full overflow-hidden relative">
                 <img
                   src={article.featured_image || "/placeholder.svg"}
                   alt={article.title}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                 />
               </div>
             )}

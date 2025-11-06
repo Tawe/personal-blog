@@ -292,20 +292,25 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
             )}
 
             {/* Tag Pills */}
-            {article.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-8">
-                {article.tags.map((tag) => (
-                  <Link key={tag} href={`${config.baseUrl}?tag=${encodeURIComponent(tag)}`}>
-                    <Badge
-                      variant="secondary"
-                      className="bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 cursor-pointer transition-colors"
-                    >
-                      {tag}
-                    </Badge>
-                  </Link>
-                ))}
-              </div>
-            )}
+            <div className="flex flex-wrap items-center gap-2 mb-8">
+              {article.website_exclusive && (
+                <Badge className="bg-purple-600/20 text-purple-400 border-purple-600/30 text-xs">Website Exclusive</Badge>
+              )}
+              {article.tags.length > 0 && (
+                <>
+                  {article.tags.map((tag) => (
+                    <Link key={tag} href={`${config.baseUrl}?tag=${encodeURIComponent(tag)}`}>
+                      <Badge
+                        variant="secondary"
+                        className="bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 cursor-pointer transition-colors"
+                      >
+                        {tag}
+                      </Badge>
+                    </Link>
+                  ))}
+                </>
+              )}
+            </div>
 
             {/* "View On" External Links */}
             {(article.medium_link || article.devto_link || article.substack_link) && (

@@ -10,6 +10,7 @@ export interface BaseContentMetadata {
   reading_time?: number
   draft?: boolean
   slug: string
+  website_exclusive?: boolean
 }
 
 export interface ArticleMetadata extends BaseContentMetadata {

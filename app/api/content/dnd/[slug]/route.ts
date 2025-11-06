@@ -37,6 +37,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
         devto_link: frontmatter.devto_link,
         substack_link: frontmatter.substack_link,
         dndbeyond_link: frontmatter.ddb_link || frontmatter.dndbeyond_link,
+        website_exclusive: frontmatter.website_exclusive || false,
       },
     })
     

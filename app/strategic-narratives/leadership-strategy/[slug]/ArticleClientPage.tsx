@@ -197,15 +197,20 @@ export function ArticleClientPage({
             </div>
 
             {/* Tags */}
-            {article.tags && article.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {article.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="bg-slate-700/50 text-slate-300">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            )}
+            <div className="flex flex-wrap items-center gap-2">
+              {article.website_exclusive && (
+                <Badge className="bg-purple-600/20 text-purple-400 border-purple-600/30 text-xs">Website Exclusive</Badge>
+              )}
+              {article.tags && article.tags.length > 0 && (
+                <>
+                  {article.tags.map((tag) => (
+                    <Badge key={tag} variant="secondary" className="bg-slate-700/50 text-slate-300">
+                      {tag}
+                    </Badge>
+                  ))}
+                </>
+              )}
+            </div>
 
             {/* External Links */}
             {(article.medium_link || article.devto_link || article.substack_link) && (

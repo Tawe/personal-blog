@@ -25,6 +25,7 @@ interface Article {
   external_url?: string
   rating?: string
   playtested?: boolean
+  website_exclusive?: boolean
 }
 
 async function getArticle(slug: string): Promise<Article | null> {
@@ -70,6 +71,7 @@ async function getArticle(slug: string): Promise<Article | null> {
       external_url: frontmatter.external_url,
       rating: frontmatter.rating,
       playtested: frontmatter.playtested || false,
+      website_exclusive: frontmatter.website_exclusive || false,
     }
   } catch (error) {
     console.error("Error loading article:", error)
