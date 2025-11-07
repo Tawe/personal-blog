@@ -11,10 +11,12 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 31536000, // 1 year
   },
-  // Enable static generation for better caching
-  output: 'standalone',
   // Exclude large packages from serverless function bundles
-  serverExternalPackages: ['gray-matter', 'marked'],
+  // These will be available at runtime but not bundled
+  serverExternalPackages: [
+    'gray-matter',
+    'marked',
+  ],
   experimental: {
     // Enable static generation for dynamic routes
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
@@ -29,15 +31,15 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Optimize webpack to exclude content directory from bundle
+  // Optimize webpack to reduce bundle size
   webpack: (config, { isServer }) => {
     if (isServer) {
       // Prevent content files from being bundled into serverless functions
       config.externals = config.externals || []
       
-      // Add rule to ignore content markdown files during bundling
-      config.module = config.module || {}
-      config.module.rules = config.module.rules || []
+      // Exclude content directory from bundle
+      config.resolve = config.resolve || {}
+      config.resolve.alias = config.resolve.alias || {}
     }
     return config
   },

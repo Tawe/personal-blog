@@ -1,7 +1,5 @@
 "use client"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faLinkedin } from "@fortawesome/free-brands-svg-icons"
-import { faEnvelope, faClock, faGlobe } from "@fortawesome/free-solid-svg-icons"
+import { Mail, Clock, Globe, Linkedin } from "lucide-react"
 import Link from "next/link"
 import { ContentLayout } from "@/components/content-layout"
 
@@ -26,7 +24,7 @@ export default function Contact() {
               href="mailto:john@johnmunn.tech"
               className="text-2xl font-medium text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-3 mb-4"
             >
-              <FontAwesomeIcon icon={faEnvelope} />
+              <Mail className="h-6 w-6" />
               john@johnmunn.tech
             </a>
             <p className="text-slate-300 text-center max-w-md">
@@ -41,7 +39,7 @@ export default function Contact() {
               rel="noopener noreferrer"
               className="flex items-center gap-3 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
             >
-              <FontAwesomeIcon icon={faLinkedin} />
+              <Linkedin className="h-5 w-5" />
               Connect on LinkedIn
             </a>
           </div>
@@ -83,13 +81,13 @@ export default function Contact() {
             </h3>
             <div className="space-y-3 text-slate-300">
               <div className="flex items-center gap-3">
-                <FontAwesomeIcon icon={faClock} className="text-blue-400 w-4" />
+                <Clock className="text-blue-400 h-4 w-4" />
                 <span>
                   <strong className="text-slate-200">Time Zone:</strong> Eastern Time
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <FontAwesomeIcon icon={faGlobe} className="text-blue-400 w-4" />
+                <Globe className="text-blue-400 h-4 w-4" />
                 <span>
                   <strong className="text-slate-200">Focus:</strong> North American time zones
                 </span>
