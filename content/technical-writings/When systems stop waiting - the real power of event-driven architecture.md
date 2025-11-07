@@ -27,6 +27,8 @@ In request-driven systems, services depend on each other’s timing. One slow AP
 
 A simple event might look like this:
 
+
+```js 
 {  
   "eventType": "OrderPlaced",  
   "timestamp": "2025-10-29T14:32:00Z",  
@@ -37,6 +39,7 @@ A simple event might look like this:
     "currency": "USD"  
   }  
 }
+```
 
 A Payment service might pick this up to charge the card, while an Inventory service decrements stock, all without knowing each other exists.
 
