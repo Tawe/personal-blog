@@ -13,9 +13,9 @@ const nextConfig = {
   },
   // Enable static generation for better caching
   output: 'standalone',
+  // Exclude large packages from serverless function bundles
+  serverExternalPackages: ['gray-matter', 'marked'],
   experimental: {
-    // Exclude large packages from serverless function bundles
-    serverComponentsExternalPackages: ['gray-matter', 'marked'],
     // Enable static generation for dynamic routes
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
