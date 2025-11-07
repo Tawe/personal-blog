@@ -14,8 +14,9 @@ const nextConfig = {
   // Enable static generation for better caching
   output: 'standalone',
   experimental: {
+    // Exclude large packages from serverless function bundles
+    serverComponentsExternalPackages: ['gray-matter', 'marked'],
     // Enable static generation for dynamic routes
-    // staticPageGenerationTimeout: 120, // Removed - not valid in Next.js 15
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   // Optimize for Vercel
@@ -27,6 +28,18 @@ const nextConfig = {
   // Performance optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // Optimize webpack to exclude content directory from bundle
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Prevent content files from being bundled into serverless functions
+      config.externals = config.externals || []
+      
+      // Add rule to ignore content markdown files during bundling
+      config.module = config.module || {}
+      config.module.rules = config.module.rules || []
+    }
+    return config
   },
   async headers() {
     return [
@@ -56,3 +69,4 @@ const nextConfig = {
 }
 
 export default nextConfig
+

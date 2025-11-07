@@ -1,3 +1,5 @@
+import fs from "fs"
+
 /**
  * Generates a consistent slug from a filename or string
  * Used across the application for URL generation
@@ -19,11 +21,11 @@ export function findFileBySlug(
   contentDir: string,
   slug: string
 ): string | null {
-  if (!require("fs").existsSync(contentDir)) {
+  if (!fs.existsSync(contentDir)) {
     return null
   }
 
-  const files = require("fs").readdirSync(contentDir)
+  const files = fs.readdirSync(contentDir)
   const markdownFiles = files.filter((file: string) => file.endsWith(".md"))
 
   return (
