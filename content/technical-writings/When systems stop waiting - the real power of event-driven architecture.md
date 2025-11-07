@@ -5,7 +5,7 @@ date: "2025-10-30"
 excerpt: "Discover how event-driven architecture transforms tightly coupled microservices into resilient, autonomous systems using SNS, SQS, and EventBridge to create scalable, asynchronous flow."
 tags: ["Software Architecture", "Event Driven Architecture", "System Design Concepts", "Software Development", "Microservices"]
 reading_time: 4
-featured_image: /Whensystemsstopwaiting.webp?height=400&width=800
+featured_image: /Whensystemsstopwaiting.png?height=400&width=800
 medium_link: https://medium.com/@johnmunn/when-systems-stop-waiting-the-real-power-of-event-driven-architecture-c6a7c0a45058
 devto_link: 
 substack:
