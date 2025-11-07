@@ -84,39 +84,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-slate-950">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            "name": "John Munn",
-            "url": "https://johnmunn.dev",
-            "image": "https://johnmunn.dev/me.jpeg",
-            "jobTitle": "Technical Leader & Engineering Strategist",
-            "description": "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving. Dungeon Master applying storytelling to leadership.",
-            "sameAs": [
-              "https://johnmunn.dev",
-            ],
-            "knowsAbout": [
-              "Technical Leadership",
-              "Engineering Strategy", 
-              "Software Architecture",
-              "Team Building",
-              "Scalable Systems",
-              "Cloud Architecture",
-              "DevOps",
-              "Strategic Thinking",
-              "Dungeon Master",
-              "Leadership Development"
-            ],
-            "worksFor": {
-              "@type": "Organization",
-              "name": "Independent Consultant"
-            }
-          }).replace(/</g, '\\u003c')
-        }}
-      />
       <div className="absolute inset-0 bg-tech-pattern opacity-30"></div>
       <div className="relative">
         <SiteHeader />

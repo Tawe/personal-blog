@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
@@ -5,6 +6,36 @@ import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, MessageSquare, Calendar, Eye } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Vision - Technology Leadership Philosophy",
+  description: "My philosophy on technology leadership and the future of engineering organizations. The future belongs to technology leaders who tell better stories.",
+  openGraph: {
+    title: "Vision - Technology Leadership Philosophy | John Munn",
+    description: "My philosophy on technology leadership and the future of engineering organizations.",
+    url: "https://johnmunn.tech/vision",
+    siteName: "John Munn - Technical Leader",
+    images: [
+      {
+        url: "/me.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "John Munn - Technical Leader",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vision - Technology Leadership Philosophy | John Munn",
+    description: "My philosophy on technology leadership and the future of engineering organizations.",
+    images: ["/me.jpeg"],
+  },
+  alternates: {
+    canonical: "https://johnmunn.tech/vision",
+  },
+}
 
 export default function VisionPage() {
   return (

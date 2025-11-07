@@ -1,6 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
+import { PersonSchema } from "@/components/person-schema"
+import { WebsiteSchema } from "@/components/website-schema"
 
 export const metadata: Metadata = {
   title: {
@@ -9,20 +11,6 @@ export const metadata: Metadata = {
   },
   description:
     "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving. Dungeon Master applying storytelling to leadership.",
-  keywords: [
-    "technical leadership",
-    "engineering strategy",
-    "software architecture",
-    "team building",
-    "technical mentoring",
-    "engineering management",
-    "scalable systems",
-    "cloud architecture",
-    "DevOps",
-    "strategic thinking",
-    "dungeon master",
-    "leadership development",
-  ],
   authors: [{ name: "John Munn" }],
   creator: "John Munn",
   publisher: "John Munn",
@@ -40,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://johnmunn.dev",
+    url: "https://johnmunn.tech",
     siteName: "John Munn - Technical Leader",
     title: "John Munn - Technical Leader & Engineering Strategist",
     description:
@@ -66,7 +54,7 @@ export const metadata: Metadata = {
     shortcut: "/pentagon-growth.svg",
     apple: "/pentagon-growth.svg",
   },
-  metadataBase: new URL("https://johnmunn.dev"),
+  metadataBase: new URL("https://johnmunn.tech"),
   alternates: {
     canonical: "/",
   },
@@ -82,7 +70,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="canonical" href="https://johnmunn.dev" />
+        <link rel="canonical" href="https://johnmunn.tech" />
         {/* Preconnect to external domains for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -95,6 +83,8 @@ export default function RootLayout({
         {/* Resource hints for better performance */}
         <link rel="prefetch" href="/strategic-narratives" />
         <link rel="prefetch" href="/contact" />
+        <PersonSchema />
+        <WebsiteSchema />
       </head>
       <body>{children}</body>
     </html>

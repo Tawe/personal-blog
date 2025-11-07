@@ -1,4 +1,4 @@
-interface StructuredDataProps {
+interface ArticleStructuredDataProps {
   article: {
     title: string
     excerpt: string
@@ -7,32 +7,35 @@ interface StructuredDataProps {
     tags: string[]
     featured_image?: string
     reading_time: number
-    type?: string
-    system?: string
-    availability?: string
+    updated?: string
   }
-  type: 'article' | 'blogPost' | 'creativeWork'
+  articleUrl: string
+  articleSection: string
+  type?: 'Article' | 'BlogPosting' | 'CreativeWork'
 }
 
-export function StructuredData({ article, type }: StructuredDataProps) {
-  const baseUrl = "https://johnmunn.dev"
-  const articleUrl = `${baseUrl}/strategic-narratives/dnd-ttrpgs/${article.slug}`
+export function ArticleStructuredData({ 
+  article, 
+  articleUrl, 
+  articleSection,
+  type = 'Article'
+}: ArticleStructuredDataProps) {
+  const baseUrl = "https://johnmunn.tech"
   
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": type === 'article' ? "Article" : type === 'blogPost' ? "BlogPosting" : "CreativeWork",
+    "@type": type,
     "headline": article.title,
     "description": article.excerpt,
     "url": articleUrl,
     "datePublished": article.date,
-    "dateModified": article.date,
+    "dateModified": article.updated || article.date,
     "author": {
       "@type": "Person",
       "name": "John Munn",
       "url": baseUrl,
       "image": `${baseUrl}/me.jpeg`,
-      "jobTitle": "Technical Leader & Engineering Strategist",
-      "description": "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving."
+      "jobTitle": "Technical Leader & Engineering Strategist"
     },
     "publisher": {
       "@type": "Person",
@@ -45,8 +48,8 @@ export function StructuredData({ article, type }: StructuredDataProps) {
       "@id": articleUrl
     },
     "keywords": article.tags.join(", "),
-    "articleSection": "D&D & TTRPGs",
-    "wordCount": article.reading_time * 200, // Approximate word count
+    "articleSection": articleSection,
+    "wordCount": article.reading_time * 200,
     "timeRequired": `PT${article.reading_time}M`,
     ...(article.featured_image && {
       "image": {
@@ -54,19 +57,6 @@ export function StructuredData({ article, type }: StructuredDataProps) {
         "url": article.featured_image.startsWith('http') ? article.featured_image : `${baseUrl}${article.featured_image}`,
         "width": 1200,
         "height": 630
-      }
-    }),
-    ...(type === 'article' && article.type && {
-      "genre": article.type,
-      "about": article.tags.map(tag => ({
-        "@type": "Thing",
-        "name": tag
-      }))
-    }),
-    ...(article.system && {
-      "mentions": {
-        "@type": "Thing",
-        "name": article.system
       }
     })
   }
@@ -80,3 +70,4 @@ export function StructuredData({ article, type }: StructuredDataProps) {
     />
   )
 }
+

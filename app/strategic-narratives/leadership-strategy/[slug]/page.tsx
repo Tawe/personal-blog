@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation"
+import { Metadata } from "next"
 import { ArticleClientPage } from "./ArticleClientPage"
+import { ArticleStructuredData } from "@/components/article-structured-data"
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
@@ -72,15 +75,51 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const fileContent = fs.readFileSync(filePath, "utf8")
     const { data: frontmatter } = matter(fileContent)
     
+    const title = frontmatter.title || matchingFile.replace(".md", "")
+    const description = frontmatter.excerpt || frontmatter.subtitle || "Leadership strategy article by John Munn"
+    const url = `https://johnmunn.tech/strategic-narratives/leadership-strategy/${slug}`
+    
     return {
-      title: frontmatter.title || matchingFile.replace(".md", ""),
-      description: frontmatter.excerpt || frontmatter.subtitle || "Leadership strategy article",
+      title,
+      description,
+      keywords: frontmatter.tags || [],
+      authors: [{ name: "John Munn" }],
       openGraph: {
-        title: frontmatter.title || matchingFile.replace(".md", ""),
-        description: frontmatter.excerpt || frontmatter.subtitle || "Leadership strategy article",
-        images: frontmatter.featured_image || frontmatter.image ? [frontmatter.featured_image || frontmatter.image] : [],
+        title,
+        description,
+        url,
+        siteName: "John Munn - Technical Leader",
+        images: frontmatter.featured_image || frontmatter.image ? [
+          {
+            url: frontmatter.featured_image || frontmatter.image,
+            width: 1200,
+            height: 630,
+            alt: title,
+          }
+        ] : [
+          {
+            url: "/me.jpeg",
+            width: 1200,
+            height: 630,
+            alt: title,
+          }
+        ],
+        locale: "en_US",
+        type: "article",
+        publishedTime: frontmatter.date,
+        authors: ["John Munn"],
+        tags: frontmatter.tags || [],
       },
-    }
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: frontmatter.featured_image || frontmatter.image ? [frontmatter.featured_image || frontmatter.image] : ["/me.jpeg"],
+      },
+      alternates: {
+        canonical: url,
+      },
+    } as Metadata
   } catch (error) {
     return {
       title: "Article Not Found",
@@ -151,5 +190,25 @@ export default async function LeadershipStrategyArticlePage({
     notFound()
   }
 
-  return <ArticleClientPage article={article} />
+  const articleUrl = `https://johnmunn.tech/strategic-narratives/leadership-strategy/${slug}`
+
+  return (
+    <>
+      <ArticleStructuredData 
+        article={article} 
+        articleUrl={articleUrl}
+        articleSection="Leadership & Strategy"
+        type="BlogPosting"
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Strategic Narratives", url: "/strategic-narratives" },
+          { name: "Leadership & Strategy", url: "/strategic-narratives/leadership-strategy" },
+          { name: article.title, url: `/strategic-narratives/leadership-strategy/${slug}` }
+        ]}
+      />
+      <ArticleClientPage article={article} />
+    </>
+  )
 }

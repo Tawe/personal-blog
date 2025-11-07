@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { ArticleClientPage } from "./ArticleClientPage"
+import { ArticleStructuredData } from "@/components/article-structured-data"
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
@@ -97,7 +99,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     openGraph: {
       title: article.title,
       description: article.excerpt,
-      url: `https://johnmunn.dev/strategic-narratives/dnd-ttrpgs/${article.slug}`,
+      url: `https://johnmunn.tech/strategic-narratives/dnd-ttrpgs/${article.slug}`,
       siteName: "John Munn - Technical Leader",
       images: article.featured_image ? [
         {
@@ -127,7 +129,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       images: article.featured_image ? [article.featured_image] : ["/me.jpeg"],
     },
     alternates: {
-      canonical: `https://johnmunn.dev/strategic-narratives/dnd-ttrpgs/${article.slug}`,
+      canonical: `https://johnmunn.tech/strategic-narratives/dnd-ttrpgs/${article.slug}`,
     },
   }
 }
@@ -139,5 +141,25 @@ export default async function DndTtrpgsArticlePage({ params }: { params: { slug:
     notFound()
   }
 
-  return <ArticleClientPage article={article} />
+  const articleUrl = `https://johnmunn.tech/strategic-narratives/dnd-ttrpgs/${params.slug}`
+
+  return (
+    <>
+      <ArticleStructuredData 
+        article={article} 
+        articleUrl={articleUrl}
+        articleSection="D&D & TTRPGs"
+        type="Article"
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Strategic Narratives", url: "/strategic-narratives" },
+          { name: "D&D and TTRPGs", url: "/strategic-narratives/dnd-ttrpgs" },
+          { name: article.title, url: `/strategic-narratives/dnd-ttrpgs/${params.slug}` }
+        ]}
+      />
+      <ArticleClientPage article={article} />
+    </>
+  )
 }

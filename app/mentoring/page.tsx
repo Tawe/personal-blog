@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
@@ -6,6 +7,36 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import Image from "next/image"
 import { Users, Target, Lightbulb, TrendingUp, MessageSquare, Clock, MapPin, CheckCircle, Star, GraduationCap, Building2 } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Technical Leadership Mentoring",
+  description: "Accelerating careers in technology leadership through practical guidance and proven frameworks. Mentoring for career transitions, strategic thinking, and organizational culture.",
+  openGraph: {
+    title: "Technical Leadership Mentoring | John Munn",
+    description: "Accelerating careers in technology leadership through practical guidance and proven frameworks.",
+    url: "https://johnmunn.tech/mentoring",
+    siteName: "John Munn - Technical Leader",
+    images: [
+      {
+        url: "/me.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "John Munn - Technical Leadership Mentor",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Technical Leadership Mentoring | John Munn",
+    description: "Accelerating careers in technology leadership through practical guidance and proven frameworks.",
+    images: ["/me.jpeg"],
+  },
+  alternates: {
+    canonical: "https://johnmunn.tech/mentoring",
+  },
+}
 
 export default function MentoringPage() {
   const mentoringAreas = [

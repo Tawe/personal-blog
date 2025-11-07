@@ -8,7 +8,6 @@ import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy } from "l
 import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { StructuredData } from "@/components/structured-data"
 
 interface DndContent {
   slug: string
@@ -157,7 +156,6 @@ export function ArticleClientPage({
 
   return (
     <ContentLayout>
-      <StructuredData article={article} type="article" />
       <div className="max-w-4xl mx-auto">
         {/* Back Navigation */}
         <div className="mb-8">

@@ -2,17 +2,7 @@ import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
-
-// Helper function to generate slugs consistently with the rest of the app
-function generateSlug(filename: string): string {
-  return filename
-    .replace(".md", "")
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
-    .replace(/\s+/g, "-") // Replace spaces with hyphens
-    .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
-    .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
-}
+import { generateSlug } from "@/lib/slug-utils"
 
 export async function GET(request: Request) {
   // Get the base URL from the request to handle different environments
@@ -76,7 +66,13 @@ export async function GET(request: Request) {
         const { data: frontmatter } = matter(fileContent)
         
         const slug = generateSlug(filename)
-        const lastmod = frontmatter.date ? new Date(frontmatter.date).toISOString() : new Date().toISOString()
+        // Use file modification time or frontmatter date, whichever is more recent
+        const fileStats = fs.statSync(filePath)
+        const fileModTime = new Date(fileStats.mtime).toISOString()
+        const frontmatterDate = frontmatter.date ? new Date(frontmatter.date).toISOString() : null
+        const lastmod = frontmatterDate && new Date(frontmatterDate) > new Date(fileModTime) 
+          ? frontmatterDate 
+          : fileModTime
         
         // Add URLs for all routes this content appears on
         section.routes.forEach((route) => {
