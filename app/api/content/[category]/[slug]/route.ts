@@ -11,9 +11,9 @@ const categoryMap = {
   dnd: "dnd-musings",
 }
 
-export async function GET(request: Request, { params }: { params: { category: string; slug: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ category: string; slug: string }> }) {
   try {
-    const { category, slug } = params
+    const { category, slug } = await params
     const contentFolder = categoryMap[category as keyof typeof categoryMap]
 
     if (!contentFolder) {
@@ -42,6 +42,7 @@ export async function GET(request: Request, { params }: { params: { category: st
     const filePath = path.join(contentDir, matchingFile)
     const fileContent = fs.readFileSync(filePath, "utf8")
     const { data: frontmatter, content } = matter(fileContent)
+    const htmlContent = await marked(content)
 
     const article = {
       slug,
@@ -49,7 +50,7 @@ export async function GET(request: Request, { params }: { params: { category: st
       subtitle: frontmatter.subtitle,
       date: frontmatter.date || new Date().toISOString(),
       excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
-      content: marked(content),
+      content: htmlContent,
       tags: frontmatter.tags || [],
       featured_image: frontmatter.featured_image || frontmatter.image,
       reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),

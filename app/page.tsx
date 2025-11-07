@@ -62,13 +62,15 @@ export default function HomePage() {
           })),
         ]
 
-        // Sort by date first, then randomly select 3 from the most recent 10
-        const sortedByDate = allArticles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        const recentArticles = sortedByDate.slice(0, Math.min(10, sortedByDate.length))
+        // Sort by date (newest first) and take the 3 most recent articles
+        const sortedByDate = allArticles.sort((a, b) => {
+          const dateA = new Date(a.date).getTime()
+          const dateB = new Date(b.date).getTime()
+          return dateB - dateA // Descending order (newest first)
+        })
         
-        // Shuffle and take 3 for variety
-        const shuffled = recentArticles.sort(() => Math.random() - 0.5)
-        const combined = shuffled.slice(0, 3)
+        // Take the 3 most recent articles
+        const combined = sortedByDate.slice(0, 3)
 
         setAllArticles(combined)
       } catch (error) {

@@ -4,14 +4,15 @@ import path from "path"
 import matter from "gray-matter"
 import { marked } from "marked"
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params
     const contentDir = path.join(process.cwd(), "content/dnd-musings")
     const files = fs.readdirSync(contentDir)
     const markdownFiles = files.filter((file) => file.endsWith(".md"))
     const matchingFile = markdownFiles.find((filename) => {
       const fileSlug = filename.replace(".md", "").toLowerCase().replace(/\s+/g, "-")
-      return fileSlug === params.slug
+      return fileSlug === slug
     })
     if (!matchingFile) {
       return NextResponse.json({ error: "Article not found" }, { status: 404 })
@@ -23,7 +24,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
     
     const response = NextResponse.json({
       article: {
-        slug: params.slug,
+        slug,
         title: frontmatter.title || matchingFile.replace(".md", ""),
         subtitle: frontmatter.subtitle,
         date: frontmatter.date || new Date().toISOString(),
