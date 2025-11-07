@@ -1,7 +1,3 @@
-# Exclude content from serverless function bundles
-# Content is read at runtime via fs, not bundled
-content/
-
 # Development files
 .env.local
 .env*.local

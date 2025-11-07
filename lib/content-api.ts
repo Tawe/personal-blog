@@ -94,12 +94,38 @@ export function processContentDirectory(config: ContentConfig): ProcessedArticle
 
 export function createContentApiResponse(config: ContentConfig) {
   try {
+    // Check if content directory exists
+    if (!fs.existsSync(config.contentDir)) {
+      console.error(`Content directory does not exist: ${config.contentDir}`)
+      return NextResponse.json({ 
+        articles: [],
+        error: `Content directory not found: ${config.contentDir}`,
+        tags: []
+      })
+    }
+    
     const articles = processContentDirectory(config)
-    return NextResponse.json({ articles })
+    
+    // Extract unique tags from all articles
+    const allTags = new Set<string>()
+    articles.forEach(article => {
+      if (article.tags && Array.isArray(article.tags)) {
+        article.tags.forEach(tag => allTags.add(tag))
+      }
+    })
+    
+    return NextResponse.json({ 
+      articles,
+      tags: Array.from(allTags).sort()
+    })
   } catch (error) {
     const contentType = path.basename(config.contentDir)
     console.error(`Error loading ${contentType} articles:`, error)
-    return NextResponse.json({ articles: [] })
+    return NextResponse.json({ 
+      articles: [],
+      tags: [],
+      error: error instanceof Error ? error.message : 'Unknown error'
+    })
   }
 }
 
