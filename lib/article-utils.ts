@@ -74,6 +74,8 @@ export async function getArticle(
     if (frontmatter.devto_link) article.devto_link = frontmatter.devto_link
     if (frontmatter.substack_link)
       article.substack_link = frontmatter.substack_link
+    if (frontmatter.dndbeyond_link || frontmatter.ddb_link)
+      article.dndbeyond_link = frontmatter.dndbeyond_link || frontmatter.ddb_link
     if (frontmatter.updated) article.updated = frontmatter.updated
 
     // Merge frontmatter fields (allowing overrides)

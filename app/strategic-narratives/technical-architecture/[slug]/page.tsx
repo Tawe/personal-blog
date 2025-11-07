@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation"
-import { Metadata } from "next"
 import { ArticleClientPage } from "./ArticleClientPage"
 import { ArticleStructuredData } from "@/components/article-structured-data"
 import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
+import { getArticle } from "@/lib/article-utils"
+import { generateArticleMetadata } from "@/lib/metadata-utils"
+import { generateSlug } from "@/lib/slug-utils"
 import fs from "fs"
 import path from "path"
-import matter from "gray-matter"
-import { marked } from "marked"
 
 interface Article {
   slug: string
@@ -34,148 +34,53 @@ export async function generateStaticParams() {
   const files = fs.readdirSync(contentDir)
   const markdownFiles = files.filter((file) => file.endsWith(".md"))
   
-  return markdownFiles.map((filename) => {
-    const slug = filename
-      .replace(".md", "")
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
-      .replace(/\s+/g, "-") // Replace spaces with hyphens
-      .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
-      .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
-    return { slug }
-  })
+  return markdownFiles.map((filename) => ({
+    slug: generateSlug(filename)
+  }))
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  try {
-    const { slug } = await params
-    const contentDir = path.join(process.cwd(), "content/technical-writings")
-    const files = fs.readdirSync(contentDir)
-    const markdownFiles = files.filter((file) => file.endsWith(".md"))
-    const matchingFile = markdownFiles.find((filename) => {
-      const fileSlug = filename
-        .replace(".md", "")
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
-        .replace(/\s+/g, "-") // Replace spaces with hyphens
-        .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
-        .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
-      return fileSlug === slug
-    })
-    
-    if (!matchingFile) {
-      return {
-        title: "Article Not Found",
-        description: "The requested article could not be found."
-      }
-    }
-    
-    const filePath = path.join(contentDir, matchingFile)
-    const fileContent = fs.readFileSync(filePath, "utf8")
-    const { data: frontmatter } = matter(fileContent)
-    
-    const title = frontmatter.title || matchingFile.replace(".md", "")
-    const description = frontmatter.excerpt || frontmatter.subtitle || "Technical architecture article by John Munn"
-    const url = `https://johnmunn.tech/strategic-narratives/technical-architecture/${slug}`
-    
-    return {
-      title,
-      description,
-      keywords: frontmatter.tags || [],
-      authors: [{ name: "John Munn" }],
-      openGraph: {
-        title,
-        description,
-        url,
-        siteName: "John Munn - Technical Leader",
-        images: frontmatter.featured_image || frontmatter.image ? [
-          {
-            url: frontmatter.featured_image || frontmatter.image,
-            width: 1200,
-            height: 630,
-            alt: title,
-          }
-        ] : [
-          {
-            url: "/me.jpeg",
-            width: 1200,
-            height: 630,
-            alt: title,
-          }
-        ],
-        locale: "en_US",
-        type: "article",
-        publishedTime: frontmatter.date,
-        authors: ["John Munn"],
-        tags: frontmatter.tags || [],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title,
-        description,
-        images: frontmatter.featured_image || frontmatter.image ? [frontmatter.featured_image || frontmatter.image] : ["/me.jpeg"],
-      },
-      alternates: {
-        canonical: url,
-      },
-    } as Metadata
-  } catch (error) {
-    return {
-      title: "Article Not Found",
-      description: "The requested article could not be found."
-    }
-  }
+  const { slug } = await params
+  const contentDir = path.join(process.cwd(), "content/technical-writings")
+  const article = await getArticle({
+    contentDir,
+    slug,
+    defaultType: "technical",
+    customFields: {
+      type: "technical",
+      difficulty: "intermediate",
+    },
+  })
+
+  return generateArticleMetadata({
+    article,
+    slug,
+    basePath: "/strategic-narratives/technical-architecture",
+    sectionName: "Technical Architecture",
+    defaultDescription: "Technical architecture article by John Munn",
+  })
 }
 
-async function getArticle(slug: string): Promise<Article | null> {
-  try {
-    const contentDir = path.join(process.cwd(), "content/technical-writings")
-    const files = fs.readdirSync(contentDir)
-    const markdownFiles = files.filter((file) => file.endsWith(".md"))
-    const matchingFile = markdownFiles.find((filename) => {
-      const fileSlug = filename
-        .replace(".md", "")
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
-        .replace(/\s+/g, "-") // Replace spaces with hyphens
-        .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
-        .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
-      return fileSlug === slug
-    })
-    
-    if (!matchingFile) {
-      return null
-    }
-    
-    const filePath = path.join(contentDir, matchingFile)
-    const fileContent = fs.readFileSync(filePath, "utf8")
-    const { data: frontmatter, content } = matter(fileContent)
-    const htmlContent = await marked(content)
-    
-    return {
-      slug: slug,
-      title: frontmatter.title || matchingFile.replace(".md", ""),
-      subtitle: frontmatter.subtitle,
-      date: frontmatter.date || new Date().toISOString(),
-      excerpt: frontmatter.excerpt || content.substring(0, 150) + "...",
-      content: htmlContent,
-      tags: frontmatter.tags || [],
-      featured_image: frontmatter.featured_image || frontmatter.image,
-      reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
-      featured: frontmatter.featured || false,
-      medium_link: frontmatter.medium_link,
-      devto_link: frontmatter.devto_link,
-      substack_link: frontmatter.substack_link,
-      difficulty: frontmatter.difficulty || "intermediate",
+async function loadArticle(slug: string): Promise<Article | null> {
+  const contentDir = path.join(process.cwd(), "content/technical-writings")
+  const article = await getArticle({
+    contentDir,
+    slug,
+    defaultType: "technical",
+    customFields: {
       type: "technical",
-      code_languages: frontmatter.code_languages || [],
-      updated: frontmatter.updated,
-    }
-  } catch (error) {
-    console.error("Error loading article:", error)
-    return null
-  }
+      difficulty: "intermediate",
+    },
+  })
+
+  if (!article) return null
+
+  return {
+    ...article,
+    difficulty: article.difficulty || "intermediate",
+    code_languages: article.code_languages || [],
+  } as Article
 }
 
 export default async function TechnicalArchitectureArticlePage({ 
@@ -184,7 +89,7 @@ export default async function TechnicalArchitectureArticlePage({
   params: Promise<{ slug: string }> 
 }) {
   const { slug } = await params
-  const article = await getArticle(slug)
+  const article = await loadArticle(slug)
   
   if (!article) {
     notFound()
