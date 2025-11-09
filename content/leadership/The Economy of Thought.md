@@ -6,7 +6,7 @@ excerpt: "In an AI-driven world racing at hyperspeed, the true advantage lies in
 tags: ["Leadership", "Artifical Intelligence", "Productivity", "Future Of Work", "Cognitive Science"]
 reading_time: 4
 featured_image: /theeconomyofthought.png?height=400&width=800
-medium_link:https://medium.com/@johnmunn/the-economy-of-thought-96226842b7fb
+medium_link: https://medium.com/@johnmunn/the-economy-of-thought-96226842b7fb
 devto_link:
 draft: false
 ---
