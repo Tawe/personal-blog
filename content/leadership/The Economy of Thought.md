@@ -1,13 +1,13 @@
 ---
 title: "The Economy of Thought"
-subtitle: "In an Age of Hyperspeed
+subtitle: "In an Age of Hyperspeed"
 date: "2025-10-23"
 excerpt: "In an AI-driven world racing at hyperspeed, the true advantage lies in slowing down—turning reflection, friction, and wisdom into strategy."
 tags: ["Leadership", "Artifical Intelligence", "Productivity", "Future Of Work", "Cognitive Science"]
 reading_time: 4
 featured_image: /theeconomyofthought.png?height=400&width=800
 medium_link:https://medium.com/@johnmunn/the-economy-of-thought-96226842b7fb
-devto_link: 
+devto_link:
 draft: false
 ---
 
