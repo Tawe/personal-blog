@@ -18,9 +18,9 @@ const leadershipConfig: HubConfig = {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateStaticParams() {
@@ -31,7 +31,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const decodedSlug = decodeURIComponent(params.slug)
+  const { slug } = await params
+  const decodedSlug = decodeURIComponent(slug)
   const article = getArticleBySlug(LEADERSHIP_CONFIG, decodedSlug)
 
   if (!article) {
@@ -51,8 +52,9 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
-export default function LeadershipStrategyArticlePage({ params }: PageProps) {
-  const decodedSlug = decodeURIComponent(params.slug)
+export default async function LeadershipStrategyArticlePage({ params }: PageProps) {
+  const { slug } = await params
+  const decodedSlug = decodeURIComponent(slug)
   const article = getArticleBySlug(LEADERSHIP_CONFIG, decodedSlug)
 
   if (!article) {

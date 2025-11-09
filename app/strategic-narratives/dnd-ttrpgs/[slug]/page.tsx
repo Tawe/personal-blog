@@ -61,11 +61,12 @@ async function loadArticle(slug: string): Promise<Article | null> {
   } as Article
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const contentDir = path.join(process.cwd(), "content/dnd-musings")
   const article = await getArticle({
     contentDir,
-    slug: params.slug,
+    slug,
     defaultType: "thought-piece",
     customFields: {
       type: "thought-piece",
@@ -76,21 +77,22 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   return generateArticleMetadata({
     article,
-    slug: params.slug,
+    slug,
     basePath: "/strategic-narratives/dnd-ttrpgs",
     sectionName: "D&D & TTRPGs",
     defaultDescription: "D&D and TTRPG content by John Munn",
   })
 }
 
-export default async function DndTtrpgsArticlePage({ params }: { params: { slug: string } }) {
-  const article = await loadArticle(params.slug)
+export default async function DndTtrpgsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const article = await loadArticle(slug)
 
   if (!article) {
     notFound()
   }
 
-  const articleUrl = `https://johnmunn.tech/strategic-narratives/dnd-ttrpgs/${params.slug}`
+  const articleUrl = `https://johnmunn.tech/strategic-narratives/dnd-ttrpgs/${slug}`
 
   return (
     <>
@@ -105,7 +107,7 @@ export default async function DndTtrpgsArticlePage({ params }: { params: { slug:
           { name: "Home", url: "/" },
           { name: "Strategic Narratives", url: "/strategic-narratives" },
           { name: "D&D and TTRPGs", url: "/strategic-narratives/dnd-ttrpgs" },
-          { name: article.title, url: `/strategic-narratives/dnd-ttrpgs/${params.slug}` }
+          { name: article.title, url: `/strategic-narratives/dnd-ttrpgs/${slug}` }
         ]}
       />
       <ArticleClientPage article={article} />
