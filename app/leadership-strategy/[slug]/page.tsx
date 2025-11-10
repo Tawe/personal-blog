@@ -38,16 +38,66 @@ export async function generateMetadata({ params }: PageProps) {
   if (!article) {
     return {
       title: "Article Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
     }
   }
 
+  const url = `https://johnmunn.tech${leadershipConfig.baseUrl}/${slug}`
+
   return {
     title: `${article.title} | John Munn`,
-    description: article.excerpt,
+    description: article.excerpt || article.subtitle || leadershipConfig.description,
+    keywords: article.tags || [],
+    authors: [{ name: "John Munn" }],
     openGraph: {
       title: article.title,
-      description: article.excerpt,
-      images: article.featured_image ? [article.featured_image] : [],
+      description: article.excerpt || article.subtitle || leadershipConfig.description,
+      url,
+      siteName: "John Munn - Technical Leader",
+      type: "article",
+      publishedTime: article.date,
+      authors: ["John Munn"],
+      tags: article.tags || [],
+      images: article.featured_image
+        ? [
+            {
+              url: article.featured_image,
+              width: 1200,
+              height: 630,
+              alt: article.title,
+            },
+          ]
+        : [
+            {
+              url: "/me.jpeg",
+              width: 1200,
+              height: 630,
+              alt: article.title,
+            },
+          ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt || article.subtitle || leadershipConfig.description,
+      images: article.featured_image ? [article.featured_image] : ["/me.jpeg"],
+    },
+    alternates: {
+      canonical: url,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
   }
 }

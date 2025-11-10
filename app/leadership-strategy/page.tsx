@@ -2,6 +2,7 @@ import { HubPageTemplate } from "@/components/hub-page-template"
 import { Card, CardContent } from "@/components/ui/card"
 import { Users, Target, BookOpen, Lightbulb, TrendingUp, Heart } from "lucide-react"
 import type { HubConfig } from "@/lib/types"
+import type { Metadata } from "next"
 
 const leadershipConfig: HubConfig = {
   title: "Leadership Strategy",
@@ -16,7 +17,73 @@ const leadershipConfig: HubConfig = {
   },
 }
 
-export default function LeadershipStrategyPage() {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}): Promise<Metadata> {
+  const params = await searchParams
+  const hasQueryParams = Object.keys(params).length > 0
+  const baseUrl = "https://johnmunn.tech/leadership-strategy"
+  
+  // If there are query parameters (like ?tag=...), set canonical to base URL and noindex
+  // This prevents duplicate content issues with filtered views
+  if (hasQueryParams) {
+    return {
+      title: "Leadership Strategy | John Munn",
+      description: leadershipConfig.description,
+      robots: {
+        index: false,
+        follow: true,
+        googleBot: {
+          index: false,
+          follow: true,
+        },
+      },
+      alternates: {
+        canonical: baseUrl,
+      },
+    }
+  }
+
+  // Base page metadata
+  return {
+    title: "Leadership Strategy | John Munn",
+    description: leadershipConfig.description,
+    openGraph: {
+      title: "Leadership Strategy | John Munn",
+      description: leadershipConfig.description,
+      url: baseUrl,
+      siteName: "John Munn - Technical Leader",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Leadership Strategy | John Munn",
+      description: leadershipConfig.description,
+    },
+    alternates: {
+      canonical: baseUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+  }
+}
+
+interface LeadershipStrategyPageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function LeadershipStrategyPage({ searchParams }: LeadershipStrategyPageProps) {
   return (
     <HubPageTemplate config={leadershipConfig}>
       {/* Introduction */}

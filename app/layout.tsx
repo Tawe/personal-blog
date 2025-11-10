@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://johnmunn.tech"),
   alternates: {
-    canonical: "/",
+    canonical: "https://johnmunn.tech",
   },
   category: "technology",
     generator: 'v0.dev'
@@ -70,7 +70,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="canonical" href="https://johnmunn.tech" />
         {/* Preconnect to external domains for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
