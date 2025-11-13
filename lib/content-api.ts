@@ -129,6 +129,91 @@ export function createContentApiResponse(config: ContentConfig) {
   }
 }
 
+/**
+ * Lightweight function to get a single article by slug without processing all files
+ * This is optimized for build-time use (generateMetadata) to avoid bundling issues
+ * Uses simple regex parsing instead of gray-matter to avoid bundling dependencies
+ */
+export function getArticleBySlugLightweight(config: ContentConfig, slug: string): ProcessedArticle | null {
+  const { contentDir } = config
+  
+  if (!fs.existsSync(contentDir)) {
+    return null
+  }
+
+  const files = fs.readdirSync(contentDir)
+  const markdownFiles = files.filter((file) => file.endsWith(".md"))
+  
+  // Find the file that matches the slug
+  const matchingFile = markdownFiles.find((filename) => {
+    const fileSlug = filename
+      .replace(".md", "")
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+    return fileSlug === slug
+  })
+
+  if (!matchingFile) {
+    return null
+  }
+
+  const filePath = path.join(contentDir, matchingFile)
+  const fileContent = fs.readFileSync(filePath, "utf8")
+  
+  // Parse frontmatter manually to avoid importing gray-matter at build time
+  // This is a simple YAML frontmatter parser that only extracts what we need for metadata
+  const frontmatterMatch = fileContent.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/)
+  let frontmatter: any = {}
+  let content = fileContent
+  
+  if (frontmatterMatch) {
+    const frontmatterText = frontmatterMatch[1]
+    content = frontmatterMatch[2]
+    
+    // Simple YAML parsing for common fields (not a full parser, but sufficient for metadata)
+    const titleMatch = frontmatterText.match(/^title:\s*(.+)$/m)
+    const subtitleMatch = frontmatterText.match(/^subtitle:\s*(.+)$/m)
+    const dateMatch = frontmatterText.match(/^date:\s*(.+)$/m)
+    const excerptMatch = frontmatterText.match(/^excerpt:\s*(.+)$/m)
+    const tagsMatch = frontmatterText.match(/^tags:\s*\[(.*?)\]/s)
+    const imageMatch = frontmatterText.match(/^featured_image:\s*(.+)$/m)
+    const readingTimeMatch = frontmatterText.match(/^reading_time:\s*(\d+)$/m)
+    
+    if (titleMatch) frontmatter.title = titleMatch[1].trim().replace(/^["']|["']$/g, "")
+    if (subtitleMatch) frontmatter.subtitle = subtitleMatch[1].trim().replace(/^["']|["']$/g, "")
+    if (dateMatch) frontmatter.date = dateMatch[1].trim().replace(/^["']|["']$/g, "")
+    if (excerptMatch) frontmatter.excerpt = excerptMatch[1].trim().replace(/^["']|["']$/g, "")
+    if (imageMatch) frontmatter.featured_image = imageMatch[1].trim().replace(/^["']|["']$/g, "")
+    if (readingTimeMatch) frontmatter.reading_time = parseInt(readingTimeMatch[1])
+    
+    if (tagsMatch) {
+      const tagsStr = tagsMatch[1]
+      frontmatter.tags = tagsStr
+        .split(",")
+        .map(t => t.trim().replace(/^["']|["']$/g, ""))
+        .filter(Boolean)
+    } else {
+      frontmatter.tags = []
+    }
+  }
+
+  // Only process the minimal data needed for metadata
+  return {
+    slug,
+    title: frontmatter.title || matchingFile.replace(".md", ""),
+    subtitle: frontmatter.subtitle,
+    date: frontmatter.date || new Date().toISOString(),
+    excerpt: frontmatter.excerpt || sanitizeExcerpt(content, 180),
+    content: "", // Don't process markdown at build time
+    tags: frontmatter.tags || [],
+    featured_image: frontmatter.featured_image,
+    reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
+  } as ProcessedArticle
+}
+
 export function getArticleBySlug(config: ContentConfig, slug: string): ProcessedArticle | null {
   const articles = processContentDirectory(config)
   return articles.find(article => article.slug === slug) || null

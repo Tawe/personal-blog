@@ -51,7 +51,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params
   const decodedSlug = decodeURIComponent(slug)
-  const article = getArticleBySlug(LEADERSHIP_CONFIG, decodedSlug)
+  // Use lightweight version to avoid processing all files and bundling dependencies at build time
+  const { getArticleBySlugLightweight } = await import("@/lib/content-api")
+  const article = getArticleBySlugLightweight(LEADERSHIP_CONFIG, decodedSlug)
 
   if (!article) {
     return {
