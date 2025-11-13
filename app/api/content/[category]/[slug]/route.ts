@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
-import matter from "gray-matter"
-import { marked } from "marked"
+// Dynamic imports to avoid bundling at build time
 
 const categoryMap = {
   leadership: "leadership",
@@ -41,7 +40,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ cate
 
     const filePath = path.join(contentDir, matchingFile)
     const fileContent = fs.readFileSync(filePath, "utf8")
+    
+    // Dynamic import to avoid bundling at build time
+    const matterModule = await import("gray-matter")
+    const matter = matterModule.default || matterModule
     const { data: frontmatter, content } = matter(fileContent)
+    
+    const markedModule = await import("marked")
+    const marked = markedModule.default || markedModule
     const htmlContent = await marked(content)
 
     const article = {

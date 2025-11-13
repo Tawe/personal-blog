@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation"
-import { getArticleBySlug } from "@/lib/content-api"
 import { LEADERSHIP_CONFIG } from "@/lib/content-configs"
 import { SharedArticleTemplate } from "@/components/shared-article-template"
 import type { HubConfig } from "@/lib/types"
@@ -125,6 +124,8 @@ export async function generateMetadata({ params }: PageProps) {
 export default async function LeadershipStrategyArticlePage({ params }: PageProps) {
   const { slug } = await params
   const decodedSlug = decodeURIComponent(slug)
+  // Dynamic import to avoid bundling gray-matter/marked at build time
+  const { getArticleBySlug } = await import("@/lib/content-api")
   const article = getArticleBySlug(LEADERSHIP_CONFIG, decodedSlug)
 
   if (!article) {

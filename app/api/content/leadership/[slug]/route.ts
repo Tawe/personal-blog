@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
-import matter from "gray-matter"
-import { marked } from "marked"
+// Dynamic imports to avoid bundling at build time
 
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
@@ -28,13 +27,21 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
 
     const filePath = path.join(contentDir, matchingFile)
     const fileContent = fs.readFileSync(filePath, "utf8")
+    
+    // Dynamic import to avoid bundling at build time
+    const matterModule = await import("gray-matter")
+    const matter = matterModule.default || matterModule
     const { data: frontmatter, content } = matter(fileContent)
 
+    const markedModule = await import("marked")
+    const marked = markedModule.default || markedModule
     // Configure marked for better HTML output
-    marked.setOptions({
-      breaks: true,
-      gfm: true,
-    })
+    if (marked.setOptions) {
+      marked.setOptions({
+        breaks: true,
+        gfm: true,
+      })
+    }
 
     const htmlContent = await marked(content)
     

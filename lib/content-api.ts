@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
-import matter from "gray-matter"
-import { marked } from "marked"
+// Dynamic imports - these will be loaded at runtime, not bundled at build time
 
 export interface ContentConfig {
   contentDir: string
@@ -34,17 +33,23 @@ function sanitizeExcerpt(raw: string, length = 150): string {
   return (text.slice(0, length).trim() + (text.length > length ? "..." : ""))
 }
 
-export function processContentDirectory(config: ContentConfig): ProcessedArticle[] {
+export async function processContentDirectory(config: ContentConfig): Promise<ProcessedArticle[]> {
   const { contentDir, defaultType, customFields = {} } = config
 
   if (!fs.existsSync(contentDir)) {
     return []
   }
 
+  // Dynamic import to avoid bundling at build time
+  const matterModule = await import("gray-matter")
+  const matter = matterModule.default || matterModule
+  const markedModule = await import("marked")
+  const marked = markedModule.default || markedModule
+
   const files = fs.readdirSync(contentDir)
   const markdownFiles = files.filter((file) => file.endsWith(".md"))
 
-  const articles = markdownFiles.map((filename) => {
+  const articles = await Promise.all(markdownFiles.map(async (filename) => {
     const filePath = path.join(contentDir, filename)
     const fileContent = fs.readFileSync(filePath, "utf8")
     const { data: frontmatter, content } = matter(fileContent)
@@ -64,7 +69,7 @@ export function processContentDirectory(config: ContentConfig): ProcessedArticle
       subtitle: frontmatter.subtitle,
       date: frontmatter.date || new Date().toISOString(),
       excerpt: frontmatter.excerpt || sanitizeExcerpt(content, 180),
-      content: marked(content), // Convert markdown to HTML
+      content: await marked(content), // Convert markdown to HTML
       tags: frontmatter.tags || [],
       featured_image: frontmatter.featured_image || frontmatter.image,
       reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
@@ -87,12 +92,12 @@ export function processContentDirectory(config: ContentConfig): ProcessedArticle
     })
 
     return baseArticle
-  })
+  }))
 
   return articles
 }
 
-export function createContentApiResponse(config: ContentConfig) {
+export async function createContentApiResponse(config: ContentConfig) {
   try {
     // Check if content directory exists
     if (!fs.existsSync(config.contentDir)) {
@@ -104,7 +109,7 @@ export function createContentApiResponse(config: ContentConfig) {
       })
     }
     
-    const articles = processContentDirectory(config)
+    const articles = await processContentDirectory(config)
     
     // Extract unique tags from all articles
     const allTags = new Set<string>()
@@ -214,18 +219,18 @@ export function getArticleBySlugLightweight(config: ContentConfig, slug: string)
   } as ProcessedArticle
 }
 
-export function getArticleBySlug(config: ContentConfig, slug: string): ProcessedArticle | null {
-  const articles = processContentDirectory(config)
+export async function getArticleBySlug(config: ContentConfig, slug: string): Promise<ProcessedArticle | null> {
+  const articles = await processContentDirectory(config)
   return articles.find(article => article.slug === slug) || null
 }
 
-export function getAllArticles(config: ContentConfig): ProcessedArticle[] {
-  return processContentDirectory(config)
+export async function getAllArticles(config: ContentConfig): Promise<ProcessedArticle[]> {
+  return await processContentDirectory(config)
 }
 
-export function createSingleArticleApiResponse(config: ContentConfig, slug: string) {
+export async function createSingleArticleApiResponse(config: ContentConfig, slug: string) {
   try {
-    const article = getArticleBySlug(config, slug)
+    const article = await getArticleBySlug(config, slug)
     
     if (!article) {
       return NextResponse.json({ error: "Article not found" }, { status: 404 })
