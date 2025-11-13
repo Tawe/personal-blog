@@ -31,8 +31,25 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Note: serverExternalPackages handles externalization of gray-matter and marked
-  // No need for additional webpack externals configuration
+  // Ensure webpack properly externalizes these packages
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Ensure gray-matter and marked are externalized
+      // This works alongside serverExternalPackages
+      const originalExternals = config.externals || []
+      config.externals = [
+        ...(Array.isArray(originalExternals) ? originalExternals : [originalExternals].filter(Boolean)),
+        // Regex to match gray-matter and marked packages
+        ({ request }, callback) => {
+          if (request === 'gray-matter' || request === 'marked') {
+            return callback(null, `commonjs ${request}`)
+          }
+          callback()
+        },
+      ]
+    }
+    return config
+  },
   async headers() {
     return [
       {

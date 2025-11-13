@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation"
-import { getArticleBySlug, getAllArticles } from "@/lib/content-api"
+import { getArticleBySlug } from "@/lib/content-api"
 import { LEADERSHIP_CONFIG } from "@/lib/content-configs"
 import { SharedArticleTemplate } from "@/components/shared-article-template"
 import type { HubConfig } from "@/lib/types"
+import fs from "fs"
+import path from "path"
 
 const leadershipConfig: HubConfig = {
   title: "Leadership Strategy",
@@ -24,10 +26,26 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const articles = getAllArticles(LEADERSHIP_CONFIG)
-  return articles.map((article) => ({
-    slug: article.slug,
-  }))
+  // Only read filenames at build time - don't process full content
+  // This prevents bundling marked/gray-matter into the build
+  const contentDir = path.join(process.cwd(), "content/leadership")
+  if (!fs.existsSync(contentDir)) {
+    return []
+  }
+  const files = fs.readdirSync(contentDir)
+  const markdownFiles = files.filter((file) => file.endsWith(".md"))
+  
+  return markdownFiles.map((filename) => {
+    // Generate slug from filename without processing content
+    const slug = filename
+      .replace(".md", "")
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+    return { slug }
+  })
 }
 
 export async function generateMetadata({ params }: PageProps) {

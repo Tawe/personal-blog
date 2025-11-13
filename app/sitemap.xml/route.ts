@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
-import matter from "gray-matter"
 import { generateSlug } from "@/lib/slug-utils"
+
+// Dynamic import to prevent bundling
+const getMatter = () => import("gray-matter").then((m) => m.default)
 
 export async function GET(request: Request) {
   // Get the base URL from the request to handle different environments
@@ -56,10 +58,13 @@ export async function GET(request: Request) {
       const files = fs.readdirSync(contentDir)
       const markdownFiles = files.filter((file) => file.endsWith(".md"))
 
-      markdownFiles.forEach((filename) => {
+      // Load matter once per section to avoid repeated imports
+      const matter = await getMatter()
+      
+      for (const filename of markdownFiles) {
         // Validate filename to prevent path traversal
         if (!filename.match(/^[a-zA-Z0-9\s\-_\.]+\.md$/)) {
-          return
+          continue
         }
         const filePath = path.join(contentDir, filename)
         const fileContent = fs.readFileSync(filePath, "utf8")
@@ -83,7 +88,7 @@ export async function GET(request: Request) {
             priority: "0.7",
           })
         })
-      })
+      }
     }
   }
 
