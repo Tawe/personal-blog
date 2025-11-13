@@ -25,8 +25,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     const { data: frontmatter, content } = matter(fileContent)
     
     const markedModule = await import("marked")
-    const marked = markedModule.default || markedModule
-    const htmlContent = await marked(content)
+    // marked v16 exports parse as a named export
+    const markedParse = markedModule.parse || (markedModule.default && markedModule.default.parse) || ((content: string) => content)
+    const htmlContent = markedParse(content)
     
     const response = NextResponse.json({
       article: {

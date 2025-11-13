@@ -156,8 +156,9 @@ export async function getArticle(
     const { data: frontmatter, content } = matter(fileContent)
     
     const markedModule = await import("marked")
-    const marked = markedModule.default || markedModule
-    const htmlContent = await marked(content)
+    // marked v16 exports parse as a named export
+    const markedParse = markedModule.parse || (markedModule.default && markedModule.default.parse) || ((content: string) => content)
+    const htmlContent = markedParse(content)
 
     // Calculate reading time (average 200 words per minute)
     const readingTime =

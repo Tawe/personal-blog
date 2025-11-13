@@ -126,7 +126,7 @@ export default async function LeadershipStrategyArticlePage({ params }: PageProp
   const decodedSlug = decodeURIComponent(slug)
   // Dynamic import to avoid bundling gray-matter/marked at build time
   const { getArticleBySlug } = await import("@/lib/content-api")
-  const article = getArticleBySlug(LEADERSHIP_CONFIG, decodedSlug)
+  const article = await getArticleBySlug(LEADERSHIP_CONFIG, decodedSlug)
 
   if (!article) {
     notFound()

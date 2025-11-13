@@ -23,6 +23,9 @@ export interface ProcessedArticle {
 }
 
 function sanitizeExcerpt(raw: string, length = 150): string {
+  if (!raw || typeof raw !== 'string') {
+    return ""
+  }
   const text = raw
     .replace(/`{1,3}[\s\S]*?`{1,3}/g, "") // inline/code blocks
     .replace(/^>\s?/gm, "") // blockquotes
@@ -44,7 +47,8 @@ export async function processContentDirectory(config: ContentConfig): Promise<Pr
   const matterModule = await import("gray-matter")
   const matter = matterModule.default || matterModule
   const markedModule = await import("marked")
-  const marked = markedModule.default || markedModule
+  // marked v16 exports parse as a named export
+  const markedParse = markedModule.parse || (markedModule.default && markedModule.default.parse) || ((content: string) => content)
 
   const files = fs.readdirSync(contentDir)
   const markdownFiles = files.filter((file) => file.endsWith(".md"))
@@ -69,7 +73,7 @@ export async function processContentDirectory(config: ContentConfig): Promise<Pr
       subtitle: frontmatter.subtitle,
       date: frontmatter.date || new Date().toISOString(),
       excerpt: frontmatter.excerpt || sanitizeExcerpt(content, 180),
-      content: await marked(content), // Convert markdown to HTML
+      content: markedParse(content), // Convert markdown to HTML
       tags: frontmatter.tags || [],
       featured_image: frontmatter.featured_image || frontmatter.image,
       reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
@@ -172,11 +176,11 @@ export function getArticleBySlugLightweight(config: ContentConfig, slug: string)
   // This is a simple YAML frontmatter parser that only extracts what we need for metadata
   const frontmatterMatch = fileContent.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/)
   let frontmatter: any = {}
-  let content = fileContent
+  let content = fileContent || ""
   
   if (frontmatterMatch) {
     const frontmatterText = frontmatterMatch[1]
-    content = frontmatterMatch[2]
+    content = frontmatterMatch[2] || ""
     
     // Simple YAML parsing for common fields (not a full parser, but sufficient for metadata)
     const titleMatch = frontmatterText.match(/^title:\s*(.+)$/m)
@@ -206,16 +210,18 @@ export function getArticleBySlugLightweight(config: ContentConfig, slug: string)
   }
 
   // Only process the minimal data needed for metadata
+  // Ensure content is a string for safe operations
+  const safeContent = content || ""
   return {
     slug,
     title: frontmatter.title || matchingFile.replace(".md", ""),
     subtitle: frontmatter.subtitle,
     date: frontmatter.date || new Date().toISOString(),
-    excerpt: frontmatter.excerpt || sanitizeExcerpt(content, 180),
+    excerpt: frontmatter.excerpt || sanitizeExcerpt(safeContent, 180),
     content: "", // Don't process markdown at build time
     tags: frontmatter.tags || [],
     featured_image: frontmatter.featured_image,
-    reading_time: frontmatter.reading_time || Math.ceil(content.split(" ").length / 200),
+    reading_time: frontmatter.reading_time || Math.ceil((safeContent.split(" ").filter(Boolean).length || 1) / 200),
   } as ProcessedArticle
 }
 
