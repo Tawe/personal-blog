@@ -43,7 +43,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const contentDir = path.join(process.cwd(), "content/leadership")
-  const article = await getArticle({
+  // Use lightweight version to avoid bundling gray-matter/marked at build time
+  const { getArticleLightweight } = await import("@/lib/article-utils")
+  const article = getArticleLightweight({
     contentDir,
     slug,
     defaultType: "leadership",
