@@ -31,18 +31,8 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Optimize webpack to reduce bundle size
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // Prevent content files from being bundled into serverless functions
-      config.externals = config.externals || []
-      
-      // Exclude content directory from bundle
-      config.resolve = config.resolve || {}
-      config.resolve.alias = config.resolve.alias || {}
-    }
-    return config
-  },
+  // Note: serverExternalPackages handles externalization of gray-matter and marked
+  // No need for additional webpack externals configuration
   async headers() {
     return [
       {
