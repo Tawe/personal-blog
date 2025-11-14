@@ -9,6 +9,7 @@ import Link from "next/link"
 import Image from "next/image"
 import type { TechnicalArticleMetadata } from "@/lib/content"
 import { useEffect, useState } from "react"
+import { CodeBlockCopy } from "@/components/code-block-copy"
 
 interface ArticleClientPageProps {
   article: any
@@ -274,6 +275,7 @@ export function ArticleClientPage({
         {/* Article Content */}
         <article className="prose prose-invert prose-blue max-w-none mb-12">
           <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
+          <CodeBlockCopy />
         </article>
 
         {/* Related Articles */}

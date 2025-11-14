@@ -8,6 +8,7 @@ import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy } from "l
 import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useState } from "react"
+import { CodeBlockCopy } from "@/components/code-block-copy"
 
 interface DndContent {
   slug: string
@@ -278,6 +279,7 @@ export function ArticleClientPage({
         {/* Article Content */}
         <article className="prose prose-invert prose-blue max-w-none mb-12">
           <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
+          <CodeBlockCopy />
         </article>
 
         {/* Related Articles */}

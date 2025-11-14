@@ -201,6 +201,7 @@ pre[class*="language-"] {
   overflow-x: auto;
   margin: 1.5rem 0;
   border: 1px solid #334155;
+  position: relative;
 }
 
 .prose pre code {
