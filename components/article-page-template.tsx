@@ -8,7 +8,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { CodeBlockCopy } from "@/components/code-block-copy"
 
 interface Article {
   slug: string
@@ -227,7 +226,6 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
         {/* Article Content */}
         <article className="prose prose-invert prose-blue max-w-none mb-12">
           <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
-          <CodeBlockCopy />
         </article>
 
         {/* Related Articles */}

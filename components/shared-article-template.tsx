@@ -9,7 +9,6 @@ import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronR
 import Link from "next/link"
 import Image from "next/image"
 import type { Article, HubConfig } from "@/lib/types"
-import { CodeBlockCopy } from "@/components/code-block-copy"
 
 interface SharedArticleTemplateProps {
   article: Article
@@ -347,7 +346,6 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
             {/* Article Content with Professional Typography */}
             <article className="prose prose-invert prose-blue max-w-none mb-12 prose-lg prose-headings:text-slate-100 prose-p:text-slate-300 prose-p:leading-relaxed prose-strong:text-slate-200 prose-code:text-blue-400 prose-code:bg-slate-800/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-slate-800/50 prose-pre:border prose-pre:border-slate-700 prose-blockquote:border-l-blue-500 prose-blockquote:text-slate-300">
               <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
-              <CodeBlockCopy />
             </article>
 
             {/* Related Articles */}
