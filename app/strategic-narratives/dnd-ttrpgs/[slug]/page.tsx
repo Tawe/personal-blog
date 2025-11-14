@@ -4,6 +4,8 @@ import { ArticleStructuredData } from "@/components/article-structured-data"
 import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import { getArticle } from "@/lib/article-utils"
 import { generateArticleMetadata } from "@/lib/metadata-utils"
+import { generateSlug } from "@/lib/slug-utils"
+import fs from "fs"
 import path from "path"
 
 interface Article {
@@ -26,6 +28,20 @@ interface Article {
   rating?: string
   playtested?: boolean
   website_exclusive?: boolean
+}
+
+// Generate static params for all articles
+export async function generateStaticParams() {
+  const contentDir = path.join(process.cwd(), "content/dnd-musings")
+  if (!fs.existsSync(contentDir)) {
+    return []
+  }
+  const files = fs.readdirSync(contentDir)
+  const markdownFiles = files.filter((file) => file.endsWith(".md"))
+  
+  return markdownFiles.map((filename) => ({
+    slug: generateSlug(filename)
+  }))
 }
 
 async function loadArticle(slug: string): Promise<Article | null> {

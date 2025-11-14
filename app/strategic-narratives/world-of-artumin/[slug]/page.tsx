@@ -1,8 +1,12 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { useParams, notFound } from "next/navigation"
+import { notFound } from "next/navigation"
 import { ArticleClientPage } from "./ArticleClientPage"
+import { ArticleStructuredData } from "@/components/article-structured-data"
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
+import { getArticle } from "@/lib/article-utils"
+import { generateArticleMetadata } from "@/lib/metadata-utils"
+import { generateSlug } from "@/lib/slug-utils"
+import fs from "fs"
+import path from "path"
 
 interface Article {
   slug: string
@@ -20,52 +24,95 @@ interface Article {
   connections?: string[]
 }
 
-export default function WorldOfArtumiArticlePage() {
-  const params = useParams()
-  const [article, setArticle] = useState<Article | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-
-  useEffect(() => {
-    async function fetchArticle() {
-      try {
-        const slug = decodeURIComponent(params.slug as string)
-        const response = await fetch(`/api/content/artumin/${slug}`)
-
-        if (!response.ok) {
-          setError(true)
-          return
-        }
-
-        const data = await response.json()
-        setArticle(data.article)
-      } catch (err) {
-        console.error("Error fetching article:", err)
-        setError(true)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    if (params.slug) {
-      fetchArticle()
-    }
-  }, [params.slug])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p>Loading article...</p>
-        </div>
-      </div>
-    )
+// Generate static params for all articles
+export async function generateStaticParams() {
+  const contentDir = path.join(process.cwd(), "content/artumin")
+  if (!fs.existsSync(contentDir)) {
+    return []
   }
+  const files = fs.readdirSync(contentDir)
+  const markdownFiles = files.filter((file) => file.endsWith(".md"))
+  
+  return markdownFiles.map((filename) => ({
+    slug: generateSlug(filename)
+  }))
+}
 
-  if (error || !article) {
+// Generate metadata for SEO
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const contentDir = path.join(process.cwd(), "content/artumin")
+  // Use lightweight version to avoid bundling gray-matter/marked at build time
+  const { getArticleLightweight } = await import("@/lib/article-utils")
+  const article = getArticleLightweight({
+    contentDir,
+    slug,
+    defaultType: "artumin",
+    customFields: {
+      type: "artumin",
+    },
+  })
+
+  return generateArticleMetadata({
+    article,
+    slug,
+    basePath: "/strategic-narratives/world-of-artumin",
+    sectionName: "World of Artumin",
+    defaultDescription: "World of Artumin content by John Munn",
+  })
+}
+
+async function loadArticle(slug: string): Promise<Article | null> {
+  const contentDir = path.join(process.cwd(), "content/artumin")
+  const article = await getArticle({
+    contentDir,
+    slug,
+    defaultType: "artumin",
+    customFields: {
+      type: "artumin",
+    },
+  })
+
+  if (!article) return null
+
+  return {
+    ...article,
+    categories: article.categories || [],
+    status: article.status || "published",
+  } as Article
+}
+
+export default async function WorldOfArtumiArticlePage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
+  const { slug } = await params
+  const article = await loadArticle(slug)
+  
+  if (!article) {
     notFound()
   }
 
-  return <ArticleClientPage article={article} />
+  const articleUrl = `https://johnmunn.tech/strategic-narratives/world-of-artumin/${slug}`
+
+  return (
+    <>
+      <ArticleStructuredData 
+        article={article} 
+        articleUrl={articleUrl}
+        articleSection="World of Artumin"
+        type="Article"
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Strategic Narratives", url: "/strategic-narratives" },
+          { name: "World of Artumin", url: "/strategic-narratives/world-of-artumin" },
+          { name: article.title, url: `/strategic-narratives/world-of-artumin/${slug}` }
+        ]}
+      />
+      <ArticleClientPage article={article} />
+    </>
+  )
 }
