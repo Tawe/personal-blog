@@ -16,6 +16,7 @@ const nextConfig = {
   serverExternalPackages: [
     'gray-matter',
     'marked',
+    'highlight.js',
   ],
   experimental: {
     // Enable static generation for dynamic routes
@@ -46,9 +47,9 @@ const nextConfig = {
       const originalExternals = config.externals || []
       config.externals = [
         ...(Array.isArray(originalExternals) ? originalExternals : [originalExternals].filter(Boolean)),
-        // Regex to match gray-matter and marked packages
+        // Regex to match gray-matter, marked, and highlight.js packages
         ({ request }, callback) => {
-          if (request === 'gray-matter' || request === 'marked') {
+          if (request === 'gray-matter' || request === 'marked' || request === 'highlight.js') {
             return callback(null, `commonjs ${request}`)
           }
           callback()

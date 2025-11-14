@@ -24,9 +24,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     const matter = matterModule.default || matterModule
     const { data: frontmatter, content } = matter(fileContent)
     
-    const markedModule = await import("marked")
-    // marked v16 exports parse as a named export
-    const markedParse = markedModule.parse || (markedModule.default && markedModule.default.parse) || ((content: string) => content)
+    // Use configured marked with syntax highlighting
+    const { getConfiguredMarked } = await import("@/lib/markdown-config")
+    const markedParse = await getConfiguredMarked()
     const htmlContent = markedParse(content)
     
     const response = NextResponse.json({

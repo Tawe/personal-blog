@@ -46,9 +46,9 @@ export async function processContentDirectory(config: ContentConfig): Promise<Pr
   // Dynamic import to avoid bundling at build time
   const matterModule = await import("gray-matter")
   const matter = matterModule.default || matterModule
-  const markedModule = await import("marked")
-  // marked v16 exports parse as a named export
-  const markedParse = markedModule.parse || (markedModule.default && markedModule.default.parse) || ((content: string) => content)
+  // Use configured marked with syntax highlighting
+  const { getConfiguredMarked } = await import("@/lib/markdown-config")
+  const markedParse = await getConfiguredMarked()
 
   const files = fs.readdirSync(contentDir)
   const markdownFiles = files.filter((file) => file.endsWith(".md"))
