@@ -23,7 +23,7 @@ Below are seven underused APIs. What they do, why they matter, when to reach for
 
 **What it is:** A same-origin messaging system between browser contexts (tabs, iframes, workers).
 
-```js
+```javascript
 // Tab A
 const ch = new BroadcastChannel('cart');
 ch.postMessage({ type: 'ITEM_ADDED', id: 42 });
@@ -45,7 +45,7 @@ ch2.onmessage = (e) => console.log(e.data);
 
 **What it is:** A live stream of performance entries. Measures, long tasks, LCP, CLS, and more.
 
-```js
+```javascript
 const po = new PerformanceObserver((list) => {
   list.getEntries().forEach(e => sendPerf(e));
 });
@@ -69,7 +69,7 @@ performance.measure('init', 't-start', 't-end');
 
 **What it is:** A cooperative locking system that prevents concurrent work across tabs or workers.
 
-```js
+```javascript
 await navigator.locks.request('sync-inventory', async () => {
   await doCriticalSync(); // only one context runs this at a time
 });
@@ -87,7 +87,7 @@ await navigator.locks.request('sync-inventory', async () => {
 
 **What it is:** An API that captures browser-generated reports, deprecations, interventions, and runtime warnings.
 
-```js
+```javascript
 const observer = new ReportingObserver((reports) => {
   for (const r of reports) sendToTelemetry(r.type, r.body);
 }, { types: ['deprecation', 'intervention'], buffered: true });
@@ -107,7 +107,7 @@ observer.observe();
 
 **What it is:** Native gzip and deflate compression via `CompressionStream` and `DecompressionStream`, streaming and zero dependencies.
 
-```js
+```javascript
 async function gzipString(str) {
   const cs = new CompressionStream('gzip');
   const stream = new Blob([str]).stream().pipeThrough(cs);
@@ -127,7 +127,7 @@ async function gzipString(str) {
 
 **What it is:** Direct read/write access to local files with explicit user permission.
 
-```js
+```javascript
 const handle = await window.showSaveFilePicker({ suggestedName: 'data.json' });
 const writable = await handle.createWritable();
 await writable.write(JSON.stringify(data));
@@ -147,7 +147,7 @@ Chrome and Edge supported; Safari and Firefox in development
 
 **What it is:** Native, CSS-driven route and DOM transitions with shared element animations.
 
-```js
+```javascript
 await document.startViewTransition(async () => {
   renderNextView(); // mutate DOM here
 });
