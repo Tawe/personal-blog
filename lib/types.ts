@@ -17,6 +17,7 @@ export interface ArticleMetadata extends BaseContentMetadata {
   medium_link?: string
   devto_link?: string
   substack_link?: string
+  linkedin_link?: string
 }
 
 export interface TechnicalArticleMetadata extends BaseContentMetadata {

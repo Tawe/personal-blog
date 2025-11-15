@@ -44,6 +44,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
         medium_link: frontmatter.medium_link,
         devto_link: frontmatter.devto_link,
         substack_link: frontmatter.substack_link,
+        linkedin_link: frontmatter.linkedin_link,
         dndbeyond_link: frontmatter.ddb_link || frontmatter.dndbeyond_link,
         website_exclusive: frontmatter.website_exclusive || false,
       },

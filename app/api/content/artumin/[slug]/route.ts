@@ -50,6 +50,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
         medium_link: frontmatter.medium_link,
         devto_link: frontmatter.devto_link,
         substack_link: frontmatter.substack_link,
+        linkedin_link: frontmatter.linkedin_link,
       },
     })
     

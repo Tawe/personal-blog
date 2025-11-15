@@ -18,6 +18,7 @@ export interface ArticleMetadata extends BaseContentMetadata {
   medium_link?: string
   devto_link?: string
   substack_link?: string
+  linkedin_link?: string
 }
 
 export interface TechnicalArticleMetadata extends BaseContentMetadata {
@@ -137,6 +138,7 @@ export function getAllArticles(): ArticleMetadata[] {
     medium_link: data.medium_link,
     devto_link: data.devto_link,
     substack_link: data.substack_link,
+    linkedin_link: data.linkedin_link,
   }))
 }
 
@@ -145,6 +147,7 @@ export function getArticleBySlug(slug: string): Article | null {
     medium_link: data.medium_link,
     devto_link: data.devto_link,
     substack_link: data.substack_link,
+    linkedin_link: data.linkedin_link,
   }))
 }
 

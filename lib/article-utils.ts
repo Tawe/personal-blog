@@ -62,6 +62,7 @@ export function getArticleLightweight(
       const mediumLinkMatch = frontmatterText.match(/^medium_link:\s*(.+)$/m)
       const devtoLinkMatch = frontmatterText.match(/^devto_link:\s*(.+)$/m)
       const substackLinkMatch = frontmatterText.match(/^substack_link:\s*(.+)$/m)
+      const linkedinLinkMatch = frontmatterText.match(/^linkedin_link:\s*(.+)$/m)
       const dndbeyondLinkMatch = frontmatterText.match(/^dndbeyond_link:\s*(.+)$/m)
       const ddbLinkMatch = frontmatterText.match(/^ddb_link:\s*(.+)$/m)
       const updatedMatch = frontmatterText.match(/^updated:\s*(.+)$/m)
@@ -76,6 +77,7 @@ export function getArticleLightweight(
       if (mediumLinkMatch) frontmatter.medium_link = mediumLinkMatch[1].trim().replace(/^["']|["']$/g, "")
       if (devtoLinkMatch) frontmatter.devto_link = devtoLinkMatch[1].trim().replace(/^["']|["']$/g, "")
       if (substackLinkMatch) frontmatter.substack_link = substackLinkMatch[1].trim().replace(/^["']|["']$/g, "")
+      if (linkedinLinkMatch) frontmatter.linkedin_link = linkedinLinkMatch[1].trim().replace(/^["']|["']$/g, "")
       if (dndbeyondLinkMatch) frontmatter.dndbeyond_link = dndbeyondLinkMatch[1].trim().replace(/^["']|["']$/g, "")
       if (ddbLinkMatch) frontmatter.ddb_link = ddbLinkMatch[1].trim().replace(/^["']|["']$/g, "")
       if (updatedMatch) frontmatter.updated = updatedMatch[1].trim().replace(/^["']|["']$/g, "")
@@ -119,6 +121,7 @@ export function getArticleLightweight(
     if (frontmatter.medium_link) article.medium_link = frontmatter.medium_link
     if (frontmatter.devto_link) article.devto_link = frontmatter.devto_link
     if (frontmatter.substack_link) article.substack_link = frontmatter.substack_link
+    if (frontmatter.linkedin_link) article.linkedin_link = frontmatter.linkedin_link
     if (frontmatter.dndbeyond_link || frontmatter.ddb_link)
       article.dndbeyond_link = frontmatter.dndbeyond_link || frontmatter.ddb_link
     if (frontmatter.updated) article.updated = frontmatter.updated
@@ -189,6 +192,7 @@ export async function getArticle(
     if (frontmatter.devto_link) article.devto_link = frontmatter.devto_link
     if (frontmatter.substack_link)
       article.substack_link = frontmatter.substack_link
+    if (frontmatter.linkedin_link) article.linkedin_link = frontmatter.linkedin_link
     if (frontmatter.dndbeyond_link || frontmatter.ddb_link)
       article.dndbeyond_link = frontmatter.dndbeyond_link || frontmatter.ddb_link
     if (frontmatter.updated) article.updated = frontmatter.updated

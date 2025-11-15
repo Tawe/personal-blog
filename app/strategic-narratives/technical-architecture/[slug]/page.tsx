@@ -25,6 +25,7 @@ interface Article {
   medium_link?: string
   devto_link?: string
   substack_link?: string
+  linkedin_link?: string
   featured?: boolean
 }
 

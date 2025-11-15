@@ -313,7 +313,7 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
             </div>
 
             {/* "View On" External Links */}
-            {(article.medium_link || article.devto_link || article.substack_link) && (
+            {(article.medium_link || article.devto_link || article.substack_link || article.linkedin_link) && (
               <div className="flex items-center gap-4 mb-8 p-4 bg-slate-800/30 rounded-lg border border-slate-700">
                 <span className="text-sm text-slate-300 font-medium">View On:</span>
                 {article.medium_link && (
@@ -337,6 +337,14 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                     <Link href={article.substack_link} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-2 h-4 w-4" />
                       Substack
+                    </Link>
+                  </Button>
+                )}
+                {article.linkedin_link && (
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href={article.linkedin_link} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      LinkedIn
                     </Link>
                   </Button>
                 )}

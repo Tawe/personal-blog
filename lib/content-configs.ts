@@ -8,6 +8,7 @@ export const LEADERSHIP_CONFIG: ContentConfig = {
     medium_link: undefined,
     devto_link: undefined,
     substack_link: undefined,
+    linkedin_link: undefined,
   }
 }
 
