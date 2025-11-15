@@ -156,17 +156,22 @@ pre[class*="language-"] {
   margin: 1.5rem 0;
   padding-left: 1.5rem;
   color: #cbd5e1;
+  list-style-type: disc;
+  list-style-position: outside;
 }
 
 .prose ol {
   margin: 1.5rem 0;
   padding-left: 1.5rem;
   color: #cbd5e1;
+  list-style-type: decimal;
+  list-style-position: outside;
 }
 
 .prose li {
   margin-bottom: 0.5rem;
   line-height: 1.75;
+  padding-left: 0.5rem;
 }
 
 .prose li p {
