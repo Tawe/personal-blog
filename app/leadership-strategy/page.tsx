@@ -26,8 +26,8 @@ export async function generateMetadata({
   const hasQueryParams = Object.keys(params).length > 0
   const baseUrl = "https://johnmunn.tech/leadership-strategy"
   
-  // If there are query parameters (like ?tag=...), set canonical to base URL and noindex
-  // This prevents duplicate content issues with filtered views
+  // If there are query parameters (like ?tag=...), canonicalize to base URL
+  // This prevents duplicate content issues - filtered views are just different views of the same page
   if (hasQueryParams) {
     return {
       title: "Leadership Strategy | John Munn",
