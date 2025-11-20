@@ -24,8 +24,10 @@ export async function GET(request: Request) {
   const staticPages = [
     "",
     "/vision",
-    "/team-building", 
-    "/mentoring",
+    "/services",
+    "/services/team-building", 
+    "/services/mentoring",
+    "/workbench",
     "/contact",
     "/strategic-narratives",
     "/strategic-narratives/leadership-strategy",
@@ -49,6 +51,7 @@ export async function GET(request: Request) {
     { dir: "content/technical-writings", routes: ["/strategic-narratives/technical-architecture"] },
     { dir: "content/dnd-musings", routes: ["/strategic-narratives/dnd-ttrpgs"] },
     { dir: "content/artumin", routes: ["/strategic-narratives/world-of-artumin"] },
+    { dir: "content/projects", routes: ["/workbench"] },
   ]
 
   for (const section of contentSections) {
@@ -69,6 +72,11 @@ export async function GET(request: Request) {
         const filePath = path.join(contentDir, filename)
         const fileContent = fs.readFileSync(filePath, "utf8")
         const { data: frontmatter } = matter(fileContent)
+        
+        // Skip draft projects/articles
+        if (frontmatter.draft === true) {
+          continue
+        }
         
         const slug = generateSlug(filename)
         // Use file modification time or frontmatter date, whichever is more recent

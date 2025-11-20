@@ -81,11 +81,11 @@ export function SiteFooter() {
               >
                 Strategic Narratives
               </Link>
-              <Link href="/team-building" className="text-slate-400 hover:text-blue-400 transition-colors text-sm">
-                Team Building
+              <Link href="/services" className="text-slate-400 hover:text-blue-400 transition-colors text-sm">
+                Services
               </Link>
-              <Link href="/mentoring" className="text-slate-400 hover:text-blue-400 transition-colors text-sm">
-                Mentoring
+              <Link href="/workbench" className="text-slate-400 hover:text-blue-400 transition-colors text-sm">
+                Workbench
               </Link>
             </nav>
           </div>

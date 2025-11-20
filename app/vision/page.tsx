@@ -300,9 +300,9 @@ export default function VisionPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
-              <Link href="/mentoring">
+              <Link href="/services">
                 <Calendar className="mr-2 h-5 w-5" />
-                Schedule Mentoring
+                Explore Services
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>

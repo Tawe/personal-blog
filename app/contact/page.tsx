@@ -125,7 +125,7 @@ export default function Contact() {
               <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
               <div>
                 <strong className="text-slate-200">Mentoring:</strong>{" "}
-                <Link href="/mentoring" className="text-blue-400 hover:text-blue-300 underline">
+                <Link href="/services/mentoring" className="text-blue-400 hover:text-blue-300 underline">
                   Learn more here
                 </Link>
               </div>
