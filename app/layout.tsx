@@ -78,7 +78,6 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         {/* Preload critical resources */}
         <link rel="preload" href="/me.jpeg" as="image" type="image/jpeg" />
-        <link rel="preload" href="/pentagon-growth.svg" as="image" type="image/svg+xml" />
         {/* Resource hints for better performance */}
         <link rel="prefetch" href="/strategic-narratives" />
         <link rel="prefetch" href="/contact" />
