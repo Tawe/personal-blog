@@ -101,7 +101,7 @@
           "value": "www.johnmunn.tech"
         }
       ],
-      "destination": "https://johnmunn.tech/:1",
+      "destination": "https://johnmunn.tech/$1",
       "permanent": true
     }
   ],
