@@ -5,7 +5,7 @@ date: "2025-07-20"
 excerpt: "CAP Theorem isn’t just theory, it defines your system’s trade-offs. Learn how real systems choose C, A, or P, and what happens when you choose wrong."
 tags: ["Software Architecture", "Distributed Systems", "Cap Theorem", "Software Engineering", "DevOps"]
 reading_time: 6
-featured_image: /understandingthecaptheorem.wbp?height=400&width=800
+featured_image: /understandingthecaptheorem.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/understanding-the-cap-theorem-b07ddee35549
 devto_link: 
 substack:
