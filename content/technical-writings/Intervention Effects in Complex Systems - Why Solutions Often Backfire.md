@@ -1,6 +1,6 @@
 ---
 title: "Intervention Effects in Complex Systems - Why Solutions Often Backfire"
-subtitle: "Why well-meaning fixes fail, and how to spot second-order failure before it hits production.
+subtitle: "Why well-meaning fixes fail, and how to spot second-order failure before it hits production."
 date: "2025-07-16"
 excerpt: "Why well-meaning interventions fail in complex systems, and how to avoid second-order effects, proxy traps, and Goodhart’s Law in practice."
 tags: ["Machine Learning", "Data Science", "AI", "Casual Inference", "Llm"]
