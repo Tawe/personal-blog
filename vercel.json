@@ -92,6 +92,19 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.johnmunn.tech"
+        }
+      ],
+      "destination": "https://johnmunn.tech/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/strategic-narratives/technical-architecture/:slug",
