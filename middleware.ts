@@ -1,11 +1,29 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Middleware is now minimal - www redirect is handled by vercel.json
-// This middleware can be used for other purposes if needed in the future
 export function middleware(request: NextRequest) {
-  // Vercel handles HTTPS redirects automatically
-  // www to non-www redirect is handled in vercel.json to avoid conflicts
+  const hostname = request.headers.get('host') || ''
+  const pathname = request.nextUrl.pathname
+  
+  // Skip redirect for static assets and API routes
+  if (
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/favicon.ico') ||
+    /\.(js|css|svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot|map)$/.test(pathname)
+  ) {
+    return NextResponse.next()
+  }
+  
+  // Redirect www to non-www (Vercel handles HTTPS redirects automatically)
+  if (hostname && hostname.startsWith('www.')) {
+    const nonWwwHost = hostname.replace(/^www\./, '')
+    const url = request.nextUrl.clone()
+    url.hostname = nonWwwHost
+    url.protocol = 'https:'
+    return NextResponse.redirect(url, 301)
+  }
+  
   return NextResponse.next()
 }
 
