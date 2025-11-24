@@ -92,19 +92,6 @@
       ]
     }
   ],
-  "redirects": [
-    {
-      "source": "/((?!_next|api|.*\\.(js|css|svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot|map|xml|txt)).*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "www.johnmunn.tech"
-        }
-      ],
-      "destination": "https://johnmunn.tech/$1",
-      "permanent": true
-    }
-  ],
   "rewrites": [
     {
       "source": "/strategic-narratives/technical-architecture/:slug",
