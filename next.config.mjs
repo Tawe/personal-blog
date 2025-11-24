@@ -32,11 +32,15 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Exclude public folder from serverless function bundles
-  // Images in public/ should be served as static assets, not bundled
+  // Exclude unnecessary files from serverless function bundles
   outputFileTracingExcludes: {
     '*': [
       'public/**/*',
+      '.git/**/*',
+      '.next/cache/**/*',
+      'node_modules/**/*.md',
+      'node_modules/**/*.txt',
+      'node_modules/**/*.map',
     ],
   },
   // Ensure webpack properly externalizes these packages

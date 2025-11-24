@@ -1,0 +1,9 @@
+# Exclude from Vercel deployments
+.git
+.gitignore
+.next/cache
+node_modules
+*.log
+.DS_Store
+**/.DS_Store
+

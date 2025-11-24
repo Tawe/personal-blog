@@ -3,8 +3,36 @@ import fs from "fs"
 import path from "path"
 import { generateSlug } from "@/lib/slug-utils"
 
-// Dynamic import to prevent bundling
-const getMatter = () => import("gray-matter").then((m) => m.default)
+// Optimize for smaller bundle size
+export const runtime = 'nodejs'
+export const revalidate = 3600 // Revalidate every hour (cache for 1 hour)
+
+// Simple frontmatter parser to avoid bundling gray-matter
+function parseFrontmatter(content: string): { draft?: boolean; date?: string } {
+  const frontmatter: { draft?: boolean; date?: string } = {}
+  
+  // Match YAML frontmatter between --- markers
+  const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n/)
+  if (!frontmatterMatch) {
+    return frontmatter
+  }
+  
+  const frontmatterText = frontmatterMatch[1]
+  
+  // Extract draft field
+  const draftMatch = frontmatterText.match(/^draft:\s*(true|false)/m)
+  if (draftMatch) {
+    frontmatter.draft = draftMatch[1] === 'true'
+  }
+  
+  // Extract date field (supports various formats)
+  const dateMatch = frontmatterText.match(/^date:\s*(.+)$/m)
+  if (dateMatch) {
+    frontmatter.date = dateMatch[1].trim().replace(/['"]/g, '')
+  }
+  
+  return frontmatter
+}
 
 export async function GET(request: Request) {
   // Always use canonical HTTPS non-www URL for sitemap
@@ -59,9 +87,6 @@ export async function GET(request: Request) {
     if (fs.existsSync(contentDir)) {
       const files = fs.readdirSync(contentDir)
       const markdownFiles = files.filter((file) => file.endsWith(".md"))
-
-      // Load matter once per section to avoid repeated imports
-      const matter = await getMatter()
       
       for (const filename of markdownFiles) {
         // Basic validation: ensure it's a .md file and doesn't contain path traversal attempts
@@ -71,7 +96,7 @@ export async function GET(request: Request) {
         }
         const filePath = path.join(contentDir, filename)
         const fileContent = fs.readFileSync(filePath, "utf8")
-        const { data: frontmatter } = matter(fileContent)
+        const frontmatter = parseFrontmatter(fileContent)
         
         // Skip draft projects/articles
         if (frontmatter.draft === true) {
