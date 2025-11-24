@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation"
 import { LEADERSHIP_CONFIG } from "@/lib/content-configs"
 import { SharedArticleTemplate } from "@/components/shared-article-template"
+import { ArticleStructuredData } from "@/components/article-structured-data"
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import type { HubConfig } from "@/lib/types"
 import fs from "fs"
 import path from "path"
@@ -132,5 +134,24 @@ export default async function LeadershipStrategyArticlePage({ params }: PageProp
     notFound()
   }
 
-  return <SharedArticleTemplate article={article} config={leadershipConfig} />
+  const articleUrl = `https://johnmunn.tech${leadershipConfig.baseUrl}/${slug}`
+
+  return (
+    <>
+      <ArticleStructuredData 
+        article={article} 
+        articleUrl={articleUrl}
+        articleSection="Leadership & Strategy"
+        type="BlogPosting"
+      />
+      <BreadcrumbSchema 
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Leadership Strategy", url: leadershipConfig.baseUrl },
+          { name: article.title, url: `${leadershipConfig.baseUrl}/${slug}` }
+        ]}
+      />
+      <SharedArticleTemplate article={article} config={leadershipConfig} />
+    </>
+  )
 }

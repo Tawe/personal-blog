@@ -7,9 +7,8 @@ import { generateSlug } from "@/lib/slug-utils"
 const getMatter = () => import("gray-matter").then((m) => m.default)
 
 export async function GET(request: Request) {
-  // Get the base URL from the request to handle different environments
-  const url = new URL(request.url)
-  const baseUrl = `${url.protocol}//${url.host}`
+  // Always use canonical HTTPS non-www URL for sitemap
+  const baseUrl = "https://johnmunn.tech"
   const urls = []
 
   // Add robots.txt reference
@@ -65,8 +64,9 @@ export async function GET(request: Request) {
       const matter = await getMatter()
       
       for (const filename of markdownFiles) {
-        // Validate filename to prevent path traversal
-        if (!filename.match(/^[a-zA-Z0-9\s\-_\.]+\.md$/)) {
+        // Basic validation: ensure it's a .md file and doesn't contain path traversal attempts
+        // More permissive since generateSlug will sanitize the output anyway
+        if (!filename.endsWith(".md") || filename.includes("..") || filename.includes("/") || filename.includes("\\")) {
           continue
         }
         const filePath = path.join(contentDir, filename)

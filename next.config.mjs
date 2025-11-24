@@ -58,6 +58,22 @@ const nextConfig = {
     }
     return config
   },
+  async redirects() {
+    return [
+      // Redirect www to non-www (handled by middleware, but this is a backup)
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.johnmunn.tech',
+          },
+        ],
+        destination: 'https://johnmunn.tech/:path*',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {
