@@ -1,5 +1,5 @@
 ---
-title: "The Engineer’s Guide to Business Value (and How to Sell It)
+title: "The Engineer’s Guide to Business Value (and How to Sell It)"
 subtitle: "Helping engineers understand business value, identify leverage, and pitch technical work that drives impact."
 date: "2025-07-15"
 excerpt: "A practical guide to help engineers frame technical work as business value, with leverage, risk, metrics, and case studies that resonate."
