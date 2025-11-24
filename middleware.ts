@@ -1,29 +1,11 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+// Temporarily disabled to fix redirect loops
+// Configure www -> non-www redirect in Vercel dashboard under Domain settings
+// Or use vercel.json redirects (but be careful with static assets)
 export function middleware(request: NextRequest) {
-  const hostname = request.headers.get('host') || ''
-  const pathname = request.nextUrl.pathname
-  
-  // Skip redirect for static assets and API routes
-  if (
-    pathname.startsWith('/_next/') ||
-    pathname.startsWith('/api/') ||
-    pathname.startsWith('/favicon.ico') ||
-    /\.(js|css|svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot|map)$/.test(pathname)
-  ) {
-    return NextResponse.next()
-  }
-  
-  // Redirect www to non-www (Vercel handles HTTPS redirects automatically)
-  if (hostname && hostname.startsWith('www.')) {
-    const nonWwwHost = hostname.replace(/^www\./, '')
-    const url = request.nextUrl.clone()
-    url.hostname = nonWwwHost
-    url.protocol = 'https:'
-    return NextResponse.redirect(url, 301)
-  }
-  
+  // Pass through all requests - redirects should be handled at Vercel platform level
   return NextResponse.next()
 }
 
