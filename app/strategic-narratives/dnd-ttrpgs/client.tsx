@@ -43,6 +43,8 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
   const [selectedSystem, setSelectedSystem] = useState<string | undefined>(undefined)
   const [selectedType, setSelectedType] = useState<string | undefined>(undefined)
   const [playtestedOnly, setPlaytestedOnly] = useState(false)
+  const [showAllTopics, setShowAllTopics] = useState(false)
+  const TOPICS_LIMIT = 20
 
   const handleSearch = (value: string) => {
     setSearchTerm(value)
@@ -210,7 +212,7 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
           <div className="space-y-2">
             <h4 className="text-sm font-medium text-slate-300">Categories</h4>
             <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
+              {(showAllTopics ? tags : tags.slice(0, TOPICS_LIMIT)).map((tag) => (
                 <Badge
                   key={tag}
                   variant={selectedTags.includes(tag) ? "default" : "secondary"}
@@ -225,6 +227,16 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
                 </Badge>
               ))}
             </div>
+            {tags.length > TOPICS_LIMIT && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAllTopics(!showAllTopics)}
+                className="text-slate-400 hover:text-slate-200 mt-2"
+              >
+                {showAllTopics ? "Show less" : `Show more (${tags.length - TOPICS_LIMIT} more)`}
+              </Button>
+            )}
           </div>
         )}
 

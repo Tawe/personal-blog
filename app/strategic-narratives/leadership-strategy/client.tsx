@@ -27,6 +27,8 @@ interface LeadershipStrategyClientProps {
 export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyClientProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [showAllTopics, setShowAllTopics] = useState(false)
+  const TOPICS_LIMIT = 20
 
   const filteredArticles = useMemo(() => {
     return articles.filter((article) => {
@@ -83,7 +85,7 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
           <div className="space-y-2">
             <h4 className="text-sm font-medium text-slate-300">Topics</h4>
             <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
+              {(showAllTopics ? tags : tags.slice(0, TOPICS_LIMIT)).map((tag) => (
                 <Badge
                   key={tag}
                   variant={selectedTags.includes(tag) ? "default" : "secondary"}
@@ -98,6 +100,16 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
                 </Badge>
               ))}
             </div>
+            {tags.length > TOPICS_LIMIT && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAllTopics(!showAllTopics)}
+                className="text-slate-400 hover:text-slate-200 mt-2"
+              >
+                {showAllTopics ? "Show less" : `Show more (${tags.length - TOPICS_LIMIT} more)`}
+              </Button>
+            )}
           </div>
         )}
 

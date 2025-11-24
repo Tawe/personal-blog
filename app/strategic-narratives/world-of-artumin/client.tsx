@@ -31,6 +31,8 @@ interface WorldOfArtuminClientProps {
 export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtuminClientProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [showAllTopics, setShowAllTopics] = useState(false)
+  const TOPICS_LIMIT = 20
 
   const filteredArticles = useMemo(() => {
     return articles.filter((article) => {
@@ -108,7 +110,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
           <div className="space-y-2">
             <h4 className="text-sm font-medium text-slate-300">Categories & Themes</h4>
             <div className="flex flex-wrap gap-2">
-              {availableTags.map((tag) => (
+              {(showAllTopics ? availableTags : availableTags.slice(0, TOPICS_LIMIT)).map((tag) => (
                 <Badge
                   key={tag}
                   variant={selectedTags.includes(tag) ? "default" : "secondary"}
@@ -123,6 +125,16 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                 </Badge>
               ))}
             </div>
+            {availableTags.length > TOPICS_LIMIT && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAllTopics(!showAllTopics)}
+                className="text-slate-400 hover:text-slate-200 mt-2"
+              >
+                {showAllTopics ? "Show less" : `Show more (${availableTags.length - TOPICS_LIMIT} more)`}
+              </Button>
+            )}
           </div>
         )}
 

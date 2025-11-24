@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -39,6 +40,9 @@ export function GenericContentFilter({
   contentType = "items",
   customFilters,
 }: GenericContentFilterProps) {
+  const [showAllTopics, setShowAllTopics] = useState(false)
+  const TOPICS_LIMIT = 20
+  
   const hasActiveFilters =
     filters.search.trim() ||
     filters.tags.length > 0 ||
@@ -188,7 +192,7 @@ export function GenericContentFilter({
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
           <div className="flex flex-wrap gap-2">
-            {availableTags.map((tag) => (
+            {(showAllTopics ? availableTags : availableTags.slice(0, TOPICS_LIMIT)).map((tag) => (
               <Badge
                 key={tag}
                 variant={filters.tags.includes(tag) ? "default" : "secondary"}
@@ -203,6 +207,16 @@ export function GenericContentFilter({
               </Badge>
             ))}
           </div>
+          {availableTags.length > TOPICS_LIMIT && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowAllTopics(!showAllTopics)}
+              className="text-slate-400 hover:text-slate-200"
+            >
+              {showAllTopics ? "Show less" : `Show more (${availableTags.length - TOPICS_LIMIT} more)`}
+            </Button>
+          )}
         </div>
       )}
 
