@@ -39,33 +39,35 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Services
-                </h1>
-                <p className="text-xl text-primary font-semibold">
-                  Building stronger teams and accelerating leadership growth
-                </p>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl">
-                  I offer two core services designed to help technical organizations and leaders reach their full potential: 
-                  innovative D&D-based team building and personalized technical leadership mentoring.
-                </p>
+    <div className="min-h-screen bg-slate-950">
+      <div className="absolute inset-0 bg-tech-pattern opacity-20"></div>
+      <div className="relative">
+        <SiteHeader />
+        <main className="container mx-auto px-6 py-12">
+          {/* Hero Section */}
+          <section className="w-full py-12 md:py-24 lg:py-32">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="space-y-2">
+                  <h1 className="text-4xl lg:text-5xl font-bold text-slate-100 mb-4">
+                    Services
+                  </h1>
+                  <p className="text-xl text-blue-400 font-semibold">
+                    Building stronger teams and accelerating leadership growth
+                  </p>
+                  <p className="max-w-[900px] text-slate-300 md:text-xl leading-relaxed">
+                    I offer two core services designed to help technical organizations and leaders reach their full potential: 
+                    innovative D&D-based team building and personalized technical leadership mentoring.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Services Overview */}
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
+          {/* Services Overview */}
+          <section className="w-full py-12 md:py-24 lg:py-32">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
               {/* Team Building Service */}
               <Card className="bg-slate-800/50 border-slate-600 hover:border-blue-500 transition-all duration-300">
                 <CardHeader>
@@ -103,13 +105,13 @@ export default function ServicesPage() {
                     </div>
                   </div>
                   <div className="pt-4 flex flex-col gap-2">
-                    <Button size="lg" asChild>
+                    <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
                       <Link href="/services/team-building">
                         Learn More About Team Building
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </Link>
                     </Button>
-                    <Button variant="outline" size="lg" asChild>
+                    <Button variant="outline" size="lg" className="border-slate-600 text-slate-300 hover:bg-slate-800" asChild>
                       <Link href="/contact">Schedule Consultation</Link>
                     </Button>
                   </div>
@@ -153,13 +155,13 @@ export default function ServicesPage() {
                     </div>
                   </div>
                   <div className="pt-4 flex flex-col gap-2">
-                    <Button size="lg" asChild>
+                    <Button size="lg" className="bg-green-600 hover:bg-green-700" asChild>
                       <Link href="/services/mentoring">
                         Learn More About Mentoring
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </Link>
                     </Button>
-                    <Button variant="outline" size="lg" asChild>
+                    <Button variant="outline" size="lg" className="border-slate-600 text-slate-300 hover:bg-slate-800" asChild>
                       <Link href="/contact">Schedule Consultation</Link>
                     </Button>
                   </div>
@@ -169,84 +171,85 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* Why These Services */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Why These Services Matter</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl">
-                  Both services are built on the same foundation: practical experience, proven frameworks, and a commitment to real results
-                </p>
+          {/* Why These Services */}
+          <section className="w-full py-12 md:py-24 lg:py-32">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                <div className="space-y-2">
+                  <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">Why These Services Matter</h2>
+                  <p className="max-w-[900px] text-slate-300 md:text-xl">
+                    Both services are built on the same foundation: practical experience, proven frameworks, and a commitment to real results
+                  </p>
+                </div>
+              </div>
+              <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+                <Card className="text-center bg-slate-800/50 border-slate-600">
+                  <CardHeader>
+                    <div className="flex justify-center mb-2">
+                      <Target className="h-8 w-8 text-blue-400" />
+                    </div>
+                    <CardTitle className="text-slate-100">Practical & Actionable</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-slate-300">
+                      Real-world frameworks you can apply immediately, not theoretical advice that sits on a shelf
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="text-center bg-slate-800/50 border-slate-600">
+                  <CardHeader>
+                    <div className="flex justify-center mb-2">
+                      <Lightbulb className="h-8 w-8 text-blue-400" />
+                    </div>
+                    <CardTitle className="text-slate-100">Innovative Approaches</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-slate-300">
+                      Creative problem-solving that combines technical expertise with storytelling and gaming principles
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="text-center bg-slate-800/50 border-slate-600">
+                  <CardHeader>
+                    <div className="flex justify-center mb-2">
+                      <MessageSquare className="h-8 w-8 text-blue-400" />
+                    </div>
+                    <CardTitle className="text-slate-100">Results-Focused</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-slate-300">
+                      Every session delivers measurable outcomes - improved communication, better decisions, stronger teams
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
-            <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="flex justify-center mb-2">
-                    <Target className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Practical & Actionable</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Real-world frameworks you can apply immediately, not theoretical advice that sits on a shelf
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="flex justify-center mb-2">
-                    <Lightbulb className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Innovative Approaches</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Creative problem-solving that combines technical expertise with storytelling and gaming principles
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="flex justify-center mb-2">
-                    <MessageSquare className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Results-Focused</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Every session delivers measurable outcomes - improved communication, better decisions, stronger teams
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
+          </section>
 
-        {/* CTA Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Ready to Get Started?</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl">
-                  Whether you're looking to strengthen your team or accelerate your leadership journey, let's discuss how these services can help
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row pt-4">
-                <Button size="lg" asChild>
-                  <Link href="/contact">Schedule Consultation</Link>
-                </Button>
-                <Button variant="outline" size="lg" asChild>
-                  <Link href="/strategic-narratives">Explore My Work</Link>
-                </Button>
+          {/* CTA Section */}
+          <section className="w-full py-12 md:py-24 lg:py-32">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="space-y-2">
+                  <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">Ready to Get Started?</h2>
+                  <p className="max-w-[900px] text-slate-300 md:text-xl">
+                    Whether you're looking to strengthen your team or accelerate your leadership journey, let's discuss how these services can help
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row pt-4">
+                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
+                    <Link href="/contact">Schedule Consultation</Link>
+                  </Button>
+                  <Button variant="outline" size="lg" className="border-slate-600 text-slate-300 hover:bg-slate-800" asChild>
+                    <Link href="/strategic-narratives">Explore My Work</Link>
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-      </main>
-      <SiteFooter />
+          </section>
+        </main>
+        <SiteFooter />
+      </div>
     </div>
   )
 }
