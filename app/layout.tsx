@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { PersonSchema } from "@/components/person-schema"
 import { WebsiteSchema } from "@/components/website-schema"
+import { GoogleAnalytics } from "@/components/google-analytics"
 
 export const metadata: Metadata = {
   title: {
@@ -78,7 +79,11 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-61NJPVE52G');
+              gtag('config', 'G-61NJPVE52G', {
+                page_path: window.location.pathname + window.location.search,
+                page_title: document.title,
+                page_location: window.location.href
+              });
             `,
           }}
         />
@@ -98,7 +103,10 @@ export default function RootLayout({
         <PersonSchema />
         <WebsiteSchema />
       </head>
-      <body>{children}</body>
+      <body>
+        <GoogleAnalytics />
+        {children}
+      </body>
     </html>
   )
 }
