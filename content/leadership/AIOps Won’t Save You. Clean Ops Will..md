@@ -9,7 +9,7 @@ tags:
   - DevOps
   - Technology
   - Artificial Intelligence
-featured_image: /aicomplianceisfailinghereswhatworksinstead.webp?height=400&width=800
+featured_image: /AIOpsWontSaveYou.png?height=400&width=800
 reading_time: 6
 medium_link: https://medium.com/@johnmunn/aiops-wont-save-you-clean-ops-will-d46637414099
 substack:
