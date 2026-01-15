@@ -109,5 +109,17 @@
       "source": "/strategic-narratives/world-of-artumin/:slug",
       "destination": "/strategic-narratives/world-of-artumin/[slug]"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/linkedin",
+      "destination": "https://www.linkedin.com/in/john-munn-bbab434b/",
+      "permanent": true
+    },
+    {
+      "source": "/li",
+      "destination": "https://www.linkedin.com/in/john-munn-bbab434b/",
+      "permanent": true
+    }
   ]
 } 
