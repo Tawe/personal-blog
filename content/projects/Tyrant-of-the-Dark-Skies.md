@@ -9,7 +9,9 @@ tags:
   - WebSockets
   - Open Source
 github: "https://github.com/Tawe/tyrantofthedarkskies"
+demo: "https://tyrantofthedarkskies.netlify.app"
 icon: "Terminal"
+featured_image: /tyrantofthedarkskies.png
 date: 2025-12-01
 draft: false
 ---
