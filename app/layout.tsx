@@ -1,17 +1,23 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { PersonSchema } from "@/components/person-schema"
 import { WebsiteSchema } from "@/components/website-schema"
 import { GoogleAnalytics } from "@/components/google-analytics"
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+}
+
 export const metadata: Metadata = {
   title: {
-    default: "John Munn - Technical Leader & Engineering Strategist",
+    default: "John Munn - Engineering leader and writer",
     template: "%s | John Munn",
   },
   description:
-    "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving. Dungeon Master applying storytelling to leadership.",
+    "Engineering leader and writer. Systems, teams, and the work of building things that last. Open to conversation — mentoring, collaboration, and exchanging ideas.",
   authors: [{ name: "John Munn" }],
   creator: "John Munn",
   publisher: "John Munn",
@@ -30,24 +36,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://johnmunn.tech",
-    siteName: "John Munn - Technical Leader",
-    title: "John Munn - Technical Leader & Engineering Strategist",
+    siteName: "John Munn",
+    title: "John Munn - Engineering leader and writer",
     description:
-      "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving.",
+      "Engineering leader and writer. Systems, teams, and the work of building things that last. Open to conversation — mentoring, collaboration, and exchanging ideas.",
     images: [
       {
         url: "/me.jpeg",
         width: 1200,
         height: 630,
-        alt: "John Munn - Technical Leader & Engineering Strategist",
+        alt: "John Munn - Engineering leader and writer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "John Munn - Technical Leader & Engineering Strategist",
+    title: "John Munn - Engineering leader and writer",
     description:
-      "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving.",
+      "Engineering leader and writer. Systems, teams, and the work of building things that last. Open to conversation — mentoring, collaboration, and exchanging ideas.",
     images: ["/me.jpeg"],
   },
   icons: {
@@ -60,7 +66,6 @@ export const metadata: Metadata = {
     canonical: "https://johnmunn.tech",
   },
   category: "technology",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -69,7 +74,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-61NJPVE52G"></script>
@@ -95,10 +100,10 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-        {/* Preload critical resources */}
-        <link rel="preload" href="/me.jpeg" as="image" type="image/jpeg" />
-        {/* Resource hints for better performance */}
-        <link rel="prefetch" href="/strategic-narratives" />
+        {/* Prefetch next likely navigations (low priority; avoids preload warning) */}
+        <link rel="prefetch" href="/writing" />
+        <link rel="prefetch" href="/projects" />
+        <link rel="prefetch" href="/about" />
         <link rel="prefetch" href="/contact" />
         <PersonSchema />
         <WebsiteSchema />

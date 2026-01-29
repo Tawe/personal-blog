@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Linkedin, Github, BookOpen, Rss, Code, Edit } from "lucide-react"
+import { Linkedin, Github, Code, Edit } from "lucide-react"
 
 function PentagonGrowthIcon({ className }: { className?: string }) {
   return (
@@ -53,144 +53,65 @@ l-76 248 41 49 c23 28 54 59 68 71 15 11 137 129 272 262 595 588 829 817 834
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-slate-800 bg-slate-950">
-      <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="border-t border-accent-rule bg-bg-secondary">
+      <div className="container mx-auto px-4 sm:px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
-              <PentagonGrowthIcon className="h-6 w-6 text-blue-400" />
-              <span className="text-lg font-bold text-slate-100">John Munn</span>
+              <PentagonGrowthIcon className="h-6 w-6 text-text-secondary" />
+              <span className="text-lg font-bold text-text-primary">John Munn</span>
             </Link>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Technical Leader building scalable solutions and high-performing teams through strategic thinking and
-              innovative problem-solving.
+            <p className="text-text-secondary text-sm leading-relaxed">
+              Technical leader building scalable solutions and high-performing teams through strategic thinking and
+              calm, reflective authority.
             </p>
           </div>
 
           {/* Navigation */}
           <div className="space-y-4">
-            <h3 className="text-slate-100 font-semibold">Navigation</h3>
-            <nav className="flex flex-col space-y-2">
-              <Link href="/vision" className="text-slate-400 hover:text-blue-400 transition-colors text-sm">
-                Vision
-              </Link>
-              <Link
-                href="/strategic-narratives"
-                className="text-slate-400 hover:text-blue-400 transition-colors text-sm"
-              >
-                Strategic Narratives
-              </Link>
-              <Link href="/services" className="text-slate-400 hover:text-blue-400 transition-colors text-sm">
-                Services
-              </Link>
-              <Link href="/workbench" className="text-slate-400 hover:text-blue-400 transition-colors text-sm">
-                Workbench
-              </Link>
-            </nav>
-          </div>
-
-          {/* Strategic Narratives */}
-          <div className="space-y-4">
-            <h3 className="text-slate-100 font-semibold">Strategic Narratives</h3>
-            <nav className="flex flex-col space-y-2">
-              <Link
-                href="/strategic-narratives/leadership-strategy"
-                className="text-slate-400 hover:text-blue-400 transition-colors text-sm"
-              >
-                Leadership & Strategy
-              </Link>
-              <Link
-                href="/strategic-narratives/technical-architecture"
-                className="text-slate-400 hover:text-blue-400 transition-colors text-sm"
-              >
-                Technical Architecture
-              </Link>
-              <Link
-                href="/strategic-narratives/world-of-artumin"
-                className="text-slate-400 hover:text-blue-400 transition-colors text-sm"
-              >
-                World of Artumin
-              </Link>
-              <Link
-                href="/strategic-narratives/dnd-ttrpgs"
-                className="text-slate-400 hover:text-blue-400 transition-colors text-sm"
-              >
-                D&D and TTRPGs
-              </Link>
+            <h3 className="footer-heading text-text-muted">Navigation</h3>
+            <nav className="flex flex-wrap items-center gap-y-1">
+              {["Home", "Writing", "Projects", "About", "Contact"].map((name, i) => (
+                <span key={name} className="inline-flex items-center">
+                  {i > 0 && <span className="text-text-muted select-none px-1.5">|</span>}
+                  <Link
+                    href={name === "Home" ? "/" : `/${name.toLowerCase()}`}
+                    className="text-text-secondary hover:text-accent-primary transition-colors text-sm py-1 touch-manipulation"
+                  >
+                    {name}
+                  </Link>
+                </span>
+              ))}
             </nav>
           </div>
 
           {/* Connect */}
           <div className="space-y-4">
-            <h3 className="text-slate-100 font-semibold">Connect</h3>
-            <div className="flex space-x-4">
-              <Link
-                href="https://www.linkedin.com/in/john-munn-bbab434b/"
-                className="text-slate-400 hover:text-blue-400 transition-colors"
-                aria-label="LinkedIn"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Linkedin className="h-5 w-5" />
-              </Link>
-              <Link
-                href="https://github.com/Tawe"
-                className="text-slate-400 hover:text-blue-400 transition-colors"
-                aria-label="GitHub"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Github className="h-5 w-5" />
-              </Link>
-              <Link
-                href="https://medium.com/@johnmunn"
-                className="text-slate-400 hover:text-blue-400 transition-colors"
-                aria-label="Medium"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Edit className="h-5 w-5" />
-              </Link>
-              <Link
-                href="https://dev.to/tawe"
-                className="text-slate-400 hover:text-blue-400 transition-colors"
-                aria-label="Dev.to"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Code className="h-5 w-5" />
-              </Link>
-              <Link
-                href="https://tawe.substack.com/"
-                className="text-slate-400 hover:text-blue-400 transition-colors"
-                aria-label="Tales from Artumin - Substack"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <BookOpen className="h-5 w-5" />
-              </Link>
-              <Link
-                href="/rss.xml"
-                className="text-slate-400 hover:text-blue-400 transition-colors"
-                aria-label="RSS Feed"
-              >
-                <Rss className="h-5 w-5" />
-              </Link>
-            </div>
-            <div className="space-y-2">
-              <Link href="/contact" className="text-slate-400 hover:text-blue-400 transition-colors text-sm block">
-                Contact
-              </Link>
-              <Link href="/rss.xml" className="text-slate-400 hover:text-blue-400 transition-colors text-sm block">
-                RSS Feed
-              </Link>
+            <h3 className="footer-heading text-text-muted">Connect</h3>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { href: "https://www.linkedin.com/in/john-munn-bbab434b/", label: "LinkedIn", Icon: Linkedin },
+                { href: "https://github.com/Tawe", label: "GitHub", Icon: Github },
+                { href: "https://medium.com/@johnmunn", label: "Medium", Icon: Edit },
+                { href: "https://dev.to/tawe", label: "Dev.to", Icon: Code },
+              ].map(({ href, label, Icon }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  className="text-text-secondary hover:text-accent-primary transition-colors p-3 min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation rounded-lg"
+                  aria-label={label}
+                  {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                >
+                  <Icon className="h-5 w-5" />
+                </Link>
+              ))}
             </div>
           </div>
         </div>
 
-        <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-slate-500 text-sm">© {new Date().getFullYear()} John Munn. All rights reserved.</p>
+        <div className="border-t border-border-subtle mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-text-muted text-sm">© {new Date().getFullYear()} John Munn. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -2,9 +2,9 @@ export function WebsiteSchema() {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "John Munn - Technical Leader & Engineering Strategist",
+    "name": "John Munn - Engineering leader and writer",
     "url": "https://johnmunn.tech",
-    "description": "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving.",
+    "description": "Engineering leader and writer. Systems, teams, and the work of building things that last. Open to conversation — mentoring, collaboration, and exchanging ideas.",
     "publisher": {
       "@type": "Person",
       "name": "John Munn",
@@ -15,7 +15,7 @@ export function WebsiteSchema() {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://johnmunn.tech/strategic-narratives?search={search_term_string}"
+        "urlTemplate": "https://johnmunn.tech/writing?search={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     },

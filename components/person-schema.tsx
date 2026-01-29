@@ -5,8 +5,8 @@ export function PersonSchema() {
     "name": "John Munn",
     "url": "https://johnmunn.tech",
     "image": "https://johnmunn.tech/me.jpeg",
-    "jobTitle": "Technical Leader & Engineering Strategist",
-    "description": "Technical leader, engineering strategist, and team builder with expertise in scalable architecture, strategic thinking, and innovative problem-solving. Dungeon Master applying storytelling to leadership.",
+    "jobTitle": "Engineering leader and writer",
+    "description": "Engineering leader and writer. Two decades at the intersection of technology, people, and the systems that connect them. Systems under stress, structure, narratives, and building things that last.",
     "sameAs": [
       "https://www.linkedin.com/in/john-munn-bbab434b/",
       "https://github.com/Tawe",

@@ -37,24 +37,14 @@ function parseFrontmatter(content: string): { draft?: boolean; date?: string } {
 export async function GET(request: Request) {
   // Always use canonical HTTPS non-www URL for sitemap
   const baseUrl = "https://johnmunn.tech"
-  const urls = []
+  const urls: { loc: string; lastmod: string; changefreq: string; priority: string }[] = []
 
-  // Add robots.txt reference
-  urls.push({
-    loc: `${baseUrl}/robots.txt`,
-    lastmod: new Date().toISOString(),
-    changefreq: "yearly",
-    priority: "0.1",
-  })
-
-  // Static pages
+  // Main nav pages (Home, Writing, Projects, About, Contact)
   const staticPages = [
     "",
-    "/vision",
-    "/services",
-    "/services/team-building", 
-    "/services/mentoring",
-    "/workbench",
+    "/writing",
+    "/projects",
+    "/about",
     "/contact",
     "/strategic-narratives",
     "/strategic-narratives/leadership-strategy",
@@ -68,17 +58,17 @@ export async function GET(request: Request) {
       loc: `${baseUrl}${page}`,
       lastmod: new Date().toISOString(),
       changefreq: page === "" ? "weekly" : "monthly",
-      priority: page === "" ? "1.0" : "0.8",
+      priority: page === "" ? "1.0" : page === "/writing" || page === "/projects" ? "0.9" : "0.8",
     })
   })
 
-  // Dynamic content pages - includes both strategic-narratives and standalone leadership-strategy routes
+  // Dynamic content: writing articles (strategic-narratives) and project detail pages (/projects/[slug])
   const contentSections = [
-    { dir: "content/leadership", routes: ["/strategic-narratives/leadership-strategy", "/leadership-strategy"] },
+    { dir: "content/leadership", routes: ["/strategic-narratives/leadership-strategy"] },
     { dir: "content/technical-writings", routes: ["/strategic-narratives/technical-architecture"] },
     { dir: "content/dnd-musings", routes: ["/strategic-narratives/dnd-ttrpgs"] },
     { dir: "content/artumin", routes: ["/strategic-narratives/world-of-artumin"] },
-    { dir: "content/projects", routes: ["/workbench"] },
+    { dir: "content/projects", routes: ["/projects"] },
   ]
 
   for (const section of contentSections) {

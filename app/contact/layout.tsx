@@ -1,13 +1,13 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Contact - Let's Connect",
-  description: "Ready to discuss leadership, mentoring, or collaboration opportunities? Get in touch with John Munn for technical leadership guidance, team building, or strategic consulting.",
+  title: "Let's Connect | John Munn",
+  description: "Open to conversation — mentoring, collaboration, or just exchanging notes. Reach out by email or LinkedIn.",
   openGraph: {
-    title: "Contact - Let's Connect | John Munn",
-    description: "Ready to discuss leadership, mentoring, or collaboration opportunities? Get in touch with John Munn.",
+    title: "Let's Connect | John Munn",
+    description: "Open to conversation — mentoring, collaboration, or just exchanging notes. Reach out by email or LinkedIn.",
     url: "https://johnmunn.tech/contact",
-    siteName: "John Munn - Technical Leader",
+    siteName: "John Munn",
     images: [
       {
         url: "/me.jpeg",
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact - Let's Connect | John Munn",
-    description: "Ready to discuss leadership, mentoring, or collaboration opportunities?",
+    title: "Let's Connect | John Munn",
+    description: "Open to conversation — mentoring, collaboration, or just exchanging notes.",
     images: ["/me.jpeg"],
   },
   alternates: {

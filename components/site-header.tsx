@@ -7,10 +7,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, X } from "lucide-react"
 
 const navigation = [
-  { name: "Vision", href: "/vision" },
-  { name: "Strategic Narratives", href: "/strategic-narratives" },
-  { name: "Services", href: "/services" },
-  { name: "Workbench", href: "/workbench" },
+  { name: "Home", href: "/" },
+  { name: "Writing", href: "/writing" },
+  { name: "Projects", href: "/projects" },
+  { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ]
 
@@ -68,15 +68,14 @@ export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/95 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60">
-      <div className="container mx-auto px-6">
-        <div className="flex h-16 items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-border-subtle bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/90">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex h-14 min-h-[3.5rem] sm:h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 group">
             <div className="relative">
-              <PentagonGrowthIcon className="h-16 w-16 text-blue-400 group-hover:text-blue-300 transition-colors" />
-              <div className="absolute inset-0 bg-blue-400 rounded-full blur-xl opacity-25 group-hover:opacity-35 transition-opacity"></div>
+              <PentagonGrowthIcon className="h-16 w-16 text-text-secondary group-hover:text-accent-primary transition-colors" />
             </div>
-            <span className="text-xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors">
+            <span className="text-xl font-bold text-text-primary group-hover:text-accent-primary transition-colors">
               John Munn
             </span>
           </Link>
@@ -87,10 +86,10 @@ export function SiteHeader() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors relative group"
+                className="text-sm font-medium text-text-secondary hover:text-accent-primary transition-colors relative group"
               >
                 {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-primary transition-all group-hover:w-full"></span>
               </Link>
             ))}
           </nav>
@@ -98,27 +97,27 @@ export function SiteHeader() {
           {/* Mobile Navigation */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden text-slate-300 hover:text-blue-400">
+              <Button variant="ghost" size="icon" className="lg:hidden text-text-secondary hover:text-accent-primary">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-80 bg-slate-950 border-slate-800">
+            <SheetContent side="right" className="w-80 bg-bg-primary border-border-subtle">
               <div className="flex items-center justify-between mb-8">
                 <Link href="/" className="flex items-center space-x-2" onClick={() => setIsOpen(false)}>
-                  <PentagonGrowthIcon className="h-12 w-12 text-blue-400" />
-                  <span className="text-lg font-bold text-slate-100">John Munn</span>
+                  <PentagonGrowthIcon className="h-12 w-12 text-text-secondary" />
+                  <span className="text-lg font-bold text-text-primary">John Munn</span>
                 </Link>
                 <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
-                  <X className="h-6 w-6 text-slate-300" />
+                  <X className="h-6 w-6 text-text-secondary" />
                 </Button>
               </div>
-              <nav className="flex flex-col space-y-4">
+              <nav className="flex flex-col">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="text-slate-300 hover:text-blue-400 transition-colors py-2 border-b border-slate-800 last:border-b-0"
+                    className="text-text-secondary hover:text-accent-primary transition-colors py-3 min-h-[44px] flex items-center border-b border-border-subtle last:border-b-0 touch-manipulation"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
