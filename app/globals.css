@@ -3,36 +3,88 @@
 @tailwind utilities;
 
 :root {
-  --background: 222 84% 5%;
-  --foreground: 213 31% 91%;
-  --muted: 223 47% 11%;
-  --muted-foreground: 215.4 16.3% 56.9%;
-  --popover: 224 71% 4%;
-  --popover-foreground: 215 20.2% 65.1%;
-  --border: 216 34% 17%;
-  --input: 216 34% 17%;
-  --card: 224 71% 4%;
-  --card-foreground: 213 31% 91%;
-  --primary: 210 40% 98%;
-  --primary-foreground: 222.2 47.4% 1.2%;
-  --secondary: 222.2 84% 4.9%;
-  --secondary-foreground: 210 40% 98%;
-  --accent: 216 34% 17%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 63% 31%;
-  --destructive-foreground: 210 40% 98%;
-  --ring: 216 34% 17%;
+  /* Style guide: Atlantic coast morning — light, editorial, confident, human */
+  /* Tonal layering — rotate to add rhythm and prevent scroll fatigue */
+  --bg-base: #F6F8FA;   /* main canvas */
+  --bg-soft: #EEF3F7;   /* section separators */
+  --bg-paper: #FFFFFF;  /* content surfaces (hero, contact) */
+  /* Base neutrals (keep for Tailwind semantic use) */
+  --background: 210 33% 97%;        /* #F6F8FA */
+  --background-secondary: 214 29% 94%;
+  --border: 214 24% 87%;            /* #D6DEE6 quiet structure */
+  /* Typography — headlines get confidence, body gets calm */
+  --text-strong: #1A232B;   /* headlines: slightly darker + tighter */
+  --text-body: #445561;     /* body: lighter + airier */
+  --text-muted: #7A8A99;    /* dates, tags */
+  --foreground: 212 24% 16%;        /* #1F2933 */
+  --foreground-secondary: 210 17% 36%;
+  --muted-foreground: 212 11% 54%;
+  /* Signature: hairline rule under section titles (accent at 30%) */
+  --accent-rule: rgba(58, 110, 165, 0.3);
+  /* Primary accent — desaturated steel blue (links, primary CTA) */
+  --accent-primary: 211 48% 44%;    /* #3A6EA5 */
+  --accent-primary-hover: 211 51% 37%; /* #2F5F90 */
+  /* Secondary accent — sand/driftwood (use rarely) */
+  --accent-secondary: 33 29% 60%;  /* #B89B7A */
+  --accent-secondary-light: 33 40% 87%; /* #E6D9CB */
+  /* Success / emphasis — muted sage */
+  --emphasis: 145 21% 47%;          /* #5F8F7A */
+  /* Semantic mappings for Tailwind (values must be HSL components for hsl(var(...))) */
+  --muted: 214 29% 94%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 212 24% 16%;
+  --input: 214 24% 87%;
+  --card: 0 0% 100%;
+  --card-foreground: 212 24% 16%;
+  --primary: 211 48% 44%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 214 29% 94%;
+  --secondary-foreground: 212 24% 16%;
+  --accent: 214 24% 92%;
+  --accent-foreground: 212 24% 16%;
+  --destructive: 0 63% 45%;
+  --destructive-foreground: 0 0% 100%;
+  --ring: 211 48% 44%;
   --radius: 0.5rem;
+  --radius-button: 6px;
+}
+
+/* Signature: hairline rule under section titles (editorial accent) */
+.section-title {
+  border-bottom: 1px solid var(--accent-rule);
+  padding-bottom: 0.5rem;
+}
+
+/* Footer: same accent rule + micro-heading (small caps, letter-spacing) — repeatable gesture */
+.footer-heading {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--accent-rule);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0;
+  width: fit-content;
 }
 
 * {
   border-color: hsl(var(--border));
 }
 
+/* Touch-friendly: reduce tap highlight on mobile */
+@media (hover: none) {
+  a, button {
+    -webkit-tap-highlight-color: hsl(211 48% 44% / 0.1);
+  }
+}
+
 body {
   color: hsl(var(--foreground));
   background: hsl(var(--background));
   font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 /* Custom scrollbar */
@@ -53,10 +105,12 @@ body {
   background: hsl(var(--accent));
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling; prevent horizontal overflow on mobile */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
+
 
 /* Code syntax highlighting */
 pre[class*="language-"] {
@@ -64,9 +118,9 @@ pre[class*="language-"] {
   border: 1px solid hsl(var(--border)) !important;
 }
 
-/* Selection styling */
+/* Selection styling — primary accent, not neon */
 ::selection {
-  background: rgba(59, 130, 246, 0.3);
+  background: hsl(211 48% 44% / 0.2);
 }
 
 /* Focus styles */
@@ -75,14 +129,14 @@ pre[class*="language-"] {
   outline-offset: 2px;
 }
 
-/* Article Content Styling */
+/* Article Content Styling — style guide: primary/muted text, accent links */
 .prose {
-  color: #cbd5e1;
+  color: var(--text-body);
   max-width: none;
 }
 
 .prose h1 {
-  color: #f1f5f9;
+  color: var(--text-strong);
   font-size: 2.25rem;
   font-weight: 700;
   line-height: 1.2;
@@ -91,7 +145,7 @@ pre[class*="language-"] {
 }
 
 .prose h2 {
-  color: #f1f5f9;
+  color: var(--text-strong);
   font-size: 1.875rem;
   font-weight: 600;
   line-height: 1.3;
@@ -100,7 +154,7 @@ pre[class*="language-"] {
 }
 
 .prose h3 {
-  color: #f1f5f9;
+  color: var(--text-strong);
   font-size: 1.5rem;
   font-weight: 600;
   line-height: 1.4;
@@ -109,7 +163,7 @@ pre[class*="language-"] {
 }
 
 .prose h4 {
-  color: #f1f5f9;
+  color: #1F2933;
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.4;
@@ -118,7 +172,7 @@ pre[class*="language-"] {
 }
 
 .prose h5 {
-  color: #f1f5f9;
+  color: var(--text-strong);
   font-size: 1.125rem;
   font-weight: 600;
   line-height: 1.4;
@@ -127,7 +181,7 @@ pre[class*="language-"] {
 }
 
 .prose h6 {
-  color: #f1f5f9;
+  color: var(--text-strong);
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.4;
@@ -136,26 +190,26 @@ pre[class*="language-"] {
 }
 
 .prose p {
-  color: #cbd5e1;
+  color: var(--text-body);
   line-height: 1.75;
   margin-bottom: 1.5rem;
   font-size: 1.125rem;
 }
 
 .prose strong {
-  color: #f1f5f9;
+  color: var(--text-strong);
   font-weight: 600;
 }
 
 .prose em {
-  color: #e2e8f0;
+  color: #4B5D6B;
   font-style: italic;
 }
 
 .prose ul {
   margin: 1.5rem 0;
   padding-left: 1.5rem;
-  color: #cbd5e1;
+  color: #1F2933;
   list-style-type: disc;
   list-style-position: outside;
 }
@@ -163,7 +217,7 @@ pre[class*="language-"] {
 .prose ol {
   margin: 1.5rem 0;
   padding-left: 1.5rem;
-  color: #cbd5e1;
+  color: #1F2933;
   list-style-type: decimal;
   list-style-position: outside;
 }
@@ -179,34 +233,37 @@ pre[class*="language-"] {
 }
 
 .prose blockquote {
-  border-left: 4px solid #475569;
+  border-left: 4px solid #D6DEE6;
   padding-left: 1rem;
   margin: 1.5rem 0;
-  color: #94a3b8;
+  color: #4B5D6B;
   font-style: italic;
-  background: rgba(71, 85, 105, 0.1);
+  background: #EDF1F5;
   padding: 1rem;
   border-radius: 0.5rem;
 }
 
 .prose code {
-  background-color: #334155;
-  color: #e2e8f0;
+  background-color: #EDF1F5;
+  color: #1F2933;
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  border: 1px solid #D6DEE6;
 }
 
 .prose pre {
-  background-color: #1e293b;
-  color: #e2e8f0;
+  background-color: #EDF1F5;
+  color: #1F2933;
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin: 1.5rem 0;
-  border: 1px solid #334155;
+  border: 1px solid #D6DEE6;
   position: relative;
+  max-width: 100%;
 }
 
 .prose pre code {
@@ -217,46 +274,49 @@ pre[class*="language-"] {
 }
 
 .prose a {
-  color: #60a5fa;
+  color: #3A6EA5;
   text-decoration: underline;
-  text-decoration-color: rgba(96, 165, 250, 0.3);
+  text-decoration-color: hsl(211 48% 44% / 0.35);
   transition: all 0.2s ease;
 }
 
 .prose a:hover {
-  color: #93c5fd;
-  text-decoration-color: #93c5fd;
+  color: #2F5F90;
+  text-decoration-color: #2F5F90;
 }
 
 .prose hr {
   border: none;
-  border-top: 1px solid #475569;
+  border-top: 1px solid #D6DEE6;
   margin: 2rem 0;
 }
 
 .prose table {
   width: 100%;
+  max-width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .prose th {
-  background: #334155;
-  color: #f1f5f9;
+  background: #EDF1F5;
+  color: #1F2933;
   padding: 0.75rem;
   text-align: left;
-  border: 1px solid #475569;
+  border: 1px solid #D6DEE6;
   font-weight: 600;
 }
 
 .prose td {
   padding: 0.75rem;
-  border: 1px solid #475569;
-  color: #cbd5e1;
+  border: 1px solid #D6DEE6;
+  color: #1F2933;
 }
 
 .prose tbody tr:nth-child(even) {
-  background: rgba(51, 65, 85, 0.3);
+  background: #F6F8FA;
 }
 
 /* Ensure first element doesn't have top margin */
@@ -269,15 +329,15 @@ pre[class*="language-"] {
   margin-bottom: 0;
 }
 
-/* Syntax highlighting with highlight.js - Dark theme matching the site */
+/* Syntax highlighting with highlight.js — light, low-contrast */
 .prose pre {
-  background: #1e293b !important;
-  border: 1px solid #334155;
+  background: #EDF1F5 !important;
+  border: 1px solid #D6DEE6;
 }
 
 .prose code.hljs {
-  background: #1e293b;
-  color: #e2e8f0;
+  background: #EDF1F5;
+  color: #1F2933;
   padding: 0;
 }
 
@@ -285,21 +345,20 @@ pre[class*="language-"] {
   display: block;
   padding: 1rem;
   overflow-x: auto;
-  background: #1e293b;
+  background: #EDF1F5;
   border-radius: 0.5rem;
 }
 
-/* Highlight.js token colors - dark theme */
 .hljs-comment,
 .hljs-quote {
-  color: #64748b;
+  color: #7A8A99;
   font-style: italic;
 }
 
 .hljs-keyword,
 .hljs-selector-tag,
 .hljs-subst {
-  color: #c792ea;
+  color: #2F5F90;
 }
 
 .hljs-number,
@@ -307,59 +366,60 @@ pre[class*="language-"] {
 .hljs-variable,
 .hljs-template-variable,
 .hljs-tag .hljs-attr {
-  color: #f78c6c;
+  color: #5F8F7A;
 }
 
 .hljs-string,
 .hljs-doctag {
-  color: #c3e88d;
+  color: #4B5D6B;
 }
 
 .hljs-title,
 .hljs-section,
 .hljs-selector-id {
-  color: #82aaff;
+  color: #3A6EA5;
   font-weight: bold;
 }
 
 .hljs-type,
 .hljs-class .hljs-title {
-  color: #ffcb6b;
+  color: #2F5F90;
 }
 
 .hljs-tag,
 .hljs-name,
 .hljs-attribute {
-  color: #f07178;
+  color: #4B5D6B;
   font-weight: normal;
 }
 
 .hljs-regexp,
 .hljs-link {
-  color: #c3e88d;
+  color: #4B5D6B;
 }
 
 .hljs-symbol,
 .hljs-bullet {
-  color: #c792ea;
+  color: #2F5F90;
 }
 
 .hljs-built_in,
 .hljs-builtin-name {
-  color: #ffcb6b;
+  color: #2F5F90;
 }
 
 .hljs-meta {
-  color: #89ddff;
+  color: #7A8A99;
 }
 
 .hljs-deletion {
-  background: #ff5370;
+  background: hsl(0 60% 95%);
+  color: #1F2933;
 }
 
 .hljs-addition {
-  background: #c3e88d;
-  color: #1e293b;
+  background: hsl(145 30% 93%);
+  color: #1F2933;
 }
 
 .hljs-emphasis {

@@ -22,12 +22,12 @@ export function ContentLayout({
   config,
 }: ContentLayoutProps) {
   return (
-    <div className="min-h-screen bg-slate-950">
-      <div className="absolute inset-0 bg-tech-pattern opacity-20"></div>
+    <div className="min-h-screen bg-bg-primary">
+      <div className="absolute inset-0 bg-tech-pattern opacity-[0.06]"></div>
       <div className="relative">
         <SiteHeader />
 
-        <main className={isArticle ? "w-full" : "container mx-auto px-6 py-12"}>
+        <main className={isArticle ? "w-full" : "container mx-auto px-4 sm:px-6 py-10 sm:py-12"}>
           {isArticle && article && config ? (
             <SharedArticleTemplate article={article} config={config} />
           ) : (
@@ -35,8 +35,8 @@ export function ContentLayout({
               {!isArticle && title && (
                 <div className="max-w-4xl mx-auto">
                   <header className="mb-12 text-center">
-                    <h1 className="text-4xl lg:text-5xl font-bold text-slate-100 mb-4">{title}</h1>
-                    {description && <p className="text-xl text-slate-400 max-w-3xl mx-auto">{description}</p>}
+                    <h1 className="text-4xl lg:text-5xl font-bold text-text-primary mb-4">{title}</h1>
+                    {description && <p className="text-xl text-text-secondary max-w-3xl mx-auto">{description}</p>}
                   </header>
                 </div>
               )}

@@ -120,6 +120,26 @@
       "source": "/li",
       "destination": "https://www.linkedin.com/in/john-munn-bbab434b/",
       "permanent": true
+    },
+    {
+      "source": "/workbench",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/workbench/:path*",
+      "destination": "/projects/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/services",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/services/:path*",
+      "destination": "/contact",
+      "permanent": true
     }
   ]
 } 

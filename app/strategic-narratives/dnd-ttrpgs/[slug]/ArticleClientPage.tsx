@@ -3,8 +3,7 @@
 import { ContentLayout } from "@/components/content-layout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy } from "lucide-react"
+import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useState } from "react"
@@ -160,7 +159,7 @@ export function ArticleClientPage({
       <div className="max-w-4xl mx-auto">
         {/* Back Navigation */}
         <div className="mb-8">
-          <Button variant="ghost" className="text-slate-400 hover:text-slate-200" asChild>
+          <Button variant="ghost" className="text-text-muted hover:text-text-body" asChild>
             <Link href={backUrl}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               {backLabel}
@@ -185,13 +184,13 @@ export function ArticleClientPage({
           )}
 
           <div className="space-y-6">
-            <h1 className="text-4xl lg:text-5xl font-bold text-slate-100 leading-tight">{article.title}</h1>
+            <h1 className="text-4xl lg:text-5xl font-bold text-text-strong leading-tight">{article.title}</h1>
             {article.subtitle && (
-              <h2 className="text-2xl text-slate-300 font-medium mt-2 mb-4">{article.subtitle}</h2>
+              <h2 className="text-2xl text-text-body font-medium mt-2 mb-4">{article.subtitle}</h2>
             )}
 
             {/* Article Meta */}
-            <div className="flex flex-wrap items-center gap-6 text-slate-400">
+            <div className="flex flex-wrap items-center gap-6 text-text-muted">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 <span>
@@ -219,26 +218,10 @@ export function ArticleClientPage({
               </Button>
             </div>
 
-            {/* Tags */}
-            <div className="flex flex-wrap items-center gap-2">
-              {article.website_exclusive && (
-                <Badge className="bg-purple-600/20 text-purple-400 border-purple-600/30 text-xs">Website Exclusive</Badge>
-              )}
-              {article.tags && article.tags.length > 0 && (
-                <>
-                  {article.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="bg-slate-700/50 text-slate-300">
-                      {tag}
-                    </Badge>
-                  ))}
-                </>
-              )}
-            </div>
-
             {/* External Links */}
             {(article.medium_link || article.devto_link || article.substack_link || article.linkedin_link || article.dndbeyond_link) && (
               <div className="flex items-center gap-4">
-                <span className="text-sm text-slate-300">View On:</span>
+                <span className="text-sm text-text-body font-medium">View On:</span>
                 {article.medium_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.medium_link} target="_blank" rel="noopener noreferrer">
@@ -291,23 +274,26 @@ export function ArticleClientPage({
 
         {/* Related Articles */}
         {relatedArticles.length > 0 && (
-          <Card className="bg-slate-800/30 border-slate-700">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-semibold text-slate-100 mb-4">Continue Reading</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                {relatedArticles.map((relatedArticle) => (
-                  <Link
-                    key={relatedArticle.slug}
-                    href={`/strategic-narratives/dnd-ttrpgs/${relatedArticle.slug}`}
-                    className="block p-4 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
-                  >
-                    <h4 className="font-medium text-slate-200 mb-2">{relatedArticle.title}</h4>
-                    <p className="text-sm text-slate-400">{relatedArticle.excerpt}</p>
-                  </Link>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="mt-12">
+            <hr className="border-border-subtle mb-8" />
+            <h3 className="text-xl font-semibold text-text-strong mb-4">Continue Reading</h3>
+            <div className="grid md:grid-cols-2 gap-0">
+              {relatedArticles.map((relatedArticle, index) => (
+                <Link
+                  key={relatedArticle.slug}
+                  href={`/strategic-narratives/dnd-ttrpgs/${relatedArticle.slug}`}
+                  className={`block p-4 rounded-lg group border-b md:border-b-0 md:border-r border-border-subtle last:border-b-0 ${index % 2 === 1 ? "md:border-r-0" : ""}`}
+                >
+                  <h4 className="font-medium text-text-strong group-hover:text-accent-primary transition-colors mb-2">{relatedArticle.title}</h4>
+                  <p className="text-sm text-text-body leading-relaxed mb-3">{relatedArticle.excerpt}</p>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-primary group-hover:text-accent-primary-hover">
+                    Read
+                    <ChevronRight className="h-4 w-4" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </ContentLayout>

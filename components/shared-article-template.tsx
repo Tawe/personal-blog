@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -171,15 +170,15 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
             {/* Breadcrumb Navigation */}
             <div className="mb-8">
               <nav className="flex items-center space-x-2 text-sm text-slate-400">
-                <Link href="/strategic-narratives" className="hover:text-blue-400 transition-colors">
+                <Link href="/strategic-narratives" className="hover:text-slate-200 transition-colors">
                   Strategic Narratives
                 </Link>
-                <ChevronRight className="h-4 w-4" />
-                <Link href={config.baseUrl} className="hover:text-blue-400 transition-colors">
+                <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" />
+                <Link href={config.baseUrl} className="hover:text-slate-200 transition-colors">
                   {config.title}
                 </Link>
-                <ChevronRight className="h-4 w-4" />
-                <span className="text-slate-300">{article.title}</span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" />
+                <span className="text-slate-200">{article.title}</span>
               </nav>
             </div>
 
@@ -291,31 +290,10 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
               </header>
             )}
 
-            {/* Tag Pills */}
-            <div className="flex flex-wrap items-center gap-2 mb-8">
-              {article.website_exclusive && (
-                <Badge className="bg-purple-600/20 text-purple-400 border-purple-600/30 text-xs">Website Exclusive</Badge>
-              )}
-              {article.tags.length > 0 && (
-                <>
-                  {article.tags.map((tag) => (
-                    <Link key={tag} href={`${config.baseUrl}?tag=${encodeURIComponent(tag)}`}>
-                      <Badge
-                        variant="secondary"
-                        className="bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 cursor-pointer transition-colors"
-                      >
-                        {tag}
-                      </Badge>
-                    </Link>
-                  ))}
-                </>
-              )}
-            </div>
-
             {/* "View On" External Links */}
             {(article.medium_link || article.devto_link || article.substack_link || article.linkedin_link) && (
-              <div className="flex items-center gap-4 mb-8 p-4 bg-slate-800/30 rounded-lg border border-slate-700">
-                <span className="text-sm text-slate-300 font-medium">View On:</span>
+              <div className="flex items-center gap-4 mb-8 p-4 bg-bg-soft rounded-lg border border-border-subtle">
+                <span className="text-sm text-text-body font-medium">View On:</span>
                 {article.medium_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.medium_link} target="_blank" rel="noopener noreferrer">
@@ -358,29 +336,32 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
 
             {/* Related Articles */}
             {!isLoading && relatedArticles.length > 0 && (
-              <Card className="bg-slate-800/30 border-slate-700">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-slate-100 mb-4">Continue Reading</h3>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {relatedArticles.map((relatedArticle) => (
-                      <Link
-                        key={relatedArticle.slug}
-                        href={`${config.baseUrl}/${relatedArticle.slug}`}
-                        className="block p-4 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
-                      >
-                        <h4 className="font-medium text-slate-200 mb-2">{relatedArticle.title}</h4>
-                        <p className="text-sm text-slate-400 mb-2">{relatedArticle.excerpt}</p>
-                        <div className="flex items-center gap-2 text-xs text-slate-500">
-                          <Calendar className="h-3 w-3" />
-                          <span>{new Date(relatedArticle.date).toLocaleDateString()}</span>
-                          <Clock className="h-3 w-3 ml-2" />
-                          <span>{relatedArticle.reading_time} min</span>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="mt-12">
+                <hr className="border-slate-700 mb-8" />
+                <h3 className="text-xl font-semibold text-slate-100 mb-4">Continue Reading</h3>
+                <div className="grid md:grid-cols-2 gap-0">
+                  {relatedArticles.map((relatedArticle, index) => (
+                    <Link
+                      key={relatedArticle.slug}
+                      href={`${config.baseUrl}/${relatedArticle.slug}`}
+                      className={`block p-4 rounded-lg group border-b md:border-b-0 md:border-r border-slate-700 last:border-b-0 ${index % 2 === 1 ? "md:border-r-0" : ""}`}
+                    >
+                      <h4 className="font-medium text-slate-200 group-hover:text-blue-400 transition-colors mb-2">{relatedArticle.title}</h4>
+                      <p className="text-sm text-slate-300 leading-relaxed mb-2">{relatedArticle.excerpt}</p>
+                      <div className="flex items-center gap-2 text-xs text-slate-400 mb-3">
+                        <Calendar className="h-3 w-3" />
+                        <span>{new Date(relatedArticle.date).toLocaleDateString()}</span>
+                        <Clock className="h-3 w-3 ml-2" />
+                        <span>{relatedArticle.reading_time} min</span>
+                      </div>
+                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-primary group-hover:text-accent-primary-hover">
+                        Read
+                        <ChevronRight className="h-4 w-4" />
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         </ContentLayout>
