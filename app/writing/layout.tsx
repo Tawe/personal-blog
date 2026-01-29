@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: "Writing | John Munn",
     description: "Leadership and technical architecture writing. One body of work on teams, systems, and complex challenges.",
     url: "https://johnmunn.tech/writing",
-    siteName: "John Munn - Technical Leader",
+    siteName: "John Munn",
     type: "website",
   },
   twitter: {

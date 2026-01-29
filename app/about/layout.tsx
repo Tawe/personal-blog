@@ -2,12 +2,12 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "About | John Munn",
-  description: "I help teams and leaders navigate complex systems — technical, human, and organizational. Leadership through complexity, long-term experience, calm reflective authority.",
+  description: "Engineering leader and writer. Two decades at the intersection of technology, people, and the systems that connect them. Systems under stress, structure, narratives, and building things that last.",
   openGraph: {
     title: "About | John Munn",
-    description: "I help teams and leaders navigate complex systems — technical, human, and organizational.",
+    description: "Engineering leader and writer. Two decades at the intersection of technology, people, and the systems that connect them.",
     url: "https://johnmunn.tech/about",
-    siteName: "John Munn - Technical Leader",
+    siteName: "John Munn",
     images: [{ url: "/me.jpeg", width: 1200, height: 630, alt: "John Munn" }],
     locale: "en_US",
     type: "website",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "About | John Munn",
-    description: "I help teams and leaders navigate complex systems — technical, human, and organizational.",
+    description: "Engineering leader and writer. Two decades at the intersection of technology, people, and the systems that connect them.",
     images: ["/me.jpeg"],
   },
   alternates: { canonical: "https://johnmunn.tech/about" },

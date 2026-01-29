@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: "Projects | John Munn",
     description: "Credible, curious, applied work. What I build and why.",
     url: "https://johnmunn.tech/projects",
-    siteName: "John Munn - Technical Leader",
+    siteName: "John Munn",
     images: [
       {
         url: "/me.jpeg",
