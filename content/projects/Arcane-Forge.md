@@ -1,56 +1,68 @@
 ---
-title: "Arcane Forge: Building a D&D Magic Item Generator with Google AI Studio"
-description: "Arcane Forge is a small D&D magic-item generator built as an experiment with Google AI Studio. It creates fully original items—complete with lore, mechanics, and pricing—and pairs them with an AI-generated illustration. I built it to explore how far the “build an app from a prompt” workflow can go, and how quickly a working prototype can move from idea to something usable."
+title: "Arcane Forge: A High-Quality D&D Magic Item Generator"
+description: "Arcane Forge is a full-featured D&D magic item generator powered by Google Gemini and Supabase. It lets you create unique items with rich lore, detailed mechanics, and AI-generated illustrations, then browse, search, and manage them in a persistent archive."
 status: "active"
 tags:
   - AI Development
   - Prototyping
   - Open Source
+  - TTRPG Tools
 github: "https://github.com/Tawe/ArcaneForge"
-demo: "https://arcaneforge.netlify.app/"
+demo: "https://arcaneforge.netlify.app"
 icon: "Code"
 featured_image: /ArcaneForge.png
 date: 2025-11-20
 draft: false
 ---
 
-I’ve been experimenting with Google AI Studio lately, mostly out of curiosity about how far its “build an app from a prompt” feature can go. I wasn’t planning on making anything serious—just something fun, small, and easy to test. That turned into **Arcane Forge**, a little tool that generates D&D magic items, complete with lore, mechanics, pricing, and a generated image.
+**Arcane Forge** started as a quick experiment in Google AI Studio—a “can I build a D&D magic item generator from a single prompt?” kind of project. Since then, it’s grown into a **high-quality tool** for DMs: you choose item properties, let Gemini generate lore and mechanics, and get a matching image plus a persistent record of everything you’ve created.
 
-It’s not a big project. It’s not something I planned. It’s something that came together in an afternoon because I wanted to see what AI Studio could do beyond the promotional examples. And honestly, that’s the part I enjoy the most: the quick builds, the experiments that turn into something unexpectedly usable.
-
-You can try it here:  
-**[https://arcaneforge.netlify.app](https://arcaneforge.netlify.app)**
+Instead of being a one-off toy, it now behaves like a proper utility: every generated item is stored in a database, you can browse and search your collection, and the UI is tuned for fast iteration while you’re prepping a session or improvising at the table.
 
 ---
 
-## **A quick overview of how it works**
+## **What Arcane Forge can do now**
 
-The entire app started from a single prompt inside Google AI Studio. I told Gemini to generate a magic item based on a few inputs—type, rarity, theme, power level, and art style—and to follow a consistent structure that included description, lore, mechanics, and a price range taken from _Xanathar’s Guide to Everything_. I also had it produce a short visual prompt for Imagen so the tool could generate an item image that matched the theme.
+The current version of Arcane Forge is built around a richer, more structured generation and browsing experience:
 
-From there, AI Studio generated a working React + Vite project. It wasn’t perfect, but it handled the scaffolding: components, basic layout, API wiring. I spent most of my time cleaning things up, tightening the prompt, and improving the UX. The more structure I added to the prompt, the more reliable the output became.
+- **Customizable item generation**
+  - Choose item type, rarity, theme, visual style, and power band
+  - Optionally add curses or plot hooks for campaign integration
+  - Use resonance/power levels to control how wild the item can be
+- **AI-driven content and visuals**
+  - Uses **Google Gemini** to generate item name, lore, mechanics, and usage details
+  - Uses **Imagen via Gemini** to create a matching illustration when quota allows
+- **Automatic archiving**
+  - Every generated item is automatically saved to **Supabase**
+  - Includes all structured fields plus image references
+- **Archives browser**
+  - Browse your full collection in a grid
+  - Search by name, type, rarity, theme, or description
+  - Filter by rarity to quickly find items at the right power level
+  - Open an item for a full-detail view or delete it if you don’t need it anymore
+- **Recent items**
+  - See the last 6 generated items directly on the forge page
+  - Jump back into recent creations with a single click
 
-The generation flow now works in two steps. The text appears first, and the image comes in a moment later. It feels faster, and it avoids the “everything waits for the image” pause that made the early version feel sluggish.
-
-Here’s a screenshot:
-
-![Arcane Forge Screenshot](/arcaneForgeScreenShot.png)
+Under the hood, the app is a **React + Vite** project written in **TypeScript**, styled with **Tailwind CSS**, and wired up to **Supabase** for persistence.
 
 ---
 
-## **What I learned while building this**
+## **How it’s built**
 
-I went into this expecting a fun experiment, not a full tool. But a few things surprised me along the way.
+The app is intentionally small but production-minded:
 
-The first was how consistent Gemini becomes once you give it a strict output format. Without structure, magic item generation gets weird fast. With structure, the model becomes much more stable, and the output is easy to map into TypeScript without juggling edge cases.
+- **Frontend**: React 19 + Vite with a focused component set (`GeneratorForm`, `MagicItemDisplay`, `RecentItems`, `SavedItems`, `ShareButton`) and a dedicated `ItemView` page for individual items.
+- **AI integration**: A `geminiService` handles calls to Google Gemini for both text and image prompts, keeping prompts structured so output is predictable and easy to map into TypeScript types.
+- **Data layer**: Supabase stores all generated items using a schema defined in `supabase-schema.sql`, with a small `storageService` and `supabaseClient` to keep persistence logic clean.
+- **Meta and sharing**: A custom `useMetaTags` hook updates meta tags so items share nicely across platforms when you link directly to them.
 
-The second was how smooth Imagen is when the prompt is clear. As long as the item description includes material, shape, and magical effect, the result looks like something you’d actually hand to a player at the table.
-
-And finally, the build feature in AI Studio is genuinely useful for prototyping. I didn’t have to set up the project, write boilerplate, or wire the APIs. I could start directly with the fun part—turning the autogenerated baseline into something that actually feels like mine.
+The project also includes a straightforward setup flow in the README: add your Gemini API key, Supabase URL, and anon key to `.env.local`, run the schema, and you’re ready to generate and archive items.
 
 ---
 
-## **Where it goes from here**
+## **Why this version matters**
 
-Arcane Forge is small, but I like it. It solves a silly little problem I run into as a DM, and it opens the door for more tools built the same way. I’d like to explore monster generators, NPC creators, spell books—basically the things I’ve been manually writing for years. If AI Studio can handle the scaffolding and I can handle the polish, there’s a lot of potential for quick builds that feel personal and useful.
+Arcane Forge is no longer just “a thing AI scaffolded once.” It’s a tool that supports an actual workflow: generating, refining, saving, and reusing magic items over time. The combination of **structured prompts**, **persistent storage**, and a **browsable archive** makes it something you can return to between sessions and steadily build your own artificer’s compendium.
 
-Mostly, though, this was a good reminder: sometimes it’s enough to build something small, follow a spark of curiosity, and see where it goes.
+It also serves as a template for similar AI-assisted tools: swap out the schema and prompts, and the same architecture could power NPC generators, monster builders, spell books, or campaign seeds. For now, Arcane Forge is focused on magic items—but the infrastructure is ready for a whole shelf of DM-facing utilities.
