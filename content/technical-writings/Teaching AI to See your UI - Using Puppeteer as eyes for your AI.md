@@ -4,7 +4,7 @@ subtitle: "Using Puppeteer as eyes for your AI"
 date: "2026-01-13"
 excerpt: How I use Puppeteer to give an AI visibility into a real UI, letting it observe failures, reason from evidence, and repair its own mistakes."
 tags: ["Artificial Intelligence", "Software Engineering", "Software Development", "Web Developement", "Automation"]
-featured_image: /teachingaitosee.png?height=400&width=800
+featured_image: /teachingaitosee.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/prompt-debt-6e6e05c7958a
 reading_time: 6
 code_languages: ["javascript"]
