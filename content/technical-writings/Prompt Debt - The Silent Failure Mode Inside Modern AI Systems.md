@@ -5,7 +5,7 @@ date: "2025-12-09"
 excerpt: "Prompt Debt is the hidden architecture problem behind inconsistent AI behavior. Learn why systems drift, how context fails, and what teams must do to fix it."
 tags: ["Artificial Intelligence", "Prompt Engineering", "Machine Learning", "AI Engineering", "Software Architecture"]
 reading_time: 7
-featured_image: /promptdebt.webp?height=400&width=800
+featured_image: /promptdebt.png?height=400&width=800
 medium_link: https://medium.com/@johnmunn/prompt-debt-6e6e05c7958a
 code_languages: []
 draft: false
