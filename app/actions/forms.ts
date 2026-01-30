@@ -1,8 +1,16 @@
 "use server"
 
+import { headers } from "next/headers"
 import { neon } from "@neondatabase/serverless"
+import { Resend } from "resend"
 
-const sql = neon(process.env.DATABASE_URL!)
+function getSql() {
+  const url = process.env.DATABASE_URL
+  if (!url) throw new Error("DATABASE_URL is not set")
+  return neon(url)
+}
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
+const fromEmail = process.env.RESEND_FROM ?? "Contact <onboarding@resend.dev>"
 
 interface BaseFormData {
   name: string
@@ -43,28 +51,120 @@ function validateRequired(fields: Record<string, any>): string | null {
   return null
 }
 
-// Simplified email sending using fetch (no external dependencies)
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/\n/g, "<br>")
+}
+
+// In-memory rate limit: max 5 submissions per IP per 15 minutes (per serverless instance)
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000
+const RATE_LIMIT_MAX = 5
+const rateLimitMap = new Map<string, number[]>()
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const timestamps = rateLimitMap.get(ip) ?? []
+  const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS)
+  if (recent.length >= RATE_LIMIT_MAX) return false
+  recent.push(now)
+  rateLimitMap.set(ip, recent)
+  return true
+}
+
+const RESEND_TEST_FROM = "Contact <onboarding@resend.dev>"
+
+// Send email via Resend (set RESEND_API_KEY; set RESEND_FROM to a verified domain or leave unset to use test sender)
 async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
+  if (!resend) {
+    console.warn("RESEND_API_KEY not set; email not sent:", { to, subject })
+    return { messageId: "skipped-no-api-key" }
+  }
+  const payload = {
+    from: fromEmail,
+    to: [to],
+    subject,
+    html,
+    ...(replyTo && { replyTo: [replyTo] }),
+  }
+  let result = await resend.emails.send(payload)
+  // If domain isn't verified, retry with Resend's test sender so the form still works
+  if (result.error?.message?.includes("domain is not verified") && fromEmail !== RESEND_TEST_FROM) {
+    console.warn("Resend: domain not verified for", fromEmail, "- retrying with", RESEND_TEST_FROM)
+    result = await resend.emails.send({ ...payload, from: RESEND_TEST_FROM })
+  }
+  if (result.error) {
+    console.error("Resend send failed:", result.error)
+    throw new Error(result.error.message)
+  }
+  return { messageId: result.data?.id ?? "sent" }
+}
+
+const CONTACT_MAX_NAME = 200
+const CONTACT_MAX_EMAIL = 254
+const CONTACT_MAX_MESSAGE = 5000
+const HONEYPOT_FIELD = "website" // hidden field; bots that fill it are rejected
+
+// Simple contact page form (name, email, message only)
+export async function submitContactPageForm(formData: FormData) {
   try {
-    console.log("Attempting to send email to:", to)
-    console.log("Gmail user:", process.env.GMAIL_USER ? "Set" : "Not set")
-    console.log("Gmail password:", process.env.GMAIL_APP_PASSWORD ? "Set" : "Not set")
+    const h = await headers()
+    const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? h.get("x-real-ip") ?? "unknown"
+    if (!checkRateLimit(ip)) {
+      return { success: false, error: "Too many messages. Please try again later." }
+    }
 
-    // For now, let's just log the email instead of sending it
-    // This will help us debug without external dependencies
-    console.log("Email would be sent:", {
-      to,
-      subject,
-      from: process.env.GMAIL_USER,
-      replyTo: replyTo || process.env.GMAIL_USER,
-      htmlLength: html.length,
-    })
+    const honeypot = (formData.get(HONEYPOT_FIELD) as string)?.trim()
+    if (honeypot) {
+      return { success: true, message: "Thanks for your message. I'll get back to you soon." }
+    }
 
-    // Simulate successful email sending
-    return { messageId: "simulated-" + Date.now() }
+    const name = (formData.get("name") as string)?.trim().slice(0, CONTACT_MAX_NAME) ?? ""
+    const email = (formData.get("email") as string)?.trim().slice(0, CONTACT_MAX_EMAIL) ?? ""
+    const message = (formData.get("message") as string)?.trim().slice(0, CONTACT_MAX_MESSAGE) ?? ""
+
+    if (!name) return { success: false, error: "Please enter your name." }
+    if (!email) return { success: false, error: "Please enter your email." }
+    if (!validateEmail(email)) return { success: false, error: "Please enter a valid email address." }
+    if (!message) return { success: false, error: "Please enter a message." }
+
+    if (process.env.DATABASE_URL) {
+      await getSql()`
+        INSERT INTO contact_submissions (
+          name, email, organization, "current_role", inquiry_type, message,
+          preferred_contact_method, time_zone, timeline
+        ) VALUES (
+          ${name}, ${email}, NULL, NULL, 'Contact', ${message},
+          NULL, NULL, NULL
+        )
+      `
+    }
+
+    const emailSubject = `Contact form: ${name.slice(0, 80)}`
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px;">
+        <h2 style="color: #1e293b;">New contact form message</h2>
+        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
+        <p><strong>Message:</strong></p>
+        <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin: 12px 0;">
+          ${escapeHtml(message)}
+        </div>
+      </div>
+    `
+    const contactTo = process.env.CONTACT_FORM_TO ?? process.env.GMAIL_USER ?? "john@johnmunn.tech"
+    await sendEmail(contactTo, emailSubject, emailHtml, email)
+
+    return { success: true, message: "Thanks for your message. I'll get back to you soon." }
   } catch (error) {
-    console.error("Failed to send email:", error)
-    throw error
+    console.error("submitContactPageForm error:", error)
+    return {
+      success: false,
+      error: "Something went wrong. Please try again or email john@johnmunn.tech directly.",
+    }
   }
 }
 
@@ -95,7 +195,7 @@ export async function submitContactForm(formData: ContactFormData) {
     console.log("Inserting into database...")
 
     // Insert into database
-    await sql`
+    await getSql()`
       INSERT INTO contact_submissions (
         name,
         email,
@@ -242,7 +342,7 @@ How they heard about me: ${data.hearAbout || "Not specified"}
     `.trim()
 
     // Insert into database
-    await sql`
+    await getSql()`
       INSERT INTO contact_submissions (
         name, 
         email, 
