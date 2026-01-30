@@ -23,6 +23,17 @@ Just as a good D&D campaign requires strategic planning, compelling storytelling
 - Creative problem-solving approaches
 - Team dynamics and leadership insights
 
+## 🌐 Domain redirect (www → apex)
+
+The site uses **johnmunn.tech** (no www) as the canonical URL. To avoid redirect loops and CORS errors:
+
+1. In **Vercel Dashboard** → your project → **Settings** → **Domains**
+2. Set **johnmunn.tech** (apex) as the primary domain — it must **not** redirect to www
+3. Add **www.johnmunn.tech** and set it to **Redirect to johnmunn.tech**
+4. Do **not** add any redirect from johnmunn.tech to www
+
+That way only www → apex redirects happen at the edge; apex never redirects to www.
+
 ## 🛠 Tech Stack
 
 This blog is built with modern web technologies for optimal performance and user experience:
