@@ -130,7 +130,7 @@ export default function WritingPage() {
                 {filtered.map((item) => (
                   <li key={`${item.theme}-${item.slug}`} className="border-b border-border-subtle pb-16 last:border-b-0 last:pb-0">
                     <Link href={item.href} className="group block">
-                      <h2 className="text-[1.5rem] font-semibold text-text-strong group-hover:text-accent-primary transition-colors mb-2 leading-snug">
+                      <h2 className="text-2xl font-bold tracking-tight text-text-strong group-hover:text-accent-primary transition-colors mb-2 leading-snug">
                         {item.title}
                       </h2>
                       {item.excerpt && (

@@ -127,7 +127,7 @@ export default function HomePageClient() {
                 {articles.map((article) => (
                   <li key={`${article.category}-${article.slug}`} className="border-b border-border-subtle pb-16 last:border-b-0 last:pb-0">
                     <Link href={article.href} className="group block">
-                      <h3 className="text-[1.5rem] font-semibold text-text-strong group-hover:text-accent-primary transition-colors mb-2 leading-snug">
+                      <h3 className="text-xl font-bold tracking-tight text-text-strong group-hover:text-accent-primary transition-colors mb-2 leading-snug">
                         {article.title}
                       </h3>
                       {article.excerpt && (
