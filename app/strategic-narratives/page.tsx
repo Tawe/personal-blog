@@ -152,7 +152,7 @@ export default function StrategicNarrativesPage() {
                           : category.color === "purple"
                             ? "border-purple-500/50 hover:border-purple-400 bg-purple-900/10"
                             : "border-red-500/50 hover:border-red-400 bg-red-900/10"
-                    } border-2 transition-all duration-300 hover:scale-[1.02] group`}
+                    } border-2 transition-all duration-300 hover:scale-[1.02] motion-reduce:hover:scale-100 group`}
                   >
                     <CardHeader>
                       <div className="flex items-start justify-between mb-4">

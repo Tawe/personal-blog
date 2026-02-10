@@ -92,7 +92,7 @@ export function HubPageTemplate({ config, children }: HubPageTemplateProps) {
           <ContentLayout title={config.title} description={config.description}>
             <div className="max-w-6xl mx-auto">
               <div className="text-center py-12">
-                <div className="text-red-400 mb-4">⚠️ Error</div>
+                <div className="text-red-400 mb-4"><span role="img" aria-label="Warning">⚠️</span> Error</div>
                 <h3 className="text-xl font-semibold text-slate-300 mb-2">Failed to load articles</h3>
                 <p className="text-slate-400">{error}</p>
               </div>

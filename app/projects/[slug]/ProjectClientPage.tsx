@@ -52,7 +52,7 @@ export function ProjectClientPage({ project }: ProjectClientPageProps) {
             <div className="relative mb-8 rounded-xl overflow-hidden">
               <Image
                 src={project.featured_image}
-                alt={project.title}
+                alt=""
                 width={800}
                 height={400}
                 className="aspect-video w-full object-cover"
@@ -112,16 +112,16 @@ export function ProjectClientPage({ project }: ProjectClientPageProps) {
                 {project.github && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={project.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="mr-2 h-4 w-4" />
-                      View Code
+                      <Github className="mr-2 h-4 w-4" aria-hidden="true" />
+                      View Code<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
                 {project.demo && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={project.demo} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Live Demo
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      Live Demo<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
@@ -131,7 +131,7 @@ export function ProjectClientPage({ project }: ProjectClientPageProps) {
         </header>
 
         {project.content && (
-          <article className="prose prose-invert prose-blue max-w-none mb-12">
+          <article className="prose prose-blue max-w-none mb-12">
             <div dangerouslySetInnerHTML={{ __html: project.content || "" }} />
           </article>
         )}

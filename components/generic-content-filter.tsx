@@ -106,6 +106,7 @@ export function GenericContentFilter({
           placeholder={`Search ${contentType}, topics, or concepts...`}
           value={filters.search}
           onChange={(e) => handleSearchChange(e.target.value)}
+          aria-label={`Search ${contentType}, topics, or concepts`}
           className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:border-purple-500"
         />
       </div>
@@ -123,12 +124,14 @@ export function GenericContentFilter({
               type="date"
               value={filters.dateRange.start}
               onChange={(e) => handleDateRangeChange("start", e.target.value)}
+              aria-label="Start date"
               className="bg-slate-800/50 border-slate-600 text-slate-100"
             />
             <Input
               type="date"
               value={filters.dateRange.end}
               onChange={(e) => handleDateRangeChange("end", e.target.value)}
+              aria-label="End date"
               className="bg-slate-800/50 border-slate-600 text-slate-100"
             />
           </div>
@@ -166,7 +169,7 @@ export function GenericContentFilter({
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Clock className="h-4 w-4 text-slate-400" />
-          <label className="text-sm font-medium text-slate-300">
+          <label id="reading-time-label" className="text-sm font-medium text-slate-300">
             Reading Time: {filters.readingTime.min}-{filters.readingTime.max} minutes
           </label>
         </div>
@@ -176,6 +179,7 @@ export function GenericContentFilter({
           max={60}
           min={0}
           step={1}
+          aria-labelledby="reading-time-label"
           className="w-full"
         />
       </div>
@@ -193,18 +197,24 @@ export function GenericContentFilter({
           <h4 className="text-sm font-medium text-slate-300">Topics & Categories</h4>
           <div className="flex flex-wrap gap-2">
             {(showAllTopics ? availableTags : availableTags.slice(0, TOPICS_LIMIT)).map((tag) => (
-              <Badge
+              <button
                 key={tag}
-                variant={filters.tags.includes(tag) ? "default" : "secondary"}
-                className={`cursor-pointer transition-colors text-xs ${
-                  filters.tags.includes(tag)
-                    ? "bg-purple-600 hover:bg-purple-700 text-white"
-                    : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
-                }`}
+                type="button"
+                aria-pressed={filters.tags.includes(tag)}
                 onClick={() => handleTagToggle(tag)}
+                className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full"
               >
-                {tag}
-              </Badge>
+                <Badge
+                  variant={filters.tags.includes(tag) ? "default" : "secondary"}
+                  className={`cursor-pointer transition-colors text-xs ${
+                    filters.tags.includes(tag)
+                      ? "bg-purple-600 hover:bg-purple-700 text-white"
+                      : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                  }`}
+                >
+                  {tag}
+                </Badge>
+              </button>
             ))}
           </div>
           {availableTags.length > TOPICS_LIMIT && (

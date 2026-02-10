@@ -135,9 +135,9 @@ export default function WorkbenchPage() {
                           <div className="relative w-full h-48 overflow-hidden">
                             <Image
                               src={project.featured_image}
-                              alt={project.title}
+                              alt=""
                               fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="object-cover group-hover:scale-105 transition-transform duration-300 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />

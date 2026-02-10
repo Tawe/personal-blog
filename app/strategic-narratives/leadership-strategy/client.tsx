@@ -76,6 +76,7 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
             placeholder="Search articles..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Search articles"
             className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100"
           />
         </div>
@@ -86,18 +87,24 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
             <h4 className="text-sm font-medium text-slate-300">Topics</h4>
             <div className="flex flex-wrap gap-2">
               {(showAllTopics ? tags : tags.slice(0, TOPICS_LIMIT)).map((tag) => (
-                <Badge
+                <button
                   key={tag}
-                  variant={selectedTags.includes(tag) ? "default" : "secondary"}
-                  className={`cursor-pointer transition-colors ${
-                    selectedTags.includes(tag)
-                      ? "bg-green-600 hover:bg-green-700 text-white"
-                      : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
-                  }`}
+                  type="button"
+                  aria-pressed={selectedTags.includes(tag)}
                   onClick={() => handleTagToggle(tag)}
+                  className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full"
                 >
-                  {tag}
-                </Badge>
+                  <Badge
+                    variant={selectedTags.includes(tag) ? "default" : "secondary"}
+                    className={`cursor-pointer transition-colors ${
+                      selectedTags.includes(tag)
+                        ? "bg-green-600 hover:bg-green-700 text-white"
+                        : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                    }`}
+                  >
+                    {tag}
+                  </Badge>
+                </button>
               ))}
             </div>
             {tags.length > TOPICS_LIMIT && (
@@ -130,8 +137,8 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
               <div className="aspect-video w-full overflow-hidden">
                 <img
                   src={article.image || "/placeholder.svg"}
-                  alt={article.title}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  alt=""
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 motion-reduce:transition-none motion-reduce:hover:transform-none"
                 />
               </div>
             )}
@@ -140,7 +147,7 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
                 <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
                   <img
                     src={article.featured_image || "/placeholder.svg"}
-                    alt={article.title}
+                    alt=""
                     className="w-full h-full object-cover bg-slate-700"
                   />
                 </div>
@@ -149,7 +156,7 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
                 <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
                   <img
                     src={`/placeholder.svg?height=200&width=400&text=${encodeURIComponent(article.title)}`}
-                    alt={article.title}
+                    alt=""
                     className="w-full h-full object-cover bg-slate-700"
                   />
                 </div>

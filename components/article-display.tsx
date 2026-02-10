@@ -36,7 +36,7 @@ export function ArticleDisplay({
   if (articles.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="text-slate-500 mb-4">📚</div>
+        <div className="text-slate-500 mb-4" aria-hidden="true">📚</div>
         <h3 className="text-xl font-semibold text-slate-300 mb-2">No articles found</h3>
         <p className="text-slate-400">Try adjusting your filters to see more content.</p>
       </div>
@@ -70,6 +70,7 @@ export function ArticleDisplay({
               variant="ghost"
               size="sm"
               onClick={handleSortDirectionToggle}
+              aria-label={`Sort ${sortOption.direction === "asc" ? "ascending" : "descending"}`}
               className="text-slate-400 hover:text-slate-200"
             >
               {sortOption.direction === "asc" ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
@@ -83,6 +84,8 @@ export function ArticleDisplay({
             variant={viewMode === "grid" ? "default" : "ghost"}
             size="sm"
             onClick={() => onViewModeChange("grid")}
+            aria-label="Grid view"
+            aria-pressed={viewMode === "grid"}
             className="h-8 w-8 p-0"
           >
             <Grid className="h-4 w-4" />
@@ -91,6 +94,8 @@ export function ArticleDisplay({
             variant={viewMode === "list" ? "default" : "ghost"}
             size="sm"
             onClick={() => onViewModeChange("list")}
+            aria-label="List view"
+            aria-pressed={viewMode === "list"}
             className="h-8 w-8 p-0"
           >
             <List className="h-4 w-4" />

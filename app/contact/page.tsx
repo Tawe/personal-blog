@@ -107,6 +107,8 @@ export default function Contact() {
             </div>
             {result && (
               <p
+                role="alert"
+                aria-live="assertive"
                 className={
                   result.success
                     ? "text-sm text-green-600 dark:text-green-400"
@@ -137,7 +139,7 @@ export default function Contact() {
             rel="noopener noreferrer"
             className="text-accent-primary hover:text-accent-primary-hover underline underline-offset-2"
           >
-            LinkedIn
+            LinkedIn<span className="sr-only"> (opens in new tab)</span>
           </Link>
           .
         </p>

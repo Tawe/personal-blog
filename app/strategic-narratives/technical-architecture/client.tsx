@@ -83,6 +83,7 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100"
+            aria-label="Search articles"
           />
         </div>
 
@@ -92,18 +93,23 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
             <h4 className="text-sm font-medium text-slate-300">Technologies & Topics</h4>
             <div className="flex flex-wrap gap-2">
               {(showAllTopics ? tags : tags.slice(0, TOPICS_LIMIT)).map((tag) => (
-                <Badge
+                <button
                   key={tag}
-                  variant={selectedTags.includes(tag) ? "default" : "secondary"}
-                  className={`cursor-pointer transition-colors ${
-                    selectedTags.includes(tag)
-                      ? "bg-blue-600 hover:bg-blue-700 text-white"
-                      : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
-                  }`}
+                  type="button"
                   onClick={() => handleTagToggle(tag)}
+                  className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full"
                 >
-                  {tag}
-                </Badge>
+                  <Badge
+                    variant={selectedTags.includes(tag) ? "default" : "secondary"}
+                    className={`cursor-pointer transition-colors ${
+                      selectedTags.includes(tag)
+                        ? "bg-blue-600 hover:bg-blue-700 text-white"
+                        : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                    }`}
+                  >
+                    {tag}
+                  </Badge>
+                </button>
               ))}
             </div>
             {tags.length > TOPICS_LIMIT && (
@@ -135,7 +141,7 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
             <div className="aspect-video w-full overflow-hidden">
               <img
                 src={article.featured_image ? article.featured_image : "/placeholder.svg"}
-                alt={article.title}
+                alt=""
                 className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
               />
             </div>

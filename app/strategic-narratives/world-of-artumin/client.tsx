@@ -102,6 +102,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100"
+            aria-label="Search articles"
           />
         </div>
 
@@ -111,18 +112,23 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
             <h4 className="text-sm font-medium text-slate-300">Categories & Themes</h4>
             <div className="flex flex-wrap gap-2">
               {(showAllTopics ? availableTags : availableTags.slice(0, TOPICS_LIMIT)).map((tag) => (
-                <Badge
+                <button
                   key={tag}
-                  variant={selectedTags.includes(tag) ? "default" : "secondary"}
-                  className={`cursor-pointer transition-colors ${
-                    selectedTags.includes(tag)
-                      ? "bg-purple-600 hover:bg-purple-700 text-white"
-                      : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
-                  }`}
+                  type="button"
                   onClick={() => handleTagToggle(tag)}
+                  className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full"
                 >
-                  {tag}
-                </Badge>
+                  <Badge
+                    variant={selectedTags.includes(tag) ? "default" : "secondary"}
+                    className={`cursor-pointer transition-colors ${
+                      selectedTags.includes(tag)
+                        ? "bg-purple-600 hover:bg-purple-700 text-white"
+                        : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                    }`}
+                  >
+                    {tag}
+                  </Badge>
+                </button>
               ))}
             </div>
             {availableTags.length > TOPICS_LIMIT && (
@@ -155,7 +161,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
               <div className="aspect-video w-full overflow-hidden">
                 <img
                   src={article.image || "/placeholder.svg"}
-                  alt={article.title}
+                  alt=""
                   className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                 />
               </div>
@@ -165,7 +171,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                 <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
                   <img
                     src={article.featured_image || "/placeholder.svg"}
-                    alt={article.title}
+                    alt=""
                     className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                   />
                 </div>
@@ -174,7 +180,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                 <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
                   <img
                     src={`/placeholder.svg?height=200&width=400&text=${encodeURIComponent(article.title)}`}
-                    alt={article.title}
+                    alt=""
                     className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                   />
                 </div>

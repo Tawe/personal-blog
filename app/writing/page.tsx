@@ -79,7 +79,7 @@ export default function WritingPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1 bg-bg-base">
+      <main id="main-content" className="flex-1 bg-bg-base">
         <section className="w-full py-16 md:py-24 lg:py-28">
           <div className="container px-4 md:px-6 max-w-4xl mx-auto">
             <header className="mb-14">
@@ -107,6 +107,7 @@ export default function WritingPage() {
                 <button
                   key={option}
                   onClick={() => setThemeFilter(option)}
+                  aria-pressed={themeFilter === option}
                   className={`px-4 py-3 min-h-[44px] rounded-lg text-sm font-medium transition-colors touch-manipulation ${
                     themeFilter === option
                       ? "bg-bg-soft text-text-strong"
@@ -119,6 +120,7 @@ export default function WritingPage() {
               </div>
             </div>
 
+            <div aria-live="polite" aria-busy={isLoading}>
             {isLoading ? (
               <p className="text-text-body">Loading...</p>
             ) : filtered.length === 0 ? (
@@ -137,7 +139,7 @@ export default function WritingPage() {
                         <p className="text-text-body text-[0.9375rem] leading-relaxed mb-2 line-clamp-2">{item.excerpt}</p>
                       )}
                       <div className="flex items-center gap-4 text-xs text-text-muted">
-                        <time>
+                        <time dateTime={item.date}>
                           {new Date(item.date).toLocaleDateString("en-US", {
                             year: "numeric",
                             month: "long",
@@ -155,6 +157,7 @@ export default function WritingPage() {
                 ))}
               </ul>
             )}
+            </div>
           </div>
         </section>
       </main>

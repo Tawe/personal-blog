@@ -173,7 +173,7 @@ export function ArticleClientPage({
             <div className="relative mb-8 rounded-xl overflow-hidden">
               <Image
                 src={article.featured_image || "/placeholder.svg"}
-                alt={article.title}
+                alt=""
                 width={800}
                 height={400}
                 className="aspect-video w-full object-cover"
@@ -225,40 +225,40 @@ export function ArticleClientPage({
                 {article.medium_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.medium_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Medium
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      Medium<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
                 {article.devto_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.devto_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Dev.to
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      Dev.to<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
                 {article.substack_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.substack_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Substack
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      Substack<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
                 {article.linkedin_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.linkedin_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      LinkedIn
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      LinkedIn<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
                 {article.dndbeyond_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.dndbeyond_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      D&D Beyond
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      D&D Beyond<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
@@ -268,7 +268,7 @@ export function ArticleClientPage({
         </header>
 
         {/* Article Content */}
-        <article className="prose prose-invert prose-blue max-w-none mb-12">
+        <article className="prose prose-blue max-w-none mb-12">
           <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
         </article>
 

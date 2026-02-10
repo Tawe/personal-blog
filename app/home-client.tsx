@@ -64,9 +64,9 @@ export default function HomePageClient() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         {/* Hero — bg-paper; image flush left, consistent crop via aspect-ratio + focal point */}
-        <section className="w-full bg-bg-paper lg:min-h-[min(85vh,720px)]">
+        <section aria-label="Hero" className="w-full bg-bg-paper lg:min-h-[min(85vh,720px)]">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(320px,1fr)_1fr] w-full lg:h-[min(85vh,720px)]">
             {/* Profile image — fixed aspect ratio so crop is consistent; focal point keeps face in frame */}
             <div className="relative w-full aspect-[4/5] lg:aspect-auto lg:h-full order-2 lg:order-1 bg-hero-whisper overflow-hidden">
@@ -105,11 +105,11 @@ export default function HomePageClient() {
         </section>
 
         {/* Writing — bg-base; hairline under title; titles stand on their own, more breathing room */}
-        <section className="w-full py-16 md:py-24 lg:py-28 bg-bg-base">
+        <section aria-labelledby="writing-heading" className="w-full py-16 md:py-24 lg:py-28 bg-bg-base">
           <div className="container px-4 md:px-6 max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
               <div>
-                <h2 className="section-title text-2xl font-bold tracking-tight text-text-strong mb-2 w-fit">Writing</h2>
+                <h2 id="writing-heading" className="section-title text-2xl font-bold tracking-tight text-text-strong mb-2 w-fit">Writing</h2>
                 <p className="text-text-body max-w-xl mt-3">
                 Leadership and technical architecture, written from real-world experience building and leading teams through complexity.
                 </p>
@@ -122,6 +122,7 @@ export default function HomePageClient() {
               </Button>
             </div>
 
+            <div aria-live="polite" aria-busy={isLoading}>
             {!isLoading && articles.length > 0 && (
               <ul className="space-y-16">
                 {articles.map((article) => (
@@ -133,7 +134,7 @@ export default function HomePageClient() {
                       {article.excerpt && (
                         <p className="text-text-body text-[0.9375rem] leading-relaxed line-clamp-2 mb-2">{article.excerpt}</p>
                       )}
-                      <time className="text-xs text-text-muted">
+                      <time dateTime={article.date} className="text-xs text-text-muted">
                         {new Date(article.date).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
@@ -150,14 +151,15 @@ export default function HomePageClient() {
             {!isLoading && articles.length === 0 && (
               <p className="text-text-muted">No writing yet.</p>
             )}
+            </div>
           </div>
         </section>
 
         {/* Projects — bg-soft; top divider; lead-in + framing */}
-        <section className="w-full border-t border-accent-rule py-16 md:py-24 lg:py-28 bg-bg-soft">
+        <section aria-labelledby="projects-heading" className="w-full border-t border-accent-rule py-16 md:py-24 lg:py-28 bg-bg-soft">
           <div className="container px-4 md:px-6 max-w-5xl mx-auto">
             <div className="mb-6">
-              <h2 className="section-title text-2xl font-bold tracking-tight text-text-strong mb-2 w-fit">Projects</h2>
+              <h2 id="projects-heading" className="section-title text-2xl font-bold tracking-tight text-text-strong mb-2 w-fit">Projects</h2>
               <p className="text-text-body text-sm max-w-xl mt-2">
                 Selected projects that explore systems, tooling, and decision-making in practice.
               </p>
@@ -178,9 +180,9 @@ export default function HomePageClient() {
         </section>
 
         {/* Contact — bg-paper; calm ending, left-aligned */}
-        <section className="w-full py-20 md:py-28 lg:py-32 bg-bg-paper">
+        <section aria-labelledby="contact-heading" className="w-full py-20 md:py-28 lg:py-32 bg-bg-paper">
           <div className="container px-4 md:px-6 max-w-5xl mx-auto text-left">
-            <h2 className="section-title text-2xl font-bold tracking-tight text-text-strong mb-3 w-fit">Contact</h2>
+            <h2 id="contact-heading" className="section-title text-2xl font-bold tracking-tight text-text-strong mb-3 w-fit">Contact</h2>
             <p className="text-text-body leading-relaxed mb-8 mt-3">
               Open to conversation, mentoring, collaboration, or just saying hello. Email or LinkedIn.
             </p>

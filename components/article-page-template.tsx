@@ -163,7 +163,7 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
             <div className="relative mb-8 rounded-xl overflow-hidden">
               <Image
                 src={article.featured_image || "/placeholder.svg"}
-                alt={article.title}
+                alt=""
                 width={800}
                 height={400}
                 className="aspect-video w-full object-cover"
@@ -213,7 +213,7 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
         </header>
 
         {/* Article Content */}
-        <article className="prose prose-invert prose-blue max-w-none mb-12">
+        <article className="prose prose-blue max-w-none mb-12">
           <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
         </article>
 

@@ -3,7 +3,7 @@ import { Linkedin, Github, Code, Edit } from "lucide-react"
 
 function PentagonGrowthIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 1024 1024" className={className} fill="currentColor" width="3rem" height="3rem">
+    <svg viewBox="0 0 1024 1024" className={className} fill="currentColor" width="3rem" height="3rem" aria-hidden="true" focusable="false">
       <g transform="translate(0,1024) scale(0.1,-0.1)">
         <path
           d="M5035 8176 c-16 -7 -113 -73 -215 -146 -102 -73 -246 -176 -320 -228
@@ -70,8 +70,8 @@ export function SiteFooter() {
 
           {/* Navigation */}
           <div className="space-y-4">
-            <h3 className="footer-heading text-text-muted">Navigation</h3>
-            <nav className="flex flex-wrap items-center gap-y-1">
+            <h2 className="footer-heading text-text-muted">Navigation</h2>
+            <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-y-1">
               {["Home", "Writing", "Projects", "About", "Contact"].map((name, i) => (
                 <span key={name} className="inline-flex items-center">
                   {i > 0 && <span className="text-text-muted select-none px-1.5">|</span>}
@@ -88,7 +88,7 @@ export function SiteFooter() {
 
           {/* Connect */}
           <div className="space-y-4">
-            <h3 className="footer-heading text-text-muted">Connect</h3>
+            <h2 className="footer-heading text-text-muted">Connect</h2>
             <div className="flex flex-wrap gap-2">
               {[
                 { href: "https://www.linkedin.com/in/john-munn-bbab434b/", label: "LinkedIn", Icon: Linkedin },
@@ -100,7 +100,7 @@ export function SiteFooter() {
                   key={label}
                   href={href}
                   className="text-text-secondary hover:text-accent-primary transition-colors p-3 min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation rounded-lg"
-                  aria-label={label}
+                  aria-label={`${label} (opens in new tab)`}
                   {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
                   <Icon className="h-5 w-5" />

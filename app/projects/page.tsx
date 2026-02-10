@@ -55,7 +55,7 @@ export default function ProjectsPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <section className="w-full py-16 md:py-24 lg:py-32 bg-bg-paper">
           <div className="container px-4 md:px-6">
             <div className="max-w-2xl">
@@ -86,6 +86,7 @@ export default function ProjectsPage() {
               <h2 className="section-title text-2xl font-bold tracking-tight text-text-strong mb-2 w-fit">What I'm building</h2>
            
             </div>
+            <div aria-live="polite" aria-busy={isLoading}>
             {isLoading ? (
               <p className="text-text-muted text-sm">Loading projects...</p>
             ) : projects.length > 0 ? (
@@ -99,9 +100,9 @@ export default function ProjectsPage() {
                           <div className="relative w-full h-48 overflow-hidden">
                             <Image
                               src={project.featured_image}
-                              alt={project.title}
+                              alt=""
                               fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="object-cover group-hover:scale-105 transition-transform duration-300 motion-reduce:transition-none motion-reduce:hover:transform-none"
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-text-primary/60 via-text-primary/10 to-transparent" />
@@ -191,6 +192,7 @@ export default function ProjectsPage() {
             ) : (
               <p className="text-text-muted text-sm">No projects yet. Check back soon.</p>
             )}
+            </div>
           </div>
         </section>
       </main>

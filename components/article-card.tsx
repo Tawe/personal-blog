@@ -24,7 +24,7 @@ export function ArticleCard({ article, baseUrl, onTagClick, viewMode }: ArticleC
     >
       {article.featured_image && (
         <div className={`relative ${isListView ? "w-48 flex-shrink-0" : "h-48"} overflow-hidden`}>
-          <Image src={article.featured_image || "/placeholder.svg"} alt={article.title} fill className="object-cover" />
+          <Image src={article.featured_image || "/placeholder.svg"} alt="" fill className="object-cover" />
         </div>
       )}
 
@@ -54,17 +54,22 @@ export function ArticleCard({ article, baseUrl, onTagClick, viewMode }: ArticleC
           {article.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-4">
               {article.tags.slice(0, 3).map((tag) => (
-                <Badge
+                <button
                   key={tag}
-                  variant="secondary"
-                  className="text-xs bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 cursor-pointer"
+                  type="button"
                   onClick={(e) => {
                     e.preventDefault()
                     onTagClick(tag)
                   }}
+                  className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full"
                 >
-                  {tag}
-                </Badge>
+                  <Badge
+                    variant="secondary"
+                    className="text-xs bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 cursor-pointer"
+                  >
+                    {tag}
+                  </Badge>
+                </button>
               ))}
               {article.tags.length > 3 && (
                 <Badge variant="secondary" className="text-xs bg-slate-700/50 text-slate-300">

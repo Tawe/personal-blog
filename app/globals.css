@@ -15,7 +15,7 @@
   /* Typography — headlines get confidence, body gets calm */
   --text-strong: #1A232B;   /* headlines: slightly darker + tighter */
   --text-body: #445561;     /* body: lighter + airier */
-  --text-muted: #7A8A99;    /* dates, tags */
+  --text-muted: #64748B;    /* dates, tags — darkened for 4.5:1 AA contrast */
   --foreground: 212 24% 16%;        /* #1F2933 */
   --foreground-secondary: 210 17% 36%;
   --muted-foreground: 212 11% 54%;
@@ -107,8 +107,13 @@ body {
 
 /* Smooth scrolling; prevent horizontal overflow on mobile */
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 

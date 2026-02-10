@@ -3,8 +3,8 @@
 import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, X } from "lucide-react"
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Menu } from "lucide-react"
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -16,7 +16,7 @@ const navigation = [
 
 function PentagonGrowthIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 1024 1024" className={className} fill="currentColor">
+    <svg viewBox="0 0 1024 1024" className={className} fill="currentColor" aria-hidden="true" focusable="false">
       <g transform="translate(0,1024) scale(0.1,-0.1)">
         <path
           d="M5035 8176 c-16 -7 -113 -73 -215 -146 -102 -73 -246 -176 -320 -228
@@ -81,7 +81,7 @@ export function SiteHeader() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav aria-label="Main navigation" className="hidden lg:flex items-center space-x-8">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -89,7 +89,7 @@ export function SiteHeader() {
                 className="text-sm font-medium text-text-secondary hover:text-accent-primary transition-colors relative group"
               >
                 {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-primary transition-all group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-primary transition-all group-hover:w-full group-focus-within:w-full"></span>
               </Link>
             ))}
           </nav>
@@ -103,16 +103,14 @@ export function SiteHeader() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-80 bg-bg-primary border-border-subtle">
-              <div className="flex items-center justify-between mb-8">
+              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              <div className="flex items-center mb-8">
                 <Link href="/" className="flex items-center space-x-2" onClick={() => setIsOpen(false)}>
                   <PentagonGrowthIcon className="h-12 w-12 text-text-secondary" />
                   <span className="text-lg font-bold text-text-primary">John Munn</span>
                 </Link>
-                <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
-                  <X className="h-6 w-6 text-text-secondary" />
-                </Button>
               </div>
-              <nav className="flex flex-col">
+              <nav aria-label="Mobile navigation" className="flex flex-col">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}

@@ -33,7 +33,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <Image src={src || "/placeholder.svg"} alt={alt || ""} width={800} height={400} className="rounded-lg my-6" />
     ),
     table: ({ children }) => (
-      <div className="overflow-x-auto mb-6">
+      <div className="overflow-x-auto mb-6" tabIndex={0} role="region" aria-label="Scrollable table">
         <table className="min-w-full border border-slate-700 rounded-lg">{children}</table>
       </div>
     ),

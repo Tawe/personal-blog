@@ -169,16 +169,16 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
             <div className="mb-8">
-              <nav className="flex items-center space-x-2 text-sm text-slate-400">
+              <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-sm text-slate-400">
                 <Link href="/strategic-narratives" className="hover:text-slate-200 transition-colors">
                   Strategic Narratives
                 </Link>
-                <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" />
+                <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
                 <Link href={config.baseUrl} className="hover:text-slate-200 transition-colors">
                   {config.title}
                 </Link>
-                <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" />
-                <span className="text-slate-200">{article.title}</span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
+                <span className="text-slate-200" aria-current="page">{article.title}</span>
               </nav>
             </div>
 
@@ -198,7 +198,7 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                 <div className="aspect-video w-full">
                   <Image
                     src={article.featured_image || "/placeholder.svg"}
-                    alt={article.title}
+                    alt=""
                     fill
                     className="object-cover"
                     priority
@@ -297,32 +297,32 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                 {article.medium_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.medium_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Medium
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      Medium<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
                 {article.devto_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.devto_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Dev.to
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      Dev.to<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
                 {article.substack_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.substack_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Substack
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      Substack<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
                 {article.linkedin_link && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={article.linkedin_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      LinkedIn
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      LinkedIn<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
