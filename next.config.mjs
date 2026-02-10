@@ -7,7 +7,6 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 31536000, // 1 year
   },

@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { PersonSchema } from "@/components/person-schema"
 import { WebsiteSchema } from "@/components/website-schema"
+import { ProfilePageSchema } from "@/components/profile-page-schema"
 import { GoogleAnalytics } from "@/components/google-analytics"
 
 export const viewport: Viewport = {
@@ -57,13 +58,21 @@ export const metadata: Metadata = {
     images: ["/me.jpeg"],
   },
   icons: {
-    icon: "/pentagon-growth.svg",
-    shortcut: "/pentagon-growth.svg",
-    apple: "/pentagon-growth.svg",
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/pentagon-growth.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
+  manifest: "/manifest.json",
   metadataBase: new URL("https://johnmunn.tech"),
   alternates: {
     canonical: "https://johnmunn.tech",
+    types: {
+      "application/rss+xml": "https://johnmunn.tech/feed.xml",
+    },
   },
   category: "technology",
 }
@@ -107,6 +116,7 @@ export default function RootLayout({
         <link rel="prefetch" href="/contact" />
         <PersonSchema />
         <WebsiteSchema />
+        <ProfilePageSchema />
       </head>
       <body>
         <GoogleAnalytics />
