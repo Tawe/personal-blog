@@ -73,8 +73,9 @@ export default function HomePageClient() {
               <Image
                 src="/me.png"
                 alt="John Munn"
-                fill
-                className="object-cover object-[20%_25%] lg:object-[20%_25%]"
+                width={784}
+                height={943}
+                className="h-full w-full object-cover object-[20%_25%]"
                 priority
                 sizes="(max-width: 1023px) 100vw, 50vw"
               />
