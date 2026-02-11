@@ -17,8 +17,8 @@ interface ArticleClientPageProps {
 
 export function ArticleClientPage({
   article,
-  backUrl = "/strategic-narratives/technical-architecture",
-  backLabel = "Back to Technical Architecture",
+  backUrl = "/writing",
+  backLabel = "Back to Writing",
 }: ArticleClientPageProps) {
   const [relatedArticles, setRelatedArticles] = useState<TechnicalArticleMetadata[]>([])
   const [isLoading, setIsLoading] = useState(true)

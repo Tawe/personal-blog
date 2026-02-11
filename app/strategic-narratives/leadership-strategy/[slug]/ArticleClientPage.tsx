@@ -16,8 +16,8 @@ interface ArticleClientPageProps {
 
 export function ArticleClientPage({
   article,
-  backUrl = "/strategic-narratives/leadership-strategy",
-  backLabel = "Back to Leadership Strategy",
+  backUrl = "/writing",
+  backLabel = "Back to Writing",
 }: ArticleClientPageProps) {
   const [relatedArticles, setRelatedArticles] = useState<any[]>([])
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
