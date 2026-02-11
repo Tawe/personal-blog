@@ -123,8 +123,7 @@ export default async function DndTtrpgsArticlePage({ params }: { params: Promise
       <BreadcrumbSchema 
         items={[
           { name: "Home", url: "/" },
-          { name: "Strategic Narratives", url: "/strategic-narratives" },
-          { name: "D&D and TTRPGs", url: "/strategic-narratives/dnd-ttrpgs" },
+          { name: "Writing", url: "/writing" },
           { name: article.title, url: `/strategic-narratives/dnd-ttrpgs/${slug}` }
         ]}
       />

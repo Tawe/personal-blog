@@ -111,8 +111,7 @@ export default async function LeadershipStrategyArticlePage({
       <BreadcrumbSchema 
         items={[
           { name: "Home", url: "/" },
-          { name: "Strategic Narratives", url: "/strategic-narratives" },
-          { name: "Leadership & Strategy", url: "/strategic-narratives/leadership-strategy" },
+          { name: "Writing", url: "/writing" },
           { name: article.title, url: `/strategic-narratives/leadership-strategy/${slug}` }
         ]}
       />

@@ -111,8 +111,7 @@ export default async function TechnicalArchitectureArticlePage({
       <BreadcrumbSchema 
         items={[
           { name: "Home", url: "/" },
-          { name: "Strategic Narratives", url: "/strategic-narratives" },
-          { name: "Technical Architecture", url: "/strategic-narratives/technical-architecture" },
+          { name: "Writing", url: "/writing" },
           { name: article.title, url: `/strategic-narratives/technical-architecture/${slug}` }
         ]}
       />

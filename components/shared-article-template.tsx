@@ -170,12 +170,8 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
             {/* Breadcrumb Navigation */}
             <div className="mb-8">
               <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-sm text-slate-400">
-                <Link href="/strategic-narratives" className="hover:text-slate-200 transition-colors">
-                  Strategic Narratives
-                </Link>
-                <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
-                <Link href={config.baseUrl} className="hover:text-slate-200 transition-colors">
-                  {config.title}
+                <Link href="/writing" className="hover:text-slate-200 transition-colors">
+                  Writing
                 </Link>
                 <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
                 <span className="text-slate-200" aria-current="page">{article.title}</span>

@@ -107,8 +107,7 @@ export default async function WorldOfArtumiArticlePage({
       <BreadcrumbSchema 
         items={[
           { name: "Home", url: "/" },
-          { name: "Strategic Narratives", url: "/strategic-narratives" },
-          { name: "World of Artumin", url: "/strategic-narratives/world-of-artumin" },
+          { name: "Writing", url: "/writing" },
           { name: article.title, url: `/strategic-narratives/world-of-artumin/${slug}` }
         ]}
       />
