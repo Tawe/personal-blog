@@ -181,9 +181,9 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
             {/* Back Navigation */}
             <div className="mb-8">
               <Button variant="ghost" className="text-slate-400 hover:text-slate-200" asChild>
-                <Link href={config.baseUrl}>
+                <Link href="/writing">
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to {config.title}
+                  Back to Writing
                 </Link>
               </Button>
             </div>
