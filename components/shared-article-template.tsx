@@ -8,6 +8,7 @@ import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronR
 import Link from "next/link"
 import Image from "next/image"
 import type { Article, HubConfig } from "@/lib/types"
+import { shareOrCopyUrl } from "@/lib/share-client"
 
 interface SharedArticleTemplateProps {
   article: Article
@@ -78,37 +79,12 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
     setShareState("copying")
 
     try {
-      // Try Web Share API first (mobile/modern browsers)
-      if (navigator.share && navigator.canShare && navigator.canShare({ title, url })) {
-        await navigator.share({ title, url })
+      const result = await shareOrCopyUrl(title, url)
+      if (result === "shared" || result === "aborted") {
         setShareState("idle")
-        return
-      }
-
-      // Fallback to clipboard
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(url)
+      } else {
         setShareState("copied")
         setTimeout(() => setShareState("idle"), 2000)
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement("textarea")
-        textArea.value = url
-        textArea.style.position = "fixed"
-        textArea.style.left = "-999999px"
-        textArea.style.top = "-999999px"
-        document.body.appendChild(textArea)
-        textArea.focus()
-        textArea.select()
-
-        if (document.execCommand("copy")) {
-          setShareState("copied")
-          setTimeout(() => setShareState("idle"), 2000)
-        } else {
-          throw new Error("Copy command failed")
-        }
-
-        document.body.removeChild(textArea)
       }
     } catch (error) {
       console.error("Share failed:", error)

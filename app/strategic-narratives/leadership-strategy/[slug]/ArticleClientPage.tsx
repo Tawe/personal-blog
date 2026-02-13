@@ -7,6 +7,7 @@ import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronR
 import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useState } from "react"
+import { shareOrCopyUrl } from "@/lib/share-client"
 
 interface ArticleClientPageProps {
   article: any
@@ -50,34 +51,12 @@ export function ArticleClientPage({
     setShareState("copying")
 
     try {
-      if (navigator.share && navigator.canShare && navigator.canShare({ title, url })) {
-        await navigator.share({ title, url })
+      const result = await shareOrCopyUrl(title, url)
+      if (result === "shared" || result === "aborted") {
         setShareState("idle")
-        return
-      }
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(url)
+      } else {
         setShareState("copied")
         setTimeout(() => setShareState("idle"), 2000)
-      } else {
-        const textArea = document.createElement("textarea")
-        textArea.value = url
-        textArea.style.position = "fixed"
-        textArea.style.left = "-999999px"
-        textArea.style.top = "-999999px"
-        document.body.appendChild(textArea)
-        textArea.focus()
-        textArea.select()
-
-        if (document.execCommand("copy")) {
-          setShareState("copied")
-          setTimeout(() => setShareState("idle"), 2000)
-        } else {
-          throw new Error("Copy command failed")
-        }
-
-        document.body.removeChild(textArea)
       }
     } catch (error) {
       console.error("Share failed:", error)

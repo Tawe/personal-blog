@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Calendar, Clock, ArrowLeft, Share2, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { shareOrCopyUrl } from "@/lib/share-client"
 
 interface Article {
   slug: string
@@ -94,35 +95,12 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
     setShareState("sharing")
 
     try {
-      if (navigator.share && navigator.canShare?.({ title, url })) {
-        await navigator.share({ title, url })
+      const result = await shareOrCopyUrl(title, url)
+      if (result === "shared" || result === "aborted") {
         setShareState("idle")
-      } else if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(url)
+      } else {
         setShareState("copied")
         setTimeout(() => setShareState("idle"), 2000)
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement("textarea")
-        textArea.value = url
-        textArea.style.position = "fixed"
-        textArea.style.left = "-999999px"
-        textArea.style.top = "-999999px"
-        document.body.appendChild(textArea)
-        textArea.focus()
-        textArea.select()
-
-        try {
-          document.execCommand("copy")
-          setShareState("copied")
-          setTimeout(() => setShareState("idle"), 2000)
-        } catch (err) {
-          console.error("Fallback copy failed:", err)
-          setShareState("error")
-          setTimeout(() => setShareState("idle"), 2000)
-        } finally {
-          textArea.remove()
-        }
       }
     } catch (error) {
       console.error("Error sharing:", error)

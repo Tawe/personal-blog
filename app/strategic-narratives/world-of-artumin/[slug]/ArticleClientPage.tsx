@@ -8,6 +8,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import type { TechnicalArticleMetadata } from "@/lib/content"
+import { shareOrCopyUrl } from "@/lib/share-client"
 
 interface ArticleClientPageProps {
   article: any
@@ -54,67 +55,17 @@ export function ArticleClientPage({
     setShareState("copying")
 
     try {
-      // Check if Web Share API is available and can share this content
-      if (navigator.share && navigator.canShare && navigator.canShare({ title, url })) {
-        await navigator.share({ title, url })
-        setShareState("success")
-      } else {
-        // Fallback to clipboard
-        await copyToClipboard(url)
-      }
-    } catch (error) {
-      console.error("Error sharing:", error)
-
-      // If Web Share fails, try clipboard as fallback
-      if (error.name === "AbortError") {
-        // User cancelled the share dialog
+      const result = await shareOrCopyUrl(title, url)
+      if (result === "aborted") {
         setShareState("idle")
         return
       }
-
-      // Try clipboard fallback for other errors
-      try {
-        await copyToClipboard(url)
-      } catch (clipboardError) {
-        console.error("Clipboard fallback failed:", clipboardError)
-        setShareState("error")
-        setTimeout(() => setShareState("idle"), 3000)
-      }
-    }
-  }
-
-  const copyToClipboard = async (text: string) => {
-    try {
-      // Modern clipboard API
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text)
-        setShareState("success")
-        setTimeout(() => setShareState("idle"), 2000)
-        return
-      }
-
-      // Fallback for older browsers
-      const textArea = document.createElement("textarea")
-      textArea.value = text
-      textArea.style.position = "fixed"
-      textArea.style.left = "-999999px"
-      textArea.style.top = "-999999px"
-      document.body.appendChild(textArea)
-      textArea.focus()
-      textArea.select()
-
-      const successful = document.execCommand("copy")
-      document.body.removeChild(textArea)
-
-      if (successful) {
-        setShareState("success")
-        setTimeout(() => setShareState("idle"), 2000)
-      } else {
-        throw new Error("Copy command failed")
-      }
+      setShareState("success")
+      setTimeout(() => setShareState("idle"), 2000)
     } catch (error) {
-      console.error("Clipboard operation failed:", error)
-      throw error
+      console.error("Error sharing:", error)
+      setShareState("error")
+      setTimeout(() => setShareState("idle"), 3000)
     }
   }
 
