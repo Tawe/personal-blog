@@ -26,6 +26,7 @@ interface ProjectClientPageProps {
     slug: string
     title: string
     description: string
+    subtitle?: string
     status: "active" | "experimental" | "archived"
     tags: string[]
     github?: string | null
@@ -97,7 +98,9 @@ export function ProjectClientPage({ project }: ProjectClientPageProps) {
               <div className="absolute bottom-0 left-0 right-0 p-8">
                 <div className="space-y-4">
                   <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">{project.title}</h1>
-                  <h2 className="text-2xl text-slate-100 font-medium mt-2 mb-4">{project.description}</h2>
+                  {project.subtitle && (
+                    <h2 className="text-2xl text-slate-100 font-medium mt-2 mb-4">{project.subtitle}</h2>
+                  )}
                   <div className="flex flex-wrap items-center gap-4 text-slate-200">
                     <Badge
                       variant={project.status === "active" ? "default" : "secondary"}
@@ -136,7 +139,9 @@ export function ProjectClientPage({ project }: ProjectClientPageProps) {
                 </div>
                 <div className="flex-1">
                   <h1 className="text-4xl lg:text-5xl font-bold text-text-strong leading-tight mb-2">{project.title}</h1>
-                  <h2 className="text-2xl text-text-body font-medium mt-2 mb-4">{project.description}</h2>
+                  {project.subtitle && (
+                    <h2 className="text-2xl text-text-body font-medium mt-2 mb-4">{project.subtitle}</h2>
+                  )}
                   <div className="flex items-center gap-4 mb-4">
                     <Badge
                       variant={project.status === "active" ? "default" : "secondary"}

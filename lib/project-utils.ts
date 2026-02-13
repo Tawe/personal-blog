@@ -6,6 +6,7 @@ export interface ProjectMetadata {
   slug: string
   title: string
   description: string
+  subtitle?: string
   status: "active" | "experimental" | "archived"
   tags: string[]
   github?: string | null
@@ -49,6 +50,7 @@ export function getProjectLightweight(
       // Simple YAML parsing for project fields
       const titleMatch = frontmatterText.match(/^title:\s*(.+)$/m)
       const descMatch = frontmatterText.match(/^description:\s*(.+)$/m)
+      const subtitleMatch = frontmatterText.match(/^subtitle:\s*(.+)$/m)
       const statusMatch = frontmatterText.match(/^status:\s*(.+)$/m)
       const githubMatch = frontmatterText.match(/^github:\s*(.+)$/m)
       const demoMatch = frontmatterText.match(/^demo:\s*(.+)$/m)
@@ -61,6 +63,7 @@ export function getProjectLightweight(
       
       if (titleMatch) frontmatter.title = titleMatch[1].trim().replace(/^["']|["']$/g, "")
       if (descMatch) frontmatter.description = descMatch[1].trim().replace(/^["']|["']$/g, "")
+      if (subtitleMatch) frontmatter.subtitle = subtitleMatch[1].trim().replace(/^["']|["']$/g, "")
       if (statusMatch) frontmatter.status = statusMatch[1].trim().replace(/^["']|["']$/g, "")
       if (githubMatch) frontmatter.github = githubMatch[1].trim().replace(/^["']|["']$/g, "")
       if (demoMatch) frontmatter.demo = demoMatch[1].trim().replace(/^["']|["']$/g, "")
@@ -92,6 +95,7 @@ export function getProjectLightweight(
       slug,
       title: frontmatter.title || matchingFile.replace(".md", ""),
       description: frontmatter.description || "",
+      subtitle: frontmatter.subtitle || "",
       status: frontmatter.status || "active",
       tags: frontmatter.tags || [],
       github: frontmatter.github || null,
@@ -142,6 +146,7 @@ export async function getProject(
       slug,
       title: frontmatter.title || matchingFile.replace(".md", ""),
       description: frontmatter.description || "",
+      subtitle: frontmatter.subtitle || "",
       status: frontmatter.status || "active",
       tags: frontmatter.tags || [],
       github: frontmatter.github || null,
@@ -193,4 +198,3 @@ export async function getAllProjects(contentDir: string): Promise<ProjectMetadat
     return []
   }
 }
-

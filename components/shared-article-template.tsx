@@ -91,7 +91,7 @@ export function SharedArticleTemplate({
 
     try {
       const result = await shareOrCopyUrl(title, url)
-      if (result === "shared" || result === "aborted") {
+      if (result === "shared") {
         setShareState("idle")
       } else {
         setShareState("copied")

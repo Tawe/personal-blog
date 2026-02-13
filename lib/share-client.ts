@@ -1,4 +1,4 @@
-export type ShareActionResult = "shared" | "copied" | "aborted"
+export type ShareActionResult = "shared" | "copied"
 
 function canUseNativeShare(title: string, url: string): boolean {
   if (!navigator.share) return false
@@ -47,9 +47,7 @@ export async function shareOrCopyUrl(title: string, url: string): Promise<ShareA
       await navigator.share({ title, url })
       return "shared"
     } catch (error) {
-      if (error instanceof DOMException && error.name === "AbortError") {
-        return "aborted"
-      }
+      console.warn("Native share failed or was dismissed, falling back to copy:", error)
     }
   }
 
