@@ -151,25 +151,25 @@ export function SharedArticleTemplate({
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
-      <div className="absolute inset-0 bg-tech-pattern opacity-20"></div>
+    <div className="min-h-screen bg-bg-primary">
+      <div className="absolute inset-0 bg-tech-pattern opacity-[0.08]"></div>
       <div className="relative">
         <ContentLayout>
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
             <div className="mb-8">
-              <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-sm text-slate-400">
-                <Link href={backUrl} className="hover:text-slate-200 transition-colors">
+              <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-sm text-text-muted">
+                <Link href={backUrl} className="hover:text-text-strong transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm">
                   {breadcrumbLabel}
                 </Link>
-                <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
-                <span className="text-slate-200" aria-current="page">{article.title}</span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-text-muted" aria-hidden="true" />
+                <span className="text-text-strong" aria-current="page">{article.title}</span>
               </nav>
             </div>
 
             {/* Back Navigation */}
             <div className="mb-8">
-              <Button variant="ghost" className="text-slate-400 hover:text-slate-200" asChild>
+              <Button variant="ghost" className="text-text-muted hover:text-text-strong" asChild>
                 <Link href={backUrl}>
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   {backLabel}
@@ -196,7 +196,7 @@ export function SharedArticleTemplate({
                   <div className="space-y-4">
                     <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">{article.title}</h1>
                     {article.subtitle && (
-                      <h2 className="text-2xl text-slate-300 font-medium mt-2 mb-4">{article.subtitle}</h2>
+                      <h2 className="text-2xl text-text-body font-medium mt-2 mb-4">{article.subtitle}</h2>
                     )}
 
                     {/* Article Metadata Bar */}
@@ -241,13 +241,13 @@ export function SharedArticleTemplate({
             {!article.featured_image && (
               <header className="mb-8">
                 <div className="space-y-6">
-                  <h1 className="text-4xl lg:text-5xl font-bold text-slate-100 leading-tight">{article.title}</h1>
+                  <h1 className="text-4xl lg:text-5xl font-bold text-text-strong leading-tight">{article.title}</h1>
                   {article.subtitle && (
-                    <h2 className="text-2xl text-slate-300 font-medium mt-2 mb-4">{article.subtitle}</h2>
+                    <h2 className="text-2xl text-text-body font-medium mt-2 mb-4">{article.subtitle}</h2>
                   )}
 
                   {/* Article Metadata Bar */}
-                  <div className="flex flex-wrap items-center gap-6 text-slate-400">
+                  <div className="flex flex-wrap items-center gap-6 text-text-muted">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       <DateText
@@ -325,25 +325,25 @@ export function SharedArticleTemplate({
             )}
 
             {/* Article Content with Professional Typography */}
-            <article className="prose prose-invert prose-blue max-w-none mb-12 prose-lg prose-headings:text-slate-100 prose-p:text-slate-300 prose-p:leading-relaxed prose-strong:text-slate-200 prose-code:text-blue-400 prose-code:bg-slate-800/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-slate-800/50 prose-pre:border prose-pre:border-slate-700 prose-blockquote:border-l-blue-500 prose-blockquote:text-slate-300">
+            <article className="prose prose-blue max-w-none mb-12 prose-lg prose-headings:text-text-strong prose-p:text-text-body prose-p:leading-relaxed prose-strong:text-text-strong prose-code:text-accent-primary prose-code:bg-bg-soft prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-bg-soft prose-pre:border prose-pre:border-border-subtle prose-blockquote:border-l-accent-primary prose-blockquote:text-text-body">
               <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
             </article>
 
             {/* Related Articles */}
             {!isLoading && relatedArticles.length > 0 && (
               <div className="mt-12">
-                <hr className="border-slate-700 mb-8" />
-                <h3 className="text-xl font-semibold text-slate-100 mb-4">Continue Reading</h3>
+                <hr className="border-border-subtle mb-8" />
+                <h3 className="text-xl font-semibold text-text-strong mb-4">Continue Reading</h3>
                 <div className="grid md:grid-cols-2 gap-0">
                   {relatedArticles.map((relatedArticle, index) => (
                     <Link
                       key={relatedArticle.slug}
                       href={`${config.baseUrl}/${relatedArticle.slug}`}
-                      className={`block p-4 rounded-lg group border-b md:border-b-0 md:border-r border-slate-700 last:border-b-0 ${index % 2 === 1 ? "md:border-r-0" : ""}`}
+                      className={`block p-4 rounded-lg group border-b md:border-b-0 md:border-r border-border-subtle last:border-b-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${index % 2 === 1 ? "md:border-r-0" : ""}`}
                     >
-                      <h4 className="font-medium text-slate-200 group-hover:text-blue-400 transition-colors mb-2">{relatedArticle.title}</h4>
-                      <p className="text-sm text-slate-300 leading-relaxed mb-2">{relatedArticle.excerpt}</p>
-                      <div className="flex items-center gap-2 text-xs text-slate-400 mb-3">
+                      <h4 className="font-medium text-text-strong group-hover:text-accent-primary transition-colors mb-2">{relatedArticle.title}</h4>
+                      <p className="text-sm text-text-body leading-relaxed mb-2">{relatedArticle.excerpt}</p>
+                      <div className="flex items-center gap-2 text-xs text-text-muted mb-3">
                         <Calendar className="h-3 w-3" />
                         <DateText value={relatedArticle.date} />
                         <Clock className="h-3 w-3 ml-2" />
