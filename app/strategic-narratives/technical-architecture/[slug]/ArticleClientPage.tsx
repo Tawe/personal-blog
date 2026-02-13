@@ -9,7 +9,7 @@ import Image from "next/image"
 import type { TechnicalArticleMetadata } from "@/lib/content"
 import { useEffect, useState } from "react"
 import { shareOrCopyUrl } from "@/lib/share-client"
-import { formatDisplayDate } from "@/lib/date-utils"
+import { DateText } from "@/components/date-text"
 
 interface ArticleClientPageProps {
   article: any
@@ -142,13 +142,14 @@ export function ArticleClientPage({
             <div className="flex flex-wrap items-center gap-6 text-text-muted">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span>
-                  {formatDisplayDate(article.date, "en-US", {
+                <DateText
+                  value={article.date}
+                  options={{
                     year: "numeric",
                     month: "long",
                     day: "numeric",
-                  })}
-                </span>
+                  }}
+                />
               </div>
               {article.reading_time && (
                 <div className="flex items-center gap-2">

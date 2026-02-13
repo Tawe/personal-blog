@@ -9,7 +9,7 @@ import Link from "next/link"
 import Image from "next/image"
 import type { Article, HubConfig } from "@/lib/types"
 import { shareOrCopyUrl } from "@/lib/share-client"
-import { formatDisplayDate } from "@/lib/date-utils"
+import { DateText } from "@/components/date-text"
 
 interface SharedArticleTemplateProps {
   article: Article
@@ -192,13 +192,14 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                     <div className="flex flex-wrap items-center gap-6 text-slate-200">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
-                        <span>
-                          {formatDisplayDate(article.date, "en-US", {
+                        <DateText
+                          value={article.date}
+                          options={{
                             year: "numeric",
                             month: "long",
                             day: "numeric",
-                          })}
-                        </span>
+                          }}
+                        />
                       </div>
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4" />
@@ -238,13 +239,14 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                   <div className="flex flex-wrap items-center gap-6 text-slate-400">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
-                      <span>
-                        {formatDisplayDate(article.date, "en-US", {
+                      <DateText
+                        value={article.date}
+                        options={{
                           year: "numeric",
                           month: "long",
                           day: "numeric",
-                        })}
-                      </span>
+                        }}
+                      />
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4" />
@@ -324,7 +326,7 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                       <p className="text-sm text-slate-300 leading-relaxed mb-2">{relatedArticle.excerpt}</p>
                       <div className="flex items-center gap-2 text-xs text-slate-400 mb-3">
                         <Calendar className="h-3 w-3" />
-                        <span>{formatDisplayDate(relatedArticle.date)}</span>
+                        <DateText value={relatedArticle.date} />
                         <Clock className="h-3 w-3 ml-2" />
                         <span>{relatedArticle.reading_time} min</span>
                       </div>

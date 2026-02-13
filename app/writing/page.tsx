@@ -5,7 +5,8 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import Link from "next/link"
 import { ArrowRight, Search } from "lucide-react"
-import { formatDisplayDate, getDateTimestamp } from "@/lib/date-utils"
+import { getDateTimestamp } from "@/lib/date-utils"
+import { DateText } from "@/components/date-text"
 
 interface WritingItem {
   slug: string
@@ -140,13 +141,14 @@ export default function WritingPage() {
                         <p className="text-text-body text-[0.9375rem] leading-relaxed mb-2 line-clamp-2">{item.excerpt}</p>
                       )}
                       <div className="flex items-center gap-4 text-xs text-text-muted">
-                        <time dateTime={item.date}>
-                          {formatDisplayDate(item.date, "en-US", {
+                        <DateText
+                          value={item.date}
+                          options={{
                             year: "numeric",
                             month: "long",
                             day: "numeric",
-                          })}
-                        </time>
+                          }}
+                        />
                         {item.reading_time && <span>{item.reading_time} min read</span>}
                         <span className="inline-flex items-center gap-1 group-hover:gap-2 transition-all group-hover:text-accent-primary text-text-muted">
                           Read more

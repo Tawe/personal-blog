@@ -8,7 +8,7 @@ import { Calendar, Clock, ArrowLeft, Share2, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { shareOrCopyUrl } from "@/lib/share-client"
-import { formatDisplayDate } from "@/lib/date-utils"
+import { DateText } from "@/components/date-text"
 
 interface Article {
   slug: string
@@ -175,13 +175,14 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
             <div className="flex flex-wrap items-center gap-6 text-text-muted">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span>
-                  {formatDisplayDate(article.date, "en-US", {
+                <DateText
+                  value={article.date}
+                  options={{
                     year: "numeric",
                     month: "long",
                     day: "numeric",
-                  })}
-                </span>
+                  }}
+                />
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
@@ -223,7 +224,7 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
                   <p className="text-sm text-text-body leading-relaxed">{relatedArticle.excerpt}</p>
                   <div className="flex items-center gap-2 mt-2 text-xs text-text-muted mb-3">
                     <Calendar className="h-3 w-3" />
-                    <span>{formatDisplayDate(relatedArticle.date)}</span>
+                    <DateText value={relatedArticle.date} />
                     <Clock className="h-3 w-3 ml-2" />
                     <span>{relatedArticle.reading_time} min</span>
                   </div>

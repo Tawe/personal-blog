@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Calendar, Clock, Search, X, Crown } from "lucide-react"
 import Link from "next/link"
-import { formatDisplayDate } from "@/lib/date-utils"
+import { DateText } from "@/components/date-text"
 
 interface ArtumiContentMetadata {
   slug: string
@@ -208,7 +208,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
               <div className="flex items-center justify-between text-sm text-slate-500 mb-3">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-3 w-3" />
-                  <span>{formatDisplayDate(article.date)}</span>
+                  <DateText value={article.date} />
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-3 w-3" />

@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
-import { formatDisplayDate, getDateTimestamp } from "@/lib/date-utils"
+import { getDateTimestamp } from "@/lib/date-utils"
+import { DateText } from "@/components/date-text"
 
 interface Article {
   slug: string
@@ -136,14 +137,17 @@ export default function HomePageClient() {
                       {article.excerpt && (
                         <p className="text-text-body text-[0.9375rem] leading-relaxed line-clamp-2 mb-2">{article.excerpt}</p>
                       )}
-                      <time dateTime={article.date} className="text-xs text-text-muted">
-                        {formatDisplayDate(article.date, "en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
+                      <span className="text-xs text-text-muted">
+                        <DateText
+                          value={article.date}
+                          options={{
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }}
+                        />
                         {article.readingTime ? ` · ${article.readingTime} min read` : ""}
-                      </time>
+                      </span>
                     </Link>
                   </li>
                 ))}
