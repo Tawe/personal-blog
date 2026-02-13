@@ -169,7 +169,11 @@ export function SharedArticleTemplate({
 
             {/* Back Navigation */}
             <div className="mb-8">
-              <Button variant="ghost" className="text-text-muted hover:text-text-strong" asChild>
+              <Button
+                variant="ghost"
+                className="text-text-muted hover:text-text-strong !hover:bg-transparent !active:bg-transparent !focus-visible:bg-transparent"
+                asChild
+              >
                 <Link href={backUrl}>
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   {backLabel}
