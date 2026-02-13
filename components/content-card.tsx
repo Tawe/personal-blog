@@ -27,6 +27,7 @@ import type {
   ArtumiContentMetadata,
   DndContentMetadata,
 } from "@/lib/content"
+import { formatDisplayDate } from "@/lib/date-utils"
 
 // Type configurations
 const artumiTypeConfig = {
@@ -279,7 +280,7 @@ export function ContentCard({ content, section, compact = false, hoverColor = "b
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               <span>
-                {new Date(content.date).toLocaleDateString("en-US", {
+                {formatDisplayDate(content.date, "en-US", {
                   year: "numeric",
                   month: "short",
                   day: "numeric",

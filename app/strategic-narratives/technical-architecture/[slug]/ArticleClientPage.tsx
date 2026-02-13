@@ -9,6 +9,7 @@ import Image from "next/image"
 import type { TechnicalArticleMetadata } from "@/lib/content"
 import { useEffect, useState } from "react"
 import { shareOrCopyUrl } from "@/lib/share-client"
+import { formatDisplayDate } from "@/lib/date-utils"
 
 interface ArticleClientPageProps {
   article: any
@@ -142,7 +143,7 @@ export function ArticleClientPage({
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 <span>
-                  {new Date(article.date).toLocaleDateString("en-US", {
+                  {formatDisplayDate(article.date, "en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -158,7 +159,7 @@ export function ArticleClientPage({
               <Button
                 variant="ghost"
                 size="sm"
-                className={`transition-colors ${
+                className={`transition-colors hover:bg-transparent active:bg-transparent focus-visible:bg-transparent ${
                   shareState === "success"
                     ? "text-text-strong hover:text-text-strong"
                     : shareState === "error"

@@ -9,6 +9,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import type { TechnicalArticleMetadata } from "@/lib/content"
 import { shareOrCopyUrl } from "@/lib/share-client"
+import { formatDisplayDate } from "@/lib/date-utils"
 
 interface ArticleClientPageProps {
   article: any
@@ -142,7 +143,7 @@ export function ArticleClientPage({
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 <span>
-                  {new Date(article.date).toLocaleDateString("en-US", {
+                  {formatDisplayDate(article.date, "en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",

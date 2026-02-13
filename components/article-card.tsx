@@ -7,6 +7,7 @@ import { Calendar, Clock, ExternalLink } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import type { ArtumiContentMetadata, ViewMode } from "@/lib/types"
+import { formatDisplayDate } from "@/lib/date-utils"
 
 interface ArticleCardProps {
   article: ArtumiContentMetadata
@@ -37,7 +38,7 @@ export function ArticleCard({ article, baseUrl, onTagClick, viewMode }: ArticleC
           <div className="flex items-center gap-4 text-sm text-slate-400">
             <div className="flex items-center gap-1">
               <Calendar className="h-3 w-3" />
-              {new Date(article.date).toLocaleDateString()}
+              {formatDisplayDate(article.date)}
             </div>
             {article.reading_time && (
               <div className="flex items-center gap-1">

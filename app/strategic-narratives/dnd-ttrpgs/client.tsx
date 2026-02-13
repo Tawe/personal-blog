@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar, Clock, Search, X, Dice6, ExternalLink } from "lucide-react"
 import Link from "next/link"
 import { ExclusiveRibbon } from "@/components/exclusive-ribbon"
+import { formatDisplayDate } from "@/lib/date-utils"
 
 const contentTypes = ["thought-piece", "mechanic", "monster", "magic-item", "npc", "adventure", "product"]
 
@@ -304,7 +305,7 @@ export function DndTtrpgsClient({ articles, tags, systems }: DndTtrpgsClientProp
               <div className="flex items-center justify-between text-sm text-slate-500 mb-3">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-3 w-3" />
-                  <span>{new Date(article.date).toLocaleDateString()}</span>
+                  <span>{formatDisplayDate(article.date)}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-3 w-3" />

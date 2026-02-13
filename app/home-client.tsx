@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
+import { formatDisplayDate, getDateTimestamp } from "@/lib/date-utils"
 
 interface Article {
   slug: string
@@ -48,7 +49,7 @@ export default function HomePageClient() {
           })),
         ]
 
-        const sorted = combined.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        const sorted = combined.sort((a, b) => getDateTimestamp(b.date) - getDateTimestamp(a.date))
         setArticles(sorted.slice(0, 3))
       } catch (error) {
         console.error("Error fetching articles:", error)
@@ -136,7 +137,7 @@ export default function HomePageClient() {
                         <p className="text-text-body text-[0.9375rem] leading-relaxed line-clamp-2 mb-2">{article.excerpt}</p>
                       )}
                       <time dateTime={article.date} className="text-xs text-text-muted">
-                        {new Date(article.date).toLocaleDateString("en-US", {
+                        {formatDisplayDate(article.date, "en-US", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",

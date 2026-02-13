@@ -1,4 +1,5 @@
 // Client-safe utility functions that don't use Node.js modules
+import { getDateTimestamp, parseDatePreservingCalendar } from "@/lib/date-utils"
 
 export interface FilterOptions {
   search: string
@@ -48,9 +49,9 @@ export function filterArticles<T extends Article>(articles: T[], filters: Filter
 
     // Date range filter
     if (filters.dateRange.start || filters.dateRange.end) {
-      const articleDate = new Date(article.date)
-      if (filters.dateRange.start && articleDate < new Date(filters.dateRange.start)) return false
-      if (filters.dateRange.end && articleDate > new Date(filters.dateRange.end)) return false
+      const articleDate = parseDatePreservingCalendar(article.date)
+      if (filters.dateRange.start && articleDate < parseDatePreservingCalendar(filters.dateRange.start)) return false
+      if (filters.dateRange.end && articleDate > parseDatePreservingCalendar(filters.dateRange.end)) return false
     }
 
     // Reading time filter
@@ -75,7 +76,7 @@ export function sortArticles<T extends Article>(articles: T[], sort: SortOption)
 
     switch (sort.field) {
       case "date":
-        comparison = new Date(a.date).getTime() - new Date(b.date).getTime()
+        comparison = getDateTimestamp(a.date) - getDateTimestamp(b.date)
         break
       case "title":
         comparison = a.title.localeCompare(b.title)

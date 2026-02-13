@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import Link from "next/link"
 import { ArrowRight, Search } from "lucide-react"
+import { formatDisplayDate, getDateTimestamp } from "@/lib/date-utils"
 
 interface WritingItem {
   slug: string
@@ -53,7 +54,7 @@ export default function WritingPage() {
           })),
         ]
 
-        combined.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        combined.sort((a, b) => getDateTimestamp(b.date) - getDateTimestamp(a.date))
         setItems(combined)
       } catch (error) {
         console.error("Error fetching writing:", error)
@@ -140,7 +141,7 @@ export default function WritingPage() {
                       )}
                       <div className="flex items-center gap-4 text-xs text-text-muted">
                         <time dateTime={item.date}>
-                          {new Date(item.date).toLocaleDateString("en-US", {
+                          {formatDisplayDate(item.date, "en-US", {
                             year: "numeric",
                             month: "long",
                             day: "numeric",

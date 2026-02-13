@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Calendar, Clock, Search, X, Code } from "lucide-react"
 import Link from "next/link"
+import { formatDisplayDate } from "@/lib/date-utils"
 
 interface TechnicalArticleMetadata {
   slug: string
@@ -160,7 +161,7 @@ export function TechnicalArchitectureClient({ articles, tags }: TechnicalArchite
               <div className="flex items-center justify-between text-sm text-slate-500 mb-3">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-3 w-3" />
-                  <span>{new Date(article.date).toLocaleDateString()}</span>
+                  <span>{formatDisplayDate(article.date)}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-3 w-3" />

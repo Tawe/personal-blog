@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { BookOpen, Code, Crown, Dice6, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { formatDisplayDate } from "@/lib/date-utils"
 
 interface CategoryStats {
   count: number
@@ -189,7 +190,7 @@ export default function StrategicNarrativesPage() {
                               </Badge>
                               {category.stats.lastUpdated && (
                                 <span className="text-xs text-slate-500">
-                                  Updated {new Date(category.stats.lastUpdated).toLocaleDateString()}
+                                  Updated {formatDisplayDate(category.stats.lastUpdated)}
                                 </span>
                               )}
                             </div>

@@ -9,6 +9,7 @@ import Link from "next/link"
 import Image from "next/image"
 import type { Article, HubConfig } from "@/lib/types"
 import { shareOrCopyUrl } from "@/lib/share-client"
+import { formatDisplayDate } from "@/lib/date-utils"
 
 interface SharedArticleTemplateProps {
   article: Article
@@ -192,7 +193,7 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
                         <span>
-                          {new Date(article.date).toLocaleDateString("en-US", {
+                          {formatDisplayDate(article.date, "en-US", {
                             year: "numeric",
                             month: "long",
                             day: "numeric",
@@ -238,7 +239,7 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       <span>
-                        {new Date(article.date).toLocaleDateString("en-US", {
+                        {formatDisplayDate(article.date, "en-US", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
@@ -323,7 +324,7 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                       <p className="text-sm text-slate-300 leading-relaxed mb-2">{relatedArticle.excerpt}</p>
                       <div className="flex items-center gap-2 text-xs text-slate-400 mb-3">
                         <Calendar className="h-3 w-3" />
-                        <span>{new Date(relatedArticle.date).toLocaleDateString()}</span>
+                        <span>{formatDisplayDate(relatedArticle.date)}</span>
                         <Clock className="h-3 w-3 ml-2" />
                         <span>{relatedArticle.reading_time} min</span>
                       </div>
