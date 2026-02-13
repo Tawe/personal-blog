@@ -11,7 +11,7 @@ tags:
   - Team Dynamics
 reading_time: 5
 medium_link: https://medium.com/@johnmunn/temporal-leadership-the-skill-of-when-not-just-what-2599cecff09e
-featured_image: /temporalleadership.png.png?height=400&width=800
+featured_image: /temporalleadership.png?height=400&width=800
 devto_link:
 substack:
 draft: false

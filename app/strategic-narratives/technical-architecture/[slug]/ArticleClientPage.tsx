@@ -82,14 +82,14 @@ export function ArticleClientPage({
         return (
           <>
             <Check className="mr-2 h-4 w-4 text-green-400" />
-            <span className="text-green-400">Copied!</span>
+            <span>Copied!</span>
           </>
         )
       case "error":
         return (
           <>
             <Share2 className="mr-2 h-4 w-4 text-red-400" />
-            <span className="text-red-400">Try again</span>
+            <span>Try again</span>
           </>
         )
       default:
@@ -160,9 +160,9 @@ export function ArticleClientPage({
                 size="sm"
                 className={`transition-colors ${
                   shareState === "success"
-                    ? "text-green-400 hover:text-green-300"
+                    ? "text-text-strong hover:text-text-strong"
                     : shareState === "error"
-                      ? "text-red-400 hover:text-red-300"
+                      ? "text-text-strong hover:text-text-strong"
                       : "text-text-muted hover:text-text-body"
                 }`}
                 onClick={handleShare}

@@ -129,9 +129,9 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
   const getShareButtonClass = () => {
     switch (shareState) {
       case "copied":
-        return "text-green-400 hover:text-green-300"
+        return "text-slate-100 hover:text-white"
       case "error":
-        return "text-red-400 hover:text-red-300"
+        return "text-slate-100 hover:text-white"
       default:
         return "text-slate-400 hover:text-slate-200"
     }

@@ -122,9 +122,9 @@ export function ArticleClientPage({
     const baseClass = "text-slate-400 hover:text-slate-200 transition-colors"
     switch (shareState) {
       case "copied":
-        return "text-green-400 hover:text-green-300"
+        return "text-text-strong hover:text-text-strong transition-colors"
       case "error":
-        return "text-red-400 hover:text-red-300"
+        return "text-text-strong hover:text-text-strong transition-colors"
       default:
         return baseClass
     }

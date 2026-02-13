@@ -122,6 +122,16 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
     }
   }
 
+  const getShareButtonClass = () => {
+    switch (shareState) {
+      case "copied":
+      case "error":
+        return "text-text-strong hover:text-text-strong"
+      default:
+        return "text-text-muted hover:text-text-body"
+    }
+  }
+
   return (
     <ContentLayout>
       <div className="max-w-4xl mx-auto">
@@ -178,7 +188,7 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-text-muted hover:text-text-body"
+                className={getShareButtonClass()}
                 onClick={handleShare}
                 disabled={shareState === "sharing"}
               >
