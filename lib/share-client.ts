@@ -28,9 +28,17 @@ async function copyTextWithFallback(text: string): Promise<void> {
   const successful = document.execCommand("copy")
   textArea.remove()
 
-  if (!successful) {
-    throw new Error("Copy command failed")
+  if (successful) {
+    return
   }
+
+  // Final fallback for restrictive browser contexts: provide the URL for manual copy.
+  if (typeof window !== "undefined" && typeof window.prompt === "function") {
+    window.prompt("Copy this link:", text)
+    return
+  }
+
+  throw new Error("Copy command failed")
 }
 
 export async function shareOrCopyUrl(title: string, url: string): Promise<ShareActionResult> {
