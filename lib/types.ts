@@ -78,3 +78,10 @@ export interface ArtumiContent extends ArtumiContentMetadata {
 export interface DndContent extends DndContentMetadata {
   content: string
 }
+
+export interface HubConfig {
+  title?: string
+  description?: string
+  contentFolder: "leadership" | "technical-writings" | "artumin" | "dnd-musings"
+  baseUrl: string
+}

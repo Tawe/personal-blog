@@ -14,12 +14,22 @@ import { DateText } from "@/components/date-text"
 interface SharedArticleTemplateProps {
   article: Article
   config: HubConfig
+  backUrl?: string
+  backLabel?: string
+  breadcrumbLabel?: string
 }
 
-export function SharedArticleTemplate({ article, config }: SharedArticleTemplateProps) {
+export function SharedArticleTemplate({
+  article,
+  config,
+  backUrl = "/writing",
+  backLabel = "Back to Writing",
+  breadcrumbLabel = "Writing",
+}: SharedArticleTemplateProps) {
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
   const [isLoading, setIsLoading] = useState(true)
+  const dndBeyondLink = (article as Article & { dndbeyond_link?: string }).dndbeyond_link
 
   useEffect(() => {
     const loadRelatedArticles = async () => {
@@ -148,8 +158,8 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
             {/* Breadcrumb Navigation */}
             <div className="mb-8">
               <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-sm text-slate-400">
-                <Link href="/writing" className="hover:text-slate-200 transition-colors">
-                  Writing
+                <Link href={backUrl} className="hover:text-slate-200 transition-colors">
+                  {breadcrumbLabel}
                 </Link>
                 <ChevronRight className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
                 <span className="text-slate-200" aria-current="page">{article.title}</span>
@@ -159,9 +169,9 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
             {/* Back Navigation */}
             <div className="mb-8">
               <Button variant="ghost" className="text-slate-400 hover:text-slate-200" asChild>
-                <Link href="/writing">
+                <Link href={backUrl}>
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to Writing
+                  {backLabel}
                 </Link>
               </Button>
             </div>
@@ -267,7 +277,7 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
             )}
 
             {/* "View On" External Links */}
-            {(article.medium_link || article.devto_link || article.substack_link || article.linkedin_link) && (
+            {(article.medium_link || article.devto_link || article.substack_link || article.linkedin_link || dndBeyondLink) && (
               <div className="flex items-center gap-4 mb-8 p-4 bg-bg-soft rounded-lg border border-border-subtle">
                 <span className="text-sm text-text-body font-medium">View On:</span>
                 {article.medium_link && (
@@ -299,6 +309,14 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                     <Link href={article.linkedin_link} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
                       LinkedIn<span className="sr-only"> (opens in new tab)</span>
+                    </Link>
+                  </Button>
+                )}
+                {dndBeyondLink && (
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href={dndBeyondLink} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                      D&D Beyond<span className="sr-only"> (opens in new tab)</span>
                     </Link>
                   </Button>
                 )}
