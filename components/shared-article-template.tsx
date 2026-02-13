@@ -137,9 +137,12 @@ export function SharedArticleTemplate({
     }
   }
 
-  const getShareButtonClass = () => {
+  const getShareButtonClass = (onImage = false) => {
     const interactionClass =
       "transition-colors !hover:bg-transparent !active:bg-transparent !focus-visible:bg-transparent"
+    if (onImage) {
+      return `text-slate-100 hover:text-white ${interactionClass}`
+    }
     switch (shareState) {
       case "copied":
         return `text-text-strong hover:text-text-strong ${interactionClass}`
@@ -200,7 +203,7 @@ export function SharedArticleTemplate({
                   <div className="space-y-4">
                     <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">{article.title}</h1>
                     {article.subtitle && (
-                      <h2 className="text-2xl text-text-body font-medium mt-2 mb-4">{article.subtitle}</h2>
+                      <h2 className="text-2xl text-slate-100 font-medium mt-2 mb-4">{article.subtitle}</h2>
                     )}
 
                     {/* Article Metadata Bar */}
@@ -223,7 +226,7 @@ export function SharedArticleTemplate({
                       <Button
                         variant="ghost"
                         size="sm"
-                        className={getShareButtonClass()}
+                        className={getShareButtonClass(true)}
                         onClick={handleShare}
                         disabled={shareState === "copying"}
                       >
