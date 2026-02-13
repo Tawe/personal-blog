@@ -141,7 +141,7 @@ export function SharedArticleTemplate({
     const interactionClass =
       "transition-colors !hover:bg-transparent !active:bg-transparent !focus-visible:bg-transparent"
     if (onImage) {
-      return `text-slate-100 hover:text-white ${interactionClass}`
+      return "text-white hover:text-white bg-slate-900/30 hover:bg-slate-900/55 focus-visible:bg-slate-900/55"
     }
     switch (shareState) {
       case "copied":
