@@ -123,12 +123,13 @@ export function ArticlePageTemplate({ article, backUrl, backLabel, contentFolder
   }
 
   const getShareButtonClass = () => {
+    const interactionClass = "transition-colors hover:bg-transparent active:bg-transparent focus-visible:bg-transparent"
     switch (shareState) {
       case "copied":
       case "error":
-        return "text-text-strong hover:text-text-strong"
+        return `text-text-strong hover:text-text-strong ${interactionClass}`
       default:
-        return "text-text-muted hover:text-text-body"
+        return `text-text-muted hover:text-text-body ${interactionClass}`
     }
   }
 

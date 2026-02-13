@@ -127,13 +127,14 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
   }
 
   const getShareButtonClass = () => {
+    const interactionClass = "transition-colors hover:bg-transparent active:bg-transparent focus-visible:bg-transparent"
     switch (shareState) {
       case "copied":
-        return "text-slate-100 hover:text-white"
+        return `text-slate-100 hover:text-white ${interactionClass}`
       case "error":
-        return "text-slate-100 hover:text-white"
+        return `text-slate-100 hover:text-white ${interactionClass}`
       default:
-        return "text-slate-400 hover:text-slate-200"
+        return `text-slate-400 hover:text-slate-200 ${interactionClass}`
     }
   }
 
@@ -205,7 +206,7 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                       <Button
                         variant="ghost"
                         size="sm"
-                        className={`${getShareButtonClass()} transition-colors`}
+                        className={getShareButtonClass()}
                         onClick={handleShare}
                         disabled={shareState === "copying"}
                       >
@@ -251,7 +252,7 @@ export function SharedArticleTemplate({ article, config }: SharedArticleTemplate
                     <Button
                       variant="ghost"
                       size="sm"
-                      className={`${getShareButtonClass()} transition-colors`}
+                      className={getShareButtonClass()}
                       onClick={handleShare}
                       disabled={shareState === "copying"}
                     >

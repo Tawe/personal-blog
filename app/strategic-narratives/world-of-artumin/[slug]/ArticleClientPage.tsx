@@ -158,7 +158,7 @@ export function ArticleClientPage({
               <Button
                 variant="ghost"
                 size="sm"
-                className={`transition-colors ${
+                className={`transition-colors hover:bg-transparent active:bg-transparent focus-visible:bg-transparent ${
                   shareState === "success"
                     ? "text-text-strong hover:text-text-strong"
                     : shareState === "error"
