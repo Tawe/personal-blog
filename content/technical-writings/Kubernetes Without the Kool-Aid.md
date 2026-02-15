@@ -1,8 +1,13 @@
 ---
 title: "Kubernetes Without the Kool-Aid"
+subtitle: "Or How I Learned to Stop Worrying and Love the YAML"
 date: "2025-06-09"
 excerpt: "Kubernetes promised simplicity at scale. What I got was 400 lines of YAML, a sidecar crash that took down prod, and an education in organizational politics"
 tags: ["Kubernetes", "Devops Tool", "DevOps", "Infrastructure", "Software Engineering"]
+series: "Without the Hype"
+series_slug: "without-the-hype"
+series_order: 2
+series_description: "A pragmatic infrastructure series that strips out dogma and explains what these technologies actually solve, where they hurt, and when to use them."
 reading_time: 14
 featured_image: /kuberneteswithoutthekoolaid.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/kubernetes-without-the-kool-aid-2ca212b3b97b
@@ -10,8 +15,6 @@ devto_link: https://dev.to/tawe/kubernetes-without-the-kool-aid-3in2
 code_languages: []
 draft: false
 ---
-
-# Or How I Learned to Stop Worrying and Love the YAML
 
 Kubernetes doesn’t just orchestrate containers. It orchestrates opinions. Yours, your team’s, the platform team that doesn’t exist yet, and everyone who left before you to “pursue new opportunities” (translation: escape the YAML mines).
 

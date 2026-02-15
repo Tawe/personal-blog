@@ -1,8 +1,13 @@
 ---
 title: "Docker Without the Hype"
+subtitle: "Or How I Learned to Stop Worrying and Love the Whale"
 date: "2025-05-25"
 excerpt: "Docker explained for decision-makers: the real trade-offs, hidden costs, and honest advice about when containerization actually makes sense."
 tags: ["Docker", "Containers", "DevOps", "Infrastructure", "Software Architecture"]
+series: "Without the Hype"
+series_slug: "without-the-hype"
+series_order: 1
+series_description: "A pragmatic infrastructure series that strips out dogma and explains what these technologies actually solve, where they hurt, and when to use them."
 reading_time: 9
 featured_image: /dockerwithoutthehype.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/docker-without-the-hype-0e2c94f1e896
@@ -10,8 +15,6 @@ devto_link: https://dev.to/tawe/docker-without-the-hype-or-how-i-learned-to-stop
 code_languages: []
 draft: false
 ---
-
-# Or How I Learned to Stop Worrying and Love the Whale
 
 Docker solves a problem as old as software itself: “It works on my machine.”
 

@@ -4,6 +4,10 @@ subtitle: "Or How I Learned to Stop Copy/Pasting and Love the Plan File"
 date: "2025-07-18"
 excerpt: "A satirical deep dive into Infrastructure as Code. What it solves, how it hurts, and why Terraform isn’t a religion (even if it feels like one)."
 tags: ["DevOps", "Infrastructure As Code", "Infrastructure", "Devtools", "Software Engineering"]
+series: "Without the Hype"
+series_slug: "without-the-hype"
+series_order: 4
+series_description: "A pragmatic infrastructure series that strips out dogma and explains what these technologies actually solve, where they hurt, and when to use them."
 reading_time: 5
 featured_image: /infrastructureascodewithouttheevangelism.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/infrastructure-as-code-without-the-evangelism-53b9d1358671

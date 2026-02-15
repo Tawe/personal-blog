@@ -1,8 +1,13 @@
 ---
 title: "Microservices Without the Madness"
+subtitle: " Or How I Learned to Stop Worrying and Love the Monolith"
 date: "2025-07-04"
 excerpt: "Microservices aren’t magic. This guide breaks down when to use them, when not to, and why your monolith might be your smartest move yet."
 tags: ["Microservices", "Platform Engineering", "DevOps", "Infrastructure", "Software Engineering"]
+series: "Without the Hype"
+series_slug: "without-the-hype"
+series_order: 3
+series_description: "A pragmatic infrastructure series that strips out dogma and explains what these technologies actually solve, where they hurt, and when to use them."
 reading_time: 4
 featured_image: /madnessmicroservices.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/microservices-without-the-madness-55eaa8e14059
@@ -10,8 +15,6 @@ devto_link: https://dev.to/tawe/microservices-without-the-madness-or-how-i-learn
 code_languages: []
 draft: false
 ---
-
-## Or How I Learned to Stop Worrying and Love the Monolith
 
 # The Microservices Cargo Cult
 
