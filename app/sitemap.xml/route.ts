@@ -43,6 +43,7 @@ export async function GET(request: Request) {
   const staticPages = [
     "",
     "/writing",
+    "/series",
     "/projects",
     "/about",
     "/contact",
@@ -113,6 +114,18 @@ export async function GET(request: Request) {
         })
       }
     }
+  }
+
+  // Series pages
+  const { getAllSeries } = await import("@/lib/series-utils")
+  const seriesList = getAllSeries()
+  for (const series of seriesList) {
+    urls.push({
+      loc: `${baseUrl}/series/${series.slug}`,
+      lastmod: new Date().toISOString(),
+      changefreq: "weekly",
+      priority: "0.7",
+    })
   }
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

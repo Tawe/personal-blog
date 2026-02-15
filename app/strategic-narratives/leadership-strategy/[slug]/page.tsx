@@ -5,6 +5,7 @@ import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import { getArticle } from "@/lib/article-utils"
 import { generateArticleMetadata } from "@/lib/metadata-utils"
 import { generateSlug } from "@/lib/slug-utils"
+import { getSeriesBySlug, type Series } from "@/lib/series-utils"
 import fs from "fs"
 import path from "path"
 
@@ -27,6 +28,14 @@ interface Article {
   substack_link?: string
   linkedin_link?: string
   featured?: boolean
+  series?: string
+  series_slug?: string
+  series_order?: number
+}
+
+interface ArticleSeriesContext {
+  series: Series
+  currentIndex: number
 }
 
 // Generate static params for all articles
@@ -99,6 +108,17 @@ export default async function LeadershipStrategyArticlePage({
   }
 
   const articleUrl = `https://johnmunn.tech/strategic-narratives/leadership-strategy/${slug}`
+  const activeSeriesSlug = article.series_slug ? generateSlug(article.series_slug) : article.series ? generateSlug(article.series) : ""
+  let seriesContext: ArticleSeriesContext | undefined
+  if (activeSeriesSlug) {
+    const series = getSeriesBySlug(activeSeriesSlug)
+    if (series) {
+      const currentIndex = series.entries.findIndex((entry) => entry.href === `/strategic-narratives/leadership-strategy/${slug}`)
+      if (currentIndex >= 0) {
+        seriesContext = { series, currentIndex }
+      }
+    }
+  }
 
   return (
     <>
@@ -115,7 +135,7 @@ export default async function LeadershipStrategyArticlePage({
           { name: article.title, url: `/strategic-narratives/leadership-strategy/${slug}` }
         ]}
       />
-      <ArticleClientPage article={article} />
+      <ArticleClientPage article={article} seriesContext={seriesContext} />
     </>
   )
 }

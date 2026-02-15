@@ -4,6 +4,10 @@ subtitle: "When every request opens a new database connection, your biggest perf
 date: "2025-06-28"
 excerpt: "Fast queries aren’t enough. Without connection pooling, your app becomes its own DDoS. Learn how to stop flooding your database to death."
 tags: ["Backend", "Performance", "Database", "Software Development", "Scalability"]
+series: "The Scaling Gauntlet"
+series_slug: "the-scaling-gauntlet"
+series_order: 2
+series_description: "A practical series on surviving growth bottlenecks in production systems, from query performance to connection management and beyond."
 reading_time: 6
 featured_image: /ConnectionPoolingandHowtoStopDDoSingYourself.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/the-scaling-gauntlet-pt-2-connection-pooling-and-how-to-stop-ddosing-yourself-4c6f95f233b5

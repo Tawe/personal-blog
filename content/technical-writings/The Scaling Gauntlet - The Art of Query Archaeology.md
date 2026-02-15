@@ -4,6 +4,10 @@ subtitle: "Digging Through Query Hell So You Don’t End Up in Pager Purgatory"
 date: "2025-05-19"
 excerpt: "Your DB can barely handle 50 users, and now you’ve got 100K incoming. Here’s how to unearth bad queries and survive the scaling gauntlet."
 tags: ["postresql", "Performance", "Database", "Software Development", "Scalability"]
+series: "The Scaling Gauntlet"
+series_slug: "the-scaling-gauntlet"
+series_order: 1
+series_description: "A practical series on surviving growth bottlenecks in production systems, from query performance to connection management and beyond."
 reading_time: 5
 featured_image: /TheArtofQueryArchaeology.webp?height=400&width=800
 medium_link: https://medium.com/@johnmunn/the-scaling-gauntlet-the-art-of-query-archaeology-cb8f50bb33a9

@@ -12,6 +12,10 @@ export interface ArticleMetadata {
   tags: string[]
   featured_image?: string
   reading_time: number
+  series?: string
+  series_slug?: string
+  series_order?: number
+  series_description?: string
   [key: string]: any // Allow for content-type specific fields
 }
 
@@ -66,6 +70,10 @@ export function getArticleLightweight(
       const dndbeyondLinkMatch = frontmatterText.match(/^dndbeyond_link:\s*(.+)$/m)
       const ddbLinkMatch = frontmatterText.match(/^ddb_link:\s*(.+)$/m)
       const updatedMatch = frontmatterText.match(/^updated:\s*(.+)$/m)
+      const seriesMatch = frontmatterText.match(/^series:\s*(.+)$/m)
+      const seriesSlugMatch = frontmatterText.match(/^series_slug:\s*(.+)$/m)
+      const seriesOrderMatch = frontmatterText.match(/^series_order:\s*(\d+)$/m)
+      const seriesDescriptionMatch = frontmatterText.match(/^series_description:\s*(.+)$/m)
       
       if (titleMatch) frontmatter.title = titleMatch[1].trim().replace(/^["']|["']$/g, "")
       if (subtitleMatch) frontmatter.subtitle = subtitleMatch[1].trim().replace(/^["']|["']$/g, "")
@@ -81,6 +89,12 @@ export function getArticleLightweight(
       if (dndbeyondLinkMatch) frontmatter.dndbeyond_link = dndbeyondLinkMatch[1].trim().replace(/^["']|["']$/g, "")
       if (ddbLinkMatch) frontmatter.ddb_link = ddbLinkMatch[1].trim().replace(/^["']|["']$/g, "")
       if (updatedMatch) frontmatter.updated = updatedMatch[1].trim().replace(/^["']|["']$/g, "")
+      if (seriesMatch) frontmatter.series = seriesMatch[1].trim().replace(/^["']|["']$/g, "")
+      if (seriesSlugMatch) frontmatter.series_slug = seriesSlugMatch[1].trim().replace(/^["']|["']$/g, "")
+      if (seriesOrderMatch) frontmatter.series_order = parseInt(seriesOrderMatch[1], 10)
+      if (seriesDescriptionMatch) {
+        frontmatter.series_description = seriesDescriptionMatch[1].trim().replace(/^["']|["']$/g, "")
+      }
       
       if (tagsMatch) {
         const tagsStr = tagsMatch[1]
@@ -125,6 +139,10 @@ export function getArticleLightweight(
     if (frontmatter.dndbeyond_link || frontmatter.ddb_link)
       article.dndbeyond_link = frontmatter.dndbeyond_link || frontmatter.ddb_link
     if (frontmatter.updated) article.updated = frontmatter.updated
+    if (frontmatter.series) article.series = frontmatter.series
+    if (frontmatter.series_slug) article.series_slug = frontmatter.series_slug
+    if (frontmatter.series_order !== undefined) article.series_order = frontmatter.series_order
+    if (frontmatter.series_description) article.series_description = frontmatter.series_description
 
     return article
   } catch (error) {
@@ -196,6 +214,10 @@ export async function getArticle(
     if (frontmatter.dndbeyond_link || frontmatter.ddb_link)
       article.dndbeyond_link = frontmatter.dndbeyond_link || frontmatter.ddb_link
     if (frontmatter.updated) article.updated = frontmatter.updated
+    if (frontmatter.series) article.series = frontmatter.series
+    if (frontmatter.series_slug) article.series_slug = frontmatter.series_slug
+    if (frontmatter.series_order !== undefined) article.series_order = frontmatter.series_order
+    if (frontmatter.series_description) article.series_description = frontmatter.series_description
 
     // Merge frontmatter fields (allowing overrides)
     Object.keys(frontmatter).forEach((key) => {
@@ -210,4 +232,3 @@ export async function getArticle(
     return null
   }
 }
-

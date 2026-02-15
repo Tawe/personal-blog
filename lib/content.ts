@@ -10,6 +10,10 @@ export interface BaseContentMetadata {
   slug: string
   subtitle?: string
   website_exclusive?: boolean
+  series?: string
+  series_slug?: string
+  series_order?: number
+  series_description?: string
 }
 
 // Extended interfaces for specific content types

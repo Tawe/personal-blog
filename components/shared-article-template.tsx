@@ -8,11 +8,16 @@ import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronR
 import Link from "next/link"
 import Image from "next/image"
 import type { Article, HubConfig } from "@/lib/types"
+import type { Series } from "@/lib/series-utils"
 import { shareOrCopyUrl } from "@/lib/share-client"
 import { DateText } from "@/components/date-text"
 
 interface SharedArticleTemplateProps {
   article: Article
+  seriesContext?: {
+    series: Series
+    currentIndex: number
+  }
   config: HubConfig
   backUrl?: string
   backLabel?: string
@@ -21,6 +26,7 @@ interface SharedArticleTemplateProps {
 
 export function SharedArticleTemplate({
   article,
+  seriesContext,
   config,
   backUrl = "/writing",
   backLabel = "Back to Writing",
@@ -30,6 +36,14 @@ export function SharedArticleTemplate({
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
   const [isLoading, setIsLoading] = useState(true)
   const dndBeyondLink = (article as Article & { dndbeyond_link?: string }).dndbeyond_link
+  const previousSeriesEntry =
+    seriesContext && seriesContext.currentIndex > 0
+      ? seriesContext.series.entries[seriesContext.currentIndex - 1]
+      : undefined
+  const nextSeriesEntry =
+    seriesContext && seriesContext.currentIndex < seriesContext.series.entries.length - 1
+      ? seriesContext.series.entries[seriesContext.currentIndex + 1]
+      : undefined
 
   useEffect(() => {
     const loadRelatedArticles = async () => {
@@ -329,6 +343,48 @@ export function SharedArticleTemplate({
                   </Button>
                 )}
               </div>
+            )}
+
+            {seriesContext && (
+              <section className="mb-8 p-5 rounded-xl border border-border-subtle bg-bg-paper">
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-text-muted mb-1">Series</p>
+                    <h3 className="text-lg font-semibold text-text-strong">{seriesContext.series.name}</h3>
+                    <p className="text-sm text-text-muted">
+                      Part {seriesContext.currentIndex + 1} of {seriesContext.series.entries.length}
+                    </p>
+                  </div>
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={`/series/${seriesContext.series.slug}`}>View full series</Link>
+                  </Button>
+                </div>
+
+                {(previousSeriesEntry || nextSeriesEntry) && (
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {previousSeriesEntry ? (
+                      <Link
+                        href={previousSeriesEntry.href}
+                        className="block rounded-lg border border-border-subtle p-3 hover:border-accent-primary/40 transition-colors"
+                      >
+                        <p className="text-xs uppercase tracking-wide text-text-muted mb-1">Previous</p>
+                        <p className="text-sm font-medium text-text-strong">{previousSeriesEntry.title}</p>
+                      </Link>
+                    ) : (
+                      <div />
+                    )}
+                    {nextSeriesEntry && (
+                      <Link
+                        href={nextSeriesEntry.href}
+                        className="block rounded-lg border border-border-subtle p-3 hover:border-accent-primary/40 transition-colors"
+                      >
+                        <p className="text-xs uppercase tracking-wide text-text-muted mb-1">Next</p>
+                        <p className="text-sm font-medium text-text-strong">{nextSeriesEntry.title}</p>
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </section>
             )}
 
             {/* Article Content with Professional Typography */}

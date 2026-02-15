@@ -14,6 +14,7 @@ interface WritingItem {
   date: string
   excerpt?: string
   reading_time?: number
+  series?: string
   theme: "Leadership" | "Technical"
   href: string
 }
@@ -35,21 +36,23 @@ export default function WritingPage() {
         ])
 
         const combined: WritingItem[] = [
-          ...(leadership.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number }) => ({
+          ...(leadership.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number; series?: string }) => ({
             slug: a.slug,
             title: a.title,
             date: a.date,
             excerpt: a.excerpt,
             reading_time: a.reading_time,
+            series: a.series,
             theme: "Leadership" as const,
             href: `/strategic-narratives/leadership-strategy/${a.slug}`,
           })),
-          ...(technical.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number }) => ({
+          ...(technical.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number; series?: string }) => ({
             slug: a.slug,
             title: a.title,
             date: a.date,
             excerpt: a.excerpt,
             reading_time: a.reading_time,
+            series: a.series,
             theme: "Technical" as const,
             href: `/strategic-narratives/technical-architecture/${a.slug}`,
           })),
@@ -89,6 +92,9 @@ export default function WritingPage() {
               <p className="text-lg text-text-body leading-relaxed mt-3 max-w-2xl">
                 Leadership, technical architecture, and the systems that connect them. One feed, one body of work.
               </p>
+              <Link href="/series" className="inline-flex mt-4 text-sm text-accent-primary hover:text-accent-primary-hover">
+                Browse series
+              </Link>
             </header>
 
             {/* Search + theme filter */}
@@ -150,6 +156,7 @@ export default function WritingPage() {
                           }}
                         />
                         {item.reading_time && <span>{item.reading_time} min read</span>}
+                        {item.series && <span>Series: {item.series}</span>}
                         <span className="inline-flex items-center gap-1 group-hover:gap-2 transition-all group-hover:text-accent-primary text-text-muted">
                           Read more
                           <ArrowRight className="h-4 w-4" />

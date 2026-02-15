@@ -11,6 +11,10 @@ export interface BaseContentMetadata {
   draft?: boolean
   slug: string
   website_exclusive?: boolean
+  series?: string
+  series_slug?: string
+  series_order?: number
+  series_description?: string
 }
 
 export interface ArticleMetadata extends BaseContentMetadata {
