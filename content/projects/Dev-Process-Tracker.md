@@ -8,7 +8,7 @@ tags:
   - TUI
   - Developer Tooling
   - Process Management
-github: "https://github.com/devports/devpt"
+github: "https://github.com/Tawe/dev-process-tracker"
 icon: "Terminal"
 featured_image: /dev-process-tracker.png
 date: 2026-02-16
