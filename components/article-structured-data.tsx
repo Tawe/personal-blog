@@ -14,22 +14,28 @@ interface ArticleStructuredDataProps {
   type?: 'Article' | 'BlogPosting' | 'CreativeWork'
 }
 
-export function ArticleStructuredData({ 
-  article, 
-  articleUrl, 
+function toISODateTime(dateStr: string): string {
+  if (!dateStr) return dateStr
+  if (dateStr.includes('T')) return dateStr
+  return `${dateStr}T00:00:00Z`
+}
+
+export function ArticleStructuredData({
+  article,
+  articleUrl,
   articleSection,
   type = 'Article'
 }: ArticleStructuredDataProps) {
   const baseUrl = "https://johnmunn.tech"
-  
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": type,
     "headline": article.title,
     "description": article.excerpt,
     "url": articleUrl,
-    "datePublished": article.date,
-    "dateModified": article.updated || article.date,
+    "datePublished": toISODateTime(article.date),
+    "dateModified": toISODateTime(article.updated || article.date),
     "author": {
       "@type": "Person",
       "name": "John Munn",

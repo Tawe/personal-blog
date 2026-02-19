@@ -66,7 +66,7 @@ export function generateArticleMetadata(
           ],
       locale: "en_US",
       type: "article",
-      publishedTime: article.date,
+      publishedTime: article.date?.includes('T') ? article.date : `${article.date}T00:00:00Z`,
       authors: ["John Munn"],
       tags: article.tags || [],
     },
