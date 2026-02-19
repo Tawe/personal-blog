@@ -61,7 +61,30 @@ const nextConfig = {
     }
     return config
   },
-  // Redirects handled by middleware.ts to avoid conflicts
+  async redirects() {
+    return [
+      {
+        source: "/leadership-strategy",
+        destination: "/strategic-narratives/leadership-strategy",
+        permanent: true,
+      },
+      {
+        source: "/leadership-strategy/:slug*",
+        destination: "/strategic-narratives/leadership-strategy/:slug*",
+        permanent: true,
+      },
+      {
+        source: "/mentoring",
+        destination: "/services/mentoring",
+        permanent: true,
+      },
+      {
+        source: "/team-building",
+        destination: "/services/team-building",
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {

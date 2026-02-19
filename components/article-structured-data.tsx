@@ -14,8 +14,9 @@ interface ArticleStructuredDataProps {
   type?: 'Article' | 'BlogPosting' | 'CreativeWork'
 }
 
-function toISODateTime(dateStr: string): string {
-  if (!dateStr) return dateStr
+function toISODateTime(dateStr: string | Date | undefined | null): string {
+  if (!dateStr) return ''
+  if (dateStr instanceof Date) return dateStr.toISOString()
   if (dateStr.includes('T')) return dateStr
   return `${dateStr}T00:00:00Z`
 }
