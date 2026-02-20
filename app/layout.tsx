@@ -121,12 +121,14 @@ export default function RootLayout({
       <body>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded focus:shadow-lg"
+          className="absolute left-4 -top-20 z-[100] rounded bg-white px-4 py-2 text-black shadow-lg transition-all focus:top-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3A6EA5]"
         >
           Skip to main content
         </a>
         <GoogleAnalytics />
-        {children}
+        <div id="main-content">
+          {children}
+        </div>
       </body>
     </html>
   )

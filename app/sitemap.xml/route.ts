@@ -50,6 +50,7 @@ export async function GET(request: Request) {
     "/strategic-narratives",
     "/strategic-narratives/leadership-strategy",
     "/strategic-narratives/technical-architecture",
+    "/strategic-narratives/technical-architecture/the-rag-atlas",
     "/strategic-narratives/dnd-ttrpgs",
     "/strategic-narratives/world-of-artumin",
   ]

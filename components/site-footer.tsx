@@ -70,11 +70,11 @@ export function SiteFooter() {
 
           {/* Navigation */}
           <div className="space-y-4">
-            <h2 className="footer-heading text-text-muted">Navigation</h2>
+            <h2 className="footer-heading text-text-secondary">Navigation</h2>
             <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-y-1">
               {["Home", "Writing", "Projects", "About", "Contact"].map((name, i) => (
                 <span key={name} className="inline-flex items-center">
-                  {i > 0 && <span className="text-text-muted select-none px-1.5">|</span>}
+                  {i > 0 && <span className="text-text-secondary select-none px-1.5">|</span>}
                   <Link
                     href={name === "Home" ? "/" : `/${name.toLowerCase()}`}
                     className="text-text-secondary hover:text-accent-primary transition-colors text-sm py-1 touch-manipulation"
@@ -88,7 +88,7 @@ export function SiteFooter() {
 
           {/* Connect */}
           <div className="space-y-4">
-            <h2 className="footer-heading text-text-muted">Connect</h2>
+            <h2 className="footer-heading text-text-secondary">Connect</h2>
             <div className="flex flex-wrap gap-2">
               {[
                 { href: "https://www.linkedin.com/in/john-munn-bbab434b/", label: "LinkedIn", Icon: Linkedin },
@@ -111,7 +111,7 @@ export function SiteFooter() {
         </div>
 
         <div className="border-t border-border-subtle mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-text-muted text-sm">© {new Date().getFullYear()} John Munn. All rights reserved.</p>
+          <p className="text-text-secondary text-sm">© {new Date().getFullYear()} John Munn. All rights reserved.</p>
         </div>
       </div>
     </footer>
