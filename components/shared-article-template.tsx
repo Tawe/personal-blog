@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronRight } from "lucide-react"
+import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronRight, Linkedin, Twitter } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import type { Article, HubConfig } from "@/lib/types"
@@ -34,6 +34,7 @@ export function SharedArticleTemplate({
 }: SharedArticleTemplateProps) {
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
+  const [shareUrl, setShareUrl] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const dndBeyondLink = (article as Article & { dndbeyond_link?: string }).dndbeyond_link
   const previousSeriesEntry =
@@ -44,6 +45,10 @@ export function SharedArticleTemplate({
     seriesContext && seriesContext.currentIndex < seriesContext.series.entries.length - 1
       ? seriesContext.series.entries[seriesContext.currentIndex + 1]
       : undefined
+
+  useEffect(() => {
+    setShareUrl(window.location.href)
+  }, [])
 
   useEffect(() => {
     const loadRelatedArticles = async () => {
@@ -96,6 +101,13 @@ export function SharedArticleTemplate({
 
     loadRelatedArticles()
   }, [article.slug, article.tags, config.contentFolder])
+
+  const linkedInShareHref = shareUrl
+    ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
+    : ""
+  const xShareHref = shareUrl
+    ? `https://x.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(article.title)}`
+    : ""
 
   const handleShare = async () => {
     const url = window.location.href
@@ -237,18 +249,44 @@ export function SharedArticleTemplate({
                         <Clock className="h-4 w-4" />
                         <span>{article.reading_time} min read</span>
                       </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={getShareButtonClass(true)}
+                      onClick={handleShare}
+                      disabled={shareState === "copying"}
+                    >
+                      {getShareButtonContent()}
+                    </Button>
+                    {linkedInShareHref && (
                       <Button
                         variant="ghost"
                         size="sm"
                         className={getShareButtonClass(true)}
-                        onClick={handleShare}
-                        disabled={shareState === "copying"}
+                        asChild
                       >
-                        {getShareButtonContent()}
+                        <Link href={linkedInShareHref} target="_blank" rel="noopener noreferrer">
+                          <Linkedin className="mr-2 h-4 w-4" />
+                          LinkedIn
+                        </Link>
                       </Button>
-                    </div>
+                    )}
+                    {xShareHref && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className={getShareButtonClass(true)}
+                        asChild
+                      >
+                        <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
+                          <Twitter className="mr-2 h-4 w-4" />
+                          X
+                        </Link>
+                      </Button>
+                    )}
                   </div>
                 </div>
+              </div>
 
                 {article.featured && (
                   <div className="absolute top-4 right-4">
@@ -293,6 +331,32 @@ export function SharedArticleTemplate({
                     >
                       {getShareButtonContent()}
                     </Button>
+                    {linkedInShareHref && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className={getShareButtonClass()}
+                        asChild
+                      >
+                        <Link href={linkedInShareHref} target="_blank" rel="noopener noreferrer">
+                          <Linkedin className="mr-2 h-4 w-4" />
+                          LinkedIn
+                        </Link>
+                      </Button>
+                    )}
+                    {xShareHref && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className={getShareButtonClass()}
+                        asChild
+                      >
+                        <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
+                          <Twitter className="mr-2 h-4 w-4" />
+                          X
+                        </Link>
+                      </Button>
+                    )}
                   </div>
                 </div>
               </header>

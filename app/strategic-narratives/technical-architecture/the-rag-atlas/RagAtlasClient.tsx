@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
-import { Check, Copy, Share2 } from "lucide-react"
+import { Check, Copy, Share2, Linkedin, Twitter } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { shareOrCopyUrl } from "@/lib/share-client"
@@ -744,6 +744,7 @@ export function RagAtlasClient() {
   const [reduced, setReduced] = useState(false)
   const [focusMode, setFocusMode] = useState(true)
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
+  const [shareUrl, setShareUrl] = useState("")
   const [sim, setSim] = useState<SimState>({
     chunkSize: 512, topK: 5,
     rerankerOn: false, hybridOn: false, condensationOn: false,
@@ -752,10 +753,18 @@ export function RagAtlasClient() {
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
     setReduced(mq.matches)
+    setShareUrl(window.location.href)
     const handler = () => setReduced(mq.matches)
     mq.addEventListener("change", handler)
     return () => mq.removeEventListener("change", handler)
   }, [])
+
+  const linkedInShareHref = shareUrl
+    ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
+    : ""
+  const xShareHref = shareUrl
+    ? `https://x.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent("The RAG Atlas: A Visual Guide to Retrieval Patterns")}`
+    : ""
 
   const handlePatternChange = useCallback((id: string) => {
     setActiveId(id)
@@ -832,6 +841,28 @@ export function RagAtlasClient() {
                 {shareState === "error" && "Try again"}
                 {shareState === "idle" && "Share Atlas"}
               </button>
+              {linkedInShareHref && (
+                <Link
+                  href={linkedInShareHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center rounded-md border border-[#D6DEE6] bg-white px-3 py-2 text-xs font-medium text-[#1A232B] hover:bg-[#F8FBFD] transition-colors"
+                >
+                  <Linkedin className="mr-2 h-3.5 w-3.5" />
+                  LinkedIn
+                </Link>
+              )}
+              {xShareHref && (
+                <Link
+                  href={xShareHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center rounded-md border border-[#D6DEE6] bg-white px-3 py-2 text-xs font-medium text-[#1A232B] hover:bg-[#F8FBFD] transition-colors"
+                >
+                  <Twitter className="mr-2 h-3.5 w-3.5" />
+                  X
+                </Link>
+              )}
               <Link
                 href={articleUrl}
                 className="text-xs font-medium text-[#3A6EA5] hover:text-[#2F5A87] transition-colors"
