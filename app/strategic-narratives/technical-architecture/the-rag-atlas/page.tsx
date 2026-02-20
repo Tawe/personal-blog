@@ -5,6 +5,7 @@ import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 const ATLAS_URL = "https://johnmunn.tech/strategic-narratives/technical-architecture/the-rag-atlas"
 const SOURCE_ARTICLE_URL =
   "https://johnmunn.tech/strategic-narratives/technical-architecture/the-rag-atlas-a-visual-guide-to-retrieval-patterns"
+const SOURCE_ARTICLE_IMAGE = "/ragatlas.png"
 
 export const metadata: Metadata = {
   title: "The RAG Atlas: A Visual Guide to Retrieval Patterns",
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "John Munn - Technical Leader",
     images: [
       {
-        url: "/placeholder.jpg",
+        url: SOURCE_ARTICLE_IMAGE,
         width: 1200,
         height: 630,
         alt: "The RAG Atlas — interactive retrieval pattern diagrams",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     title: "The RAG Atlas: A Visual Guide to Retrieval Patterns",
     description:
       "Ten RAG architectures mapped visually with flow diagrams, node inspector, and a live simulator.",
-    images: ["/placeholder.jpg"],
+    images: [SOURCE_ARTICLE_IMAGE],
   },
   alternates: {
     canonical: ATLAS_URL,
