@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronRight, Linkedin, Twitter } from "lucide-react"
+import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronRight, Linkedin } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import type { Article, HubConfig } from "@/lib/types"
@@ -279,8 +279,7 @@ export function SharedArticleTemplate({
                         asChild
                       >
                         <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
-                          <Twitter className="mr-2 h-4 w-4" />
-                          X
+                          Share on X
                         </Link>
                       </Button>
                     )}
@@ -352,8 +351,7 @@ export function SharedArticleTemplate({
                         asChild
                       >
                         <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
-                          <Twitter className="mr-2 h-4 w-4" />
-                          X
+                          Share on X
                         </Link>
                       </Button>
                     )}

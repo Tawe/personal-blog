@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
-import { Check, Copy, Share2, Linkedin, Twitter } from "lucide-react"
+import { Check, Copy, Share2, Linkedin } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { shareOrCopyUrl } from "@/lib/share-client"
@@ -859,8 +859,7 @@ export function RagAtlasClient() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center rounded-md border border-[#D6DEE6] bg-white px-3 py-2 text-xs font-medium text-[#1A232B] hover:bg-[#F8FBFD] transition-colors"
                 >
-                  <Twitter className="mr-2 h-3.5 w-3.5" />
-                  X
+                  Share on X
                 </Link>
               )}
               <Link
