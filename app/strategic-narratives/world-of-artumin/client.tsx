@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Calendar, Clock, Search, X, Crown } from "lucide-react"
 import Link from "next/link"
 import { DateText } from "@/components/date-text"
+import { getDateTimestamp } from "@/lib/date-utils"
 
 interface ArtumiContentMetadata {
   slug: string
@@ -36,19 +37,21 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
   const TOPICS_LIMIT = 20
 
   const filteredArticles = useMemo(() => {
-    return articles.filter((article) => {
-      const matchesSearch =
-        searchTerm.trim() === "" ||
-        article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        article.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        article.region?.toLowerCase().includes(searchTerm.toLowerCase())
+    return articles
+      .filter((article) => {
+        const matchesSearch =
+          searchTerm.trim() === "" ||
+          article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          article.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          article.region?.toLowerCase().includes(searchTerm.toLowerCase())
 
-      const matchesTags =
-        selectedTags.length === 0 ||
-        selectedTags.every((tag) => article.tags.includes(tag) || article.categories.includes(tag))
+        const matchesTags =
+          selectedTags.length === 0 ||
+          selectedTags.every((tag) => article.tags.includes(tag) || article.categories.includes(tag))
 
-      return matchesSearch && matchesTags
-    })
+        return matchesSearch && matchesTags
+      })
+      .sort((a, b) => getDateTimestamp(b.date) - getDateTimestamp(a.date))
   }, [articles, searchTerm, selectedTags])
 
   const handleTagToggle = (tag: string) => {
@@ -67,27 +70,27 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
   const getStatusColor = (status: string) => {
     switch (status) {
       case "complete":
-        return "bg-green-600"
+        return "bg-[#5F8F7A] text-white"
       case "in-progress":
-        return "bg-yellow-600"
+        return "bg-[#B89B7A] text-white"
       case "planned":
-        return "bg-slate-600"
+        return "bg-text-muted text-white"
       default:
-        return "bg-slate-600"
+        return "bg-text-muted text-white"
     }
   }
 
   return (
     <div className="space-y-8">
       {/* Filter Section */}
-      <div className="bg-slate-800/30 p-6 rounded-xl border border-slate-700">
+      <div className="bg-bg-paper p-6 rounded-xl border border-border-subtle shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Crown className="h-5 w-5 text-purple-400" />
-            <h3 className="text-lg font-semibold text-slate-100">Explore Artumin</h3>
+            <Crown className="h-5 w-5 text-accent-secondary" />
+            <h3 className="text-lg font-semibold text-text-strong">Explore Artumin</h3>
           </div>
           {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-slate-400">
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-text-muted hover:text-text-strong">
               <X className="h-4 w-4 mr-1" />
               Clear
             </Button>
@@ -96,13 +99,13 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
 
         {/* Search */}
         <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted pointer-events-none" />
           <Input
             type="text"
             placeholder="Search the realm for stories, characters, locations..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100"
+            className="w-full pl-10 pr-4 py-3 min-h-[44px] rounded-lg border border-border-subtle bg-bg-paper text-text-body placeholder:text-text-muted text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent-primary/30 focus:border-accent-primary touch-manipulation"
             aria-label="Search articles"
           />
         </div>
@@ -110,7 +113,8 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
         {/* Tags */}
         {availableTags.length > 0 && (
           <div className="space-y-2">
-            <h4 className="text-sm font-medium text-slate-300">Categories & Themes</h4>
+            <p className="text-[10px] uppercase tracking-[0.16em] text-accent-secondary">Realm Index</p>
+            <h4 className="text-sm font-medium text-text-body">Categories & Themes</h4>
             <div className="flex flex-wrap gap-2">
               {(showAllTopics ? availableTags : availableTags.slice(0, TOPICS_LIMIT)).map((tag) => (
                 <button
@@ -123,8 +127,8 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                     variant={selectedTags.includes(tag) ? "default" : "secondary"}
                     className={`cursor-pointer transition-colors ${
                       selectedTags.includes(tag)
-                        ? "bg-purple-600 hover:bg-purple-700 text-white"
-                        : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
+                        ? "bg-accent-primary hover:bg-accent-primary-hover text-white"
+                        : "bg-bg-soft text-text-body hover:bg-accent-secondary/15"
                     }`}
                   >
                     {tag}
@@ -137,7 +141,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowAllTopics(!showAllTopics)}
-                className="text-slate-400 hover:text-slate-200 mt-2"
+                className="text-accent-primary hover:text-accent-primary-hover mt-2"
               >
                 {showAllTopics ? "Show less" : `Show more (${availableTags.length - TOPICS_LIMIT} more)`}
               </Button>
@@ -146,7 +150,7 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
         )}
 
         {/* Results count */}
-        <div className="text-sm text-slate-400 mt-4">
+        <div className="text-sm text-text-muted mt-4">
           Showing {filteredArticles.length} of {articles.length} pieces
         </div>
       </div>
@@ -156,8 +160,13 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
         {filteredArticles.map((article) => (
           <Card
             key={article.slug}
-            className="bg-slate-800/50 border-slate-600 hover:border-purple-500/50 transition-all duration-300 overflow-hidden"
+            className="relative bg-transparent border-border-subtle hover:border-accent-secondary/40 transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md group"
           >
+            <Link
+              href={`/strategic-narratives/world-of-artumin/${article.slug}`}
+              aria-label={`Read ${article.title}`}
+              className="absolute inset-0 z-10 rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/40 focus-visible:ring-offset-2"
+            />
             {article.image && (
               <div className="aspect-video w-full overflow-hidden">
                 <img
@@ -187,25 +196,20 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                 </div>
               )}
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant="outline" className="border-slate-600 text-slate-400 text-xs">
+                <Badge variant="outline" className="border-accent-secondary/40 text-accent-secondary text-xs">
                   {article.type}
                 </Badge>
                 {article.status && (
-                  <Badge className={`${getStatusColor(article.status)} text-white text-xs`}>{article.status}</Badge>
+                  <Badge className={`${getStatusColor(article.status)} text-xs`}>{article.status}</Badge>
                 )}
               </div>
-              <CardTitle className="text-slate-100 text-lg leading-tight">
-                <Link
-                  href={`/strategic-narratives/world-of-artumin/${article.slug}`}
-                  className="hover:text-purple-400 transition-colors"
-                >
-                  {article.title}
-                </Link>
+              <CardTitle className="text-text-strong text-lg leading-tight">
+                <span className="group-hover:text-accent-secondary transition-colors">{article.title}</span>
               </CardTitle>
-              <CardDescription className="text-slate-400">{article.excerpt}</CardDescription>
+              <CardDescription className="text-text-body">{article.excerpt}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between text-sm text-slate-500 mb-3">
+              <div className="flex items-center justify-between text-sm text-text-muted mb-3">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-3 w-3" />
                   <DateText value={article.date} />
@@ -216,17 +220,15 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
                 </div>
               </div>
 
-              {article.region && <div className="text-sm text-slate-400 mb-3">{article.region}</div>}
-
               {article.categories.length > 0 && (
                 <div className="flex flex-wrap gap-1 mb-2">
                   {article.categories.slice(0, 3).map((category) => (
-                    <Badge key={category} variant="outline" className="text-xs border-slate-600 text-slate-400">
+                    <Badge key={category} variant="outline" className="text-xs border-border-subtle text-text-muted">
                       {category}
                     </Badge>
                   ))}
                   {article.categories.length > 3 && (
-                    <Badge variant="outline" className="text-xs border-slate-600 text-slate-400">
+                    <Badge variant="outline" className="text-xs border-border-subtle text-text-muted">
                       +{article.categories.length - 3}
                     </Badge>
                   )}
@@ -236,12 +238,12 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
               {article.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {article.tags.slice(0, 2).map((tag) => (
-                    <Badge key={tag} variant="outline" className="text-xs border-purple-600/30 text-purple-400">
+                    <Badge key={tag} variant="outline" className="text-xs border-accent-secondary/40 text-accent-secondary">
                       {tag}
                     </Badge>
                   ))}
                   {article.tags.length > 2 && (
-                    <Badge variant="outline" className="text-xs border-purple-600/30 text-purple-400">
+                    <Badge variant="outline" className="text-xs border-accent-secondary/40 text-accent-secondary">
                       +{article.tags.length - 2}
                     </Badge>
                   )}
@@ -254,8 +256,8 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
 
       {filteredArticles.length === 0 && (
         <div className="text-center py-12">
-          <div className="text-slate-400 mb-2">No content found in the realm</div>
-          <p className="text-sm text-slate-500">Try adjusting your search or explore different themes</p>
+          <div className="text-text-body mb-2">No content found in the realm</div>
+          <p className="text-sm text-text-muted">Try adjusting your search or explore different themes</p>
         </div>
       )}
     </div>

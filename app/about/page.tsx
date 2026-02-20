@@ -29,6 +29,16 @@ export default function AboutPage() {
                 <p className="text-text-body leading-relaxed">
                   Outside of the work itself, I value calm, curiosity, and generosity of thought. I enjoy mentoring, writing, and exchanging ideas with people who are trying to build things that last, whether that's software, teams, or cultures.
                 </p>
+                <p className="text-text-body leading-relaxed">
+                  I also write in the{" "}
+                  <Link
+                    href="/strategic-narratives/world-of-artumin"
+                    className="text-accent-primary hover:text-accent-primary-hover underline underline-offset-2 font-medium"
+                  >
+                    World of Artumin
+                  </Link>
+                  , where I explore strategic and leadership ideas through narrative.
+                </p>
                 <p className="text-text-body leading-relaxed pt-2">
                   If you're interested in talking, about leadership, architecture, or a problem you're trying to untangle, the best next step is{" "}
                   <Link href="/contact" className="text-accent-primary hover:text-accent-primary-hover underline underline-offset-2 font-medium">

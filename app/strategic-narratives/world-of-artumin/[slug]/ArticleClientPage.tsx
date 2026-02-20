@@ -14,9 +14,9 @@ export function ArticleClientPage({ article }: ArticleClientPageProps) {
     <SharedArticleTemplate
       article={article}
       config={config}
-      backUrl="/strategic-narratives/world-of-artumin"
-      backLabel="Back to World of Artumin"
-      breadcrumbLabel="World of Artumin"
+      backUrl="/about"
+      backLabel="Back to About"
+      breadcrumbLabel="About"
     />
   )
 }
