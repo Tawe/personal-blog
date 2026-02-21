@@ -218,12 +218,14 @@ function NodeLabel({ label, cx, cy }: { label: string; cx: number; cy: number })
 // ─── SVG DiagramNode ──────────────────────────────────────────────────────────
 
 function DiagramNode({
-  node, isHovered, isDimmed, onHover, accentColor, reduced, introDelay,
+  node, isHovered, isDimmed, onHover, onSelect, canHover, accentColor, reduced, introDelay,
 }: {
   node: RagNode
   isHovered: boolean
   isDimmed: boolean
   onHover: (id: string | null) => void
+  onSelect: (id: string) => void
+  canHover: boolean
   accentColor: string
   reduced: boolean
   introDelay: number
@@ -237,8 +239,14 @@ function DiagramNode({
   return (
     <g
       style={{ cursor: "pointer" }}
-      onMouseEnter={() => onHover(node.id)}
-      onMouseLeave={() => onHover(null)}
+      onMouseEnter={() => canHover && onHover(node.id)}
+      onMouseLeave={() => canHover && onHover(null)}
+      onClick={() => onSelect(node.id)}
+      onFocus={() => onHover(node.id)}
+      onBlur={() => onHover(null)}
+      tabIndex={0}
+      role="button"
+      aria-label={`Inspect node ${node.label.replace("\n", " ")}`}
     >
       {!reduced && (
         <>
@@ -345,13 +353,15 @@ function DiagramEdge({
 // ─── PatternSVG ───────────────────────────────────────────────────────────────
 
 function PatternSVG({
-  pattern, hoveredNodeId, onNodeHover, reduced, focusMode, accentColor,
+  pattern, hoveredNodeId, onNodeHover, onNodeSelect, reduced, focusMode, canHover, accentColor,
 }: {
   pattern: RagPattern
   hoveredNodeId: string | null
   onNodeHover: (id: string | null) => void
+  onNodeSelect: (id: string) => void
   reduced: boolean
   focusMode: boolean
+  canHover: boolean
   accentColor: string
 }) {
   const isFocusActive = focusMode && hoveredNodeId !== null
@@ -413,6 +423,8 @@ function PatternSVG({
           isHovered={node.id === hoveredNodeId}
           isDimmed={isFocusActive && !connectedNodeIds.has(node.id)}
           onHover={onNodeHover}
+          onSelect={onNodeSelect}
+          canHover={canHover}
           accentColor={accentColor}
           reduced={reduced}
           introDelay={0.05 * (nodeIndex + 1)}
@@ -463,10 +475,21 @@ function Legend() {
   )
 }
 
-function NodeHoverCard({ node, pattern }: { node: RagNode; pattern: RagPattern }) {
+function NodeHoverCard({
+  node,
+  pattern,
+  floating = true,
+  onClose,
+}: {
+  node: RagNode
+  pattern: RagPattern
+  floating?: boolean
+  onClose?: () => void
+}) {
   const { width, height } = parseViewBox(pattern.viewBox)
   const left = Math.min(88, Math.max(12, (node.x / width) * 100))
   const top = (node.y / height) * 100
+  const horizontalAnchor = left < 28 ? "left" : left > 72 ? "right" : "center"
   const placeBelow = top < 35
   const { stroke } = NODE_COLORS[node.type]
   const rows = [
@@ -477,11 +500,17 @@ function NodeHoverCard({ node, pattern }: { node: RagNode; pattern: RagPattern }
 
   return (
     <div
-      className="absolute z-20 w-[min(24rem,92%)] rounded-lg border bg-white shadow-xl pointer-events-none overflow-hidden"
+      className={`${floating ? "absolute pointer-events-none" : "relative"} z-20 w-[min(24rem,92%)] rounded-lg border bg-white shadow-xl overflow-hidden`}
       style={{
-        left: `${left}%`,
-        top: `${top}%`,
-        transform: placeBelow ? "translate(-50%, 14px)" : "translate(-50%, calc(-100% - 14px))",
+        left: floating ? `${left}%` : undefined,
+        top: floating ? `${top}%` : undefined,
+        transform: floating
+          ? (horizontalAnchor === "left"
+              ? (placeBelow ? "translate(0, 14px)" : "translate(0, calc(-100% - 14px))")
+              : horizontalAnchor === "right"
+                ? (placeBelow ? "translate(-100%, 14px)" : "translate(-100%, calc(-100% - 14px))")
+                : (placeBelow ? "translate(-50%, 14px)" : "translate(-50%, calc(-100% - 14px))"))
+          : undefined,
         borderColor: `${stroke}70`,
         boxShadow: `0 16px 30px ${withAlpha(stroke, 0.12)}`,
       }}
@@ -504,6 +533,15 @@ function NodeHoverCard({ node, pattern }: { node: RagNode; pattern: RagPattern }
         >
           {NODE_TYPE_LABEL[node.type]}
         </span>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="ml-2 text-[11px] font-semibold text-[#475569] hover:text-[#1A232B] pointer-events-auto"
+          >
+            Close
+          </button>
+        )}
       </div>
       <div className="p-3 space-y-2.5">
         {rows.map(({ label, value, color }) => (
@@ -743,6 +781,8 @@ export function RagAtlasClient() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [reduced, setReduced] = useState(false)
   const [focusMode, setFocusMode] = useState(true)
+  const [isSmallViewport, setIsSmallViewport] = useState(false)
+  const [canHover, setCanHover] = useState(true)
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
   const [shareUrl, setShareUrl] = useState("")
   const [sim, setSim] = useState<SimState>({
@@ -752,11 +792,23 @@ export function RagAtlasClient() {
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const smallMq = window.matchMedia("(max-width: 640px)")
+    const hoverMq = window.matchMedia("(hover: hover) and (pointer: fine)")
     setReduced(mq.matches)
+    setIsSmallViewport(smallMq.matches)
+    setCanHover(hoverMq.matches)
     setShareUrl(window.location.href)
-    const handler = () => setReduced(mq.matches)
-    mq.addEventListener("change", handler)
-    return () => mq.removeEventListener("change", handler)
+    const reducedHandler = () => setReduced(mq.matches)
+    const viewportHandler = () => setIsSmallViewport(smallMq.matches)
+    const hoverHandler = () => setCanHover(hoverMq.matches)
+    mq.addEventListener("change", reducedHandler)
+    smallMq.addEventListener("change", viewportHandler)
+    hoverMq.addEventListener("change", hoverHandler)
+    return () => {
+      mq.removeEventListener("change", reducedHandler)
+      smallMq.removeEventListener("change", viewportHandler)
+      hoverMq.removeEventListener("change", hoverHandler)
+    }
   }, [])
 
   const linkedInShareHref = shareUrl
@@ -792,6 +844,7 @@ export function RagAtlasClient() {
   const pattern     = RAG_PATTERNS.find(p => p.id === activeId)!
   const hoveredNode = pattern.nodes.find(n => n.id === hoveredId) ?? null
   const accentColor = getPatternAccent(activeId)
+  const useInlineInspector = isSmallViewport || !canHover
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F6F8FA]">
@@ -927,7 +980,7 @@ export function RagAtlasClient() {
                     <h2 className="text-sm font-bold text-[#1A232B]">{pattern.name}</h2>
                     <div className="flex items-center gap-3">
                       <span className="text-[10px] text-[#475569] hidden sm:block">
-                        hover nodes to inspect
+                        {useInlineInspector ? "tap nodes to inspect" : "hover nodes to inspect"}
                       </span>
                       <Toggle
                         label="Focus mode"
@@ -942,18 +995,30 @@ export function RagAtlasClient() {
                     className="relative overflow-x-auto lg:overflow-x-visible rounded-lg border border-[#E5EBF2] p-2 sm:p-3"
                     style={{ backgroundColor: withAlpha(accentColor, 0.05), borderColor: withAlpha(accentColor, 0.2) }}
                   >
-                    <div className="w-[max(100%,760px)] lg:w-full">
+                    <div className="w-[max(100%,700px)] md:w-[max(100%,760px)] lg:w-full">
                       <PatternSVG
                         pattern={pattern}
                         hoveredNodeId={hoveredId}
                         onNodeHover={setHoveredId}
+                        onNodeSelect={setHoveredId}
                         reduced={reduced}
                         focusMode={focusMode}
+                        canHover={canHover}
                         accentColor={accentColor}
                       />
                     </div>
-                    {hoveredNode && <NodeHoverCard node={hoveredNode} pattern={pattern} />}
+                    {!useInlineInspector && hoveredNode && <NodeHoverCard node={hoveredNode} pattern={pattern} />}
                   </div>
+                  {useInlineInspector && hoveredNode && (
+                    <div className="mt-3">
+                      <NodeHoverCard
+                        node={hoveredNode}
+                        pattern={pattern}
+                        floating={false}
+                        onClose={() => setHoveredId(null)}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Right panel */}
