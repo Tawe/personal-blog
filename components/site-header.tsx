@@ -5,10 +5,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { DARK_MODE_ENABLED } from "@/lib/feature-flags"
 
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Writing", href: "/writing" },
+  { name: "Interactive", href: "/interactive" },
   { name: "Projects", href: "/projects" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
@@ -93,6 +96,11 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
+          {DARK_MODE_ENABLED ? (
+            <div className="hidden lg:flex items-center">
+              <ThemeToggle />
+            </div>
+          ) : null}
 
           {/* Mobile Navigation */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -109,6 +117,11 @@ export function SiteHeader() {
                   <PentagonGrowthIcon className="h-12 w-12 text-text-secondary" />
                   <span className="text-lg font-bold text-text-primary">John Munn</span>
                 </Link>
+                {DARK_MODE_ENABLED ? (
+                  <div className="ml-auto">
+                    <ThemeToggle />
+                  </div>
+                ) : null}
               </div>
               <nav aria-label="Mobile navigation" className="flex flex-col">
                 {navigation.map((item) => (

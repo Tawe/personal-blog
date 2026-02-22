@@ -5,6 +5,8 @@ import { PersonSchema } from "@/components/person-schema"
 import { WebsiteSchema } from "@/components/website-schema"
 import { ProfilePageSchema } from "@/components/profile-page-schema"
 import { GoogleAnalytics } from "@/components/google-analytics"
+import { ThemeProvider } from "@/components/theme-provider"
+import { DARK_MODE_ENABLED } from "@/lib/feature-flags"
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -83,7 +85,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-61NJPVE52G"></script>
@@ -125,10 +127,18 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <GoogleAnalytics />
-        <div id="main-content">
-          {children}
-        </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme={DARK_MODE_ENABLED ? "system" : "light"}
+          enableSystem={DARK_MODE_ENABLED}
+          disableTransitionOnChange
+          forceTheme={DARK_MODE_ENABLED ? undefined : "light"}
+        >
+          <GoogleAnalytics />
+          <div id="main-content">
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   )

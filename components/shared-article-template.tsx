@@ -4,13 +4,13 @@ import { useState, useEffect } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, ArrowLeft, Share2, ExternalLink, Check, Copy, ChevronRight, Linkedin } from "lucide-react"
+import { Calendar, Clock, Share2, ExternalLink, Check, Copy, Linkedin, ChevronRight } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 import type { Article, HubConfig } from "@/lib/types"
 import type { Series } from "@/lib/series-utils"
 import { shareOrCopyUrl } from "@/lib/share-client"
 import { DateText } from "@/components/date-text"
+import { SharedHero } from "@/components/shared-hero"
 
 interface SharedArticleTemplateProps {
   article: Article
@@ -167,7 +167,7 @@ export function SharedArticleTemplate({
     const interactionClass =
       "transition-colors !hover:bg-transparent !active:bg-transparent !focus-visible:bg-transparent"
     if (onImage) {
-      return "text-white hover:text-white bg-slate-900/30 hover:bg-slate-900/55 focus-visible:bg-slate-900/55"
+      return "text-text-muted hover:text-text-strong lg:text-white lg:hover:text-white lg:bg-slate-900/30 lg:hover:bg-slate-900/55 lg:focus-visible:bg-slate-900/55"
     }
     switch (shareState) {
       case "copied":
@@ -185,225 +185,167 @@ export function SharedArticleTemplate({
       <div className="relative">
         <ContentLayout>
           <div className="max-w-4xl mx-auto">
-            {/* Breadcrumb Navigation */}
-            <div className="mb-8">
-              <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-sm text-text-muted">
-                <Link href={backUrl} className="hover:text-text-strong transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm">
-                  {breadcrumbLabel}
-                </Link>
-                <ChevronRight className="h-4 w-4 shrink-0 text-text-muted" aria-hidden="true" />
-                <span className="text-text-strong" aria-current="page">{article.title}</span>
-              </nav>
-            </div>
-
-            {/* Back Navigation */}
-            <div className="mb-8">
-              <Button
-                variant="ghost"
-                className="text-text-muted hover:text-text-strong !hover:bg-transparent !active:bg-transparent !focus-visible:bg-transparent"
-                asChild
-              >
-                <Link href={backUrl}>
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  {backLabel}
-                </Link>
-              </Button>
-            </div>
-
-            {/* Hero Section with Featured Image */}
-            {article.featured_image && (
-              <div className="relative mb-8 rounded-xl overflow-hidden">
-                <div className="aspect-video w-full">
-                  <Image
-                    src={article.featured_image || "/placeholder.svg"}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent" />
-
-                {/* Title Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <div className="space-y-4">
-                    <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">{article.title}</h1>
-                    {article.subtitle && (
-                      <h2 className="text-2xl text-slate-100 font-medium mt-2 mb-4">{article.subtitle}</h2>
-                    )}
-
-                    {/* Article Metadata Bar */}
-                    <div className="flex flex-wrap items-center gap-6 text-slate-200">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <DateText
-                          value={article.date}
-                          options={{
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }}
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        <span>{article.reading_time} min read</span>
-                      </div>
+            <SharedHero
+              breadcrumbLabel={breadcrumbLabel}
+              breadcrumbUrl={backUrl}
+              backLabel={backLabel}
+              backUrl={backUrl}
+              showBackLink={false}
+              title={article.title}
+              subtitle={article.subtitle}
+              imageSrc={article.featured_image || undefined}
+              imagePriority={Boolean(article.featured_image)}
+              metaRow={
+                <>
+                  <div className="flex min-w-0 items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    <DateText
+                      value={article.date}
+                      options={{
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }}
+                    />
+                  </div>
+                  <div className="flex min-w-0 items-center gap-2">
+                    <Clock className="h-4 w-4" />
+                    <span>{article.reading_time} min read</span>
+                  </div>
+                </>
+              }
+              shareRow={
+                <>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={getShareButtonClass(Boolean(article.featured_image))}
+                    onClick={handleShare}
+                    disabled={shareState === "copying"}
+                  >
+                    {getShareButtonContent()}
+                  </Button>
+                  {linkedInShareHref && (
                     <Button
                       variant="ghost"
                       size="sm"
-                      className={getShareButtonClass(true)}
-                      onClick={handleShare}
-                      disabled={shareState === "copying"}
+                      className={getShareButtonClass(Boolean(article.featured_image))}
+                      asChild
                     >
-                      {getShareButtonContent()}
+                      <Link href={linkedInShareHref} target="_blank" rel="noopener noreferrer">
+                        <Linkedin className="mr-2 h-4 w-4" />
+                        LinkedIn
+                      </Link>
                     </Button>
-                    {linkedInShareHref && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className={getShareButtonClass(true)}
-                        asChild
-                      >
-                        <Link href={linkedInShareHref} target="_blank" rel="noopener noreferrer">
-                          <Linkedin className="mr-2 h-4 w-4" />
-                          LinkedIn
-                        </Link>
-                      </Button>
-                    )}
-                    {xShareHref && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className={getShareButtonClass(true)}
-                        asChild
-                      >
-                        <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
-                          Share on X
-                        </Link>
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-                {article.featured && (
+                  )}
+                  {xShareHref && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={getShareButtonClass(Boolean(article.featured_image))}
+                      asChild
+                    >
+                      <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
+                        Share on X
+                      </Link>
+                    </Button>
+                  )}
+                </>
+              }
+              overlayBadge={
+                article.featured ? (
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-yellow-600 text-yellow-100">Featured</Badge>
                   </div>
-                )}
-              </div>
-            )}
-
-            {/* Article Header (for articles without featured image) */}
-            {!article.featured_image && (
-              <header className="mb-8">
-                <div className="space-y-6">
-                  <h1 className="text-4xl lg:text-5xl font-bold text-text-strong leading-tight">{article.title}</h1>
-                  {article.subtitle && (
-                    <h2 className="text-2xl text-text-body font-medium mt-2 mb-4">{article.subtitle}</h2>
-                  )}
-
-                  {/* Article Metadata Bar */}
-                  <div className="flex flex-wrap items-center gap-6 text-text-muted">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      <DateText
-                        value={article.date}
-                        options={{
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }}
-                      />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      <span>{article.reading_time} min read</span>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className={getShareButtonClass()}
-                      onClick={handleShare}
-                      disabled={shareState === "copying"}
-                    >
-                      {getShareButtonContent()}
-                    </Button>
-                    {linkedInShareHref && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className={getShareButtonClass()}
-                        asChild
-                      >
-                        <Link href={linkedInShareHref} target="_blank" rel="noopener noreferrer">
-                          <Linkedin className="mr-2 h-4 w-4" />
-                          LinkedIn
+                ) : undefined
+              }
+              mobilePreMediaRow={
+                (article.medium_link || article.devto_link || article.substack_link || article.linkedin_link || dndBeyondLink) ? (
+                  <div className="min-w-0 space-y-1">
+                    <p className="font-medium text-text-muted">View on:</p>
+                    <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
+                      {article.medium_link && (
+                        <Link href={article.medium_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">Medium</span>
+                          <span className="sr-only"> (opens in new tab)</span>
                         </Link>
-                      </Button>
-                    )}
-                    {xShareHref && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className={getShareButtonClass()}
-                        asChild
-                      >
-                        <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
-                          Share on X
+                      )}
+                      {article.devto_link && (
+                        <Link href={article.devto_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">Dev.to</span>
+                          <span className="sr-only"> (opens in new tab)</span>
                         </Link>
-                      </Button>
-                    )}
+                      )}
+                      {article.substack_link && (
+                        <Link href={article.substack_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">Substack</span>
+                          <span className="sr-only"> (opens in new tab)</span>
+                        </Link>
+                      )}
+                      {article.linkedin_link && (
+                        <Link href={article.linkedin_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">LinkedIn</span>
+                          <span className="sr-only"> (opens in new tab)</span>
+                        </Link>
+                      )}
+                      {dndBeyondLink && (
+                        <Link href={dndBeyondLink} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">D&D Beyond</span>
+                          <span className="sr-only"> (opens in new tab)</span>
+                        </Link>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </header>
-            )}
+                ) : undefined
+              }
+            />
 
             {/* "View On" External Links */}
             {(article.medium_link || article.devto_link || article.substack_link || article.linkedin_link || dndBeyondLink) && (
-              <div className="flex items-center gap-4 mb-8 p-4 bg-bg-soft rounded-lg border border-border-subtle">
-                <span className="text-sm text-text-body font-medium">View On:</span>
-                {article.medium_link && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={article.medium_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
-                      Medium<span className="sr-only"> (opens in new tab)</span>
+              <div className="mb-8 hidden min-w-0 space-y-1 text-sm text-text-muted lg:block">
+                <p className="font-medium text-text-muted">View on:</p>
+                <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
+                  {article.medium_link && (
+                    <Link href={article.medium_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">Medium</span>
+                      <span className="sr-only"> (opens in new tab)</span>
                     </Link>
-                  </Button>
-                )}
-                {article.devto_link && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={article.devto_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
-                      Dev.to<span className="sr-only"> (opens in new tab)</span>
+                  )}
+                  {article.devto_link && (
+                    <Link href={article.devto_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">Dev.to</span>
+                      <span className="sr-only"> (opens in new tab)</span>
                     </Link>
-                  </Button>
-                )}
-                {article.substack_link && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={article.substack_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
-                      Substack<span className="sr-only"> (opens in new tab)</span>
+                  )}
+                  {article.substack_link && (
+                    <Link href={article.substack_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">Substack</span>
+                      <span className="sr-only"> (opens in new tab)</span>
                     </Link>
-                  </Button>
-                )}
-                {article.linkedin_link && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={article.linkedin_link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
-                      LinkedIn<span className="sr-only"> (opens in new tab)</span>
+                  )}
+                  {article.linkedin_link && (
+                    <Link href={article.linkedin_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">LinkedIn</span>
+                      <span className="sr-only"> (opens in new tab)</span>
                     </Link>
-                  </Button>
-                )}
-                {dndBeyondLink && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={dndBeyondLink} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
-                      D&D Beyond<span className="sr-only"> (opens in new tab)</span>
+                  )}
+                  {dndBeyondLink && (
+                    <Link href={dndBeyondLink} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">D&D Beyond</span>
+                      <span className="sr-only"> (opens in new tab)</span>
                     </Link>
-                  </Button>
-                )}
+                  )}
+                </div>
               </div>
             )}
 

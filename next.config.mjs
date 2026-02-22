@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Allow loading dev assets over LAN hostnames/IPs.
+  allowedDevOrigins: [
+    "http://192.168.2.107:3000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+  ],
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -83,6 +89,16 @@ const nextConfig = {
         destination: "/services/team-building",
         permanent: true,
       },
+      {
+        source: "/workbench/architecture-playground",
+        destination: "/interactive/architecture-playground",
+        permanent: true,
+      },
+      {
+        source: "/strategic-narratives/technical-architecture/the-rag-atlas",
+        destination: "/interactive/rag-atlas",
+        permanent: true,
+      },
     ]
   },
   async headers() {
@@ -113,4 +129,3 @@ const nextConfig = {
 }
 
 export default nextConfig
-

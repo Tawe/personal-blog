@@ -1,0 +1,59 @@
+.rag-atlas-theme {
+  --rag-bg: #f6f8fa;
+  --rag-surface: #ffffff;
+  --rag-surface-soft: #f8fbfd;
+  --rag-surface-subtle: #fafcfe;
+  --rag-border: #d6dee6;
+  --rag-border-soft: #e5ebf2;
+  --rag-text-strong: #1a232b;
+  --rag-text-body: #445561;
+  --rag-text-muted: #475569;
+  --rag-text-faint: #64748b;
+  --rag-link: #3a6ea5;
+  --rag-link-hover: #2f5a87;
+}
+
+.dark .rag-atlas-theme {
+  --rag-bg: hsl(222 47% 11%);
+  --rag-surface: hsl(220 39% 13%);
+  --rag-surface-soft: hsl(220 34% 16%);
+  --rag-surface-subtle: hsl(220 30% 19%);
+  --rag-border: hsl(217 28% 25%);
+  --rag-border-soft: hsl(217 24% 30%);
+  --rag-text-strong: hsl(210 40% 96%);
+  --rag-text-body: hsl(214 24% 83%);
+  --rag-text-muted: hsl(215 16% 72%);
+  --rag-text-faint: hsl(215 16% 62%);
+  --rag-link: hsl(210 70% 70%);
+  --rag-link-hover: hsl(210 70% 78%);
+}
+
+.dark .rag-atlas-theme .bg-\[\#F6F8FA\] { background-color: var(--rag-bg) !important; }
+.dark .rag-atlas-theme .bg-white { background-color: var(--rag-surface) !important; }
+.dark .rag-atlas-theme .bg-\[\#F8FBFD\] { background-color: var(--rag-surface-soft) !important; }
+.dark .rag-atlas-theme .bg-\[\#FAFCFE\] { background-color: var(--rag-surface-subtle) !important; }
+.dark .rag-atlas-theme .bg-\[\#EEF3F7\] { background-color: var(--rag-surface-soft) !important; }
+.dark .rag-atlas-theme .border-\[\#D6DEE6\] { border-color: var(--rag-border) !important; }
+.dark .rag-atlas-theme .border-\[\#E5EBF2\] { border-color: var(--rag-border-soft) !important; }
+.dark .rag-atlas-theme .border-\[\#F3DBD8\] { border-color: hsl(0 35% 35%) !important; }
+
+.dark .rag-atlas-theme .text-\[\#1A232B\] { color: var(--rag-text-strong) !important; }
+.dark .rag-atlas-theme .text-\[\#445561\] { color: var(--rag-text-body) !important; }
+.dark .rag-atlas-theme .text-\[\#475569\] { color: var(--rag-text-muted) !important; }
+.dark .rag-atlas-theme .text-\[\#64748B\] { color: var(--rag-text-faint) !important; }
+.dark .rag-atlas-theme .text-\[\#334155\] { color: var(--rag-text-body) !important; }
+.dark .rag-atlas-theme .text-\[\#3A6EA5\] { color: var(--rag-link) !important; }
+.dark .rag-atlas-theme .hover\:text-\[\#1A232B\]:hover { color: var(--rag-text-strong) !important; }
+.dark .rag-atlas-theme .hover\:text-\[\#2F5A87\]:hover { color: var(--rag-link-hover) !important; }
+.dark .rag-atlas-theme .hover\:bg-\[\#F8FBFD\]:hover { background-color: var(--rag-surface-soft) !important; }
+
+.dark .rag-atlas-theme .focus-visible\:ring-\[\#3A6EA5\]:focus-visible {
+  --tw-ring-color: var(--rag-link) !important;
+}
+.dark .rag-atlas-theme .accent-\[\#3A6EA5\] { accent-color: var(--rag-link) !important; }
+.dark .rag-atlas-theme .bg-\[\#3A6EA5\] { background-color: var(--rag-link) !important; }
+.dark .rag-atlas-theme .bg-\[\#D6DEE6\] { background-color: hsl(217 20% 36%) !important; }
+
+.dark .rag-atlas-theme svg text[fill="#111827"] { fill: var(--rag-text-strong); }
+.dark .rag-atlas-theme svg text[fill="#334155"] { fill: var(--rag-text-body); }
+.dark .rag-atlas-theme svg text[stroke="#F8FAFC"] { stroke: hsl(220 39% 13%); }

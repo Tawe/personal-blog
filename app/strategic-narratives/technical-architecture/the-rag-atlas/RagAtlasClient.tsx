@@ -1,11 +1,14 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
-import { Check, Copy, Share2, Linkedin } from "lucide-react"
+import Image from "next/image"
+import { Check, Copy, Share2, Linkedin, Calendar, Clock3, ArrowDown } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { Button } from "@/components/ui/button"
 import { shareOrCopyUrl } from "@/lib/share-client"
+import "./rag-atlas-theme.css"
 import {
   RAG_PATTERNS,
   type RagPattern,
@@ -444,20 +447,20 @@ function parseViewBox(viewBox: string) {
 
 // ─── Legend ───────────────────────────────────────────────────────────────────
 
-function Legend() {
+function Legend({ onDark = false }: { onDark?: boolean }) {
   const items: { type: PayloadType; label: string }[] = [
-    { type: "query",     label: "Query tokens" },
+    { type: "query",     label: "Query" },
     { type: "embedding", label: "Embeddings" },
-    { type: "chunk",     label: "Chunks / docs" },
+    { type: "chunk",     label: "Chunks" },
     { type: "score",     label: "Scores" },
-    { type: "sql",       label: "SQL / tool call" },
+    { type: "sql",       label: "SQL/tool" },
   ]
   return (
-    <div className="flex flex-wrap gap-x-5 gap-y-2 items-center">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
       {items.map(({ type, label }) => (
         <div
           key={type}
-          className="flex items-center gap-2 rounded-full border px-2.5 py-1"
+          className="flex items-center gap-1.5 rounded-full border px-2.5 py-1"
           style={{
             borderColor: withAlpha(PARTICLE_COLORS[type], 0.24),
             backgroundColor: withAlpha(PARTICLE_COLORS[type], 0.08),
@@ -468,7 +471,7 @@ function Legend() {
               <ParticleShape type={type} color={PARTICLE_COLORS[type]} />
             </g>
           </svg>
-          <span className="text-xs text-[#445561]">{label}</span>
+          <span className={`text-xs ${onDark ? "text-slate-100" : "text-[#445561]"}`}>{label}</span>
         </div>
       ))}
     </div>
@@ -776,7 +779,6 @@ function Simulator({ sim, onSim, patternId }: {
 // ─── Main export ──────────────────────────────────────────────────────────────
 
 export function RagAtlasClient() {
-  const articleUrl = "/strategic-narratives/technical-architecture/the-rag-atlas-a-visual-guide-to-retrieval-patterns"
   const [activeId, setActiveId] = useState("vanilla-rag")
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [reduced, setReduced] = useState(false)
@@ -785,6 +787,8 @@ export function RagAtlasClient() {
   const [canHover, setCanHover] = useState(true)
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
   const [shareUrl, setShareUrl] = useState("")
+  const [isLegendOpen, setIsLegendOpen] = useState(false)
+  const firstPatternButtonRef = useRef<HTMLButtonElement | null>(null)
   const [sim, setSim] = useState<SimState>({
     chunkSize: 512, topK: 5,
     rerankerOn: false, hybridOn: false, condensationOn: false,
@@ -841,93 +845,202 @@ export function RagAtlasClient() {
     }
   }, [])
 
+  const getShareButtonContent = () => {
+    switch (shareState) {
+      case "copying":
+        return (
+          <>
+            <Copy className="mr-2 h-4 w-4 animate-pulse" />
+            Copying...
+          </>
+        )
+      case "copied":
+        return (
+          <>
+            <Check className="mr-2 h-4 w-4 text-green-400" />
+            Copied!
+          </>
+        )
+      case "error":
+        return (
+          <>
+            <Share2 className="mr-2 h-4 w-4 text-red-400" />
+            Try again
+          </>
+        )
+      default:
+        return (
+          <>
+            <Share2 className="mr-2 h-4 w-4" />
+            Share
+          </>
+        )
+    }
+  }
+
+  const handleStartExploring = useCallback(() => {
+    const exploreSection = document.getElementById("explore")
+    if (!exploreSection) return
+
+    exploreSection.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+      block: "start",
+    })
+
+    const focusFirstPattern = () => firstPatternButtonRef.current?.focus()
+    if (reduced) {
+      focusFirstPattern()
+      return
+    }
+    window.setTimeout(focusFirstPattern, 520)
+  }, [reduced])
+
   const pattern     = RAG_PATTERNS.find(p => p.id === activeId)!
   const hoveredNode = pattern.nodes.find(n => n.id === hoveredId) ?? null
   const accentColor = getPatternAccent(activeId)
   const useInlineInspector = isSmallViewport || !canHover
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#F6F8FA]">
+    <div className="rag-atlas-theme flex min-h-screen flex-col bg-[#F6F8FA]">
       <SiteHeader />
 
       <main className="flex-1">
         {/* ── Hero ── */}
-        <section className="border-b border-[#D6DEE6] bg-white px-4 py-8 md:py-12">
-          <div className="max-w-5xl mx-auto">
-            <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-2 text-xs text-[#475569]">
-              <Link href="/writing" className="hover:text-[#1A232B] transition-colors">
-                Writing
-              </Link>
-              <span aria-hidden="true">/</span>
-              <Link href={articleUrl} className="hover:text-[#1A232B] transition-colors">
-                The RAG Atlas (article)
-              </Link>
-              <span aria-hidden="true">/</span>
-              <span className="text-[#1A232B]" aria-current="page">Interactive Atlas</span>
-            </nav>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#3A6EA5] mb-2">
-              Interactive Reference
-            </p>
-            <h1 className="text-3xl md:text-4xl font-bold text-[#1A232B] mb-2">
-              The RAG Atlas
-            </h1>
-            <p className="text-lg text-[#3A6EA5] font-medium mb-4">
-              A visual guide to retrieval patterns
-            </p>
-            <p className="text-[#445561] max-w-2xl leading-relaxed mb-6">
-              RAG isn't one thing, it's a family of pipelines. This page maps ten common patterns
-              as animated flow diagrams. Hover any node to inspect it. Use the simulator to see how
-              tuning choices affect latency, cost, and accuracy risk.
-            </p>
-            <div className="mb-6 flex items-center gap-3">
-              <button
-                type="button"
-                onClick={handleShare}
-                className="inline-flex items-center rounded-md border border-[#D6DEE6] bg-white px-3 py-2 text-xs font-medium text-[#1A232B] hover:bg-[#F8FBFD] transition-colors"
-              >
-                {shareState === "copying" && <Copy className="mr-2 h-3.5 w-3.5 animate-pulse" />}
-                {shareState === "copied" && <Check className="mr-2 h-3.5 w-3.5 text-[#5F8F7A]" />}
-                {shareState === "error" && <Share2 className="mr-2 h-3.5 w-3.5 text-[#B45309]" />}
-                {shareState === "idle" && <Share2 className="mr-2 h-3.5 w-3.5" />}
-                {shareState === "copying" && "Copying..."}
-                {shareState === "copied" && "Copied"}
-                {shareState === "error" && "Try again"}
-                {shareState === "idle" && "Share Atlas"}
-              </button>
-              {linkedInShareHref && (
-                <Link
-                  href={linkedInShareHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-md border border-[#D6DEE6] bg-white px-3 py-2 text-xs font-medium text-[#1A232B] hover:bg-[#F8FBFD] transition-colors"
+        <section className="border-b border-[#D6DEE6] bg-white">
+          <div className="mx-auto max-w-7xl px-4 md:px-6">
+            <div className="relative grid min-h-[70vh] grid-cols-1 items-start gap-8 py-8 md:min-h-[calc(100vh-4rem)] md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:items-center md:gap-10 md:py-12">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <nav aria-label="Breadcrumb">
+                    <ol className="flex flex-wrap items-center gap-2 text-sm text-text-muted">
+                      <li>
+                        <Link
+                          href="/interactive"
+                          className="hover:text-text-strong transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                        >
+                          Interactive
+                        </Link>
+                      </li>
+                      <li aria-hidden="true">/</li>
+                      <li aria-current="page" className="text-text-muted">
+                        The RAG Atlas
+                      </li>
+                    </ol>
+                  </nav>
+                  <h1 className="text-4xl lg:text-5xl font-bold text-text-strong leading-tight">
+                    The RAG Atlas: A Visual Guide to Retrieval Patterns
+                  </h1>
+                  <p className="text-2xl text-text-body font-medium">
+                    Ten RAG architectures, visually mapped with interactive diagrams and a live simulator
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button onClick={handleStartExploring}>Start exploring</Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-text-muted hover:text-text-strong !hover:bg-transparent !active:bg-transparent !focus-visible:bg-transparent"
+                    onClick={handleShare}
+                    disabled={shareState === "copying"}
+                  >
+                    {getShareButtonContent()}
+                  </Button>
+                  {linkedInShareHref && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-text-muted hover:text-text-strong !hover:bg-transparent !active:bg-transparent !focus-visible:bg-transparent"
+                      asChild
+                    >
+                      <Link href={linkedInShareHref} target="_blank" rel="noopener noreferrer">
+                        <Linkedin className="mr-2 h-4 w-4" />
+                        LinkedIn
+                      </Link>
+                    </Button>
+                  )}
+                  {xShareHref && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-text-muted hover:text-text-strong !hover:bg-transparent !active:bg-transparent !focus-visible:bg-transparent"
+                      asChild
+                    >
+                      <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
+                        Share on X
+                      </Link>
+                    </Button>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-6 text-sm text-text-muted">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    <time dateTime="2026-02-20">February 20, 2026</time>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock3 className="h-4 w-4" />
+                    <span>12 min read</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="relative overflow-hidden rounded-xl border border-[#D6DEE6] bg-white shadow-[0_18px_50px_rgba(15,23,42,0.18)]">
+                  <div className="relative aspect-[16/10] md:aspect-[16/11] w-full">
+                    <Image
+                      src="/ragatlas.png"
+                      alt="RAG Atlas interface preview"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+                <button
+                  type="button"
+                  onClick={handleStartExploring}
+                  className="inline-flex items-center gap-2 rounded-full border border-[#D6DEE6] bg-white/92 px-3 py-1.5 text-xs font-medium text-[#445561] shadow-sm transition-colors hover:bg-[#F8FBFD]"
                 >
-                  <Linkedin className="mr-2 h-3.5 w-3.5" />
-                  LinkedIn
-                </Link>
-              )}
-              {xShareHref && (
-                <Link
-                  href={xShareHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-md border border-[#D6DEE6] bg-white px-3 py-2 text-xs font-medium text-[#1A232B] hover:bg-[#F8FBFD] transition-colors"
-                >
-                  Share on X
-                </Link>
-              )}
-              <Link
-                href={articleUrl}
-                className="text-xs font-medium text-[#3A6EA5] hover:text-[#2F5A87] transition-colors"
-              >
-                View source article
-              </Link>
+                  Scroll
+                  <ArrowDown className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
-            <Legend />
           </div>
         </section>
 
         {/* ── Body ── */}
-        <div className="max-w-7xl mx-auto px-4 py-6">
+        <div id="explore" className="max-w-7xl mx-auto px-4 py-6">
+          <p className="mb-4 text-sm text-text-muted">
+            Select a pattern to inspect its retrieval flow. Hover nodes for details, then adjust controls to see trade-offs in real time.
+          </p>
+          <div className="mb-5 border-b border-[#D6DEE6] pb-4">
+            <div className="hidden md:block sticky top-16 z-20 bg-[#F6F8FA]/85 py-1 backdrop-blur-sm">
+              <Legend />
+            </div>
+            <div className="md:hidden">
+              <button
+                type="button"
+                onClick={() => setIsLegendOpen(prev => !prev)}
+                className="inline-flex items-center rounded-md border border-[#D6DEE6] bg-white px-3 py-1.5 text-xs font-medium text-[#445561] hover:bg-[#F8FBFD] transition-colors"
+                aria-expanded={isLegendOpen}
+                aria-controls="rag-legend-mobile"
+              >
+                Legend
+                <span className="ml-2 text-[10px] text-[#64748B]">{isLegendOpen ? "Hide" : "Show"}</span>
+              </button>
+              {isLegendOpen && (
+                <div id="rag-legend-mobile" className="mt-3">
+                  <Legend />
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="flex flex-col lg:flex-row gap-5">
 
             {/* Pattern selector */}
@@ -942,6 +1055,7 @@ export function RagAtlasClient() {
                   return (
                   <button
                     key={p.id}
+                    ref={i === 0 ? firstPatternButtonRef : undefined}
                     onClick={() => handlePatternChange(p.id)}
                     className={`relative overflow-hidden flex-shrink-0 lg:flex-shrink text-left rounded-lg px-3 py-2.5 transition-all duration-150 border ${
                       isActive

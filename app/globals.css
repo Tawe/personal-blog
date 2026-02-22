@@ -49,6 +49,42 @@
   --radius-button: 6px;
 }
 
+.dark {
+  --bg-base: #0B1220;
+  --bg-soft: #121A2A;
+  --bg-paper: #0F172A;
+  --background: 222 47% 11%;
+  --background-secondary: 221 39% 15%;
+  --border: 217 28% 25%;
+  --text-strong: #E5E7EB;
+  --text-body: #CBD5E1;
+  --text-muted: #94A3B8;
+  --foreground: 210 40% 96%;
+  --foreground-secondary: 217 19% 74%;
+  --muted-foreground: 215 16% 65%;
+  --accent-rule: rgba(125, 162, 201, 0.35);
+  --accent-primary: 210 70% 63%;
+  --accent-primary-hover: 210 70% 56%;
+  --accent-secondary: 33 24% 66%;
+  --accent-secondary-light: 33 20% 23%;
+  --emphasis: 145 25% 58%;
+  --muted: 221 39% 15%;
+  --popover: 222 47% 11%;
+  --popover-foreground: 210 40% 96%;
+  --input: 217 28% 25%;
+  --card: 222 47% 11%;
+  --card-foreground: 210 40% 96%;
+  --primary: 210 70% 63%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 221 39% 15%;
+  --secondary-foreground: 210 40% 96%;
+  --accent: 221 39% 18%;
+  --accent-foreground: 210 40% 96%;
+  --destructive: 0 63% 52%;
+  --destructive-foreground: 0 0% 100%;
+  --ring: 210 70% 63%;
+}
+
 /* Signature: hairline rule under section titles (editorial accent) */
 .section-title {
   border-bottom: 1px solid var(--accent-rule);
@@ -168,7 +204,7 @@ pre[class*="language-"] {
 }
 
 .prose h4 {
-  color: #1F2933;
+  color: var(--text-strong);
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.4;
@@ -207,14 +243,14 @@ pre[class*="language-"] {
 }
 
 .prose em {
-  color: #4B5D6B;
+  color: hsl(var(--foreground-secondary));
   font-style: italic;
 }
 
 .prose ul {
   margin: 1.5rem 0;
   padding-left: 1.5rem;
-  color: #1F2933;
+  color: var(--text-strong);
   list-style-type: disc;
   list-style-position: outside;
 }
@@ -222,7 +258,7 @@ pre[class*="language-"] {
 .prose ol {
   margin: 1.5rem 0;
   padding-left: 1.5rem;
-  color: #1F2933;
+  color: var(--text-strong);
   list-style-type: decimal;
   list-style-position: outside;
 }
@@ -238,35 +274,35 @@ pre[class*="language-"] {
 }
 
 .prose blockquote {
-  border-left: 4px solid #D6DEE6;
+  border-left: 4px solid hsl(var(--border));
   padding-left: 1rem;
   margin: 1.5rem 0;
-  color: #4B5D6B;
+  color: hsl(var(--foreground-secondary));
   font-style: italic;
-  background: #EDF1F5;
+  background: hsl(var(--secondary));
   padding: 1rem;
   border-radius: 0.5rem;
 }
 
 .prose code {
-  background-color: #EDF1F5;
-  color: #1F2933;
+  background-color: hsl(var(--secondary));
+  color: var(--text-strong);
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-  border: 1px solid #D6DEE6;
+  border: 1px solid hsl(var(--border));
 }
 
 .prose pre {
-  background-color: #EDF1F5;
-  color: #1F2933;
+  background-color: hsl(var(--secondary));
+  color: var(--text-strong);
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   margin: 1.5rem 0;
-  border: 1px solid #D6DEE6;
+  border: 1px solid hsl(var(--border));
   position: relative;
   max-width: 100%;
 }
@@ -279,20 +315,20 @@ pre[class*="language-"] {
 }
 
 .prose a {
-  color: #3A6EA5;
+  color: hsl(var(--accent-primary));
   text-decoration: underline;
   text-decoration-color: hsl(211 48% 44% / 0.35);
   transition: all 0.2s ease;
 }
 
 .prose a:hover {
-  color: #2F5F90;
-  text-decoration-color: #2F5F90;
+  color: hsl(var(--accent-primary-hover));
+  text-decoration-color: hsl(var(--accent-primary-hover));
 }
 
 .prose hr {
   border: none;
-  border-top: 1px solid #D6DEE6;
+  border-top: 1px solid hsl(var(--border));
   margin: 2rem 0;
 }
 
@@ -306,22 +342,22 @@ pre[class*="language-"] {
 }
 
 .prose th {
-  background: #EDF1F5;
-  color: #1F2933;
+  background: hsl(var(--secondary));
+  color: var(--text-strong);
   padding: 0.75rem;
   text-align: left;
-  border: 1px solid #D6DEE6;
+  border: 1px solid hsl(var(--border));
   font-weight: 600;
 }
 
 .prose td {
   padding: 0.75rem;
-  border: 1px solid #D6DEE6;
-  color: #1F2933;
+  border: 1px solid hsl(var(--border));
+  color: var(--text-strong);
 }
 
 .prose tbody tr:nth-child(even) {
-  background: #F6F8FA;
+  background: hsl(var(--background));
 }
 
 /* Ensure first element doesn't have top margin */
@@ -336,13 +372,13 @@ pre[class*="language-"] {
 
 /* Syntax highlighting with highlight.js — light, low-contrast */
 .prose pre {
-  background: #EDF1F5 !important;
-  border: 1px solid #D6DEE6;
+  background: hsl(var(--secondary)) !important;
+  border: 1px solid hsl(var(--border));
 }
 
 .prose code.hljs {
-  background: #EDF1F5;
-  color: #1F2933;
+  background: hsl(var(--secondary));
+  color: var(--text-strong);
   padding: 0;
 }
 
@@ -350,7 +386,7 @@ pre[class*="language-"] {
   display: block;
   padding: 1rem;
   overflow-x: auto;
-  background: #EDF1F5;
+  background: hsl(var(--secondary));
   border-radius: 0.5rem;
 }
 
