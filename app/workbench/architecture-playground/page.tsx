@@ -6,7 +6,7 @@ import Image from "next/image"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
-import { shareOrCopyUrl } from "@/lib/share-client"
+import { buildLinkedInShareHref, shareOrCopyUrl } from "@/lib/share-client"
 import {
   architectureLearningData,
   type ArchitectureContent,
@@ -617,9 +617,7 @@ export default function ArchitecturePlaygroundPage() {
     setShareUrl(window.location.href)
   }, [])
 
-  const linkedInShareHref = shareUrl
-    ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
-    : ""
+  const linkedInShareHref = shareUrl ? buildLinkedInShareHref(shareUrl, architectureLearningData.title) : ""
   const xShareHref = shareUrl
     ? `https://x.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(architectureLearningData.title)}`
     : ""

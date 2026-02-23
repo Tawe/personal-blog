@@ -7,7 +7,7 @@ import { Check, Copy, Share2, Linkedin, Calendar, Clock3, ArrowDown } from "luci
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
-import { shareOrCopyUrl } from "@/lib/share-client"
+import { buildLinkedInShareHref, shareOrCopyUrl } from "@/lib/share-client"
 import "./rag-atlas-theme.css"
 import {
   RAG_PATTERNS,
@@ -816,7 +816,7 @@ export function RagAtlasClient() {
   }, [])
 
   const linkedInShareHref = shareUrl
-    ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
+    ? buildLinkedInShareHref(shareUrl, "The RAG Atlas: A Visual Guide to Retrieval Patterns")
     : ""
   const xShareHref = shareUrl
     ? `https://x.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent("The RAG Atlas: A Visual Guide to Retrieval Patterns")}`

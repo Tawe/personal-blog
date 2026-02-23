@@ -6,7 +6,7 @@ import Image from "next/image"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { Button } from "@/components/ui/button"
-import { shareOrCopyUrl } from "@/lib/share-client"
+import { buildLinkedInShareHref, shareOrCopyUrl } from "@/lib/share-client"
 import { AlertTriangle, ArrowDown, Calendar, Check, CheckCircle2, ChevronRight, Circle, Clock3, Copy, Equal, Eye, Gauge, Linkedin, ShieldAlert, Sparkles, TestTubeDiagonal } from "lucide-react"
 
 type SystemStage = {
@@ -414,9 +414,7 @@ export function AiEvalsExplainerClient() {
     if (!constraintsChosen) lastConstraintKeyRef.current = ""
   }, [constraintKey, constraintsChosen])
 
-  const linkedInShareHref = currentUrl
-    ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`
-    : ""
+  const linkedInShareHref = currentUrl ? buildLinkedInShareHref(currentUrl, shareText) : ""
   const xShareHref = currentUrl
     ? `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(shareText)}`
     : ""
@@ -424,7 +422,7 @@ export function AiEvalsExplainerClient() {
   const handleShare = async () => {
     if (!currentUrl || shareState === "copying") return
     setShareState("copying")
-    await shareOrCopyUrl(currentUrl, shareText)
+    await shareOrCopyUrl(shareText, currentUrl)
     setShareState("copied")
     window.setTimeout(() => setShareState("idle"), 1500)
   }

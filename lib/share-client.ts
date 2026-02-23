@@ -54,3 +54,15 @@ export async function shareOrCopyUrl(title: string, url: string): Promise<ShareA
   await copyTextWithFallback(url)
   return "copied"
 }
+
+export function buildLinkedInShareHref(url: string, copy?: string): string {
+  const safeUrl = url.trim()
+  if (!safeUrl) return ""
+
+  if (!copy?.trim()) {
+    return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(safeUrl)}`
+  }
+
+  const shareText = `${copy.trim()}\n\n${safeUrl}`
+  return `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareText)}`
+}
