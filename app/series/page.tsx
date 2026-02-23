@@ -3,11 +3,15 @@ import { ArrowRight } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { getAllSeries } from "@/lib/series-utils"
+import type { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo-metadata"
 
-export const metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Series | John Munn",
-  description: "Narrative article series across leadership and technical architecture.",
-}
+  description: "Narrative article series across leadership strategy and technical architecture.",
+  path: "/series",
+  keywords: ["article series", "technical leadership series", "architecture series"],
+})
 
 export default function SeriesIndexPage() {
   const allSeries = getAllSeries()

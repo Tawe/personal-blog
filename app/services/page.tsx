@@ -1,39 +1,17 @@
 import { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo-metadata"
 import { ContentLayout } from "@/components/content-layout"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { GraduationCap, ArrowRight, CheckCircle, Dice6, Target, Lightbulb, MessageSquare } from "lucide-react"
 
-export const metadata: Metadata = {
-  title: "Services - Technical Leadership & Team Development",
-  description: "D&D Team Building for technical organizations and Technical Leadership Mentoring. Transform your teams and accelerate your leadership journey.",
-  openGraph: {
-    title: "Services - Technical Leadership & Team Development | John Munn",
-    description: "D&D Team Building for technical organizations and Technical Leadership Mentoring.",
-    url: "https://johnmunn.tech/services",
-    siteName: "John Munn - Technical Leader",
-    images: [
-      {
-        url: "/me.jpeg",
-        width: 1200,
-        height: 630,
-        alt: "John Munn - Services",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Services - Technical Leadership & Team Development | John Munn",
-    description: "D&D Team Building and Technical Leadership Mentoring.",
-    images: ["/me.jpeg"],
-  },
-  alternates: {
-    canonical: "https://johnmunn.tech/services",
-  },
-}
+export const metadata: Metadata = buildMetadata({
+  title: "Services | Technical Leadership & Team Development",
+  description: "Technical leadership mentoring and team development services for engineering organizations.",
+  path: "/services",
+  keywords: ["technical leadership mentoring", "engineering team development", "team building for engineers"],
+})
 
 export default function ServicesPage() {
   return (
@@ -234,4 +212,3 @@ export default function ServicesPage() {
     </div>
   )
 }
-

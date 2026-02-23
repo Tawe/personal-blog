@@ -7,6 +7,7 @@ import { ProfilePageSchema } from "@/components/profile-page-schema"
 import { GoogleAnalytics } from "@/components/google-analytics"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DARK_MODE_ENABLED } from "@/lib/feature-flags"
+import { PageSchema } from "@/components/page-schema"
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -21,6 +22,14 @@ export const metadata: Metadata = {
   },
   description:
     "Engineering leader and writer. Systems, teams, and the work of building things that last. Open to conversation — mentoring, collaboration, and exchanging ideas.",
+  keywords: [
+    "engineering leadership",
+    "technical architecture",
+    "AI evaluation",
+    "RAG systems",
+    "software strategy",
+    "technical writing",
+  ],
   authors: [{ name: "John Munn" }],
   creator: "John Munn",
   publisher: "John Munn",
@@ -135,6 +144,7 @@ export default function RootLayout({
           forceTheme={DARK_MODE_ENABLED ? undefined : "light"}
         >
           <GoogleAnalytics />
+          <PageSchema />
           <div id="main-content">
             {children}
           </div>

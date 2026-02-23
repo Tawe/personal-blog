@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Boxes, GitCompareArrows } from "lucide-react"
+import { Boxes, GitCompareArrows, ClipboardCheck } from "lucide-react"
 
 const experiences = [
   {
@@ -17,6 +17,13 @@ const experiences = [
     description:
       "Explore retrieval patterns with node inspection, animated dataflow, and simulation controls for latency/cost/accuracy tradeoffs.",
     icon: Boxes,
+  },
+  {
+    title: "Interactive AI Evals Explainer",
+    href: "/interactive/ai-evals-explainer",
+    description:
+      "Learn how to evaluate RAG systems, agents, and copilots with practical tradeoffs, failure modes, and maturity stages.",
+    icon: ClipboardCheck,
   },
 ]
 

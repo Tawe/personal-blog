@@ -5,6 +5,7 @@ import { generateSlug } from "@/lib/slug-utils"
 import fs from "fs"
 import path from "path"
 import { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo-metadata"
 
 // Generate static params for all projects
 export async function generateStaticParams() {
@@ -27,67 +28,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const project = getProjectLightweight({ contentDir, slug })
 
   if (!project) {
-    return {
+    return buildMetadata({
       title: "Project Not Found",
       description: "The requested project could not be found.",
-    }
+      path: `/workbench/${slug}`,
+      noindex: true,
+    })
   }
 
   const title = `${project.title} | Workbench`
   const description = project.description
-  const url = `https://johnmunn.tech/workbench/${slug}`
 
-  return {
+  return buildMetadata({
     title,
     description,
-    keywords: project.tags || [],
-    authors: [{ name: "John Munn" }],
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: "John Munn - Technical Leader",
-      images: project.featured_image
-        ? [
-            {
-              url: project.featured_image,
-              width: 1200,
-              height: 630,
-              alt: project.title,
-            },
-          ]
-        : [
-            {
-              url: "/me.jpeg",
-              width: 1200,
-              height: 630,
-              alt: project.title,
-            },
-          ],
-      locale: "en_US",
-      type: "article",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: project.featured_image ? [project.featured_image] : ["/me.jpeg"],
-    },
-    alternates: {
-      canonical: url,
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-  }
+    path: `/workbench/${slug}`,
+    keywords: [...(project.tags || []), "interactive engineering", "build log"],
+    image: project.featured_image || "/me.jpeg",
+    imageAlt: project.title,
+    openGraphType: "article",
+  })
 }
 
 async function loadProject(slug: string) {
@@ -110,4 +70,3 @@ export default async function ProjectPage({
 
   return <ProjectClientPage project={project} />
 }
-

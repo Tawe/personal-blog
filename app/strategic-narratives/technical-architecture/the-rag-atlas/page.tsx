@@ -1,54 +1,21 @@
 import type { Metadata } from "next"
 import { RagAtlasClient } from "./RagAtlasClient"
 import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
+import { buildMetadata } from "@/lib/seo-metadata"
 
 const ATLAS_URL = "https://johnmunn.tech/strategic-narratives/technical-architecture/the-rag-atlas"
 const SOURCE_ARTICLE_URL =
   "https://johnmunn.tech/strategic-narratives/technical-architecture/the-rag-atlas-a-visual-guide-to-retrieval-patterns"
 const SOURCE_ARTICLE_IMAGE = "/ragatlas.png"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "The RAG Atlas: A Visual Guide to Retrieval Patterns",
-  description:
-    "Interactive visual reference covering ten RAG patterns, with flow diagrams, node-by-node inspection, and a live simulator for latency/cost/accuracy tradeoffs.",
-  keywords: ["RAG", "Retrieval Augmented Generation", "LLM", "Vector Search", "AI Architecture", "Machine Learning"],
-  authors: [{ name: "John Munn" }],
-  category: "technology",
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    title: "The RAG Atlas: A Visual Guide to Retrieval Patterns",
-    description:
-      "Ten RAG architectures mapped visually with flow diagrams, node inspector, and a live simulator.",
-    url: ATLAS_URL,
-    siteName: "John Munn - Technical Leader",
-    images: [
-      {
-        url: SOURCE_ARTICLE_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: "The RAG Atlas — interactive retrieval pattern diagrams",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-    publishedTime: "2026-02-19T00:00:00Z",
-    modifiedTime: "2026-02-20T00:00:00Z",
-    authors: ["John Munn"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "The RAG Atlas: A Visual Guide to Retrieval Patterns",
-    description:
-      "Ten RAG architectures mapped visually with flow diagrams, node inspector, and a live simulator.",
-    images: [SOURCE_ARTICLE_IMAGE],
-  },
-  alternates: {
-    canonical: ATLAS_URL,
-  },
-}
+  description: "Interactive visual reference covering ten RAG patterns, with flow diagrams, node-by-node inspection, and a live simulator for latency/cost/accuracy tradeoffs.",
+  path: "/strategic-narratives/technical-architecture/the-rag-atlas",
+  keywords: ["RAG", "retrieval augmented generation", "AI architecture", "vector search", "LLM systems"],
+  image: SOURCE_ARTICLE_IMAGE,
+  imageAlt: "The RAG Atlas — interactive retrieval pattern diagrams",
+})
 
 export default function RagAtlasPage() {
   const structuredData = {

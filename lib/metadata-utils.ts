@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { ArticleMetadata } from "./article-utils"
+import { buildMetadata } from "./seo-metadata"
 
 export interface GenerateArticleMetadataOptions {
   article: ArticleMetadata | null
@@ -27,73 +28,44 @@ export function generateArticleMetadata(
   } = options
 
   if (!article) {
-    return {
+    return buildMetadata({
       title: "Article Not Found",
       description: "The requested article could not be found.",
-    }
+      path: `${basePath}/${slug}`,
+      noindex: true,
+    })
   }
 
   const title = article.title || defaultTitle
   const description = article.excerpt || article.subtitle || defaultDescription
   const url = `https://johnmunn.tech${basePath}/${slug}`
 
-  return {
+  const metadata = buildMetadata({
     title,
     description,
-    keywords: article.tags || [],
-    authors: [{ name: "John Munn" }],
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: "John Munn - Technical Leader",
-      images: article.featured_image
-        ? [
-            {
-              url: article.featured_image,
-              width: 1200,
-              height: 630,
-              alt: title,
-            },
-          ]
-        : [
-            {
-              url: "/me.jpeg",
-              width: 1200,
-              height: 630,
-              alt: title,
-            },
-          ],
-      locale: "en_US",
-      type: "article",
-      publishedTime: article.date instanceof Date
-        ? article.date.toISOString()
-        : article.date?.includes('T') ? article.date : `${article.date}T00:00:00Z`,
-      authors: ["John Munn"],
-      tags: article.tags || [],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: article.featured_image
-        ? [article.featured_image]
-        : ["/me.jpeg"],
-    },
-    alternates: {
-      canonical: url,
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-  } as Metadata
-}
+    path: `${basePath}/${slug}`,
+    keywords: [
+      ...(article.tags || []),
+      `${sectionName.toLowerCase()} article`,
+      "technical explainer",
+      "engineering insights",
+    ],
+    image: article.featured_image || "/me.jpeg",
+    imageAlt: title,
+    openGraphType: "article",
+  })
 
+  const openGraph = metadata.openGraph as Record<string, unknown> | undefined
+  if (openGraph && openGraph.type === "article") {
+    const publishedDate =
+      typeof article.date === "string"
+        ? (article.date.includes("T") ? article.date : `${article.date}T00:00:00Z`)
+        : ""
+
+    openGraph.publishedTime = publishedDate
+    openGraph.authors = ["John Munn"]
+    openGraph.tags = article.tags || []
+  }
+
+  return metadata
+}

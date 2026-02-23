@@ -1,10 +1,19 @@
 export function WebsiteSchema() {
   const websiteSchema = {
     "@context": "https://schema.org",
+    "@id": "https://johnmunn.tech/#website",
     "@type": "WebSite",
     "name": "John Munn - Engineering leader and writer",
     "url": "https://johnmunn.tech",
+    "inLanguage": "en-US",
     "description": "Engineering leader and writer. Systems, teams, and the work of building things that last. Open to conversation — mentoring, collaboration, and exchanging ideas.",
+    "about": [
+      "Engineering leadership",
+      "Technical architecture",
+      "AI systems evaluation",
+      "Software strategy",
+      "Team development"
+    ],
     "publisher": {
       "@type": "Person",
       "name": "John Munn",
@@ -37,4 +46,3 @@ export function WebsiteSchema() {
     />
   )
 }
-

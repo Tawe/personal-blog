@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { DateText } from "@/components/date-text"
 import { getAllSeries, getSeriesBySlug } from "@/lib/series-utils"
+import { buildMetadata } from "@/lib/seo-metadata"
 
 interface SeriesDetailPageProps {
   params: Promise<{ slug: string }>
@@ -19,17 +20,20 @@ export async function generateMetadata({ params }: SeriesDetailPageProps): Promi
   const { slug } = await params
   const series = getSeriesBySlug(slug)
   if (!series) {
-    return {
-      title: "Series not found | John Munn",
-    }
+    return buildMetadata({
+      title: "Series Not Found | John Munn",
+      description: "The requested series could not be found.",
+      path: `/series/${slug}`,
+      noindex: true,
+    })
   }
 
-  return {
+  return buildMetadata({
     title: `${series.name} | Series | John Munn`,
-    description:
-      series.description ||
-      `Read the ${series.name} series in order.`,
-  }
+    description: series.description || `Read the ${series.name} series in order.`,
+    path: `/series/${slug}`,
+    keywords: [series.name, "article series", "technical narrative"],
+  })
 }
 
 export default async function SeriesDetailPage({ params }: SeriesDetailPageProps) {

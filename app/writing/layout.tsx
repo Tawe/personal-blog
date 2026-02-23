@@ -1,24 +1,12 @@
 import { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo-metadata"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Writing | John Munn",
-  description: "Leadership and technical architecture writing. One body of work on teams, systems, and complex challenges.",
-  openGraph: {
-    title: "Writing | John Munn",
-    description: "Leadership and technical architecture writing. One body of work on teams, systems, and complex challenges.",
-    url: "https://johnmunn.tech/writing",
-    siteName: "John Munn",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Writing | John Munn",
-    description: "Leadership and technical architecture writing.",
-  },
-  alternates: {
-    canonical: "https://johnmunn.tech/writing",
-  },
-}
+  description: "Leadership and technical architecture writing. One body of work on teams, systems, tradeoffs, and complex challenges.",
+  path: "/writing",
+  keywords: ["technical writing", "engineering leadership writing", "technical architecture articles"],
+})
 
 export default function WritingLayout({ children }: { children: React.ReactNode }) {
   return children
