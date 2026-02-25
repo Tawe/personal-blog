@@ -8,6 +8,10 @@ interface ArticleStructuredDataProps {
     featured_image?: string
     reading_time: number
     updated?: string
+    medium_link?: string
+    devto_link?: string
+    substack_link?: string
+    linkedin_link?: string
   }
   articleUrl: string
   articleSection: string
@@ -28,15 +32,30 @@ export function ArticleStructuredData({
   type = 'Article'
 }: ArticleStructuredDataProps) {
   const baseUrl = "https://johnmunn.tech"
+  const relatedProfiles = [
+    article.medium_link,
+    article.devto_link,
+    article.substack_link,
+    article.linkedin_link,
+  ].filter(Boolean) as string[]
+  const normalizedImageUrl = article.featured_image
+    ? (article.featured_image.startsWith("http")
+      ? article.featured_image
+      : `${baseUrl}${article.featured_image}`)
+    : undefined
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": type,
+    "@id": `${articleUrl}#article`,
     "headline": article.title,
+    "name": article.title,
     "description": article.excerpt,
     "url": articleUrl,
     "datePublished": toISODateTime(article.date),
     "dateModified": toISODateTime(article.updated || article.date),
+    "inLanguage": "en-US",
+    "isAccessibleForFree": true,
     "author": {
       "@type": "Person",
       "name": "John Munn",
@@ -54,18 +73,33 @@ export function ArticleStructuredData({
       "@type": "WebPage",
       "@id": articleUrl
     },
+    "about": article.tags.map((tag) => ({
+      "@type": "Thing",
+      "name": tag
+    })),
     "keywords": article.tags.join(", "),
     "articleSection": articleSection,
     "wordCount": article.reading_time * 200,
     "timeRequired": `PT${article.reading_time}M`,
-    ...(article.featured_image && {
+    ...(normalizedImageUrl && {
       "image": {
         "@type": "ImageObject",
-        "url": article.featured_image.startsWith('http') ? article.featured_image : `${baseUrl}${article.featured_image}`,
+        "url": normalizedImageUrl,
         "width": 1200,
         "height": 630
       }
-    })
+    }),
+    ...(relatedProfiles.length > 0 && {
+      "sameAs": relatedProfiles,
+      "citation": relatedProfiles.map((url) => ({
+        "@type": "CreativeWork",
+        "url": url
+      }))
+    }),
+    "potentialAction": {
+      "@type": "ReadAction",
+      "target": articleUrl
+    }
   }
 
   return (
@@ -77,4 +111,3 @@ export function ArticleStructuredData({
     />
   )
 }
-

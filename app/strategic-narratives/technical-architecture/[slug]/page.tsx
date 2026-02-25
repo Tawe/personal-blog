@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { ArticleClientPage } from "./ArticleClientPage"
 import { ArticleStructuredData } from "@/components/article-structured-data"
+import { FAQStructuredData } from "@/components/faq-structured-data"
 import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import { getArticle } from "@/lib/article-utils"
 import { generateArticleMetadata } from "@/lib/metadata-utils"
@@ -36,6 +37,36 @@ interface Article {
 interface ArticleSeriesContext {
   series: Series
   currentIndex: number
+}
+
+const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "how-to-architect-secure-ai-agents-before-they-architect-your-incident": [
+    {
+      question: "Why are AI agents riskier than chatbots?",
+      answer:
+        "Chatbots typically return text and stop, while agents can plan, call tools, and change systems. That additional autonomy introduces security risk if permissions and controls are not tightly governed.",
+    },
+    {
+      question: "What is the first security control to implement for an AI agent?",
+      answer:
+        "Start with least-privilege access and a dedicated non-human identity. Scope tools and permissions so the agent can only perform approved actions in approved environments.",
+    },
+    {
+      question: "How should high-risk agent actions be handled?",
+      answer:
+        "High-risk actions such as data deletion or production-impacting changes should require explicit human approval, with full logging of who approved, what changed, and why.",
+    },
+    {
+      question: "How do teams reduce prompt-injection risk in agent systems?",
+      answer:
+        "Treat external or retrieved content as untrusted input, and place policy enforcement between model output and tool execution so instructions from untrusted text cannot directly trigger privileged actions.",
+    },
+    {
+      question: "What should be monitored after deployment?",
+      answer:
+        "Monitor tool-call patterns, parameters, and outcomes. Alert on behavioral drift, especially when an agent starts invoking tools or capabilities it rarely or never used before.",
+    },
+  ],
 }
 
 // Generate static params for all articles
@@ -128,6 +159,7 @@ export default async function TechnicalArchitectureArticlePage({
         articleSection="Technical Architecture"
         type="BlogPosting"
       />
+      <FAQStructuredData items={ARTICLE_FAQ_BY_SLUG[slug] || []} />
       <BreadcrumbSchema 
         items={[
           { name: "Home", url: "/" },
