@@ -4,6 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import dynamic from "next/dynamic"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { Check, Share2 } from "lucide-react"
 import { buildLinkedInShareHref, shareOrCopyUrl } from "@/lib/share-client"
 
 const AuthAtlasStageV2 = dynamic(
@@ -179,7 +180,11 @@ export function AuthAtlasClient({ initialMethodId }: AuthAtlasClientProps) {
                     onClick={handleShare}
                     disabled={shareState === "copying"}
                   >
-                    <span aria-hidden="true">{shareState === "copied" ? "✓" : "↗"}</span>
+                    {shareState === "copied" ? (
+                      <Check className="h-4 w-4 text-green-500" aria-hidden="true" />
+                    ) : (
+                      <Share2 className="h-4 w-4" aria-hidden="true" />
+                    )}
                     <span>{shareState === "copied" ? "Copied" : "Share"}</span>
                   </button>
                   <span className="inline-flex h-9 items-center">

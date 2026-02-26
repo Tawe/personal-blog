@@ -7,7 +7,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { Button } from "@/components/ui/button"
 import { buildLinkedInShareHref, shareOrCopyUrl } from "@/lib/share-client"
-import { AlertTriangle, ArrowDown, Calendar, Check, CheckCircle2, ChevronRight, Circle, Clock3, Copy, Equal, Eye, Gauge, Linkedin, ShieldAlert, Sparkles, TestTubeDiagonal } from "lucide-react"
+import { AlertTriangle, ArrowDown, Calendar, Check, CheckCircle2, ChevronRight, Circle, Clock3, Equal, Eye, Gauge, Linkedin, Share2, ShieldAlert, Sparkles, TestTubeDiagonal } from "lucide-react"
 
 type SystemStage = {
   id: string
@@ -491,7 +491,7 @@ export function AiEvalsExplainerClient() {
                       </>
                     ) : (
                       <>
-                        <Copy className="mr-2 h-4 w-4" />
+                        <Share2 className="mr-2 h-4 w-4" />
                         Share
                       </>
                     )}
