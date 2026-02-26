@@ -532,19 +532,16 @@ export function AiEvalsExplainerClient() {
                     <span>12 min read</span>
                   </div>
                 </div>
-                <p className="max-w-3xl text-base leading-7 text-text-body">
-                  A practical guide to evaluating RAG systems, agents, and copilots without hype.
-                </p>
               </div>
 
-              <div className="relative group">
-                <div className="relative overflow-hidden rounded-xl border border-[#D6DEE6] bg-white shadow-[0_18px_50px_rgba(15,23,42,0.18)] transition duration-300 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.2)]">
+              <div className="relative">
+                <div className="relative overflow-hidden rounded-xl border border-[#D6DEE6] bg-white shadow-[0_18px_50px_rgba(15,23,42,0.18)]">
                   <div className="relative aspect-[16/10] md:aspect-[16/11] w-full">
                     <Image
                       src="/evalforrealsystems.png"
                       alt="AI evals for real systems interface preview"
                       fill
-                      className="object-cover transition duration-500"
+                      className="object-cover"
                       priority
                     />
                   </div>
