@@ -26,7 +26,8 @@ const nextConfig = {
   experimental: {
     // Enable static generation for dynamic routes
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-    optimizeCss: true,
+    // Keep disabled unless `critters` is installed in all build environments.
+    optimizeCss: false,
   },
   // Optimize for Vercel
   compress: true,
