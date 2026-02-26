@@ -70,7 +70,7 @@ export function SiteFooter() {
 
           {/* Navigation */}
           <div className="space-y-4">
-            <h2 className="footer-heading text-text-secondary">Navigation</h2>
+            <h2 className="footer-heading text-text-primary">Navigation</h2>
             <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-y-1">
               {["Home", "Writing", "Projects", "About", "Contact"].map((name, i) => (
                 <span key={name} className="inline-flex items-center">
@@ -88,7 +88,7 @@ export function SiteFooter() {
 
           {/* Connect */}
           <div className="space-y-4">
-            <h2 className="footer-heading text-text-secondary">Connect</h2>
+            <h2 className="footer-heading text-text-primary">Connect</h2>
             <div className="flex flex-wrap gap-2">
               {[
                 { href: "https://www.linkedin.com/in/john-munn-bbab434b/", label: "LinkedIn", Icon: Linkedin },

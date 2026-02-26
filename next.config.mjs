@@ -26,6 +26,7 @@ const nextConfig = {
   experimental: {
     // Enable static generation for dynamic routes
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    optimizeCss: true,
   },
   // Optimize for Vercel
   compress: true,

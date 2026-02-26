@@ -112,19 +112,6 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* Preconnect to external domains for faster loading */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        {/* DNS prefetch for external resources */}
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-        {/* Prefetch next likely navigations (low priority; avoids preload warning) */}
-        <link rel="prefetch" href="/writing" />
-        <link rel="prefetch" href="/projects" />
-        <link rel="prefetch" href="/about" />
-        <link rel="prefetch" href="/contact" />
         <PersonSchema />
         <WebsiteSchema />
         <ProfilePageSchema />
@@ -141,7 +128,7 @@ export default function RootLayout({
           defaultTheme={DARK_MODE_ENABLED ? "system" : "light"}
           enableSystem={DARK_MODE_ENABLED}
           disableTransitionOnChange
-          forceTheme={DARK_MODE_ENABLED ? undefined : "light"}
+          forcedTheme={DARK_MODE_ENABLED ? undefined : "light"}
         >
           <GoogleAnalytics />
           <PageSchema />

@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Boxes, GitCompareArrows, ClipboardCheck } from "lucide-react"
+import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound } from "lucide-react"
 
 const experiences = [
   {
@@ -24,6 +24,13 @@ const experiences = [
     description:
       "Learn how to evaluate RAG systems, agents, and copilots with practical tradeoffs, failure modes, and maturity stages.",
     icon: ClipboardCheck,
+  },
+  {
+    title: "Auth Atlas",
+    href: "/auth-atlas",
+    description:
+      "Learn authentication choices with scenario pickers, interactive auth flows, compare mode, and a guided recommendation wizard.",
+    icon: KeyRound,
   },
 ]
 
