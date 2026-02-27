@@ -1,10 +1,11 @@
 ---
-title: "Vector Embeddings Explained (with hands on demo)"
+title: "Vector Embeddings Explained (with Hands-On Demo)"
 subtitle: "Why similar embedding setups can behave very differently in real systems"
 date: "2026-02-23"
 excerpt: "A practical explanation of vector embeddings, distance metrics, and why similar setups can behave differently in real systems, with a hands-on demo."
-tags: ["AI", "Machine Learning", "Architecture", "Learning"]
+tags: ["AI", "Machine Learning", "Vector Embeddings", "Semantic Search", "RAG"]
 reading_time: 6
+featured_image: /ragatlas.png?height=400&width=800
 devto_link: https://dev.to/tawe/vector-embeddings-explained-with-hands-on-demo-56gp
 code_languages: []
 draft: false
