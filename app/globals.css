@@ -326,6 +326,25 @@ pre[class*="language-"] {
   text-decoration-color: hsl(var(--accent-primary-hover));
 }
 
+.prose .codepen-embed {
+  margin: 2rem 0;
+}
+
+.prose .codepen-embed iframe {
+  width: 100%;
+  aspect-ratio: 100 / 42;
+  min-height: 360px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
+  background: hsl(var(--card));
+}
+
+.prose .codepen-embed-fallback {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
 .prose hr {
   border: none;
   border-top: 1px solid hsl(var(--border));
