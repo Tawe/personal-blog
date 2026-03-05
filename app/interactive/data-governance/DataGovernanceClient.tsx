@@ -631,10 +631,10 @@ export default function DataGovernancePage() {
     return TECHNIQUES.filter((technique) => technique.stages.includes(effectiveTechniqueStageFilter))
   }, [effectiveTechniqueStageFilter])
 
-  const shareText = 'Data Systems Atlas'
+  const shareText = 'Data Systems Atlas: How data moves, breaks, and gets governed'
   const linkedInShareHref = currentUrl ? buildLinkedInShareHref(currentUrl, shareText) : ''
   const xShareHref = currentUrl
-    ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${shareText} ${currentUrl}`)}`
+    ? `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(shareText)}`
     : ''
 
   useEffect(() => {

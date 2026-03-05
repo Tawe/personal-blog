@@ -6,10 +6,10 @@ import { buildMetadata } from '@/lib/seo-metadata'
 const SHARE_IMAGE = '/datasystemsatlas.png'
 const PAGE_URL = 'https://johnmunn.tech/interactive/data-governance'
 const PAGE_DESCRIPTION =
-  'Interactive map of the modern data lifecycle. Explore techniques, architecture tradeoffs, failure propagation, and governance controls stage by stage.'
+  'How data moves, breaks, and gets governed. Explore lifecycle stages, architecture tradeoffs, failure propagation, and practical controls.'
 
 export const metadata: Metadata = buildMetadata({
-  title: 'Data Systems Atlas',
+  title: 'Data Systems Atlas: How Data Moves, Breaks, and Gets Governed',
   description: PAGE_DESCRIPTION,
   path: '/interactive/data-governance',
   keywords: [
@@ -34,7 +34,7 @@ export default function InteractiveDataGovernancePage() {
         '@type': 'WebPage',
         '@id': `${PAGE_URL}#webpage`,
         url: PAGE_URL,
-        name: 'Data Systems Atlas',
+        name: 'Data Systems Atlas: How Data Moves, Breaks, and Gets Governed',
         description: PAGE_DESCRIPTION,
         isPartOf: {
           '@type': 'WebSite',
@@ -48,7 +48,7 @@ export default function InteractiveDataGovernancePage() {
       {
         '@type': 'TechArticle',
         '@id': `${PAGE_URL}#techarticle`,
-        headline: 'Data Systems Atlas',
+        headline: 'Data Systems Atlas: How Data Moves, Breaks, and Gets Governed',
         description: PAGE_DESCRIPTION,
         author: {
           '@type': 'Person',

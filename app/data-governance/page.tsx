@@ -5,9 +5,9 @@ import { buildMetadata } from '@/lib/seo-metadata'
 const SHARE_IMAGE = '/datasystemsatlas.png'
 
 export const metadata: Metadata = buildMetadata({
-  title: 'Data Systems Atlas',
+  title: 'Data Systems Atlas: How Data Moves, Breaks, and Gets Governed',
   description:
-    'Interactive map of the modern data lifecycle. Explore techniques, architecture tradeoffs, failure propagation, and governance controls stage by stage.',
+    'How data moves, breaks, and gets governed. Explore lifecycle stages, architecture tradeoffs, failure propagation, and practical controls.',
   path: '/interactive/data-governance',
   keywords: [
     'data governance',
