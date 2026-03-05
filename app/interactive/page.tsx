@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound } from "lucide-react"
+import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound, Database } from "lucide-react"
 
 const experiences = [
   {
@@ -24,6 +24,13 @@ const experiences = [
     description:
       "Learn how to evaluate RAG systems, agents, and copilots with practical tradeoffs, failure modes, and maturity stages.",
     icon: ClipboardCheck,
+  },
+  {
+    title: "Data Management & Governance: Lifecycle + Techniques",
+    href: "/interactive/data-governance",
+    description:
+      "Explore a full data lifecycle stepper, governance controls, quality simulator, and pipeline builder with practical tradeoffs.",
+    icon: Database,
   },
   {
     title: "Auth Atlas",
