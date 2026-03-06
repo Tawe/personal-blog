@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import Link from "next/link"
 import Image from "next/image"
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 
 export default function AboutPage() {
   return (
@@ -14,6 +15,21 @@ export default function AboutPage() {
           <div className="container px-4 md:px-6">
             <div className="grid gap-8 lg:grid-cols-[1fr_320px] lg:gap-12 max-w-5xl mx-auto">
               <div className="flex flex-col justify-center space-y-6">
+                <BreadcrumbSchema
+                  items={[
+                    { name: "Home", url: "/" },
+                    { name: "About", url: "/about" },
+                  ]}
+                />
+                <nav aria-label="Breadcrumb" className="text-sm text-text-muted">
+                  <ol className="flex flex-wrap items-center gap-2">
+                    <li>
+                      <Link href="/" className="hover:text-accent-primary transition-colors">Home</Link>
+                    </li>
+                    <li aria-hidden="true">/</li>
+                    <li className="text-text-secondary">About</li>
+                  </ol>
+                </nav>
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl xl:text-5xl text-text-strong">
                   About
                 </h1>
@@ -38,6 +54,23 @@ export default function AboutPage() {
                     World of Artumin
                   </Link>
                   , where I explore strategic and leadership ideas through narrative.
+                </p>
+                <p className="text-text-body leading-relaxed">
+                  I also offer services for teams and leaders:{" "}
+                  <Link
+                    href="/services/team-building"
+                    className="text-accent-primary hover:text-accent-primary-hover underline underline-offset-2 font-medium"
+                  >
+                    D&D team building
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    href="/services/mentoring"
+                    className="text-accent-primary hover:text-accent-primary-hover underline underline-offset-2 font-medium"
+                  >
+                    technical leadership mentoring
+                  </Link>
+                  .
                 </p>
                 <p className="text-text-body leading-relaxed pt-2">
                   If you're interested in talking, about leadership, architecture, or a problem you're trying to untangle, the best next step is{" "}
