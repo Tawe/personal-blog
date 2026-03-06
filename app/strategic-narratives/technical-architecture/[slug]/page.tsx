@@ -40,6 +40,33 @@ interface ArticleSeriesContext {
 }
 
 const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "youre-probably-doing-typescript-wrong-but-im-here-to-help": [
+    {
+      question: "What is the main TypeScript mistake discussed in this article?",
+      answer:
+        "Treating TypeScript as runtime protection. The article emphasizes that TypeScript enforces compile-time constraints, while runtime validation is still required at system boundaries such as APIs, messages, environment variables, and database inputs.",
+    },
+    {
+      question: "Why does the article recommend using unknown at boundaries?",
+      answer:
+        "Using unknown forces explicit validation and narrowing before data is trusted. This prevents teams from using unsafe casts at boundaries and makes invalid assumptions visible earlier in the flow.",
+    },
+    {
+      question: "How does the article suggest modeling frontend and application state?",
+      answer:
+        "It recommends discriminated unions over optional-property state shapes. This makes invalid states unrepresentable and simplifies control flow by letting TypeScript narrow state cases explicitly.",
+    },
+    {
+      question: "Does TypeScript remove the need for tests?",
+      answer:
+        "No. The article argues that TypeScript shifts the testing portfolio. Teams can reduce low-value type-shape tests and focus more on state transitions, integration boundaries, and behavioral correctness.",
+    },
+    {
+      question: "Who is this TypeScript article for?",
+      answer:
+        "It is aimed at engineers and teams using TypeScript in real production systems who want practical guidance on boundaries, state modeling, readability, and long-term maintainability.",
+    },
+  ],
   "how-to-architect-secure-ai-agents-before-they-architect-your-incident": [
     {
       question: "Why are AI agents riskier than chatbots?",
