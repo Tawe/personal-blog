@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { ContentLayout } from "@/components/content-layout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -24,6 +24,43 @@ interface SharedArticleTemplateProps {
   breadcrumbLabel?: string
 }
 
+interface GistApiFile {
+  filename: string
+  language: string | null
+  content?: string
+  raw_url?: string
+  truncated?: boolean
+}
+
+interface GistApiResponse {
+  html_url: string
+  description: string | null
+  owner?: {
+    login?: string
+  }
+  files: Record<string, GistApiFile>
+}
+
+function extractGistId(gistEmbedValue: string): string | null {
+  const trimmed = gistEmbedValue.trim()
+  if (!trimmed) return null
+  const withoutQuery = trimmed.split("?")[0]
+  const noJsSuffix = withoutQuery.endsWith(".js")
+    ? withoutQuery.slice(0, -3)
+    : withoutQuery
+  const segments = noJsSuffix.split("/").filter(Boolean)
+  return segments.length ? segments[segments.length - 1] : null
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+}
+
 export function SharedArticleTemplate({
   article,
   seriesContext,
@@ -32,6 +69,7 @@ export function SharedArticleTemplate({
   backLabel = "Back to Writing",
   breadcrumbLabel = "Writing",
 }: SharedArticleTemplateProps) {
+  const articleRef = useRef<HTMLElement>(null)
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
   const [shareUrl, setShareUrl] = useState("")
@@ -49,6 +87,91 @@ export function SharedArticleTemplate({
   useEffect(() => {
     setShareUrl(window.location.href)
   }, [])
+
+  useEffect(() => {
+    const root = articleRef.current
+    if (!root) return
+
+    const placeholders = root.querySelectorAll<HTMLElement>("[data-gist-embed]")
+    placeholders.forEach(async (placeholder) => {
+      if (placeholder.dataset.gistHydrated === "true") return
+
+      placeholder.dataset.gistHydrated = "true"
+      const gistUrl = placeholder.dataset.gistEmbed?.trim()
+      const fallbackUrl = gistUrl?.replace(/\.js$/, "")
+      const gistId = gistUrl ? extractGistId(gistUrl) : null
+
+      if (!gistId) {
+        placeholder.innerHTML = fallbackUrl
+          ? `<p><a href="${fallbackUrl}" target="_blank" rel="noopener noreferrer">View gist</a></p>`
+          : `<p>Unable to load gist.</p>`
+        return
+      }
+
+      placeholder.innerHTML = `<p class="text-sm text-text-muted">Loading gist…</p>`
+
+      try {
+        const response = await fetch(`https://api.github.com/gists/${gistId}`)
+        if (!response.ok) {
+          throw new Error(`Failed to load gist: ${response.status}`)
+        }
+
+        const gist = (await response.json()) as GistApiResponse
+        const files = Object.values(gist.files || {})
+
+        if (!files.length) {
+          throw new Error("Gist has no files")
+        }
+
+        const fileBlocks = files
+          .map((file) => {
+            const content = file.content || ""
+            const languageLabel = file.language ? ` (${file.language})` : ""
+            const truncatedNotice = file.truncated && file.raw_url
+              ? `<p class="mt-2 text-xs text-text-muted">File truncated in API response. <a href="${file.raw_url}" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2">Open raw file</a>.</p>`
+              : ""
+
+            return `
+              <div class="mt-4">
+                <p class="text-xs font-medium text-text-muted">${escapeHtml(file.filename)}${escapeHtml(languageLabel)}</p>
+                <pre class="mt-2 overflow-x-auto rounded-md border border-border-subtle bg-bg-soft p-3 text-sm"><code>${escapeHtml(content)}</code></pre>
+                ${truncatedNotice}
+              </div>
+            `
+          })
+          .join("")
+
+        const owner = gist.owner?.login ? ` by ${escapeHtml(gist.owner.login)}` : ""
+        const title = gist.description ? escapeHtml(gist.description) : `Gist${owner}`
+
+        placeholder.innerHTML = `
+          <div class="my-4 rounded-lg border border-border-subtle bg-bg-paper p-4">
+            <p class="text-sm font-semibold text-text-strong">${title}</p>
+            <p class="mt-1 text-xs text-text-muted">
+              <a href="${gist.html_url}" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2">
+                View on GitHub Gist
+              </a>
+            </p>
+            ${fileBlocks}
+          </div>
+        `
+      } catch (error) {
+        console.error("Failed to render gist embed:", error)
+        if (fallbackUrl) {
+          placeholder.innerHTML = `
+            <p class="text-sm text-text-body">
+              Unable to load embedded gist.
+              <a href="${fallbackUrl}" target="_blank" rel="noopener noreferrer" class="ml-1 underline underline-offset-2 text-accent-primary hover:text-accent-primary-hover">
+                View on GitHub Gist
+              </a>
+            </p>
+          `
+        } else {
+          placeholder.innerHTML = `<p class="text-sm text-text-body">Unable to load embedded gist.</p>`
+        }
+      }
+    })
+  }, [article.slug, article.content])
 
   useEffect(() => {
     const loadRelatedArticles = async () => {
@@ -392,7 +515,7 @@ export function SharedArticleTemplate({
             )}
 
             {/* Article Content with Professional Typography */}
-            <article className="prose prose-blue max-w-none mb-12 prose-lg prose-headings:text-text-strong prose-p:text-text-body prose-p:leading-relaxed prose-strong:text-text-strong prose-code:text-accent-primary prose-code:bg-bg-soft prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-bg-soft prose-pre:border prose-pre:border-border-subtle prose-blockquote:border-l-accent-primary prose-blockquote:text-text-body">
+            <article ref={articleRef} className="prose prose-blue max-w-none mb-12 prose-lg prose-headings:text-text-strong prose-p:text-text-body prose-p:leading-relaxed prose-strong:text-text-strong prose-code:text-accent-primary prose-code:bg-bg-soft prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-bg-soft prose-pre:border prose-pre:border-border-subtle prose-blockquote:border-l-accent-primary prose-blockquote:text-text-body">
               <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
             </article>
 

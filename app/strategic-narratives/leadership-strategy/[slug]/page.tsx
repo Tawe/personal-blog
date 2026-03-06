@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { ArticleClientPage } from "./ArticleClientPage"
 import { ArticleStructuredData } from "@/components/article-structured-data"
+import { FAQStructuredData } from "@/components/faq-structured-data"
 import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import { getArticle } from "@/lib/article-utils"
 import { generateArticleMetadata } from "@/lib/metadata-utils"
@@ -36,6 +37,31 @@ interface Article {
 interface ArticleSeriesContext {
   series: Series
   currentIndex: number
+}
+
+const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "mental-models-a-senior-engineering-leader-uses-and-how-to-know-when-youre-using-the-wrong-one": [
+    {
+      question: "What is the central argument of this mental models article?",
+      answer:
+        "Senior leadership effectiveness comes less from collecting many frameworks and more from choosing the right model for the situation. Most failures come from applying a neat model to a messy reality.",
+    },
+    {
+      question: "How should engineering leaders use mental models in practice?",
+      answer:
+        "Use models as situational lenses: sense-making for ambiguity, reversibility for compounding decisions, risk and signal for early warnings, and alignment models for scaling decision quality.",
+    },
+    {
+      question: "What warning signs suggest the wrong leadership model is being used?",
+      answer:
+        "Common signals include analysis paralysis, permission-seeking behavior, green metrics with rising friction, and repeated claims that difficult decisions can always be fixed later.",
+    },
+    {
+      question: "Who is this leadership article written for?",
+      answer:
+        "The piece targets senior engineering leaders, including managers, directors, and technical leaders working across organizational complexity, ownership boundaries, and high-stakes decisions.",
+    },
+  ],
 }
 
 // Generate static params for all articles
@@ -128,6 +154,7 @@ export default async function LeadershipStrategyArticlePage({
         articleSection="Leadership & Strategy"
         type="BlogPosting"
       />
+      <FAQStructuredData items={ARTICLE_FAQ_BY_SLUG[slug] || []} />
       <BreadcrumbSchema 
         items={[
           { name: "Home", url: "/" },
