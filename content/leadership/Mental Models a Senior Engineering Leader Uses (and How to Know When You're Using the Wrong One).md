@@ -11,7 +11,7 @@ tags:
 reading_time: 5
 featured_image: /mentalmodels.png?height=400&width=800
 medium_link: https://medium.com/@johnmunn/mental-models-a-senior-engineering-leader-uses-5cebd38717ec
-devto_link:
+devto_link: https://dev.to/tawe/mental-models-a-senior-engineering-leader-uses-and-how-to-know-when-youre-using-the-wrong-one-58ln
 substack:
 draft: false
 ---
