@@ -31,12 +31,21 @@ function parseFrontmatter(content: string): {
   const draftMatch = text.match(/^draft:\s*(true|false)/m)
   if (draftMatch) result.draft = draftMatch[1] === 'true'
 
-  const tagsMatch = text.match(/^tags:\s*\[(.*?)\]/s)
-  if (tagsMatch) {
-    result.tags = tagsMatch[1]
+  const inlineTagsMatch = text.match(/^tags:\s*\[(.*?)\]\s*$/ms)
+  if (inlineTagsMatch) {
+    result.tags = inlineTagsMatch[1]
       .split(",")
       .map((t: string) => t.trim().replace(/^["']|["']$/g, ""))
       .filter(Boolean)
+  } else {
+    const blockTagsMatch = text.match(/^tags:\s*\n((?:\s*-\s*.+\n?)*)/m)
+    if (blockTagsMatch) {
+      result.tags = blockTagsMatch[1]
+        .split("\n")
+        .map((line: string) => line.match(/^\s*-\s*(.+)\s*$/)?.[1] || "")
+        .map((t: string) => t.trim().replace(/^["']|["']$/g, ""))
+        .filter(Boolean)
+    }
   }
 
   return result

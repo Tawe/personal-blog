@@ -26,6 +26,27 @@ export interface GetArticleOptions {
   customFields?: Record<string, any>
 }
 
+function parseFrontmatterTags(frontmatterText: string): string[] {
+  const inlineTagsMatch = frontmatterText.match(/^tags:\s*\[(.*?)\]\s*$/ms)
+  if (inlineTagsMatch) {
+    return inlineTagsMatch[1]
+      .split(",")
+      .map((tag) => tag.trim().replace(/^["']|["']$/g, ""))
+      .filter(Boolean)
+  }
+
+  const blockTagsMatch = frontmatterText.match(/^tags:\s*\n((?:\s*-\s*.+\n?)*)/m)
+  if (blockTagsMatch) {
+    return blockTagsMatch[1]
+      .split("\n")
+      .map((line) => line.match(/^\s*-\s*(.+)\s*$/)?.[1] || "")
+      .map((tag) => tag.trim().replace(/^["']|["']$/g, ""))
+      .filter(Boolean)
+  }
+
+  return []
+}
+
 /**
  * Lightweight version that only parses frontmatter for metadata (build-time use)
  * Does NOT process markdown to HTML or import gray-matter/marked
@@ -59,7 +80,6 @@ export function getArticleLightweight(
       const subtitleMatch = frontmatterText.match(/^subtitle:\s*(.+)$/m)
       const dateMatch = frontmatterText.match(/^date:\s*(.+)$/m)
       const excerptMatch = frontmatterText.match(/^excerpt:\s*(.+)$/m)
-      const tagsMatch = frontmatterText.match(/^tags:\s*\[(.*?)\]/s)
       const imageMatch = frontmatterText.match(/^featured_image:\s*(.+)$/m)
       const readingTimeMatch = frontmatterText.match(/^reading_time:\s*(\d+)$/m)
       const featuredMatch = frontmatterText.match(/^featured:\s*(true|false)$/m)
@@ -96,15 +116,7 @@ export function getArticleLightweight(
         frontmatter.series_description = seriesDescriptionMatch[1].trim().replace(/^["']|["']$/g, "")
       }
       
-      if (tagsMatch) {
-        const tagsStr = tagsMatch[1]
-        frontmatter.tags = tagsStr
-          .split(",")
-          .map(t => t.trim().replace(/^["']|["']$/g, ""))
-          .filter(Boolean)
-      } else {
-        frontmatter.tags = []
-      }
+      frontmatter.tags = parseFrontmatterTags(frontmatterText)
     }
 
     // Calculate reading time

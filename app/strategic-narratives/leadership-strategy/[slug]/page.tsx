@@ -40,6 +40,28 @@ interface ArticleSeriesContext {
 }
 
 const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "holding-engineering-teams-accountable-for-delivery": [
+    {
+      question: "How do you hold engineering teams accountable without micromanaging?",
+      answer:
+        "Set delivery expectations at the team level, make flow visible with cycle time, lead time, WIP, and deployment frequency, and reduce work size so the team can self-correct quickly without constant managerial oversight.",
+    },
+    {
+      question: "Why are individual developer productivity metrics harmful?",
+      answer:
+        "Metrics like story points per developer, tickets closed, or lines of code are easy to game and often damage collaboration. They shift effort toward optimizing numbers instead of improving delivery outcomes.",
+    },
+    {
+      question: "What metrics should engineering leaders track instead of velocity?",
+      answer:
+        "Track system-level flow metrics: cycle time, lead time, work in progress, and deployment frequency. These show whether work is moving reliably from idea to production and where the delivery system is slowing down.",
+    },
+    {
+      question: "What role does engineering leadership play in accountability?",
+      answer:
+        "Leadership should design the conditions for delivery: clear priorities, limited parallel work, smaller deliverables, and visible flow. Accountability improves when the system supports success instead of fighting the team.",
+    },
+  ],
   "mental-models-a-senior-engineering-leader-uses-and-how-to-know-when-youre-using-the-wrong-one": [
     {
       question: "What is the central argument of this mental models article?",
