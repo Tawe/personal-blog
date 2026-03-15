@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound, Database } from "lucide-react"
+import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound, Database, Layers3 } from "lucide-react"
 
 const experiences = [
   {
@@ -24,6 +24,13 @@ const experiences = [
     description:
       "Learn how to evaluate RAG systems, agents, and copilots with practical tradeoffs, failure modes, and maturity stages.",
     icon: ClipboardCheck,
+  },
+  {
+    title: "Where AI Systems Drift",
+    href: "/interactive/where-ai-systems-drift",
+    description:
+      "Inspect how drift emerges across user intent, prompts, retrieval, models, outputs, and evaluation, with concrete controls at each layer.",
+    icon: Layers3,
   },
   {
     title: "Data Management & Governance: Lifecycle + Techniques",

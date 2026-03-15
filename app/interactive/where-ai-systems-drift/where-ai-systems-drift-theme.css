@@ -1,0 +1,88 @@
+.drift-atlas-theme {
+  --drift-bg: #f6f8fa;
+  --drift-surface: #ffffff;
+  --drift-surface-soft: #f8fbfd;
+  --drift-surface-subtle: #fafcfe;
+  --drift-border: #d6dee6;
+  --drift-border-soft: #e5ebf2;
+  --drift-text-strong: #1a232b;
+  --drift-text-body: #445561;
+  --drift-text-muted: #475569;
+  --drift-text-faint: #64748b;
+  --drift-link: #3a6ea5;
+}
+
+.dark .drift-atlas-theme {
+  --drift-bg: hsl(222 47% 11%);
+  --drift-surface: hsl(220 39% 13%);
+  --drift-surface-soft: hsl(220 34% 16%);
+  --drift-surface-subtle: hsl(220 30% 19%);
+  --drift-border: hsl(217 28% 25%);
+  --drift-border-soft: hsl(217 24% 30%);
+  --drift-text-strong: hsl(210 40% 96%);
+  --drift-text-body: hsl(214 24% 83%);
+  --drift-text-muted: hsl(215 16% 72%);
+  --drift-text-faint: hsl(215 16% 62%);
+  --drift-link: hsl(210 70% 70%);
+}
+
+.dark .drift-atlas-theme .bg-\[\#F6F8FA\] { background-color: var(--drift-bg) !important; }
+.dark .drift-atlas-theme .bg-white { background-color: var(--drift-surface) !important; }
+.dark .drift-atlas-theme .bg-\[\#F8FBFD\] { background-color: var(--drift-surface-soft) !important; }
+.dark .drift-atlas-theme .bg-\[\#FAFCFE\] { background-color: var(--drift-surface-subtle) !important; }
+.dark .drift-atlas-theme .border-\[\#D6DEE6\] { border-color: var(--drift-border) !important; }
+.dark .drift-atlas-theme .border-\[\#E5EBF2\] { border-color: var(--drift-border-soft) !important; }
+.dark .drift-atlas-theme .text-\[\#1A232B\] { color: var(--drift-text-strong) !important; }
+.dark .drift-atlas-theme .text-\[\#445561\] { color: var(--drift-text-body) !important; }
+.dark .drift-atlas-theme .text-\[\#475569\] { color: var(--drift-text-muted) !important; }
+.dark .drift-atlas-theme .text-\[\#64748B\] { color: var(--drift-text-faint) !important; }
+.dark .drift-atlas-theme .focus-visible\:ring-\[\#3A6EA5\]:focus-visible {
+  --tw-ring-color: var(--drift-link) !important;
+}
+
+@keyframes drift-ripple {
+  0% {
+    transform: translateX(-50%) translateY(-10px);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(18px);
+    opacity: 0;
+  }
+}
+
+@keyframes drift-ripple-horizontal {
+  0% {
+    transform: translateX(-40px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(220px);
+    opacity: 0;
+  }
+}
+
+@keyframes drift-cascade-pulse {
+  0% {
+    transform: scale(1);
+    background-color: #ffffff;
+  }
+  50% {
+    transform: scale(1.015);
+    background-color: #fff1ef;
+  }
+  100% {
+    transform: scale(1);
+    background-color: #ffffff;
+  }
+}
+
+.drift-cascade-pulse {
+  animation: drift-cascade-pulse 180ms ease-out;
+}
