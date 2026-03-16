@@ -5,27 +5,64 @@ import { buildMetadata } from "@/lib/seo-metadata"
 
 const SHARE_IMAGE = "/whereAISystemsDrift.png"
 const PAGE_URL = "https://johnmunn.tech/interactive/where-ai-systems-drift"
+const ARTICLE_URL =
+  "https://johnmunn.tech/strategic-narratives/technical-architecture/where-ai-systems-drift"
+const PAGE_TITLE = "Where AI Systems Drift, and How We Bring Them Back"
 const PAGE_DESCRIPTION =
-  "Interactive guide to where AI systems drift across product, prompt, retrieval, model, output, and evaluation layers, with practical controls for bringing them back."
+  "Interactive guide to where AI systems drift across user intent, application, prompt, retrieval, model, output, and evaluation layers, with practical controls for bringing them back."
 
-export const metadata: Metadata = buildMetadata({
-  title: "Where AI Systems Drift, and How We Bring Them Back",
+const keywords = [
+  "AI drift",
+  "AI alignment",
+  "LLM system design",
+  "prompt engineering",
+  "retrieval systems",
+  "AI reliability",
+  "AI guardrails",
+  "AI evaluation",
+  "AI systems drift",
+  "retrieval drift",
+  "prompt layer",
+  "evaluation layer",
+  "LLM guardrails",
+  "AI system architecture",
+  "LLM observability",
+  "AI failure analysis",
+]
+
+const baseMetadata = buildMetadata({
+  title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   path: "/interactive/where-ai-systems-drift",
-  keywords: [
-    "AI drift",
-    "AI alignment",
-    "LLM system design",
-    "prompt engineering",
-    "retrieval systems",
-    "AI reliability",
-    "AI guardrails",
-    "AI evaluation",
-  ],
+  keywords,
   image: SHARE_IMAGE,
   imageAlt: "Where AI Systems Drift interactive preview",
   openGraphType: "article",
 })
+
+export const metadata: Metadata = {
+  ...baseMetadata,
+  category: "technology",
+  openGraph: {
+    ...baseMetadata.openGraph,
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    url: PAGE_URL,
+    type: "article",
+    publishedTime: "2026-03-14T00:00:00.000Z",
+    modifiedTime: "2026-03-16T00:00:00.000Z",
+    authors: ["John Munn"],
+    tags: keywords,
+    section: "AI Architecture",
+  },
+  twitter: {
+    ...baseMetadata.twitter,
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    creator: "@JohnMunn5",
+    site: "@JohnMunn5",
+  },
+}
 
 export default function WhereAiSystemsDriftPage() {
   const schema = {
@@ -44,24 +81,47 @@ export default function WhereAiSystemsDriftPage() {
         },
         breadcrumb: { "@id": `${PAGE_URL}#breadcrumb` },
         about: ["AI alignment", "AI drift", "AI system design", "LLM reliability"],
+        relatedLink: ARTICLE_URL,
+        speakable: {
+          "@type": "SpeakableSpecification",
+          cssSelector: ["h1", "[data-page-summary]"],
+        },
         mainEntity: { "@id": `${PAGE_URL}#techarticle` },
       },
       {
         "@type": "TechArticle",
         "@id": `${PAGE_URL}#techarticle`,
-        headline: "Where AI Systems Drift, and How We Bring Them Back",
+        headline: PAGE_TITLE,
         description: PAGE_DESCRIPTION,
         author: {
           "@type": "Person",
           name: "John Munn",
+          url: "https://johnmunn.tech/about",
         },
         datePublished: "2026-03-14",
-        dateModified: "2026-03-14",
+        dateModified: "2026-03-16",
         url: PAGE_URL,
         image: `https://johnmunn.tech${SHARE_IMAGE}`,
         keywords: ["AI drift", "AI alignment", "AI reliability", "prompt layer", "retrieval layer", "evaluation layer"],
         educationalUse: "reference",
         mainEntityOfPage: PAGE_URL,
+        inLanguage: "en-US",
+        publisher: {
+          "@type": "Person",
+          name: "John Munn",
+          url: "https://johnmunn.tech",
+        },
+        learningResourceType: "interactive guide",
+        abstract: PAGE_DESCRIPTION,
+        articleSection: "AI Architecture",
+        about: [
+          { "@id": `${PAGE_URL}#layers` },
+          {
+            "@type": "Thing",
+            name: "AI system drift",
+          },
+        ],
+        isBasedOn: ARTICLE_URL,
       },
       {
         "@type": "BreadcrumbList",
@@ -122,6 +182,28 @@ export default function WhereAiSystemsDriftPage() {
               "@type": "Answer",
               text: "Teams reduce AI drift by improving task framing, tightening prompts, strengthening retrieval quality, validating outputs, and continuously evaluating production behavior.",
             },
+          },
+        ],
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${PAGE_URL}#takeaways`,
+        name: "AI drift reliability takeaways",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "AI failures enter at different layers of the stack.",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Drift propagates downward when upstream ambiguity is not controlled.",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: "Reliability comes from controls across the full system, not the model alone.",
           },
         ],
       },

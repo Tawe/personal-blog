@@ -186,7 +186,7 @@ export function WhereAiSystemsDriftClient() {
                   <p className="text-2xl font-medium text-[#445561]">
                     AI systems don&apos;t fail in one place. They drift across layers.
                   </p>
-                  <p className="max-w-2xl text-base leading-7 text-[#475569]">
+                  <p data-page-summary className="max-w-2xl text-base leading-7 text-[#475569]">
                     Explore the stack from user intent to evaluation, inspect the controls used at each layer, and see how reliability comes from system design rather than model tuning alone.
                   </p>
                 </div>
