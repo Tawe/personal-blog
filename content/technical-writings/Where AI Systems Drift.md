@@ -5,7 +5,7 @@ date: "2026-03-16"
 excerpt: "A companion guide to the interactive systems drift page, focused on which controls belong at which layer, when to use them, and what problem each one actually solves."
 tags: ["Artificial Intelligence", "AI Engineering", "LLM", "Software Architecture", "Prompt Engineering", "Retrieval Augmented Generation"]
 reading_time: 9
-featured_image: /WhereAISystemsDrift.png?height=400&width=800
+featured_image: /WhereAISystemsDrift.webp?height=400&width=800
 medium_link: ""
 devto_link: ""
 substack:
@@ -31,7 +31,7 @@ Drift is rarely a model problem. It is usually a systems problem.
 
 This article accompanies the interactive guide. If you want to trace how failures compound across the stack, start there.
 
-[Open the interactive systems drift guide →](https://johnmunn.tech/interactive/where-ai-systems-drift)![Attachment.tiff](file:///Attachment.tiff)
+[Open the interactive systems drift guide →](https://johnmunn.tech/interactive/where-ai-systems-drift)!
 
 Here the focus is the practical question teams run into next.
 
