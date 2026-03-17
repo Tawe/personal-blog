@@ -31,7 +31,7 @@ Drift is rarely a model problem. It is usually a systems problem.
 
 This article accompanies the interactive guide. If you want to trace how failures compound across the stack, start there.
 
-[Open the interactive systems drift guide →](https://johnmunn.tech/interactive/where-ai-systems-drift)!
+[Open the interactive systems drift guide](https://johnmunn.tech/interactive/where-ai-systems-drift)
 
 Here the focus is the practical question teams run into next.
 
