@@ -6,7 +6,7 @@ excerpt: "A companion guide to the interactive systems drift page, focused on wh
 tags: ["Artificial Intelligence", "AI Engineering", "LLM", "Software Architecture", "Prompt Engineering", "Retrieval Augmented Generation"]
 reading_time: 9
 featured_image: /WhereAISystemsDrift.webp?height=400&width=800
-medium_link: ""
+medium_link: "https://medium.com/p/3756ca65c3cc"
 devto_link: ""
 substack:
 code_languages: []
