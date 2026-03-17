@@ -33,11 +33,13 @@ The moment you start thinking about failures this way, another question shows up
 
 **Where should the controls actually live?**
 
-_(I put together an interactive version of this if you want to explore how those failures compound across the stack._ → [_Open the interactive systems drift guide_](https://johnmunn.tech/interactive/where-ai-systems-drift)_)_
+If you want to explore how those failures compound across the stack, the interactive version is here:
+
+[Open the interactive systems drift guide →](https://johnmunn.tech/interactive/where-ai-systems-drift)
 
 ---
 
-#### Identify the failure first
+#### Identify the failure first
 
 Picture a support assistant. An engineer asks:
 
@@ -76,14 +78,17 @@ In the payment example this is the failure that hides everything else. The migra
 
 This is different from retrieval quality. Re-ranking and query rewriting cannot fix documents built on a broken foundation.
 
-**Schema and source monitoring  
-**When source systems change such as database schemas, API contracts, or event structures, downstream AI pipelines need to know. Treat schema changes the same way you treat dependency upgrades. Version them. Alert on them. Assign ownership.
+### Schema and source monitoring
 
-**Data freshness checks  
-**Stale data and incorrect data are different problems, but they produce the same symptom. Build freshness checks into the pipeline. If the newest document in the retrieval index is three weeks old and the question is about last week, that gap should surface before generation begins.
+When source systems change such as database schemas, API contracts, or event structures, downstream AI pipelines need to know. Treat schema changes the same way you treat dependency upgrades. Version them. Alert on them. Assign ownership.
 
-**Provenance tracking  
-**Track where retrieved content came from and when it was written. Documentation created before a major infrastructure change should not silently support answers about the system after the change.
+### Data freshness checks
+
+Stale data and incorrect data are different problems, but they produce the same symptom. Build freshness checks into the pipeline. If the newest document in the retrieval index is three weeks old and the question is about last week, that gap should surface before generation begins.
+
+### Provenance tracking
+
+Track where retrieved content came from and when it was written. Documentation created before a major infrastructure change should not silently support answers about the system after the change.
 
 **Rule of thumb:** if the data feeding the system is wrong, every layer above it inherits the problem.
 
@@ -97,13 +102,15 @@ The payment query runs into trouble immediately. “What changed after the migra
 
 Without decomposition the system picks one interpretation and commits. The engineer wanted all three.
 
-**Task decomposition  
-**When a request spans multiple decisions or steps such as migration analysis, research workflows, or multi step assistants, break it into stages. Each stage receives a clear objective.
+### Task decomposition
+
+When a request spans multiple decisions or steps such as migration analysis, research workflows, or multi step assistants, break it into stages. Each stage receives a clear objective.
 
 Ambiguity stops compounding.
 
-**Intent classification  
-**When one interface handles multiple task types, classify before generating.
+### Intent classification
+
+When one interface handles multiple task types, classify before generating.
 
 Examples:
 
@@ -115,13 +122,15 @@ Without routing the model treats every question the same way.
 
 Adding classification has a cost. It introduces an extra model call at the front of the pipeline. For high volume systems that latency matters. The typical solution is a smaller fast model for classification and a stronger one for generation.
 
-**Structured inputs  
-**Missing context changes results. The payment query contains no timeframe, no system scope, and no definition of “changed”.
+### Structured inputs
+
+Missing context changes results. The payment query contains no timeframe, no system scope, and no definition of “changed”.
 
 Collect those fields explicitly rather than letting the model infer them from prose.
 
-**Policy enforcement and fallbacks  
-**Some decisions should not live in prompts.
+### Policy enforcement and fallbacks
+
+Some decisions should not live in prompts.
 
 Examples:
 
@@ -146,8 +155,9 @@ Those are prompt questions.
 
 Prompts accumulate over time. Exceptions get added. Old examples remain. Rules begin contradicting each other. Teams often blame the model when the prompt has become unstable.
 
-**System prompts  
-**Use system prompts for stable instructions such as:
+### System prompts
+
+Use system prompts for stable instructions such as:
 
 - tone
 - evidence requirements
@@ -156,8 +166,9 @@ Prompts accumulate over time. Exceptions get added. Old examples remain. Rules b
 
 Avoid filling the prompt with every edge case. A prompt that tries to handle everything usually handles nothing reliably.
 
-**Few shot examples  
-**Examples help when the expected output is subtle.
+### Few shot examples
+
+Examples help when the expected output is subtle.
 
 Common uses:
 
@@ -167,13 +178,15 @@ Common uses:
 
 Examples show the behaviour instead of describing it.
 
-**Output schemas  
-**When responses feed other systems, structure matters as much as content.
+### Output schemas
+
+When responses feed other systems, structure matters as much as content.
 
 If the changelog answer needs to trigger a downstream ticket, a schema keeps the structure consistent even when the details change.
 
-**Prompt cleanup  
-**Older systems carry years of accumulated prompt changes.
+### Prompt cleanup
+
+Older systems carry years of accumulated prompt changes.
 
 Typical problems include:
 
@@ -195,8 +208,9 @@ In the payment scenario the query enters retrieval as something like “payment 
 
 The ranking looks reasonable. The evidence is stale. Nothing in the pipeline signals a problem. The model generates an answer from the wrong documents because it has no way to know they are wrong.
 
-**Query rewriting  
-**Engineers ask questions conversationally. Documentation rarely uses the same phrasing.
+### Query rewriting
+
+Engineers ask questions conversationally. Documentation rarely uses the same phrasing.
 
 Rewriting the query to match how documents are written can change the retrieved material completely.
 
@@ -204,18 +218,21 @@ Example rewrite:
 
 gateway migration changelog week_of:<date>
 
-**Hybrid search  
-**Vector search finds conceptual matches. Keyword search finds exact identifiers.
+### Hybrid search
+
+Vector search finds conceptual matches. Keyword search finds exact identifiers.
 
 Queries involving product names, error codes, version numbers, or migration identifiers need both.
 
-**Re-ranking  
-**Retrieval sometimes surfaces the right documents in the wrong order.
+### Re-ranking
+
+Retrieval sometimes surfaces the right documents in the wrong order.
 
 Re-ranking improves which material actually enters the prompt. This becomes important in large documentation sets where older related material can dominate the ranking.
 
-**Chunking and context management  
-**A passage may reference the migration while omitting the surrounding explanation needed to answer the question accurately.
+### Chunking and context management
+
+A passage may reference the migration while omitting the surrounding explanation needed to answer the question accurately.
 
 Chunking that splits explanations mid context produces answers that appear grounded but are missing the detail that makes them correct.
 
@@ -223,7 +240,7 @@ Chunking that splits explanations mid context produces answers that appear groun
 
 ---
 
-#### Model and decoding controls
+#### Model and decoding controls
 
 Use these when the task and context are correct but generation still drifts.
 
@@ -231,8 +248,9 @@ In the payment scenario the query is correctly classified and retrieval returns 
 
 That task does not benefit from variation.
 
-**Temperature and top-p  
-**Lower temperature works best for constrained tasks:
+### Temperature and top-p
+
+Lower temperature works best for constrained tasks:
 
 - factual lookups
 - extraction
@@ -243,8 +261,9 @@ Higher temperature is useful for exploration or brainstorming.
 
 These settings control variation and risk.
 
-**Model selection  
-**Different workloads require different models.
+### Model selection
+
+Different workloads require different models.
 
 Consider:
 
@@ -255,8 +274,9 @@ Consider:
 
 A smaller model can handle classification cheaply while a stronger one handles synthesis. Splitting workloads often improves performance and cost.
 
-**Tool use  
-**When exact results exist in structured systems, query them directly.
+### Tool use
+
+When exact results exist in structured systems, query them directly.
 
 If the migration produced a structured changelog in a database, generation is the wrong instrument. The system should query the source of truth.
 
@@ -272,13 +292,15 @@ In the payment example the system produces a plausible answer about the previous
 
 No bug report is filed against the AI. Confidence simply drops.
 
-**Schema validation  
-**When responses feed other systems validate the structure first.
+### Schema validation
+
+When responses feed other systems validate the structure first.
 
 Structural errors can propagate through tickets, dashboards, and automation pipelines.
 
-**Second pass review  
-**A second model pass can detect problems deterministic checks miss.
+### Second pass review
+
+A second model pass can detect problems deterministic checks miss.
 
 Examples:
 
@@ -288,8 +310,9 @@ Examples:
 
 The cost is latency. Response time increases. For high trust queries that tradeoff is usually worth it. For high volume systems sampling strategies often work better.
 
-**Regression tests and drift detection  
-**Systems evolve constantly.
+### Regression tests and drift detection
+
+Systems evolve constantly.
 
 - prompts change
 - retrieval indices update
@@ -301,7 +324,7 @@ Without regression tests those changes are invisible until users lose confidence
 
 ---
 
-#### The real lesson
+#### The real lesson
 
 Return to the payment query.
 
