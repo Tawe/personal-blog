@@ -215,9 +215,9 @@ Engineers ask questions conversationally. Documentation rarely uses the same phr
 Rewriting the query to match how documents are written can change the retrieved material completely.
 
 Example rewrite:
-
+```
 gateway migration changelog week_of:<date>
-
+```
 ### Hybrid search
 
 Vector search finds conceptual matches. Keyword search finds exact identifiers.
