@@ -9,6 +9,7 @@ import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import { getDateTimestamp } from "@/lib/date-utils"
 import { DateText } from "@/components/date-text"
+import { EditorialSurface, PageSection, SectionIntro } from "@/components/design-system"
 
 interface Article {
   slug: string
@@ -16,6 +17,7 @@ interface Article {
   date: string
   excerpt?: string
   reading_time?: number
+  readingTime?: number
   category: string
   categoryColor: string
   href: string
@@ -34,14 +36,14 @@ export default function HomePageClient() {
         ])
 
         const combined: Article[] = [
-          ...(leadership.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number }) => ({
+          ...(leadership.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number; readingTime?: number }) => ({
             ...a,
             category: "Leadership",
             categoryColor: "text-text-muted",
             href: `/strategic-narratives/leadership-strategy/${a.slug}`,
             readingTime: a.reading_time ?? a.readingTime,
           })),
-          ...(technical.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number }) => ({
+          ...(technical.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number; readingTime?: number }) => ({
             ...a,
             category: "Technical",
             categoryColor: "text-text-muted",
@@ -64,14 +66,14 @@ export default function HomePageClient() {
   }, [])
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="ds-page flex min-h-screen flex-col">
       <SiteHeader />
       <main id="main-content" className="flex-1">
         {/* Hero — bg-paper; image flush left, consistent crop via aspect-ratio + focal point */}
         <section aria-label="Hero" className="w-full bg-bg-paper lg:min-h-[min(85vh,720px)]">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(320px,1fr)_1fr] w-full lg:h-[min(85vh,720px)]">
+          <div className="grid w-full grid-cols-1 lg:h-[min(85vh,720px)] lg:grid-cols-[minmax(320px,1fr)_1fr]">
             {/* Profile image — fixed aspect ratio so crop is consistent; focal point keeps face in frame */}
-            <div className="relative w-full aspect-[4/5] lg:aspect-auto lg:h-full order-2 lg:order-1 bg-hero-whisper overflow-hidden">
+            <div className="relative order-2 aspect-[4/5] w-full overflow-hidden bg-hero-whisper lg:order-1 lg:h-full lg:aspect-auto">
               <Image
                 src="/me.png"
                 alt="John Munn"
@@ -82,50 +84,53 @@ export default function HomePageClient() {
                 sizes="(max-width: 1023px) 100vw, 50vw"
               />
             </div>
-            <div className="flex flex-col justify-center space-y-5 px-4 sm:px-6 md:px-6 lg:pl-12 lg:pr-16 py-10 sm:py-12 lg:py-16 order-1 lg:order-2 max-w-2xl w-full min-w-0">
-                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl xl:text-6xl text-text-strong leading-tight">
+            <div className="order-1 flex w-full min-w-0 flex-col justify-center space-y-5 px-4 py-10 sm:px-6 sm:py-12 md:px-6 lg:order-2 lg:pl-12 lg:pr-16 lg:py-16">
+              <div className="ds-reading-width">
+                <p className="ds-kicker mb-4">Engineering leadership and technical strategy</p>
+                <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-text-strong sm:text-5xl xl:text-6xl">
                   John Munn
                 </h1>
-                <p className="text-xl text-text-body font-normal max-w-lg">
-                Engineering leader and writer focused on the messy intersection of technology and people.
+                <p className="ds-lead mt-4 max-w-xl font-normal">
+                  Engineering leader and writer focused on the messy intersection of technology and people.
                 </p>
-                <p className="max-w-lg text-text-body leading-relaxed font-normal">
-                I help teams cut through complexity, whether it's technical debt, scaling challenges, or organizational growing pains. Twenty years of experience has taught me that good strategy starts with understanding what's actually happening, not what the slide deck says is happening.
-                 </p>
-                <div className="flex flex-col gap-3 min-[400px]:flex-row pt-2">
-                  <Button size="lg" className="bg-accent-primary hover:bg-accent-primary-hover text-white rounded-button py-3 px-6" asChild>
+                <p className="ds-copy mt-4 max-w-xl font-normal">
+                  I help teams cut through complexity, whether it&apos;s technical debt, scaling challenges, or
+                  organizational growing pains. Twenty years of experience has taught me that good strategy starts
+                  with understanding what&apos;s actually happening, not what the slide deck says is happening.
+                </p>
+                <div className="flex flex-col gap-3 pt-2 min-[400px]:flex-row">
+                  <Button size="lg" variant="editorial" className="px-6 py-3" asChild>
                     <Link href="/writing">
                       Writing
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
-                  <Button variant="outline" size="lg" className="border-none bg-transparent text-accent-primary hover:bg-bg-soft rounded-button py-3 px-6" asChild>
+                  <Button variant="quiet" size="lg" className="px-6 py-3" asChild>
                     <Link href="/contact">Contact</Link>
                   </Button>
                 </div>
               </div>
+            </div>
           </div>
         </section>
 
         {/* Writing — bg-base; hairline under title; titles stand on their own, more breathing room */}
-        <section aria-labelledby="writing-heading" className="w-full py-16 md:py-24 lg:py-28 bg-bg-base">
-          <div className="container px-4 md:px-6 max-w-5xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
-              <div>
-                <h2 id="writing-heading" className="section-title text-2xl font-bold tracking-tight text-text-strong mb-2 w-fit">Writing</h2>
-                <p className="text-text-body max-w-xl mt-3">
-                Leadership and technical architecture, written from real-world experience building and leading teams through complexity.
-                </p>
-              </div>
-              <Button variant="ghost" className="text-text-body hover:text-accent-primary w-fit" asChild>
+        <PageSection aria-labelledby="writing-heading" tone="base" containerClassName="max-w-5xl">
+          <SectionIntro
+            title="Writing"
+            description="Leadership and technical architecture, written from real-world experience building and leading teams through complexity."
+            actions={
+              <Button variant="ghost" className="w-fit text-text-body hover:text-accent-primary" asChild>
                 <Link href="/writing">
                   View all
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-            </div>
+            }
+            className="mb-14"
+          />
 
-            <div aria-live="polite" aria-busy={isLoading}>
+          <div aria-live="polite" aria-busy={isLoading}>
             {!isLoading && articles.length > 0 && (
               <ul className="space-y-16">
                 {articles.map((article) => (
@@ -157,49 +162,41 @@ export default function HomePageClient() {
             {!isLoading && articles.length === 0 && (
               <p className="text-text-muted">No writing yet.</p>
             )}
-            </div>
           </div>
-        </section>
+        </PageSection>
 
         {/* Projects — bg-soft; top divider; lead-in + framing */}
-        <section aria-labelledby="projects-heading" className="w-full border-t border-accent-rule py-16 md:py-24 lg:py-28 bg-bg-soft">
-          <div className="container px-4 md:px-6 max-w-5xl mx-auto">
-            <div className="mb-6">
-              <h2 id="projects-heading" className="section-title text-2xl font-bold tracking-tight text-text-strong mb-2 w-fit">Projects</h2>
-              <p className="text-text-body text-sm max-w-xl mt-2">
-                Selected projects that explore systems, tooling, and decision-making in practice.
-              </p>
-              <p className="text-text-body font-normal max-w-xl mt-3">
-                Applied work and exploration. What I build and why.
-              </p>
-            </div>
-            <p className="text-text-muted text-sm max-w-2xl mb-10">
-              These are applied explorations, not products, built to understand systems more deeply.{" "}
+        <PageSection aria-labelledby="projects-heading" tone="soft" divider containerClassName="max-w-5xl">
+          <EditorialSurface className="p-8 sm:p-10">
+            <SectionIntro
+              title="Projects"
+              description="Selected projects that explore systems, tooling, and decision-making in practice."
+              kicker="Applied work"
+              className="mb-6"
+            />
+            <p className="ds-copy max-w-xl">Applied work and exploration. What I build and why.</p>
+            <p className="ds-meta mb-10 mt-3 max-w-2xl">
+              These are applied explorations, not products, built to understand systems more deeply.
             </p>
-            <Link
-                href="/projects"
-                className="inline-block text-base text-accent-primary hover:text-accent-primary-hover font-medium py-2 underline underline-offset-4 decoration-accent-primary/40 hover:decoration-accent-primary transition-colors"
-              >
+            <Link href="/projects" className="ds-link inline-block py-2 text-base">
                 See projects
-              </Link>
-          </div>
-        </section>
+            </Link>
+          </EditorialSurface>
+        </PageSection>
 
         {/* Contact — bg-paper; calm ending, left-aligned */}
-        <section aria-labelledby="contact-heading" className="w-full py-20 md:py-28 lg:py-32 bg-bg-paper">
-          <div className="container px-4 md:px-6 max-w-5xl mx-auto text-left">
-            <h2 id="contact-heading" className="section-title text-2xl font-bold tracking-tight text-text-strong mb-3 w-fit">Contact</h2>
-            <p className="text-text-body leading-relaxed mb-8 mt-3">
-              Open to conversation, mentoring, collaboration, or just saying hello. Email or LinkedIn.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block text-base text-accent-primary hover:text-accent-primary-hover font-medium py-2 underline underline-offset-4 decoration-accent-primary/40 hover:decoration-accent-primary transition-colors"
-            >
+        <PageSection aria-labelledby="contact-heading" tone="paper" spacing="roomy" containerClassName="max-w-5xl">
+          <div className="text-left">
+            <SectionIntro
+              title="Contact"
+              description="Open to conversation, mentoring, collaboration, or just saying hello. Email or LinkedIn."
+              className="mb-5"
+            />
+            <Link href="/contact" className="ds-link inline-block py-2 text-base">
               Get in touch
             </Link>
           </div>
-        </section>
+        </PageSection>
       </main>
       <SiteFooter />
     </div>

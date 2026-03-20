@@ -7,6 +7,7 @@ import Link from "next/link"
 import { ArrowRight, Search } from "lucide-react"
 import { getDateTimestamp } from "@/lib/date-utils"
 import { DateText } from "@/components/date-text"
+import { RuleHeading } from "@/components/design-system"
 
 interface WritingItem {
   slug: string
@@ -88,7 +89,9 @@ export default function WritingPage() {
         <section className="w-full py-16 md:py-24 lg:py-28">
           <div className="container px-4 md:px-6 max-w-4xl mx-auto">
             <header className="mb-14">
-              <h1 className="section-title text-3xl font-bold tracking-tight text-text-strong mb-3 w-fit">Writing</h1>
+              <RuleHeading as="h1" tone="page" className="mb-3">
+                Writing
+              </RuleHeading>
               <p className="text-lg text-text-body leading-relaxed mt-3 max-w-2xl">
                 Leadership, technical architecture, and the systems that connect them. One feed, one body of work.
               </p>

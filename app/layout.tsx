@@ -116,10 +116,10 @@ export default function RootLayout({
         <WebsiteSchema />
         <ProfilePageSchema />
       </head>
-      <body>
+      <body className="bg-bg-base text-text-primary">
         <a
           href="#main-content"
-          className="absolute left-4 -top-20 z-[100] rounded bg-white px-4 py-2 text-black shadow-lg transition-all focus:top-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3A6EA5]"
+          className="absolute left-4 -top-20 z-[100] rounded-lg bg-bg-paper px-4 py-2 text-text-strong shadow-[var(--shadow-soft)] transition-all focus:top-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3A6EA5]"
         >
           Skip to main content
         </a>

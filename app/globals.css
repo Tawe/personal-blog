@@ -47,6 +47,10 @@
   --ring: 211 48% 44%;
   --radius: 0.5rem;
   --radius-button: 6px;
+  --shadow-soft: 0 18px 48px -28px rgba(25, 46, 68, 0.22);
+  --shadow-lift: 0 26px 70px -36px rgba(25, 46, 68, 0.28);
+  --content-max: 72rem;
+  --reading-max: 48rem;
 }
 
 .dark {
@@ -83,25 +87,105 @@
   --destructive: 0 63% 52%;
   --destructive-foreground: 0 0% 100%;
   --ring: 210 70% 63%;
+  --shadow-soft: 0 22px 56px -30px rgba(2, 8, 23, 0.45);
+  --shadow-lift: 0 30px 80px -36px rgba(2, 8, 23, 0.52);
 }
 
-/* Signature: hairline rule under section titles (editorial accent) */
-.section-title {
-  border-bottom: 1px solid var(--accent-rule);
-  padding-bottom: 0.5rem;
-}
+@layer components {
+  .ds-page {
+    @apply min-h-screen bg-bg-base text-text-primary;
+    background-image:
+      radial-gradient(circle at top, hsl(var(--primary) / 0.08), transparent 34%),
+      linear-gradient(180deg, hsl(var(--background)), hsl(var(--background)));
+  }
 
-/* Footer: same accent rule + micro-heading (small caps, letter-spacing) — repeatable gesture */
-.footer-heading {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--accent-rule);
-  padding-bottom: 0.5rem;
-  margin-bottom: 0;
-  width: fit-content;
+  .ds-container {
+    width: min(100% - 2rem, var(--content-max));
+    margin-inline: auto;
+  }
+
+  .ds-reading-width {
+    width: min(100%, var(--reading-max));
+  }
+
+  .ds-section {
+    @apply py-16 md:py-24 lg:py-28;
+  }
+
+  .ds-section[data-tone="base"] {
+    @apply bg-bg-base;
+  }
+
+  .ds-section[data-tone="soft"] {
+    @apply bg-bg-soft;
+  }
+
+  .ds-section[data-tone="paper"] {
+    @apply bg-bg-paper;
+  }
+
+  .ds-section[data-divider="true"] {
+    border-top: 1px solid var(--accent-rule);
+  }
+
+  .ds-kicker {
+    @apply text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-text-muted;
+  }
+
+  .ds-heading {
+    @apply text-3xl font-bold tracking-tight text-text-strong sm:text-4xl lg:text-5xl;
+  }
+
+  .ds-lead {
+    @apply text-lg leading-8 text-text-body sm:text-xl;
+  }
+
+  .ds-copy {
+    @apply text-base leading-7 text-text-body;
+  }
+
+  .ds-meta {
+    @apply text-sm leading-6 text-text-muted;
+  }
+
+  .ds-link {
+    @apply font-medium text-accent-primary underline decoration-accent-primary/35 underline-offset-4 transition-colors hover:text-accent-primary-hover hover:decoration-accent-primary-hover;
+  }
+
+  .ds-nav-link {
+    @apply relative text-sm font-medium text-text-secondary transition-colors hover:text-accent-primary;
+  }
+
+  .ds-nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.35rem;
+    height: 2px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    background: hsl(var(--accent-primary));
+    transition: transform 180ms ease;
+  }
+
+  .ds-nav-link:hover::after,
+  .ds-nav-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .ds-surface {
+    @apply rounded-2xl border border-border-subtle bg-bg-paper;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .ds-surface-quiet {
+    @apply rounded-2xl border border-border-subtle/80 bg-white/60 backdrop-blur-sm;
+  }
+
+  .ds-rule {
+    border-top: 1px solid var(--accent-rule);
+  }
 }
 
 * {

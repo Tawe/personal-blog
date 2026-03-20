@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Linkedin, Github, Code, Edit } from "lucide-react"
+import { RuleHeading } from "@/components/design-system"
 
 function PentagonGrowthIcon({ className }: { className?: string }) {
   return (
@@ -53,16 +54,16 @@ l-76 248 41 49 c23 28 54 59 68 71 15 11 137 129 272 262 595 588 829 817 834
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-accent-rule bg-bg-secondary">
-      <div className="container mx-auto px-4 sm:px-6 py-12">
+    <footer className="ds-rule bg-bg-soft">
+      <div className="ds-container py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
               <PentagonGrowthIcon className="h-6 w-6 text-text-secondary" />
-              <span className="text-lg font-bold text-text-primary">John Munn</span>
+              <span className="text-lg font-bold tracking-tight text-text-primary">John Munn</span>
             </Link>
-            <p className="text-text-secondary text-sm leading-relaxed">
+            <p className="max-w-xs text-sm leading-relaxed text-text-secondary">
               Technical leader building scalable solutions and high-performing teams through strategic thinking and
               calm, reflective authority.
             </p>
@@ -70,14 +71,16 @@ export function SiteFooter() {
 
           {/* Navigation */}
           <div className="space-y-4">
-            <h2 className="footer-heading text-text-primary">Navigation</h2>
+            <RuleHeading as="h2" tone="footer">
+              Navigation
+            </RuleHeading>
             <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-y-1">
               {["Home", "Writing", "Projects", "About", "Contact"].map((name, i) => (
                 <span key={name} className="inline-flex items-center">
                   {i > 0 && <span className="text-text-secondary select-none px-1.5">|</span>}
                   <Link
                     href={name === "Home" ? "/" : `/${name.toLowerCase()}`}
-                    className="text-text-secondary hover:text-accent-primary transition-colors text-sm py-1 touch-manipulation"
+                    className="py-1 text-sm text-text-secondary transition-colors hover:text-accent-primary touch-manipulation"
                   >
                     {name}
                   </Link>
@@ -88,7 +91,9 @@ export function SiteFooter() {
 
           {/* Connect */}
           <div className="space-y-4">
-            <h2 className="footer-heading text-text-primary">Connect</h2>
+            <RuleHeading as="h2" tone="footer">
+              Connect
+            </RuleHeading>
             <div className="flex flex-wrap gap-2">
               {[
                 { href: "https://www.linkedin.com/in/john-munn-bbab434b/", label: "LinkedIn", Icon: Linkedin },
@@ -99,7 +104,7 @@ export function SiteFooter() {
                 <Link
                   key={label}
                   href={href}
-                  className="text-text-secondary hover:text-accent-primary transition-colors p-3 min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation rounded-lg"
+                  className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg p-3 text-text-secondary transition-colors hover:bg-bg-paper hover:text-accent-primary touch-manipulation"
                   aria-label={`${label} (opens in new tab)`}
                   {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
@@ -110,7 +115,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="border-t border-border-subtle mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="mt-12 flex flex-col items-center justify-between border-t border-border-subtle pt-8 md:flex-row">
           <p className="text-text-secondary text-sm">© {new Date().getFullYear()} John Munn. All rights reserved.</p>
         </div>
       </div>

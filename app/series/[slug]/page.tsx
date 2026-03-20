@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { DateText } from "@/components/date-text"
 import { getAllSeries, getSeriesBySlug } from "@/lib/series-utils"
 import { buildMetadata } from "@/lib/seo-metadata"
+import { RuleHeading } from "@/components/design-system"
 
 interface SeriesDetailPageProps {
   params: Promise<{ slug: string }>
@@ -61,7 +62,9 @@ export default async function SeriesDetailPage({ params }: SeriesDetailPageProps
             </div>
 
             <header className="mb-12">
-              <h1 className="section-title text-3xl font-bold tracking-tight text-text-strong mb-3 w-fit">{series.name}</h1>
+              <RuleHeading as="h1" tone="page" className="mb-3">
+                {series.name}
+              </RuleHeading>
               {series.description && (
                 <p className="text-lg text-text-body max-w-3xl leading-relaxed">{series.description}</p>
               )}

@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { getAllSeries } from "@/lib/series-utils"
 import type { Metadata } from "next"
 import { buildMetadata } from "@/lib/seo-metadata"
+import { RuleHeading } from "@/components/design-system"
 
 export const metadata: Metadata = buildMetadata({
   title: "Series | John Munn",
@@ -23,7 +24,9 @@ export default function SeriesIndexPage() {
         <section className="w-full py-16 md:py-24">
           <div className="container px-4 md:px-6 max-w-5xl mx-auto">
             <header className="mb-12">
-              <h1 className="section-title text-3xl font-bold tracking-tight text-text-strong mb-3 w-fit">Series</h1>
+              <RuleHeading as="h1" tone="page" className="mb-3">
+                Series
+              </RuleHeading>
               <p className="text-lg text-text-body max-w-2xl">
                 Follow connected storylines and multi-part narratives in order.
               </p>

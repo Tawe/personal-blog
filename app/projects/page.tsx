@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { Code, ExternalLink, Github, Server, Rocket, Database, Terminal, Wrench, LucideIcon } from "lucide-react"
 import Image from "next/image"
+import { RuleHeading } from "@/components/design-system"
 
 interface Project {
   slug: string
@@ -59,9 +60,9 @@ export default function ProjectsPage() {
         <section className="w-full py-16 md:py-24 lg:py-32 bg-bg-paper">
           <div className="container px-4 md:px-6">
             <div className="max-w-2xl">
-              <h1 className="section-title text-3xl font-bold tracking-tight sm:text-4xl xl:text-5xl text-text-strong mb-4 w-fit">
+              <RuleHeading as="h1" tone="page" className="mb-4">
                 Projects
-              </h1>
+              </RuleHeading>
               <p className="text-xl text-text-body font-normal mb-3 mt-3">
                 Applied work and exploration
               </p>
@@ -83,7 +84,9 @@ export default function ProjectsPage() {
         <section id="projects" className="w-full py-16 md:py-24 lg:py-32 bg-bg-soft">
           <div className="container px-4 md:px-6">
             <div className="mb-12">
-              <h2 className="section-title text-2xl font-bold tracking-tight text-text-strong mb-2 w-fit">What I'm building</h2>
+              <RuleHeading as="h2" className="mb-2">
+                What I&apos;m building
+              </RuleHeading>
            
             </div>
             <div aria-live="polite" aria-busy={isLoading}>

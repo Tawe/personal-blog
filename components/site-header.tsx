@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { DARK_MODE_ENABLED } from "@/lib/feature-flags"
@@ -71,28 +71,23 @@ export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border-subtle bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/90">
-      <div className="container mx-auto px-4 sm:px-6">
+    <header className="sticky top-0 z-50 w-full border-b border-border-subtle bg-bg-base/90 backdrop-blur supports-[backdrop-filter]:bg-bg-base/75">
+      <div className="ds-container">
         <div className="flex h-14 min-h-[3.5rem] sm:h-16 items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2 group">
+          <Link href="/" className="group flex items-center space-x-2">
             <div className="relative">
-              <PentagonGrowthIcon className="h-16 w-16 text-text-secondary group-hover:text-accent-primary transition-colors" />
+              <PentagonGrowthIcon className="h-16 w-16 text-text-secondary transition-colors group-hover:text-accent-primary" />
             </div>
-            <span className="text-xl font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+            <span className="text-xl font-bold tracking-tight text-text-primary transition-colors group-hover:text-accent-primary">
               John Munn
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav aria-label="Main navigation" className="hidden lg:flex items-center space-x-8">
+          <nav aria-label="Main navigation" className="hidden items-center space-x-8 lg:flex">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm font-medium text-text-secondary hover:text-accent-primary transition-colors relative group"
-              >
+              <Link key={item.name} href={item.href} className="ds-nav-link">
                 {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-primary transition-all group-hover:w-full group-focus-within:w-full"></span>
               </Link>
             ))}
           </nav>
@@ -105,17 +100,20 @@ export function SiteHeader() {
           {/* Mobile Navigation */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden text-text-secondary hover:text-accent-primary">
+              <Button variant="ghost" size="icon" className="text-text-secondary hover:text-accent-primary lg:hidden">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-80 bg-bg-primary border-border-subtle">
+            <SheetContent side="right" className="w-80 border-border-subtle bg-bg-paper">
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              <SheetDescription className="sr-only">
+                Browse the main sections of johnmunn.tech.
+              </SheetDescription>
               <div className="flex items-center mb-8">
                 <Link href="/" className="flex items-center space-x-2" onClick={() => setIsOpen(false)}>
                   <PentagonGrowthIcon className="h-12 w-12 text-text-secondary" />
-                  <span className="text-lg font-bold text-text-primary">John Munn</span>
+                  <span className="text-lg font-bold tracking-tight text-text-primary">John Munn</span>
                 </Link>
                 {DARK_MODE_ENABLED ? (
                   <div className="ml-auto">
@@ -128,7 +126,7 @@ export function SiteHeader() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="text-text-secondary hover:text-accent-primary transition-colors py-3 min-h-[44px] flex items-center border-b border-border-subtle last:border-b-0 touch-manipulation"
+                    className="flex min-h-[44px] items-center border-b border-border-subtle py-3 text-text-secondary transition-colors last:border-b-0 hover:text-accent-primary touch-manipulation"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}

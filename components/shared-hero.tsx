@@ -89,18 +89,18 @@ export function SharedHero({
       <header className="mb-8">
         {imageSrc ? (
           <div
-            className={`relative mb-8 rounded-xl overflow-hidden ${
+            className={`ds-surface relative mb-8 overflow-hidden rounded-[1.5rem] ${
               imageBleedRightOnDesktop
                 ? "lg:w-[calc(100%+max(0px,50vw-28rem))] lg:mr-[calc(-1*max(0px,50vw-28rem))]"
                 : ""
             }`}
           >
             <div className="relative z-10 min-w-0 space-y-3 p-4 sm:p-6 lg:absolute lg:inset-x-0 lg:bottom-0 lg:p-8">
-              <h1 className="min-w-0 break-words [overflow-wrap:anywhere] text-3xl sm:text-4xl lg:text-5xl font-bold text-text-strong lg:text-white leading-tight">
+              <h1 className="min-w-0 break-words [overflow-wrap:anywhere] text-3xl font-bold leading-tight text-text-strong sm:text-4xl lg:text-5xl lg:text-white">
                 {title}
               </h1>
               {subtitle && (
-                <h2 className="min-w-0 break-words [overflow-wrap:anywhere] text-xl sm:text-2xl text-text-body lg:text-slate-100 font-medium">
+                <h2 className="min-w-0 break-words [overflow-wrap:anywhere] text-xl font-medium text-text-body sm:text-2xl lg:text-slate-100">
                   {subtitle}
                 </h2>
               )}
@@ -139,11 +139,11 @@ export function SharedHero({
           </div>
         ) : (
           <div className="min-w-0 space-y-4 sm:space-y-6">
-            <h1 className="min-w-0 break-words [overflow-wrap:anywhere] text-3xl sm:text-4xl lg:text-5xl font-bold text-text-strong leading-tight">
+            <h1 className="min-w-0 break-words [overflow-wrap:anywhere] text-3xl font-bold leading-tight text-text-strong sm:text-4xl lg:text-5xl">
               {title}
             </h1>
             {subtitle && (
-              <h2 className="min-w-0 break-words [overflow-wrap:anywhere] text-xl sm:text-2xl text-text-body font-medium mt-1 sm:mt-2 mb-2 sm:mb-4">
+              <h2 className="min-w-0 break-words [overflow-wrap:anywhere] mt-1 mb-2 text-xl font-medium text-text-body sm:mt-2 sm:mb-4 sm:text-2xl">
                 {subtitle}
               </h2>
             )}

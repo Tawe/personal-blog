@@ -24,6 +24,10 @@ export interface BuildMetadataOptions {
   noindex?: boolean
 }
 
+function normalizeMetadataTitle(title: string): string {
+  return title.replace(/\s*\|\s*John Munn\s*$/, "").trim()
+}
+
 export function absoluteUrl(path: string): string {
   if (path.startsWith("http://") || path.startsWith("https://")) return path
   if (path === "/") return BASE_URL
@@ -40,16 +44,17 @@ export function buildMetadata({
   openGraphType = "website",
   noindex = false,
 }: BuildMetadataOptions): Metadata {
+  const normalizedTitle = normalizeMetadataTitle(title)
   const canonical = absoluteUrl(path)
   const dedupedKeywords = Array.from(new Set([...keywords, ...BASE_KEYWORDS]))
 
   return {
-    title,
+    title: normalizedTitle,
     description,
     keywords: dedupedKeywords,
     authors: [{ name: "John Munn" }],
     openGraph: {
-      title,
+      title: normalizedTitle,
       description,
       url: canonical,
       siteName: "John Munn",
@@ -66,7 +71,7 @@ export function buildMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: normalizedTitle,
       description,
       images: [image],
     },
