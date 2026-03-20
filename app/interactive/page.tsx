@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound, Database, Layers3 } from "lucide-react"
+import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound, Database, Layers3, Scaling } from "lucide-react"
 
 const experiences = [
   {
@@ -24,6 +24,13 @@ const experiences = [
     description:
       "Learn how to evaluate RAG systems, agents, and copilots with practical tradeoffs, failure modes, and maturity stages.",
     icon: ClipboardCheck,
+  },
+  {
+    title: "Scalar vs Vector vs Matrix vs Tensor",
+    href: "/interactive/scalar-vector-matrix-tensor",
+    description:
+      "Watch a point become a line, a grid, and stacked layers so dimensional thinking feels visual instead of abstract.",
+    icon: Scaling,
   },
   {
     title: "Where AI Systems Drift",

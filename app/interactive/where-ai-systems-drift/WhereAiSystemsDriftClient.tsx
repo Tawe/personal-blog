@@ -11,7 +11,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { Slider } from "@/components/ui/slider"
 import { buildLinkedInShareHref, shareOrCopyUrl } from "@/lib/share-client"
 import { actualFailureStats, driftLayers, enterpriseSearchFailure, perceivedFailureStats, type Concept } from "./data"
-import { ArrowDown, ChevronLeft, ChevronRight, ClipboardCheck, Cpu, Database, LayoutTemplate, Linkedin, MessageSquareQuote, Share2, ShieldCheck, Target, Waves, X } from "lucide-react"
+import { ArrowDown, Calendar, ChevronLeft, ChevronRight, ClipboardCheck, Clock3, Cpu, Database, LayoutTemplate, Linkedin, MessageSquareQuote, Share2, ShieldCheck, Target, Waves, X } from "lucide-react"
 import "./where-ai-systems-drift-theme.css"
 
 const PAGE_TITLE = "Where AI Systems Drift"
@@ -226,6 +226,17 @@ export function WhereAiSystemsDriftClient() {
                       Share on X
                     </Link>
                   </Button>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-6 text-sm text-[#475569]">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    <time dateTime="2026-03-14">March 14, 2026</time>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock3 className="h-4 w-4" />
+                    <span>11 min read</span>
+                  </div>
                 </div>
               </div>
 
