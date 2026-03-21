@@ -198,3 +198,33 @@ export async function getAllProjects(contentDir: string): Promise<ProjectMetadat
     return []
   }
 }
+
+/**
+ * Gets all projects from a content directory using frontmatter-only parsing.
+ * Prefer this for listing pages where the rendered markdown body is not needed.
+ */
+export function getAllProjectsLightweight(contentDir: string): ProjectMetadata[] {
+  if (!fs.existsSync(contentDir)) {
+    return []
+  }
+
+  try {
+    const files = fs.readdirSync(contentDir)
+    const markdownFiles = files.filter((file) => file.endsWith(".md"))
+
+    return markdownFiles
+      .map((filename) => {
+        const slug = generateSlug(filename)
+        return getProjectLightweight({ contentDir, slug })
+      })
+      .filter((project): project is ProjectMetadata => project !== null)
+      .sort((a, b) => {
+        const dateA = new Date(a.date).getTime()
+        const dateB = new Date(b.date).getTime()
+        return dateB - dateA
+      })
+  } catch (error) {
+    console.error("Error loading lightweight projects:", error)
+    return []
+  }
+}

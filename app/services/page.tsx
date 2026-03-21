@@ -1,10 +1,11 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
+import Link from "next/link"
+import { ArrowRight, Dice6, GraduationCap, Lightbulb, MessageSquare, Target } from "lucide-react"
+
 import { buildMetadata } from "@/lib/seo-metadata"
 import { ContentLayout } from "@/components/content-layout"
+import { EditorialSurface, FeatureCard, PageSection, RuleHeading, SectionIntro } from "@/components/design-system"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import Link from "next/link"
-import { GraduationCap, ArrowRight, CheckCircle, Dice6, Target, Lightbulb, MessageSquare } from "lucide-react"
 
 export const metadata: Metadata = buildMetadata({
   title: "Services | Technical Leadership & Team Development",
@@ -13,202 +14,160 @@ export const metadata: Metadata = buildMetadata({
   keywords: ["technical leadership mentoring", "engineering team development", "team building for engineers"],
 })
 
+const services = [
+  {
+    title: "D&D Team Building",
+    href: "/services/team-building",
+    icon: Dice6,
+    kicker: "For teams",
+    summary: "Structured tabletop facilitation for engineering teams that need better collaboration under pressure.",
+    audience: "Best for teams dealing with coordination debt, low-trust handoffs, or communication breakdowns during delivery.",
+    outcomes: [
+      "Make team communication patterns visible",
+      "Expose role ambiguity and handoff friction",
+      "Build shared language around coordination and accountability",
+    ],
+    primaryCta: "Explore Team Building",
+  },
+  {
+    title: "Technical Leadership Mentoring",
+    href: "/services/mentoring",
+    icon: GraduationCap,
+    kicker: "For leaders",
+    summary: "One-on-one mentoring for engineering leaders working through consequential technical and organizational decisions.",
+    audience: "Best for managers, staff+ engineers, and heads of engineering navigating broader scope and noisier tradeoffs.",
+    outcomes: [
+      "Clarify difficult leadership and architecture decisions",
+      "Improve communication with non-technical stakeholders",
+      "Leave with sharper framing and concrete next moves",
+    ],
+    primaryCta: "Explore Mentoring",
+  },
+]
+
+const principles = [
+  {
+    title: "Practical and Grounded",
+    body: "The work is based on live decisions, real team constraints, and frameworks that hold up under pressure.",
+    icon: Target,
+  },
+  {
+    title: "Creative Without Being Vague",
+    body: "Unusual formats are useful only when they produce clearer thinking, better behavior, and stronger execution.",
+    icon: Lightbulb,
+  },
+  {
+    title: "Built Around Conversation",
+    body: "The value is not advice thrown over the wall. It is structured dialogue that improves judgment and action.",
+    icon: MessageSquare,
+  },
+]
+
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-slate-950">
-      <div className="absolute inset-0 bg-tech-pattern opacity-20"></div>
-      <div className="relative">
-        <ContentLayout
-          title="Services"
-          description="Building stronger teams and accelerating leadership growth"
-        >
-          <div className="max-w-6xl mx-auto">
-            {/* Introduction */}
-            <div className="mb-16 text-center">
-              <p className="text-lg text-slate-300 leading-relaxed max-w-4xl mx-auto">
-                I offer two core services designed to help technical organizations and leaders reach their full potential: 
-                innovative D&D-based team building and personalized technical leadership mentoring.
-              </p>
-            </div>
+    <ContentLayout>
+      <div className="space-y-16 md:space-y-20">
+        <section className="mx-auto max-w-4xl text-center">
+          <p className="ds-kicker mb-4">Services</p>
+          <h1 className="ds-heading mb-5">Structured support for engineering teams and technical leaders</h1>
+          <p className="ds-lead mx-auto max-w-3xl">
+            I offer two focused services: team-building work for organizations that need better coordination, and
+            mentoring for leaders carrying harder technical and organizational decisions.
+          </p>
+        </section>
 
-            {/* Services Overview */}
-            <div className="mb-16">
-              <div className="grid gap-8 md:grid-cols-2">
-              {/* Team Building Service */}
-              <Card className="bg-slate-800/50 border-slate-600 hover:border-blue-500 transition-all duration-300">
-                <CardHeader>
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-3 bg-blue-600/20 rounded-lg">
-                      <Dice6 className="h-8 w-8 text-blue-400" />
-                    </div>
-                    <CardTitle className="text-slate-100 text-xl">D&D Team Building</CardTitle>
-                  </div>
-                  <CardDescription className="text-slate-400 leading-relaxed">
-                    Transform your technical team's collaboration through strategic D&D team building sessions
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-slate-300">
-                    The best technical teams operate like well-coordinated adventuring parties. D&D reveals and strengthens 
-                    team dynamics in ways traditional team building can't replicate.
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="text-sm text-slate-300 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                      Complex problem-solving under pressure
-                    </div>
-                    <div className="text-sm text-slate-300 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                      Communication and collaboration patterns
-                    </div>
-                    <div className="text-sm text-slate-300 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                      Role specialization and team dynamics
-                    </div>
-                    <div className="text-sm text-slate-300 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                      Trust building through shared challenges
-                    </div>
-                  </div>
-                  <div className="pt-4 flex flex-col gap-2">
-                    <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
-                      <Link href="/services/team-building">
-                        Learn More About Team Building
-                        <ArrowRight className="ml-2 h-5 w-5" />
+        <PageSection tone="paper" spacing="compact" containerClassName="max-w-6xl">
+          <SectionIntro
+            title="What I Offer"
+            description="Both offers are built for practical environments where better judgment, communication, and coordination matter more than motivational theater."
+            className="mb-10"
+          />
+          <div className="grid gap-8 lg:grid-cols-2">
+            {services.map(({ title, href, icon: Icon, kicker, summary, audience, outcomes, primaryCta }) => (
+              <FeatureCard
+                key={title}
+                icon={Icon}
+                kicker={kicker}
+                title={title}
+                summary={summary}
+                footer={
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <Button variant="editorial" asChild>
+                      <Link href={href}>
+                        {primaryCta}
+                        <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
-                    <Button variant="outline" size="lg" className="border-slate-600 text-slate-300 hover:bg-slate-800" asChild>
-                      <Link href="/contact">Schedule Consultation</Link>
+                    <Button variant="quiet" asChild>
+                      <Link href="/contact">Start a Conversation</Link>
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
+                }
+              >
+                <div className="space-y-6">
+                  <div>
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-[0.12em] text-text-muted">Good fit</p>
+                    <p className="ds-copy">{audience}</p>
+                  </div>
 
-              {/* Mentoring Service */}
-              <Card className="bg-slate-800/50 border-slate-600 hover:border-blue-500 transition-all duration-300">
-                <CardHeader>
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-3 bg-green-600/20 rounded-lg">
-                      <GraduationCap className="h-8 w-8 text-green-400" />
-                    </div>
-                    <CardTitle className="text-slate-100 text-xl">Technical Leadership Mentoring</CardTitle>
+                  <div>
+                    <p className="mb-3 text-sm font-semibold uppercase tracking-[0.12em] text-text-muted">Typical outcomes</p>
+                    <ul className="space-y-3 text-text-body">
+                      {outcomes.map((outcome) => (
+                        <li key={outcome} className="flex gap-3">
+                          <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent-primary" aria-hidden="true" />
+                          <span>{outcome}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <CardDescription className="text-slate-400 leading-relaxed">
-                    Accelerate your leadership journey with personalized guidance and proven frameworks
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-slate-300">
-                    Practical, actionable guidance for technical leaders at every stage - from IC to management, 
-                    from manager to executive.
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="text-sm text-slate-300 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div>
-                      Career transition into leadership
-                    </div>
-                    <div className="text-sm text-slate-300 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div>
-                      Technical strategy & decision making
-                    </div>
-                    <div className="text-sm text-slate-300 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div>
-                      Team building & management
-                    </div>
-                    <div className="text-sm text-slate-300 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div>
-                      CTO/VP Engineering preparation
-                    </div>
-                  </div>
-                  <div className="pt-4 flex flex-col gap-2">
-                    <Button size="lg" className="bg-green-600 hover:bg-green-700" asChild>
-                      <Link href="/services/mentoring">
-                        Learn More About Mentoring
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Link>
-                    </Button>
-                    <Button variant="outline" size="lg" className="border-slate-600 text-slate-300 hover:bg-slate-800" asChild>
-                      <Link href="/contact">Schedule Consultation</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-              </div>
-            </div>
-
-            {/* Why These Services */}
-            <div className="mb-16">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-slate-100 mb-4">Why These Services Matter</h2>
-                <p className="text-lg text-slate-300 leading-relaxed max-w-4xl mx-auto">
-                  Both services are built on the same foundation: practical experience, proven frameworks, and a commitment to real results
-                </p>
-              </div>
-              <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
-                <Card className="text-center bg-slate-800/50 border-slate-600">
-                  <CardHeader>
-                    <div className="flex justify-center mb-2">
-                      <Target className="h-8 w-8 text-blue-400" />
-                    </div>
-                    <CardTitle className="text-slate-100">Practical & Actionable</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-slate-300">
-                      Real-world frameworks you can apply immediately, not theoretical advice that sits on a shelf
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card className="text-center bg-slate-800/50 border-slate-600">
-                  <CardHeader>
-                    <div className="flex justify-center mb-2">
-                      <Lightbulb className="h-8 w-8 text-blue-400" />
-                    </div>
-                    <CardTitle className="text-slate-100">Innovative Approaches</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-slate-300">
-                      Creative problem-solving that combines technical expertise with storytelling and gaming principles
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card className="text-center bg-slate-800/50 border-slate-600">
-                  <CardHeader>
-                    <div className="flex justify-center mb-2">
-                      <MessageSquare className="h-8 w-8 text-blue-400" />
-                    </div>
-                    <CardTitle className="text-slate-100">Results-Focused</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-slate-300">
-                      Every session delivers measurable outcomes - improved communication, better decisions, stronger teams
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-
-            {/* Call to Action */}
-            <div className="mt-16 text-center">
-              <Card className="bg-slate-900/30 border-slate-700">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-slate-100 mb-4">Ready to Get Started?</h3>
-                  <p className="text-slate-400 mb-6 max-w-2xl mx-auto">
-                    Whether you're looking to strengthen your team or accelerate your leadership journey, let's discuss how these services can help
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
-                      <Link href="/contact">Schedule Consultation</Link>
-                    </Button>
-                    <Button size="lg" variant="outline" className="border-slate-600 text-slate-300" asChild>
-                      <Link href="/strategic-narratives">Explore My Work</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+              </FeatureCard>
+            ))}
           </div>
-        </ContentLayout>
+        </PageSection>
+
+        <PageSection tone="soft" spacing="compact" containerClassName="max-w-5xl">
+          <SectionIntro
+            title="How I Work"
+            description="The format differs by service, but the philosophy is the same: start from the real situation, make the important dynamics visible, and leave with concrete actions."
+            className="mb-10"
+          />
+          <div className="grid gap-6 md:grid-cols-3">
+            {principles.map(({ title, body, icon: Icon }) => (
+              <EditorialSurface key={title} className="h-full p-6">
+                <div className="mb-4 inline-flex rounded-lg bg-bg-soft p-2 text-accent-primary">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h3 className="mb-3 text-xl font-semibold text-text-strong">{title}</h3>
+                <p className="ds-copy">{body}</p>
+              </EditorialSurface>
+            ))}
+          </div>
+        </PageSection>
+
+        <PageSection tone="paper" spacing="compact" containerClassName="max-w-4xl">
+          <EditorialSurface className="p-8 text-center sm:p-10">
+            <RuleHeading as="h2" className="mx-auto mb-4">
+              Next Step
+            </RuleHeading>
+            <p className="ds-lead mx-auto max-w-2xl">
+              If one of these offers sounds relevant, the best first move is a short conversation about your context and goals.
+            </p>
+            <p className="ds-copy mx-auto mt-4 max-w-2xl">
+              We can quickly determine whether the fit is real, what format makes sense, and whether a focused engagement would be useful.
+            </p>
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <Button variant="editorial" asChild>
+                <Link href="/contact">Contact Me</Link>
+              </Button>
+              <Button variant="quiet" asChild>
+                <Link href="/writing">Read the Writing First</Link>
+              </Button>
+            </div>
+          </EditorialSurface>
+        </PageSection>
       </div>
-    </div>
+    </ContentLayout>
   )
 }

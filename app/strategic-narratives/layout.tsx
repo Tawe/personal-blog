@@ -2,10 +2,10 @@ import { Metadata } from "next"
 import { buildMetadata } from "@/lib/seo-metadata"
 
 export const metadata: Metadata = buildMetadata({
-  title: "Strategic Narratives | John Munn",
-  description: "Technical leadership, architecture strategy, and decision-making narratives across complex systems.",
+  title: "Writing Collections",
+  description: "Writing collections spanning leadership, technical architecture, Artumin, and tabletop design.",
   path: "/strategic-narratives",
-  keywords: ["strategic narratives", "technical strategy", "engineering leadership insights"],
+  keywords: ["writing collections", "leadership writing", "technical architecture", "artumin", "tabletop design"],
 })
 
 export default function StrategicNarrativesLayout({

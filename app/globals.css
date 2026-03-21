@@ -156,6 +156,10 @@
     @apply relative text-sm font-medium text-text-secondary transition-colors hover:text-accent-primary;
   }
 
+  .ds-nav-link[data-active="true"] {
+    @apply text-accent-primary;
+  }
+
   .ds-nav-link::after {
     content: "";
     position: absolute;
@@ -170,6 +174,7 @@
   }
 
   .ds-nav-link:hover::after,
+  .ds-nav-link[data-active="true"]::after,
   .ds-nav-link:focus-visible::after {
     transform: scaleX(1);
   }

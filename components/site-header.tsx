@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
@@ -9,13 +10,33 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { DARK_MODE_ENABLED } from "@/lib/feature-flags"
 
 const navigation = [
-  { name: "Home", href: "/" },
   { name: "Writing", href: "/writing" },
-  { name: "Interactive", href: "/interactive" },
   { name: "Projects", href: "/projects" },
+  { name: "Interactive", href: "/interactive" },
+  { name: "Services", href: "/services" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ]
+
+function isActiveRoute(pathname: string, href: string) {
+  if (href === "/writing") {
+    return pathname === "/writing" || pathname.startsWith("/series") || pathname.startsWith("/strategic-narratives")
+  }
+
+  if (href === "/projects") {
+    return pathname === "/projects" || pathname.startsWith("/projects/")
+  }
+
+  if (href === "/interactive") {
+    return pathname === "/interactive" || pathname.startsWith("/interactive/")
+  }
+
+  if (href === "/services") {
+    return pathname === "/services" || pathname.startsWith("/services/")
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`)
+}
 
 function PentagonGrowthIcon({ className }: { className?: string }) {
   return (
@@ -69,6 +90,7 @@ l-76 248 41 49 c23 28 54 59 68 71 15 11 137 129 272 262 595 588 829 817 834
 
 export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border-subtle bg-bg-base/90 backdrop-blur supports-[backdrop-filter]:bg-bg-base/75">
@@ -86,7 +108,13 @@ export function SiteHeader() {
           {/* Desktop Navigation */}
           <nav aria-label="Main navigation" className="hidden items-center space-x-8 lg:flex">
             {navigation.map((item) => (
-              <Link key={item.name} href={item.href} className="ds-nav-link">
+              <Link
+                key={item.name}
+                href={item.href}
+                className="ds-nav-link"
+                data-active={isActiveRoute(pathname, item.href) ? "true" : undefined}
+                aria-current={isActiveRoute(pathname, item.href) ? "page" : undefined}
+              >
                 {item.name}
               </Link>
             ))}
@@ -126,7 +154,9 @@ export function SiteHeader() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="flex min-h-[44px] items-center border-b border-border-subtle py-3 text-text-secondary transition-colors last:border-b-0 hover:text-accent-primary touch-manipulation"
+                    className="flex min-h-[44px] items-center border-b border-border-subtle py-3 text-text-secondary transition-colors last:border-b-0 hover:text-accent-primary touch-manipulation data-[active=true]:text-accent-primary"
+                    data-active={isActiveRoute(pathname, item.href) ? "true" : undefined}
+                    aria-current={isActiveRoute(pathname, item.href) ? "page" : undefined}
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}

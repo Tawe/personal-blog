@@ -97,6 +97,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/workbench",
+        destination: "/projects",
+        permanent: true,
+      },
+      {
+        source: "/workbench/:slug",
+        destination: "/projects/:slug",
+        permanent: true,
+      },
+      {
         source: "/strategic-narratives/technical-architecture/the-rag-atlas",
         destination: "/interactive/rag-atlas",
         permanent: true,

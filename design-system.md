@@ -45,6 +45,20 @@ Shared React wrappers live in [components/design-system.tsx](/Users/johnmunn/Doc
 - `RuleHeading`: singular editorial rule heading for page, section, and footer headings
 - `SectionIntro`: consistent title, kicker, description, and actions block
 - `EditorialSurface`: reusable elevated panel
+- `EditorialPill`: shared lightweight pill for metadata, tags, and status
+- `FeatureCard`: shared editorial card with icon, summary, content area, and footer CTA slot
+
+Shared collection/listing primitives live in [components/collection-browser.tsx](/Users/johnmunn/Documents/projects/personal-blog/components/collection-browser.tsx).
+
+- `CollectionBrowserPanel`: shared surface for collection filter and control areas
+- `TogglePillGroup`: reusable multi-select pill cluster with optional show-more behavior
+- `CollectionResultCount`: consistent filtered-results summary
+- `CollectionArticleCard`: shared listing card for collection feeds
+- `CollectionEmptyState`: quiet empty state for collection pages
+
+## Preview Route
+
+Use [app/system/page.tsx](/Users/johnmunn/Documents/projects/personal-blog/app/system/page.tsx) as the living preview for the design system. It is intended as an internal route and should be the first place to verify visual changes to shared primitives, including collection browser patterns.
 
 ## Buttons
 

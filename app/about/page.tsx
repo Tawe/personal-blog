@@ -1,102 +1,145 @@
 "use client"
 
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
-import Link from "next/link"
 import Image from "next/image"
+import Link from "next/link"
+
 import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
+import { ContentLayout } from "@/components/content-layout"
+import { EditorialSurface, PageSection, SectionIntro } from "@/components/design-system"
+import { Button } from "@/components/ui/button"
+
+const focusAreas = [
+  {
+    title: "Leadership Under Pressure",
+    body: "Helping engineering teams and leaders make better decisions when scope grows, ownership blurs, and systems become harder to reason about.",
+  },
+  {
+    title: "Architecture With Consequences",
+    body: "Connecting technical architecture to organizational realities, so strategy is grounded in how teams actually build and operate software.",
+  },
+  {
+    title: "Narrative as a Thinking Tool",
+    body: "Using writing and structured explanation to make complicated systems easier to understand, communicate, and improve.",
+  },
+]
+
+const trustSignals = [
+  "Two decades working across software delivery, architecture, and engineering leadership",
+  "Writing across leadership, technical systems, AI tradeoffs, worldbuilding, and tabletop design",
+  "Advisory work that favors practical judgment over abstract playbooks",
+]
 
 export default function AboutPage() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-bg-primary to-bg-secondary">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-8 lg:grid-cols-[1fr_320px] lg:gap-12 max-w-5xl mx-auto">
-              <div className="flex flex-col justify-center space-y-6">
-                <BreadcrumbSchema
-                  items={[
-                    { name: "Home", url: "/" },
-                    { name: "About", url: "/about" },
-                  ]}
-                />
-                <nav aria-label="Breadcrumb" className="text-sm text-text-muted">
-                  <ol className="flex flex-wrap items-center gap-2">
-                    <li>
-                      <Link href="/" className="hover:text-accent-primary transition-colors">Home</Link>
-                    </li>
-                    <li aria-hidden="true">/</li>
-                    <li className="text-text-secondary">About</li>
-                  </ol>
-                </nav>
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl xl:text-5xl text-text-strong">
-                  About
-                </h1>
-                <p className="text-text-body leading-relaxed">
-                  I'm an engineering leader and writer who's spent the last two decades working at the intersection of technology, people, and the systems that connect them.
-                </p>
-                <p className="text-text-body leading-relaxed">
-                  Most of my career has been about helping teams navigate complexity, not the abstract kind, but the real kind that shows up as technical debt, scaling pressure, unclear ownership, and well-intentioned decisions compounding over time. I've learned that progress usually comes less from heroic fixes and more from seeing what's actually happening, then making steady, deliberate changes that people can sustain.
-                </p>
-                <p className="text-text-body leading-relaxed">
-                  I care deeply about how systems behave under stress. Codebases, teams, and organizations all reveal their true shape when things get hard, and that's where most of my thinking lives. I'm interested in how structure influences behavior, how narratives shape alignment, and how leaders can hold uncertainty without rushing to oversimplify it.
-                </p>
-                <p className="text-text-body leading-relaxed">
-                  Outside of the work itself, I value calm, curiosity, and generosity of thought. I enjoy mentoring, writing, and exchanging ideas with people who are trying to build things that last, whether that's software, teams, or cultures.
-                </p>
-                <p className="text-text-body leading-relaxed">
-                  I also write in the{" "}
-                  <Link
-                    href="/strategic-narratives/world-of-artumin"
-                    className="text-accent-primary hover:text-accent-primary-hover underline underline-offset-2 font-medium"
-                  >
-                    World of Artumin
-                  </Link>
-                  , where I explore strategic and leadership ideas through narrative.
-                </p>
-                <p className="text-text-body leading-relaxed">
-                  I also offer services for teams and leaders:{" "}
-                  <Link
-                    href="/services/team-building"
-                    className="text-accent-primary hover:text-accent-primary-hover underline underline-offset-2 font-medium"
-                  >
-                    D&D team building
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    href="/services/mentoring"
-                    className="text-accent-primary hover:text-accent-primary-hover underline underline-offset-2 font-medium"
-                  >
-                    technical leadership mentoring
-                  </Link>
-                  .
-                </p>
-                <p className="text-text-body leading-relaxed pt-2">
-                  If you're interested in talking, about leadership, architecture, or a problem you're trying to untangle, the best next step is{" "}
-                  <Link href="/contact" className="text-accent-primary hover:text-accent-primary-hover underline underline-offset-2 font-medium">
-                    getting in touch
-                  </Link>
-                  .
-                </p>
+    <ContentLayout>
+      <div className="space-y-16 md:space-y-20">
+        <section className="mx-auto max-w-5xl">
+          <BreadcrumbSchema
+            items={[
+              { name: "Home", url: "/" },
+              { name: "About", url: "/about" },
+            ]}
+          />
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+            <div className="space-y-6">
+              <p className="ds-kicker">About</p>
+              <h1 className="ds-heading">Engineering leadership, technical strategy, and systems that have to survive real conditions</h1>
+              <p className="ds-lead max-w-3xl">
+                I&apos;m an engineering leader and writer focused on the intersection of technology, people, and the systems that connect them.
+              </p>
+              <p className="ds-copy">
+                Most of my work has been about helping teams navigate complexity that does not stay politely technical. It shows up as scaling pressure, unclear ownership, communication debt, architecture drift, and decisions that make sense locally but compound badly over time.
+              </p>
+              <p className="ds-copy">
+                I care about how systems behave under stress: codebases, teams, organizations, and the narratives people use to understand what is happening. That is the throughline behind the writing, the mentoring, and the kinds of conversations I tend to be most useful in.
+              </p>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button variant="editorial" asChild>
+                  <Link href="/contact">Start a Conversation</Link>
+                </Button>
+                <Button variant="quiet" asChild>
+                  <Link href="/writing">Read the Writing</Link>
+                </Button>
               </div>
-              <div className="flex items-start justify-center lg:justify-end">
-                <div className="relative">
-                  <Image
-                    src="/me.png"
-                    width={320}
-                    height={320}
-                    alt="John Munn"
-                    className="rounded-xl object-cover aspect-square"
-                    priority
-                  />
-                </div>
+            </div>
+            <div className="flex justify-center lg:justify-end">
+              <div className="overflow-hidden rounded-2xl border border-border-subtle bg-bg-paper shadow-[var(--shadow-soft)]">
+                <Image
+                  src="/me.png"
+                  width={320}
+                  height={360}
+                  alt="John Munn"
+                  className="h-auto w-full object-cover"
+                  priority
+                />
               </div>
             </div>
           </div>
         </section>
-      </main>
-      <SiteFooter />
-    </div>
+
+        <PageSection tone="paper" spacing="compact" containerClassName="max-w-6xl">
+          <SectionIntro
+            title="What I Help With"
+            description="The common thread is not a single technology. It is making difficult systems and difficult decisions easier to understand and move through."
+            className="mb-10"
+          />
+          <div className="grid gap-6 md:grid-cols-3">
+            {focusAreas.map((area) => (
+              <EditorialSurface key={area.title} className="h-full p-6">
+                <h2 className="mb-3 text-xl font-semibold text-text-strong">{area.title}</h2>
+                <p className="ds-copy">{area.body}</p>
+              </EditorialSurface>
+            ))}
+          </div>
+        </PageSection>
+
+        <PageSection tone="soft" spacing="compact" containerClassName="max-w-5xl">
+          <EditorialSurface className="p-8 sm:p-10">
+            <SectionIntro
+              title="Why This Perspective"
+              description="I am most useful when the problem is messy enough that technical, organizational, and narrative issues are all entangled."
+              className="mb-8"
+            />
+            <ul className="space-y-4 text-text-body">
+              {trustSignals.map((signal) => (
+                <li key={signal} className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-accent-primary" aria-hidden="true" />
+                  <span>{signal}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="ds-copy mt-8">
+              I also write in the{" "}
+              <Link href="/strategic-narratives/world-of-artumin" className="ds-link">
+                World of Artumin
+              </Link>
+              , where strategic and leadership ideas get tested through narrative rather than direct argument.
+            </p>
+          </EditorialSurface>
+        </PageSection>
+
+        <PageSection tone="paper" spacing="compact" containerClassName="max-w-4xl">
+          <EditorialSurface className="p-8 text-center sm:p-10">
+            <SectionIntro
+              title="Who This Is For"
+              description="Engineering leaders, staff+ engineers, founders, and teams trying to think more clearly about architecture, communication, and change."
+              align="center"
+              className="mb-6"
+            />
+            <p className="ds-copy mx-auto max-w-2xl">
+              If that sounds close to the problems you are working through, the best next step is a direct note about your situation and what kind of conversation would be useful.
+            </p>
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <Button variant="editorial" asChild>
+                <Link href="/contact">Get in Touch</Link>
+              </Button>
+              <Button variant="quiet" asChild>
+                <Link href="/services">View Services</Link>
+              </Button>
+            </div>
+          </EditorialSurface>
+        </PageSection>
+      </div>
+    </ContentLayout>
   )
 }

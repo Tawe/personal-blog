@@ -1,33 +1,50 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { useMemo, useState } from "react"
+import { Crown, MapPinned, Search, X } from "lucide-react"
+
+import { CollectionArticleCard, CollectionBrowserPanel, CollectionEmptyState, CollectionResultCount, TogglePillGroup } from "@/components/collection-browser"
+import { EditorialPill } from "@/components/design-system"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Calendar, Clock, Search, X, Crown } from "lucide-react"
-import Link from "next/link"
-import { DateText } from "@/components/date-text"
 import { getDateTimestamp } from "@/lib/date-utils"
 
-interface ArtumiContentMetadata {
+interface ArtuminContentMetadata {
   slug: string
   title: string
   date: string
   excerpt?: string
   tags: string[]
   reading_time?: number
-  type: "story" | "lore" | "character" | "location" | "history" | "organization"
-  categories: string[]
+  type?: string
+  categories?: string[]
   region?: string
-  status: "complete" | "in-progress" | "planned"
+  status?: string
   image?: string
   featured_image?: string
 }
 
 interface WorldOfArtuminClientProps {
-  articles: ArtumiContentMetadata[]
+  articles: ArtuminContentMetadata[]
   availableTags: string[]
+}
+
+function formatLabel(value: string) {
+  return value
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
+function getStatusTone(status?: string): "neutral" | "success" | "warm" {
+  switch ((status || "").toLowerCase()) {
+    case "complete":
+    case "published":
+      return "success"
+    case "in-progress":
+      return "warm"
+    default:
+      return "neutral"
+  }
 }
 
 export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtuminClientProps) {
@@ -37,229 +54,144 @@ export function WorldOfArtuminClient({ articles, availableTags }: WorldOfArtumin
   const TOPICS_LIMIT = 20
 
   const filteredArticles = useMemo(() => {
-    return articles
+    const query = searchTerm.trim().toLowerCase()
+
+    return [...articles]
       .filter((article) => {
+        const categories = Array.isArray(article.categories) ? article.categories : []
         const matchesSearch =
-          searchTerm.trim() === "" ||
-          article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          article.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          article.region?.toLowerCase().includes(searchTerm.toLowerCase())
+          query === "" ||
+          article.title.toLowerCase().includes(query) ||
+          article.excerpt?.toLowerCase().includes(query) ||
+          article.region?.toLowerCase().includes(query) ||
+          categories.some((category) => category.toLowerCase().includes(query))
 
         const matchesTags =
           selectedTags.length === 0 ||
-          selectedTags.every((tag) => article.tags.includes(tag) || article.categories.includes(tag))
+          selectedTags.every((tag) => article.tags.includes(tag) || categories.includes(tag))
 
         return matchesSearch && matchesTags
       })
       .sort((a, b) => getDateTimestamp(b.date) - getDateTimestamp(a.date))
   }, [articles, searchTerm, selectedTags])
 
-  const handleTagToggle = (tag: string) => {
-    setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]))
-  }
+  const hasActiveFilters = searchTerm.trim() !== "" || selectedTags.length > 0
 
   const clearFilters = () => {
     setSearchTerm("")
     setSelectedTags([])
   }
 
-  const hasActiveFilters = searchTerm.trim() !== "" || selectedTags.length > 0
-
-  // No emoji icons on cards
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "complete":
-        return "bg-[#5F8F7A] text-white"
-      case "in-progress":
-        return "bg-[#B89B7A] text-white"
-      case "planned":
-        return "bg-text-muted text-white"
-      default:
-        return "bg-text-muted text-white"
-    }
+  const toggleTag = (tag: string) => {
+    setSelectedTags((current) => (current.includes(tag) ? current.filter((value) => value !== tag) : [...current, tag]))
   }
 
   return (
     <div className="space-y-8">
-      {/* Filter Section */}
-      <div className="bg-bg-paper p-6 rounded-xl border border-border-subtle shadow-sm">
-        <div className="flex items-center justify-between mb-4">
+      <CollectionBrowserPanel>
+        <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Crown className="h-5 w-5 text-accent-secondary" />
+            <Crown className="h-5 w-5 text-accent-primary" aria-hidden="true" />
             <h3 className="text-lg font-semibold text-text-strong">Explore Artumin</h3>
           </div>
-          {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-text-muted hover:text-text-strong">
-              <X className="h-4 w-4 mr-1" />
+          {hasActiveFilters ? (
+            <Button type="button" variant="ghost" size="sm" onClick={clearFilters} className="text-text-muted hover:text-accent-primary">
+              <X className="mr-1 h-4 w-4" />
               Clear
             </Button>
-          )}
+          ) : null}
         </div>
 
-        {/* Search */}
         <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted pointer-events-none" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" aria-hidden="true" />
           <Input
             type="text"
-            placeholder="Search the realm for stories, characters, locations..."
+            placeholder="Search stories, characters, locations..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 min-h-[44px] rounded-lg border border-border-subtle bg-bg-paper text-text-body placeholder:text-text-muted text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent-primary/30 focus:border-accent-primary touch-manipulation"
-            aria-label="Search articles"
+            onChange={(event) => setSearchTerm(event.target.value)}
+            className="border-border-subtle bg-bg-paper pl-10 text-text-body placeholder:text-text-muted"
+            aria-label="Search Artumin entries"
           />
         </div>
 
-        {/* Tags */}
-        {availableTags.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-[10px] uppercase tracking-[0.16em] text-accent-secondary">Realm Index</p>
-            <h4 className="text-sm font-medium text-text-body">Categories & Themes</h4>
-            <div className="flex flex-wrap gap-2">
-              {(showAllTopics ? availableTags : availableTags.slice(0, TOPICS_LIMIT)).map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => handleTagToggle(tag)}
-                  className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full"
-                >
-                  <Badge
-                    variant={selectedTags.includes(tag) ? "default" : "secondary"}
-                    className={`cursor-pointer transition-colors ${
-                      selectedTags.includes(tag)
-                        ? "bg-accent-primary hover:bg-accent-primary-hover text-white"
-                        : "bg-bg-soft text-text-body hover:bg-accent-secondary/15"
-                    }`}
-                  >
-                    {tag}
-                  </Badge>
-                </button>
-              ))}
-            </div>
-            {availableTags.length > TOPICS_LIMIT && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowAllTopics(!showAllTopics)}
-                className="text-accent-primary hover:text-accent-primary-hover mt-2"
-              >
-                {showAllTopics ? "Show less" : `Show more (${availableTags.length - TOPICS_LIMIT} more)`}
-              </Button>
-            )}
-          </div>
-        )}
+        {availableTags.length > 0 ? (
+          <TogglePillGroup
+            label="Categories and Themes"
+            items={availableTags}
+            selected={selectedTags}
+            onToggle={toggleTag}
+            limit={TOPICS_LIMIT}
+            showAll={showAllTopics}
+            onToggleShowAll={() => setShowAllTopics((value) => !value)}
+          />
+        ) : null}
 
-        {/* Results count */}
-        <div className="text-sm text-text-muted mt-4">
-          Showing {filteredArticles.length} of {articles.length} pieces
-        </div>
-      </div>
+        <CollectionResultCount filteredCount={filteredArticles.length} totalCount={articles.length} noun="entries" />
+      </CollectionBrowserPanel>
 
-      {/* Articles Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredArticles.map((article) => (
-          <Card
-            key={article.slug}
-            className="relative bg-transparent border-border-subtle hover:border-accent-secondary/40 transition-all duration-300 overflow-hidden shadow-sm hover:shadow-md group"
-          >
-            <Link
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredArticles.map((article) => {
+          const categories = Array.isArray(article.categories) ? article.categories : []
+          const taxonomy = Array.from(new Set([...categories, ...article.tags]))
+
+          return (
+            <CollectionArticleCard
+              key={article.slug}
               href={`/strategic-narratives/world-of-artumin/${article.slug}`}
-              aria-label={`Read ${article.title}`}
-              className="absolute inset-0 z-10 rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/40 focus-visible:ring-offset-2"
+              title={article.title}
+              excerpt={article.excerpt}
+              date={article.date}
+              readingTime={article.reading_time}
+              image={article.image}
+              featuredImage={article.featured_image}
+              pills={
+                <>
+                  {article.type ? (
+                    <EditorialPill tone="accent" className="normal-case tracking-normal">
+                      {formatLabel(article.type)}
+                    </EditorialPill>
+                  ) : null}
+                  {article.status ? (
+                    <EditorialPill tone={getStatusTone(article.status)} className="normal-case tracking-normal">
+                      {formatLabel(article.status)}
+                    </EditorialPill>
+                  ) : null}
+                </>
+              }
+              metaExtra={
+                article.region ? (
+                  <div className="mb-3 flex items-center gap-2 text-sm text-text-muted">
+                    <MapPinned className="h-3 w-3" aria-hidden="true" />
+                    <EditorialPill tone="neutral" className="normal-case tracking-normal">
+                      {article.region}
+                    </EditorialPill>
+                  </div>
+                ) : undefined
+              }
+              footer={
+                taxonomy.length > 0 ? (
+                  <div className="flex flex-wrap gap-1">
+                    {taxonomy.slice(0, 3).map((item) => (
+                      <EditorialPill key={item} tone="neutral" className="normal-case tracking-normal">
+                        {item}
+                      </EditorialPill>
+                    ))}
+                    {taxonomy.length > 3 ? (
+                      <EditorialPill tone="neutral" className="normal-case tracking-normal">
+                        +{taxonomy.length - 3}
+                      </EditorialPill>
+                    ) : null}
+                  </div>
+                ) : undefined
+              }
             />
-            {article.image && (
-              <div className="aspect-video w-full overflow-hidden">
-                <img
-                  src={article.image || "/placeholder.svg"}
-                  alt=""
-                  className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-            )}
-            <CardHeader>
-              {article.featured_image && (
-                <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
-                  <img
-                    src={article.featured_image || "/placeholder.svg"}
-                    alt=""
-                    className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-              )}
-              {!article.featured_image && (
-                <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
-                  <img
-                    src={`/placeholder.svg?height=200&width=400&text=${encodeURIComponent(article.title)}`}
-                    alt=""
-                    className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-              )}
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="outline" className="border-accent-secondary/40 text-accent-secondary text-xs">
-                  {article.type}
-                </Badge>
-                {article.status && (
-                  <Badge className={`${getStatusColor(article.status)} text-xs`}>{article.status}</Badge>
-                )}
-              </div>
-              <CardTitle className="text-text-strong text-lg leading-tight">
-                <span className="group-hover:text-accent-secondary transition-colors">{article.title}</span>
-              </CardTitle>
-              <CardDescription className="text-text-body">{article.excerpt}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between text-sm text-text-muted mb-3">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-3 w-3" />
-                  <DateText value={article.date} />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-3 w-3" />
-                  <span>{article.reading_time} min</span>
-                </div>
-              </div>
-
-              {article.categories.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-2">
-                  {article.categories.slice(0, 3).map((category) => (
-                    <Badge key={category} variant="outline" className="text-xs border-border-subtle text-text-muted">
-                      {category}
-                    </Badge>
-                  ))}
-                  {article.categories.length > 3 && (
-                    <Badge variant="outline" className="text-xs border-border-subtle text-text-muted">
-                      +{article.categories.length - 3}
-                    </Badge>
-                  )}
-                </div>
-              )}
-
-              {article.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  {article.tags.slice(0, 2).map((tag) => (
-                    <Badge key={tag} variant="outline" className="text-xs border-accent-secondary/40 text-accent-secondary">
-                      {tag}
-                    </Badge>
-                  ))}
-                  {article.tags.length > 2 && (
-                    <Badge variant="outline" className="text-xs border-accent-secondary/40 text-accent-secondary">
-                      +{article.tags.length - 2}
-                    </Badge>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+          )
+        })}
       </div>
 
-      {filteredArticles.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-text-body mb-2">No content found in the realm</div>
-          <p className="text-sm text-text-muted">Try adjusting your search or explore different themes</p>
-        </div>
-      )}
+      {filteredArticles.length === 0 ? (
+        <CollectionEmptyState title="No Artumin entries found" body="Try adjusting your search or changing the selected themes." />
+      ) : null}
     </div>
   )
 }

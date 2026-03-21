@@ -41,6 +41,41 @@ const routeCases = [
       await page.getByRole("heading", { name: "Series", level: 1 }).waitFor()
     },
   },
+  {
+    name: "writing-collections",
+    path: "/strategic-narratives",
+    waitFor: async (page: Page) => {
+      await page.getByRole("heading", { name: "A single hub for the site's deeper writing collections", level: 1 }).waitFor()
+    },
+  },
+  {
+    name: "leadership-collection",
+    path: "/strategic-narratives/leadership-strategy",
+    waitFor: async (page: Page) => {
+      await page.getByRole("heading", { name: "Leadership & Strategy", level: 1 }).waitFor()
+    },
+  },
+  {
+    name: "technical-collection",
+    path: "/strategic-narratives/technical-architecture",
+    waitFor: async (page: Page) => {
+      await page.getByRole("heading", { name: "Technical Architecture", level: 1 }).waitFor()
+    },
+  },
+  {
+    name: "dnd-collection",
+    path: "/strategic-narratives/dnd-ttrpgs",
+    waitFor: async (page: Page) => {
+      await page.getByRole("heading", { name: "D&D and TTRPGs", level: 1 }).waitFor()
+    },
+  },
+  {
+    name: "artumin-collection",
+    path: "/strategic-narratives/world-of-artumin",
+    waitFor: async (page: Page) => {
+      await page.getByRole("heading", { name: "World of Artumin", level: 1 }).waitFor()
+    },
+  },
 ]
 
 async function preparePage(page: Page, path: string, waitFor?: (page: Page) => Promise<void>) {

@@ -2,17 +2,17 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-slate-950">
-      <div className="container mx-auto px-6 py-12">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <Skeleton className="h-12 w-96 mx-auto mb-4" />
-            <Skeleton className="h-6 w-[600px] mx-auto" />
+    <div className="ds-page">
+      <div className="ds-container py-10 sm:py-12">
+        <div className="mx-auto max-w-6xl space-y-16 md:space-y-20">
+          <div className="mx-auto max-w-4xl text-center">
+            <Skeleton className="mx-auto mb-4 h-12 w-80 max-w-full" />
+            <Skeleton className="mx-auto h-6 w-[36rem] max-w-full" />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid gap-8 md:grid-cols-2">
             {[1, 2].map((i) => (
-              <div key={i} className="bg-slate-800/30 border border-slate-700 rounded-xl p-8">
+              <div key={i} className="ds-surface p-8">
                 <Skeleton className="h-8 w-48 mb-4" />
                 <Skeleton className="h-4 w-full mb-2" />
                 <Skeleton className="h-4 w-3/4 mb-6" />

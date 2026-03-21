@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { ContentLayout } from "@/components/content-layout"
-import { Badge } from "@/components/ui/badge"
+import { EditorialPill, EditorialSurface } from "@/components/design-system"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock, Share2, ExternalLink, Check, Copy, Linkedin, ChevronRight } from "lucide-react"
 import Link from "next/link"
@@ -41,6 +41,11 @@ interface GistApiResponse {
   files: Record<string, GistApiFile>
 }
 
+interface ExternalPublicationLink {
+  label: string
+  href: string
+}
+
 function extractGistId(gistEmbedValue: string): string | null {
   const trimmed = gistEmbedValue.trim()
   if (!trimmed) return null
@@ -61,6 +66,51 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;")
 }
 
+function getExternalPublicationLinks(article: Article, dndBeyondLink?: string): ExternalPublicationLink[] {
+  const candidates = [
+    { label: "Medium", href: article.medium_link },
+    { label: "Dev.to", href: article.devto_link },
+    { label: "Substack", href: article.substack_link },
+    { label: "LinkedIn", href: article.linkedin_link },
+    { label: "D&D Beyond", href: dndBeyondLink },
+  ]
+
+  return candidates.filter((candidate): candidate is ExternalPublicationLink => Boolean(candidate.href))
+}
+
+function PublicationLinks({
+  links,
+  className,
+}: {
+  links: ExternalPublicationLink[]
+  className?: string
+}) {
+  if (!links.length) {
+    return null
+  }
+
+  return (
+    <div className={className}>
+      <p className="font-medium text-text-muted">View on:</p>
+      <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
+        {links.map((link) => (
+          <Link
+            key={`${link.label}-${link.href}`}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-w-0 items-center gap-1.5 rounded-sm transition-colors hover:text-text-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+            <span className="min-w-0 break-words [overflow-wrap:anywhere]">{link.label}</span>
+            <span className="sr-only"> (opens in new tab)</span>
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function SharedArticleTemplate({
   article,
   seriesContext,
@@ -75,6 +125,7 @@ export function SharedArticleTemplate({
   const [shareUrl, setShareUrl] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const dndBeyondLink = (article as Article & { dndbeyond_link?: string }).dndbeyond_link
+  const publicationLinks = getExternalPublicationLinks(article, dndBeyondLink)
   const previousSeriesEntry =
     seriesContext && seriesContext.currentIndex > 0
       ? seriesContext.series.entries[seriesContext.currentIndex - 1]
@@ -303,254 +354,171 @@ export function SharedArticleTemplate({
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary">
-      <div className="absolute inset-0 bg-tech-pattern opacity-[0.08]"></div>
-      <div className="relative">
-        <ContentLayout>
-          <div className="max-w-4xl mx-auto">
-            <SharedHero
-              breadcrumbLabel={breadcrumbLabel}
-              breadcrumbUrl={backUrl}
-              backLabel={backLabel}
-              backUrl={backUrl}
-              showBackLink={false}
-              title={article.title}
-              subtitle={article.subtitle}
-              imageSrc={article.featured_image || undefined}
-              imagePriority={Boolean(article.featured_image)}
-              metaRow={
-                <>
-                  <div className="flex min-w-0 items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    <DateText
-                      value={article.date}
-                      options={{
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      }}
-                    />
-                  </div>
-                  <div className="flex min-w-0 items-center gap-2">
-                    <Clock className="h-4 w-4" />
-                    <span>{article.reading_time} min read</span>
-                  </div>
-                </>
-              }
-              shareRow={
-                <>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className={getShareButtonClass(Boolean(article.featured_image))}
-                    onClick={handleShare}
-                    disabled={shareState === "copying"}
+    <ContentLayout>
+      <div className="mx-auto max-w-4xl">
+        <SharedHero
+          breadcrumbLabel={breadcrumbLabel}
+          breadcrumbUrl={backUrl}
+          backLabel={backLabel}
+          backUrl={backUrl}
+          showBackLink={false}
+          title={article.title}
+          subtitle={article.subtitle}
+          imageSrc={article.featured_image || undefined}
+          imagePriority={Boolean(article.featured_image)}
+          metaRow={
+            <>
+              <div className="flex min-w-0 items-center gap-2">
+                <Calendar className="h-4 w-4" aria-hidden="true" />
+                <DateText
+                  value={article.date}
+                  options={{
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }}
+                />
+              </div>
+              <div className="flex min-w-0 items-center gap-2">
+                <Clock className="h-4 w-4" aria-hidden="true" />
+                <span>{article.reading_time} min read</span>
+              </div>
+            </>
+          }
+          shareRow={
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={getShareButtonClass(Boolean(article.featured_image))}
+                onClick={handleShare}
+                disabled={shareState === "copying"}
+              >
+                {getShareButtonContent()}
+              </Button>
+              {linkedInShareHref && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={getShareButtonClass(Boolean(article.featured_image))}
+                  asChild
+                >
+                  <Link href={linkedInShareHref} target="_blank" rel="noopener noreferrer">
+                    <Linkedin className="mr-2 h-4 w-4" />
+                    LinkedIn
+                  </Link>
+                </Button>
+              )}
+              {xShareHref && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={getShareButtonClass(Boolean(article.featured_image))}
+                  asChild
+                >
+                  <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
+                    Share on X
+                  </Link>
+                </Button>
+              )}
+            </>
+          }
+          overlayBadge={
+            article.featured ? (
+              <div className="absolute top-4 right-4">
+                <EditorialPill tone="warm">Featured</EditorialPill>
+              </div>
+            ) : undefined
+          }
+          mobilePreMediaRow={
+            publicationLinks.length ? <PublicationLinks links={publicationLinks} className="min-w-0 space-y-1" /> : undefined
+          }
+        />
+
+        {publicationLinks.length > 0 && (
+          <EditorialSurface className="mb-8 hidden min-w-0 p-5 text-sm text-text-muted lg:block">
+            <PublicationLinks links={publicationLinks} className="min-w-0 space-y-1" />
+          </EditorialSurface>
+        )}
+
+        {seriesContext && (
+          <EditorialSurface className="mb-8 p-5">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="mb-1 text-xs uppercase tracking-wide text-text-muted">Series</p>
+                <h3 className="text-lg font-semibold text-text-strong">{seriesContext.series.name}</h3>
+                <p className="text-sm text-text-muted">
+                  Part {seriesContext.currentIndex + 1} of {seriesContext.series.entries.length}
+                </p>
+              </div>
+              <Button variant="outline" size="sm" asChild>
+                <Link href={`/series/${seriesContext.series.slug}`}>View full series</Link>
+              </Button>
+            </div>
+
+            {(previousSeriesEntry || nextSeriesEntry) && (
+              <div className="grid gap-3 md:grid-cols-2">
+                {previousSeriesEntry ? (
+                  <Link
+                    href={previousSeriesEntry.href}
+                    className="block rounded-lg border border-border-subtle bg-bg-soft p-4 transition-colors hover:border-accent-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
-                    {getShareButtonContent()}
-                  </Button>
-                  {linkedInShareHref && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className={getShareButtonClass(Boolean(article.featured_image))}
-                      asChild
-                    >
-                      <Link href={linkedInShareHref} target="_blank" rel="noopener noreferrer">
-                        <Linkedin className="mr-2 h-4 w-4" />
-                        LinkedIn
-                      </Link>
-                    </Button>
-                  )}
-                  {xShareHref && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className={getShareButtonClass(Boolean(article.featured_image))}
-                      asChild
-                    >
-                      <Link href={xShareHref} target="_blank" rel="noopener noreferrer">
-                        Share on X
-                      </Link>
-                    </Button>
-                  )}
-                </>
-              }
-              overlayBadge={
-                article.featured ? (
-                  <div className="absolute top-4 right-4">
-                    <Badge className="bg-yellow-600 text-yellow-100">Featured</Badge>
-                  </div>
-                ) : undefined
-              }
-              mobilePreMediaRow={
-                (article.medium_link || article.devto_link || article.substack_link || article.linkedin_link || dndBeyondLink) ? (
-                  <div className="min-w-0 space-y-1">
-                    <p className="font-medium text-text-muted">View on:</p>
-                    <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
-                      {article.medium_link && (
-                        <Link href={article.medium_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">Medium</span>
-                          <span className="sr-only"> (opens in new tab)</span>
-                        </Link>
-                      )}
-                      {article.devto_link && (
-                        <Link href={article.devto_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">Dev.to</span>
-                          <span className="sr-only"> (opens in new tab)</span>
-                        </Link>
-                      )}
-                      {article.substack_link && (
-                        <Link href={article.substack_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">Substack</span>
-                          <span className="sr-only"> (opens in new tab)</span>
-                        </Link>
-                      )}
-                      {article.linkedin_link && (
-                        <Link href={article.linkedin_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">LinkedIn</span>
-                          <span className="sr-only"> (opens in new tab)</span>
-                        </Link>
-                      )}
-                      {dndBeyondLink && (
-                        <Link href={dndBeyondLink} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span className="min-w-0 break-words [overflow-wrap:anywhere]">D&D Beyond</span>
-                          <span className="sr-only"> (opens in new tab)</span>
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                ) : undefined
-              }
-            />
-
-            {/* "View On" External Links */}
-            {(article.medium_link || article.devto_link || article.substack_link || article.linkedin_link || dndBeyondLink) && (
-              <div className="mb-8 hidden min-w-0 space-y-1 text-sm text-text-muted lg:block">
-                <p className="font-medium text-text-muted">View on:</p>
-                <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
-                  {article.medium_link && (
-                    <Link href={article.medium_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">Medium</span>
-                      <span className="sr-only"> (opens in new tab)</span>
-                    </Link>
-                  )}
-                  {article.devto_link && (
-                    <Link href={article.devto_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">Dev.to</span>
-                      <span className="sr-only"> (opens in new tab)</span>
-                    </Link>
-                  )}
-                  {article.substack_link && (
-                    <Link href={article.substack_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">Substack</span>
-                      <span className="sr-only"> (opens in new tab)</span>
-                    </Link>
-                  )}
-                  {article.linkedin_link && (
-                    <Link href={article.linkedin_link} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">LinkedIn</span>
-                      <span className="sr-only"> (opens in new tab)</span>
-                    </Link>
-                  )}
-                  {dndBeyondLink && (
-                    <Link href={dndBeyondLink} target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center gap-1.5 hover:text-text-strong transition-colors">
-                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">D&D Beyond</span>
-                      <span className="sr-only"> (opens in new tab)</span>
-                    </Link>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {seriesContext && (
-              <section className="mb-8 p-5 rounded-xl border border-border-subtle bg-bg-paper">
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                  <div>
-                    <p className="text-xs uppercase tracking-wide text-text-muted mb-1">Series</p>
-                    <h3 className="text-lg font-semibold text-text-strong">{seriesContext.series.name}</h3>
-                    <p className="text-sm text-text-muted">
-                      Part {seriesContext.currentIndex + 1} of {seriesContext.series.entries.length}
-                    </p>
-                  </div>
-                  <Button variant="outline" size="sm" asChild>
-                    <Link href={`/series/${seriesContext.series.slug}`}>View full series</Link>
-                  </Button>
-                </div>
-
-                {(previousSeriesEntry || nextSeriesEntry) && (
-                  <div className="grid md:grid-cols-2 gap-3">
-                    {previousSeriesEntry ? (
-                      <Link
-                        href={previousSeriesEntry.href}
-                        className="block rounded-lg border border-border-subtle p-3 hover:border-accent-primary/40 transition-colors"
-                      >
-                        <p className="text-xs uppercase tracking-wide text-text-muted mb-1">Previous</p>
-                        <p className="text-sm font-medium text-text-strong">{previousSeriesEntry.title}</p>
-                      </Link>
-                    ) : (
-                      <div />
-                    )}
-                    {nextSeriesEntry && (
-                      <Link
-                        href={nextSeriesEntry.href}
-                        className="block rounded-lg border border-border-subtle p-3 hover:border-accent-primary/40 transition-colors"
-                      >
-                        <p className="text-xs uppercase tracking-wide text-text-muted mb-1">Next</p>
-                        <p className="text-sm font-medium text-text-strong">{nextSeriesEntry.title}</p>
-                      </Link>
-                    )}
-                  </div>
+                    <p className="mb-1 text-xs uppercase tracking-wide text-text-muted">Previous</p>
+                    <p className="text-sm font-medium text-text-strong">{previousSeriesEntry.title}</p>
+                  </Link>
+                ) : (
+                  <div />
                 )}
-              </section>
-            )}
-
-            {/* Article Content with Professional Typography */}
-            <article ref={articleRef} className="prose prose-blue max-w-none mb-12 prose-lg prose-headings:text-text-strong prose-p:text-text-body prose-p:leading-relaxed prose-strong:text-text-strong prose-code:text-accent-primary prose-code:bg-bg-soft prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-bg-soft prose-pre:border prose-pre:border-border-subtle prose-blockquote:border-l-accent-primary prose-blockquote:text-text-body">
-              <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
-            </article>
-
-            {/* Related Articles */}
-            {!isLoading && relatedArticles.length > 0 && (
-              <div className="mt-12">
-                <hr className="border-border-subtle mb-8" />
-                <h3 className="text-xl font-semibold text-text-strong mb-4">Continue Reading</h3>
-                <div className="grid md:grid-cols-2 gap-0">
-                  {relatedArticles.map((relatedArticle, index) => (
-                    <Link
-                      key={relatedArticle.slug}
-                      href={`${config.baseUrl}/${relatedArticle.slug}`}
-                      className={`block p-4 rounded-lg group border-b md:border-b-0 md:border-r border-border-subtle last:border-b-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${index % 2 === 1 ? "md:border-r-0" : ""}`}
-                    >
-                      <h4 className="font-medium text-text-strong group-hover:text-accent-primary transition-colors mb-2">{relatedArticle.title}</h4>
-                      <p className="text-sm text-text-body leading-relaxed mb-2">{relatedArticle.excerpt}</p>
-                      <div className="flex items-center gap-2 text-xs text-text-muted mb-3">
-                        <Calendar className="h-3 w-3" />
-                        <DateText value={relatedArticle.date} />
-                        <Clock className="h-3 w-3 ml-2" />
-                        <span>{relatedArticle.reading_time} min</span>
-                      </div>
-                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-primary group-hover:text-accent-primary-hover">
-                        Read
-                        <ChevronRight className="h-4 w-4" />
-                      </span>
-                    </Link>
-                  ))}
-                </div>
+                {nextSeriesEntry && (
+                  <Link
+                    href={nextSeriesEntry.href}
+                    className="block rounded-lg border border-border-subtle bg-bg-soft p-4 transition-colors hover:border-accent-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    <p className="mb-1 text-xs uppercase tracking-wide text-text-muted">Next</p>
+                    <p className="text-sm font-medium text-text-strong">{nextSeriesEntry.title}</p>
+                  </Link>
+                )}
               </div>
             )}
-          </div>
-        </ContentLayout>
+          </EditorialSurface>
+        )}
+
+        <article
+          ref={articleRef}
+          className="prose prose-blue mb-12 max-w-none prose-lg prose-headings:text-text-strong prose-p:text-text-body prose-p:leading-relaxed prose-strong:text-text-strong prose-code:rounded prose-code:bg-bg-soft prose-code:px-1 prose-code:py-0.5 prose-code:text-accent-primary prose-pre:border prose-pre:border-border-subtle prose-pre:bg-bg-soft prose-blockquote:border-l-accent-primary prose-blockquote:text-text-body"
+        >
+          <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
+        </article>
+
+        {!isLoading && relatedArticles.length > 0 && (
+          <EditorialSurface className="mt-12 p-6">
+            <hr className="mb-8 border-border-subtle" />
+            <h3 className="mb-4 text-xl font-semibold text-text-strong">Continue Reading</h3>
+            <div className="grid gap-0 md:grid-cols-2">
+              {relatedArticles.map((relatedArticle, index) => (
+                <Link
+                  key={relatedArticle.slug}
+                  href={`${config.baseUrl}/${relatedArticle.slug}`}
+                  className={`group block rounded-lg border-border-subtle p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border-b md:border-b-0 md:border-r ${index % 2 === 1 ? "md:border-r-0" : ""} last:border-b-0`}
+                >
+                  <h4 className="mb-2 font-medium text-text-strong transition-colors group-hover:text-accent-primary">{relatedArticle.title}</h4>
+                  <p className="mb-2 text-sm leading-relaxed text-text-body">{relatedArticle.excerpt}</p>
+                  <div className="mb-3 flex items-center gap-2 text-xs text-text-muted">
+                    <Calendar className="h-3 w-3" aria-hidden="true" />
+                    <DateText value={relatedArticle.date} />
+                    <Clock className="ml-2 h-3 w-3" aria-hidden="true" />
+                    <span>{relatedArticle.reading_time} min</span>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-primary group-hover:text-accent-primary-hover">
+                    Read
+                    <ChevronRight className="h-4 w-4" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </EditorialSurface>
+        )}
       </div>
-    </div>
+    </ContentLayout>
   )
 }

@@ -1,59 +1,45 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { WorldOfArtuminClient } from "./client"
-import { ContentLayout } from "@/components/content-layout"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
+import type { Metadata } from "next"
 import Link from "next/link"
-import { Card, CardContent } from "@/components/ui/card"
-import { Crown, Sword, BookOpen } from "lucide-react"
-import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
+import { ArrowLeft, BookOpen, Crown, Sword } from "lucide-react"
 
-interface ArtumiContentMetadata {
-  slug: string
-  title: string
-  date: string
-  excerpt?: string
-  tags: string[]
-  reading_time?: number
-  type: "story" | "lore" | "character" | "location" | "history" | "organization"
-  categories: string[]
-  region?: string
-  status: "complete" | "in-progress" | "planned"
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
+import { ContentLayout } from "@/components/content-layout"
+import { EditorialSurface, PageSection, SectionIntro } from "@/components/design-system"
+import { Button } from "@/components/ui/button"
+import { processContentDirectory } from "@/lib/content-api"
+import { ARTUMIN_CONFIG } from "@/lib/content-configs"
+import { buildMetadata } from "@/lib/seo-metadata"
+import { WorldOfArtuminClient } from "./client"
+
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export default function WorldOfArtuminPage() {
-  const [articles, setArticles] = useState<ArtumiContentMetadata[]>([])
-  const [availableTags, setAvailableTags] = useState<string[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const params = await searchParams
+  const hasQueryParams = Object.keys(params).length > 0
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/content/artumin")
-        const data = await response.json()
-        setArticles(data.articles || [])
-        setAvailableTags(data.tags || [])
-      } catch (error) {
-        console.error("Error fetching artumin content:", error)
-        setArticles([])
-        setAvailableTags([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
+  return buildMetadata({
+    title: "World of Artumin | John Munn",
+    description: "Reflective fantasy and leadership fables exploring worth, power, and courage through narrative.",
+    path: "/strategic-narratives/world-of-artumin",
+    keywords: ["World of Artumin", "leadership fables", "strategic narratives", "fantasy storytelling"],
+    image: "/theblackpowdercover.png",
+    imageAlt: "World of Artumin by John Munn",
+    noindex: hasQueryParams,
+  })
+}
 
-    fetchData()
-  }, [])
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-bg-primary flex items-center justify-center">
-        <div className="text-text-body">Loading...</div>
-      </div>
+export default async function WorldOfArtuminPage() {
+  const articles = await processContentDirectory(ARTUMIN_CONFIG)
+  const availableTags = Array.from(
+    new Set(
+      articles.flatMap((article) => [
+        ...(Array.isArray(article.tags) ? article.tags : []),
+        ...(Array.isArray(article.categories) ? article.categories : []),
+      ])
     )
-  }
+  ).sort()
 
   const collectionSchema = {
     "@context": "https://schema.org",
@@ -76,11 +62,11 @@ export default function WorldOfArtuminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary">
+    <ContentLayout>
       <BreadcrumbSchema
         items={[
           { name: "Home", url: "/" },
-          { name: "About", url: "/about" },
+          { name: "Writing Collections", url: "/strategic-narratives" },
           { name: "World of Artumin", url: "/strategic-narratives/world-of-artumin" },
         ]}
       />
@@ -90,88 +76,76 @@ export default function WorldOfArtuminPage() {
           __html: JSON.stringify(collectionSchema).replace(/</g, "\\u003c"),
         }}
       />
-      <div className="absolute inset-0 bg-tech-pattern opacity-[0.08]"></div>
-      <div className="absolute inset-0 bg-hero-whisper opacity-60"></div>
-      <div className="relative">
-        <ContentLayout
-          title="World of Artumin"
-          description="Reflective fantasy and leadership fables exploring worth, power, and courage"
-        >
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-8">
-              <Button
-                variant="ghost"
-                className="text-text-muted hover:text-text-strong !hover:bg-transparent !active:bg-transparent !focus-visible:bg-transparent p-0"
-                asChild
-              >
-                <Link href="/about">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to About
-                </Link>
-              </Button>
-            </div>
 
-            {/* Description Section */}
-            <div className="mb-16">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent-secondary text-center mb-4">
-                Truth Told Sideways
-              </p>
-              <p className="text-lg text-text-body text-center max-w-5xl mx-auto leading-relaxed">
-                The World of Artumin weaves together fantasy storytelling with profound leadership insights, creating
-                fables that explore the complexities of power, responsibility, and moral courage. These tales examine
-                how individuals navigate difficult decisions, build meaningful connections, and discover their true
-                worth in a world where magic and politics intertwine. Each story serves as both entertainment and
-                reflection, offering timeless lessons wrapped in compelling narratives.
-              </p>
-              <div className="mx-auto mt-8 h-px w-36 bg-accent-secondary/40" />
-            </div>
-
-            {/* Feature Cards */}
-            <div className="grid md:grid-cols-3 gap-8 mb-16">
-              <Card className="bg-bg-paper border-border-subtle shadow-sm">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-accent-secondary/20">
-                    <Crown className="w-8 h-8 text-accent-secondary" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-text-strong mb-4">Leadership Fables</h3>
-                  <p className="text-text-body">
-                    Stories that explore the weight of command, the burden of difficult decisions, and the courage
-                    required to lead with integrity.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-bg-paper border-border-subtle shadow-sm">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-accent-secondary/20">
-                    <Sword className="w-8 h-8 text-accent-secondary" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-text-strong mb-4">Character Studies</h3>
-                  <p className="text-text-body">
-                    Deep explorations of individuals facing moral complexity, personal growth, and the challenge of
-                    staying true to their values.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-bg-paper border-border-subtle shadow-sm">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full bg-accent-secondary/20">
-                    <BookOpen className="w-8 h-8 text-accent-secondary" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-text-strong mb-4">World Building</h3>
-                  <p className="text-text-body">
-                    Rich explorations of Artumin&apos;s cultures, politics, and magical systems that create the backdrop for
-                    meaningful storytelling.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <WorldOfArtuminClient articles={articles} availableTags={availableTags} />
+      <div className="space-y-16 md:space-y-20">
+        <section className="mx-auto max-w-5xl">
+          <div className="mb-8">
+            <Button variant="ghost" className="w-fit px-0 text-text-body hover:text-accent-primary" asChild>
+              <Link href="/strategic-narratives">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Writing Collections
+              </Link>
+            </Button>
           </div>
-        </ContentLayout>
+
+          <div className="space-y-6 text-center">
+            <p className="ds-kicker">Creative Collection</p>
+            <h1 className="ds-heading">World of Artumin</h1>
+            <p className="ds-lead mx-auto max-w-3xl">
+              Reflective fantasy, leadership fables, and worldbuilding that use story to examine worth, power, and courage.
+            </p>
+            <p className="ds-copy mx-auto max-w-4xl">
+              Artumin is where narrative does strategic work. The collection uses fictional settings, political pressure,
+              and character choices to explore the same questions that show up in leadership, responsibility, and systems
+              built by people.
+            </p>
+          </div>
+        </section>
+
+        <PageSection tone="paper" spacing="compact" containerClassName="max-w-6xl">
+          <SectionIntro
+            title="What This Collection Covers"
+            description="Artumin is not a lore dump. It is a story-first collection where worldbuilding, character, and consequence are used to surface harder truths indirectly."
+            className="mb-10"
+          />
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              {
+                title: "Leadership Fables",
+                body: "Stories about power, stewardship, succession, and the moral weight of command.",
+                icon: Crown,
+              },
+              {
+                title: "Character Pressure",
+                body: "People under strain, trying to act with integrity when context makes the cost visible.",
+                icon: Sword,
+              },
+              {
+                title: "Worldbuilding With Purpose",
+                body: "Cultures, institutions, and magical systems that support reflection instead of existing as decoration.",
+                icon: BookOpen,
+              },
+            ].map(({ title, body, icon: Icon }) => (
+              <EditorialSurface key={title} className="h-full p-6">
+                <div className="mb-4 inline-flex rounded-lg bg-bg-soft p-2 text-accent-primary">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h2 className="mb-3 text-xl font-semibold text-text-strong">{title}</h2>
+                <p className="ds-copy">{body}</p>
+              </EditorialSurface>
+            ))}
+          </div>
+        </PageSection>
+
+        <PageSection tone="soft" spacing="compact" containerClassName="max-w-6xl">
+          <SectionIntro
+            title="Stories and Reference Pieces"
+            description="Search the collection by theme, category, or setting details without leaving the page."
+            className="mb-10"
+          />
+          <WorldOfArtuminClient articles={articles} availableTags={availableTags} />
+        </PageSection>
       </div>
-    </div>
+    </ContentLayout>
   )
 }

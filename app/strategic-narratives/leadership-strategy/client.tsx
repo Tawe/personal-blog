@@ -1,13 +1,17 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Calendar, Clock, Search, X } from "lucide-react"
-import Link from "next/link"
-import { DateText } from "@/components/date-text"
+import { Search, X } from "lucide-react"
+import { EditorialPill } from "@/components/design-system"
+import {
+  CollectionArticleCard,
+  CollectionBrowserPanel,
+  CollectionEmptyState,
+  CollectionResultCount,
+  TogglePillGroup,
+} from "@/components/collection-browser"
 
 interface ArticleMetadata {
   slug: string
@@ -57,156 +61,82 @@ export function LeadershipStrategyClient({ articles, tags }: LeadershipStrategyC
 
   return (
     <div className="space-y-8">
-      {/* Filter Section */}
-      <div className="bg-slate-800/30 p-6 rounded-xl border border-slate-700">
+      <CollectionBrowserPanel>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-slate-100">Filter Articles</h3>
+          <h3 className="text-lg font-semibold text-text-strong">Filter Articles</h3>
           {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-slate-400">
+            <Button type="button" variant="ghost" size="sm" onClick={clearFilters} className="text-text-muted hover:text-accent-primary">
               <X className="h-4 w-4 mr-1" />
               Clear
             </Button>
           )}
         </div>
 
-        {/* Search */}
         <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-muted" />
           <Input
             type="text"
             placeholder="Search articles..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             aria-label="Search articles"
-            className="pl-10 bg-slate-800/50 border-slate-600 text-slate-100"
+            className="pl-10 border-border-subtle bg-bg-paper text-text-body placeholder:text-text-muted"
           />
         </div>
 
-        {/* Tags */}
         {tags.length > 0 && (
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium text-slate-300">Topics</h4>
-            <div className="flex flex-wrap gap-2">
-              {(showAllTopics ? tags : tags.slice(0, TOPICS_LIMIT)).map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  aria-pressed={selectedTags.includes(tag)}
-                  onClick={() => handleTagToggle(tag)}
-                  className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full"
-                >
-                  <Badge
-                    variant={selectedTags.includes(tag) ? "default" : "secondary"}
-                    className={`cursor-pointer transition-colors ${
-                      selectedTags.includes(tag)
-                        ? "bg-green-600 hover:bg-green-700 text-white"
-                        : "bg-slate-700/50 text-slate-300 hover:bg-slate-600/50"
-                    }`}
-                  >
-                    {tag}
-                  </Badge>
-                </button>
-              ))}
-            </div>
-            {tags.length > TOPICS_LIMIT && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowAllTopics(!showAllTopics)}
-                className="text-slate-400 hover:text-slate-200 mt-2"
-              >
-                {showAllTopics ? "Show less" : `Show more (${tags.length - TOPICS_LIMIT} more)`}
-              </Button>
-            )}
-          </div>
+          <TogglePillGroup
+            label="Topics"
+            items={tags}
+            selected={selectedTags}
+            onToggle={handleTagToggle}
+            limit={TOPICS_LIMIT}
+            showAll={showAllTopics}
+            onToggleShowAll={() => setShowAllTopics(!showAllTopics)}
+          />
         )}
 
-        {/* Results count */}
-        <div className="text-sm text-slate-400 mt-4">
-          Showing {filteredArticles.length} of {articles.length} articles
-        </div>
-      </div>
+        <CollectionResultCount filteredCount={filteredArticles.length} totalCount={articles.length} noun="articles" />
+      </CollectionBrowserPanel>
 
-      {/* Articles Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredArticles.map((article) => (
-          <Card
+          <CollectionArticleCard
             key={article.slug}
-            className="bg-slate-800/50 border-slate-600 hover:border-green-500/50 transition-all duration-300 overflow-hidden"
-          >
-            {article.image && (
-              <div className="aspect-video w-full overflow-hidden">
-                <img
-                  src={article.image || "/placeholder.svg"}
-                  alt=""
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 motion-reduce:transition-none motion-reduce:hover:transform-none"
-                />
-              </div>
-            )}
-            <CardHeader>
-              {!article.image && article.featured_image && (
-                <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
-                  <img
-                    src={article.featured_image || "/placeholder.svg"}
-                    alt=""
-                    className="w-full h-full object-cover bg-slate-700"
-                  />
-                </div>
-              )}
-              {!article.image && !article.featured_image && (
-                <div className="aspect-video w-full overflow-hidden mb-4 rounded-lg">
-                  <img
-                    src={`/placeholder.svg?height=200&width=400&text=${encodeURIComponent(article.title)}`}
-                    alt=""
-                    className="w-full h-full object-cover bg-slate-700"
-                  />
-                </div>
-              )}
-              <CardTitle className="text-slate-100 text-lg leading-tight">
-                <Link
-                  href={`/strategic-narratives/leadership-strategy/${article.slug}`}
-                  className="hover:text-green-400 transition-colors"
-                >
-                  {article.title}
-                </Link>
-              </CardTitle>
-              <CardDescription className="text-slate-400">{article.excerpt}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between text-sm text-slate-500 mb-3">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-3 w-3" />
-                  <DateText value={article.date} />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-3 w-3" />
-                  <span>{article.reading_time} min</span>
-                </div>
-              </div>
-              {article.tags.length > 0 && (
+            href={`/strategic-narratives/leadership-strategy/${article.slug}`}
+            title={article.title}
+            excerpt={article.excerpt}
+            date={article.date}
+            readingTime={article.reading_time}
+            image={article.image}
+            featuredImage={!article.image ? article.featured_image : undefined}
+            pills={
+              <EditorialPill tone="accent" className="normal-case tracking-normal">
+                Leadership
+              </EditorialPill>
+            }
+            footer={
+              article.tags.length > 0 ? (
                 <div className="flex flex-wrap gap-1">
                   {article.tags.slice(0, 3).map((tag) => (
-                    <Badge key={tag} variant="outline" className="text-xs border-slate-600 text-slate-400">
+                    <EditorialPill key={tag} tone="neutral" className="normal-case tracking-normal">
                       {tag}
-                    </Badge>
+                    </EditorialPill>
                   ))}
-                  {article.tags.length > 3 && (
-                    <Badge variant="outline" className="text-xs border-slate-600 text-slate-400">
+                  {article.tags.length > 3 ? (
+                    <EditorialPill tone="neutral" className="normal-case tracking-normal">
                       +{article.tags.length - 3}
-                    </Badge>
-                  )}
+                    </EditorialPill>
+                  ) : null}
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              ) : undefined
+            }
+          />
         ))}
       </div>
 
       {filteredArticles.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-slate-400 mb-2">No articles found</div>
-          <p className="text-sm text-slate-500">Try adjusting your search or filter criteria</p>
-        </div>
+        <CollectionEmptyState title="No articles found" body="Try adjusting your search or filter criteria" />
       )}
     </div>
   )

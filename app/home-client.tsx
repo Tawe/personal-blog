@@ -1,78 +1,35 @@
-"use client"
-
-import { useState, useEffect } from "react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
-import { getDateTimestamp } from "@/lib/date-utils"
 import { DateText } from "@/components/date-text"
-import { EditorialSurface, PageSection, SectionIntro } from "@/components/design-system"
+import { EditorialPill, EditorialSurface, PageSection, SectionIntro } from "@/components/design-system"
 
 interface Article {
   slug: string
   title: string
   date: string
   excerpt?: string
-  reading_time?: number
   readingTime?: number
   category: string
-  categoryColor: string
   href: string
 }
 
-export default function HomePageClient() {
-  const [articles, setArticles] = useState<Article[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+const proofPoints = [
+  "20+ years leading teams through scaling pressure, architectural change, and messy delivery contexts.",
+  "Writing and advisory work across engineering leadership, architecture, and AI decision-making.",
+  "Practical guidance for leaders who need clearer judgment, not heavier process.",
+]
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [leadership, technical] = await Promise.all([
-          fetch("/api/content/leadership").then((r) => r.json()),
-          fetch("/api/content/technical").then((r) => r.json()),
-        ])
-
-        const combined: Article[] = [
-          ...(leadership.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number; readingTime?: number }) => ({
-            ...a,
-            category: "Leadership",
-            categoryColor: "text-text-muted",
-            href: `/strategic-narratives/leadership-strategy/${a.slug}`,
-            readingTime: a.reading_time ?? a.readingTime,
-          })),
-          ...(technical.articles || []).map((a: { slug: string; title: string; date: string; excerpt?: string; reading_time?: number; readingTime?: number }) => ({
-            ...a,
-            category: "Technical",
-            categoryColor: "text-text-muted",
-            href: `/strategic-narratives/technical-architecture/${a.slug}`,
-            readingTime: a.reading_time ?? a.readingTime,
-          })),
-        ]
-
-        const sorted = combined.sort((a, b) => getDateTimestamp(b.date) - getDateTimestamp(a.date))
-        setArticles(sorted.slice(0, 3))
-      } catch (error) {
-        console.error("Error fetching articles:", error)
-        setArticles([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [])
-
+export default function HomePageClient({ articles }: { articles: Article[] }) {
   return (
     <div className="ds-page flex min-h-screen flex-col">
       <SiteHeader />
       <main id="main-content" className="flex-1">
-        {/* Hero — bg-paper; image flush left, consistent crop via aspect-ratio + focal point */}
         <section aria-label="Hero" className="w-full bg-bg-paper lg:min-h-[min(85vh,720px)]">
           <div className="grid w-full grid-cols-1 lg:h-[min(85vh,720px)] lg:grid-cols-[minmax(320px,1fr)_1fr]">
-            {/* Profile image — fixed aspect ratio so crop is consistent; focal point keeps face in frame */}
             <div className="relative order-2 aspect-[4/5] w-full overflow-hidden bg-hero-whisper lg:order-1 lg:h-full lg:aspect-auto">
               <Image
                 src="/me.png"
@@ -98,15 +55,15 @@ export default function HomePageClient() {
                   organizational growing pains. Twenty years of experience has taught me that good strategy starts
                   with understanding what&apos;s actually happening, not what the slide deck says is happening.
                 </p>
-                <div className="flex flex-col gap-3 pt-2 min-[400px]:flex-row">
+                <div className="flex flex-col gap-3 pt-6 min-[400px]:flex-row">
                   <Button size="lg" variant="editorial" className="px-6 py-3" asChild>
                     <Link href="/writing">
-                      Writing
+                      Start With the Writing
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button variant="quiet" size="lg" className="px-6 py-3" asChild>
-                    <Link href="/contact">Contact</Link>
+                    <Link href="/services">See How I Help</Link>
                   </Button>
                 </div>
               </div>
@@ -114,11 +71,26 @@ export default function HomePageClient() {
           </div>
         </section>
 
-        {/* Writing — bg-base; hairline under title; titles stand on their own, more breathing room */}
+        <PageSection tone="base" spacing="compact" containerClassName="max-w-5xl">
+          <SectionIntro
+            title="How I Work"
+            description="I bring technical depth, leadership experience, and a writing practice that helps make complex situations easier to reason about."
+            className="mb-8"
+          />
+          <div className="space-y-4 border-t border-border-subtle pt-6">
+            {proofPoints.map((point) => (
+              <div key={point} className="flex gap-4 border-b border-border-subtle pb-4 last:border-b-0 last:pb-0">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-primary" aria-hidden="true" />
+                <p className="ds-copy">{point}</p>
+              </div>
+            ))}
+          </div>
+        </PageSection>
+
         <PageSection aria-labelledby="writing-heading" tone="base" containerClassName="max-w-5xl">
           <SectionIntro
             title="Writing"
-            description="Leadership and technical architecture, written from real-world experience building and leading teams through complexity."
+            description="The best entry point to the site. Leadership and technical architecture, written from real-world experience building and leading teams through complexity."
             actions={
               <Button variant="ghost" className="w-fit text-text-body hover:text-accent-primary" asChild>
                 <Link href="/writing">
@@ -130,12 +102,17 @@ export default function HomePageClient() {
             className="mb-14"
           />
 
-          <div aria-live="polite" aria-busy={isLoading}>
-            {!isLoading && articles.length > 0 && (
+          <div>
+            {articles.length > 0 && (
               <ul className="space-y-16">
                 {articles.map((article) => (
                   <li key={`${article.category}-${article.slug}`} className="border-b border-border-subtle pb-16 last:border-b-0 last:pb-0">
                     <Link href={article.href} className="group block">
+                      <div className="mb-3">
+                        <EditorialPill tone={article.category === "Leadership" ? "accent" : "neutral"} className="normal-case tracking-normal">
+                          {article.category}
+                        </EditorialPill>
+                      </div>
                       <h3 className="text-xl font-bold tracking-tight text-text-strong group-hover:text-accent-primary transition-colors mb-2 leading-snug">
                         {article.title}
                       </h3>
@@ -159,13 +136,12 @@ export default function HomePageClient() {
               </ul>
             )}
 
-            {!isLoading && articles.length === 0 && (
+            {articles.length === 0 && (
               <p className="text-text-muted">No writing yet.</p>
             )}
           </div>
         </PageSection>
 
-        {/* Projects — bg-soft; top divider; lead-in + framing */}
         <PageSection aria-labelledby="projects-heading" tone="soft" divider containerClassName="max-w-5xl">
           <EditorialSurface className="p-8 sm:p-10">
             <SectionIntro
@@ -184,18 +160,25 @@ export default function HomePageClient() {
           </EditorialSurface>
         </PageSection>
 
-        {/* Contact — bg-paper; calm ending, left-aligned */}
         <PageSection aria-labelledby="contact-heading" tone="paper" spacing="roomy" containerClassName="max-w-5xl">
-          <div className="text-left">
+          <EditorialSurface className="p-8 sm:p-10">
             <SectionIntro
-              title="Contact"
-              description="Open to conversation, mentoring, collaboration, or just saying hello. Email or LinkedIn."
-              className="mb-5"
+              title="Start a Conversation"
+              description="Good fit if you want help framing a messy technical decision, improving engineering communication, or thinking through leadership and architecture tradeoffs."
+              className="mb-6"
             />
-            <Link href="/contact" className="ds-link inline-block py-2 text-base">
-              Get in touch
-            </Link>
-          </div>
+            <p className="ds-meta max-w-2xl">
+              The fastest way in is a short note about your context, what feels unclear, and what kind of conversation would be useful.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Button variant="editorial" asChild>
+                <Link href="/contact">Contact Me</Link>
+              </Button>
+              <Button variant="quiet" asChild>
+                <Link href="/about">Read More About Me</Link>
+              </Button>
+            </div>
+          </EditorialSurface>
         </PageSection>
       </main>
       <SiteFooter />

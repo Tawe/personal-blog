@@ -8,6 +8,11 @@ This suite uses Playwright screenshots to catch unexpected UI changes on the hig
 - `/writing`
 - `/projects`
 - `/series`
+- `/strategic-narratives`
+- `/strategic-narratives/leadership-strategy`
+- `/strategic-narratives/technical-architecture`
+- `/strategic-narratives/dnd-ttrpgs`
+- `/strategic-narratives/world-of-artumin`
 - homepage mobile menu state
 
 Each route is captured at:
@@ -33,6 +38,7 @@ npm run test:visual:update
 
 - Local: the Playwright config expects an already-running dev server by default.
 - CI: the Playwright config starts the Next dev server automatically.
+- GitHub Actions runs this suite on pull requests that touch app code, shared components, visual tests, or relevant config.
 
 If you want local Playwright to start the server itself, run with:
 
@@ -45,3 +51,7 @@ PLAYWRIGHT_WEBSERVER=1 npm run test:visual
 Playwright stores approved screenshots next to the spec in `tests/visual/*.spec.ts-snapshots/`.
 
 Review snapshot updates carefully. Only accept changes when the visual difference is intentional.
+
+## CI artifacts
+
+When the workflow fails, inspect the uploaded `playwright-report` artifact first. If screenshots differ, GitHub Actions also uploads `visual-test-results` so you can review the generated diffs.
