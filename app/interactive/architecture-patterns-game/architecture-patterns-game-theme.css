@@ -1,5 +1,5 @@
 .architecture-patterns-game {
-  --apg-bg: #f4efe6;
+  --apg-bg: #f6f8fa;
   --apg-surface: rgba(255, 252, 247, 0.84);
   --apg-surface-strong: rgba(255, 252, 247, 0.96);
   --apg-ink: #1f2937;
@@ -9,11 +9,11 @@
   --apg-teal: #0f766e;
   --apg-indigo: #3347a8;
   --apg-rose: #cc4b61;
-  background:
-    radial-gradient(circle at top left, rgba(201, 122, 31, 0.18), transparent 30%),
-    radial-gradient(circle at top right, rgba(51, 71, 168, 0.18), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.18), transparent 32%),
-    linear-gradient(180deg, #f8f5ef 0%, #efe6d7 52%, #e8ddd0 100%);
+  background-color: var(--apg-bg);
+  background-image:
+    radial-gradient(circle at top left, rgba(201, 122, 31, 0.06), transparent 30%),
+    radial-gradient(circle at top right, rgba(51, 71, 168, 0.06), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.06), transparent 32%);
   color: var(--apg-ink);
 }
 
