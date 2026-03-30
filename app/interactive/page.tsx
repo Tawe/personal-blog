@@ -1,9 +1,16 @@
 import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound, Database, Layers3, Scaling } from "lucide-react"
+import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound, Database, Layers3, Scaling, Swords } from "lucide-react"
 
 const experiences = [
+  {
+    title: "Architecture Pattern Match Game",
+    href: "/interactive/architecture-patterns-game",
+    description:
+      "Play through architecture scenarios, pick the best-fit pattern, and reveal the tradeoffs behind choices like Saga, CQRS, Strangler, Sidecar, and more.",
+    icon: Swords,
+  },
   {
     title: "API vs Message vs Event-Driven Architecture",
     href: "/interactive/architecture-playground",

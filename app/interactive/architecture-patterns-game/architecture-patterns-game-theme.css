@@ -1,0 +1,194 @@
+.architecture-patterns-game {
+  --apg-bg: #f4efe6;
+  --apg-surface: rgba(255, 252, 247, 0.84);
+  --apg-surface-strong: rgba(255, 252, 247, 0.96);
+  --apg-ink: #1f2937;
+  --apg-muted: #5b6471;
+  --apg-border: rgba(124, 58, 237, 0.16);
+  --apg-gold: #c97a1f;
+  --apg-teal: #0f766e;
+  --apg-indigo: #3347a8;
+  --apg-rose: #cc4b61;
+  background:
+    radial-gradient(circle at top left, rgba(201, 122, 31, 0.18), transparent 30%),
+    radial-gradient(circle at top right, rgba(51, 71, 168, 0.18), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.18), transparent 32%),
+    linear-gradient(180deg, #f8f5ef 0%, #efe6d7 52%, #e8ddd0 100%);
+  color: var(--apg-ink);
+}
+
+.architecture-patterns-game .apg-card {
+  background: var(--apg-surface);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--apg-border);
+  box-shadow: 0 24px 80px rgba(39, 29, 18, 0.08);
+}
+
+.architecture-patterns-game .apg-stage-enter {
+  animation: apg-fade-rise 240ms ease;
+}
+
+.architecture-patterns-game .apg-card-strong {
+  background: var(--apg-surface-strong);
+}
+
+.architecture-patterns-game .apg-float-card {
+  animation: apg-float 9s ease-in-out infinite;
+}
+
+.architecture-patterns-game .apg-float-card:nth-child(2) {
+  animation-delay: -2s;
+}
+
+.architecture-patterns-game .apg-float-card:nth-child(3) {
+  animation-delay: -4s;
+}
+
+.architecture-patterns-game .apg-pattern-button {
+  position: relative;
+  overflow: hidden;
+  transform: translateY(0);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.architecture-patterns-game .apg-pattern-button:hover {
+  transform: translateY(-4px);
+}
+
+.architecture-patterns-game .apg-pattern-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.42) 50%, transparent 100%);
+  transform: translateX(-120%);
+  transition: transform 540ms ease;
+}
+
+.architecture-patterns-game .apg-pattern-button:hover::before,
+.architecture-patterns-game .apg-pattern-button:focus-visible::before {
+  transform: translateX(120%);
+}
+
+.architecture-patterns-game .apg-pattern-selected {
+  box-shadow:
+    0 16px 40px rgba(31, 41, 55, 0.12),
+    0 0 0 3px rgba(51, 71, 168, 0.14);
+}
+
+.architecture-patterns-game .apg-progress-fill {
+  transition: width 420ms ease;
+}
+
+.architecture-patterns-game .apg-reveal-card {
+  animation: apg-fade-rise 240ms ease;
+}
+
+.architecture-patterns-game .apg-count-pop {
+  animation: apg-count-pop 240ms ease;
+}
+
+.architecture-patterns-game .apg-title-shift {
+  animation: apg-fade-rise 260ms ease;
+}
+
+.architecture-patterns-game .apg-streak-pulse {
+  animation: apg-pulse 240ms ease;
+}
+
+.architecture-patterns-game .apg-chip-reveal {
+  animation: apg-chip-check 220ms ease;
+}
+
+.architecture-patterns-game .apg-mastery-hit {
+  animation: apg-mastery-hit 260ms ease;
+}
+
+@keyframes apg-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(1deg);
+  }
+}
+
+@keyframes apg-fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes apg-count-pop {
+  0% {
+    transform: scale(0.94);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes apg-pulse {
+  0% {
+    transform: scale(0.96);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes apg-chip-check {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.88);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes apg-mastery-hit {
+  0% {
+    background: rgba(255, 255, 255, 0.7);
+  }
+  50% {
+    background: rgba(217, 231, 245, 0.92);
+    transform: translateY(-2px);
+  }
+  100% {
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .architecture-patterns-game .apg-float-card,
+  .architecture-patterns-game .apg-progress-fill,
+  .architecture-patterns-game .apg-pattern-button::before,
+  .architecture-patterns-game .apg-pattern-button,
+  .architecture-patterns-game .apg-reveal-card,
+  .architecture-patterns-game .apg-count-pop,
+  .architecture-patterns-game .apg-title-shift,
+  .architecture-patterns-game .apg-streak-pulse,
+  .architecture-patterns-game .apg-chip-reveal,
+  .architecture-patterns-game .apg-mastery-hit {
+    animation: none;
+    transition: none;
+  }
+}
