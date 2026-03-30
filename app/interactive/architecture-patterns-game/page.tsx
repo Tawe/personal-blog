@@ -3,7 +3,7 @@ import Script from "next/script"
 import { ArchitecturePatternsGameClient } from "./ArchitecturePatternsGameClient"
 import { buildMetadata } from "@/lib/seo-metadata"
 
-const SHARE_IMAGE = "/architecturegame.png"
+const SHARE_IMAGE = "/architecturegame-og.png"
 const PAGE_URL = "https://johnmunn.tech/interactive/architecture-patterns-game"
 const PAGE_TITLE = "Architecture Pattern Match Game: Interactive Tradeoff Arena"
 const PAGE_DESCRIPTION =
@@ -52,6 +52,7 @@ export const metadata: Metadata = {
     ...baseMetadata.twitter,
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
+    images: [SHARE_IMAGE],
     creator: "@JohnMunn5",
     site: "@JohnMunn5",
   },
