@@ -2,6 +2,7 @@ import { MetadataRoute } from "next"
 import fs from "fs"
 import path from "path"
 import { generateSlug } from "@/lib/slug-utils"
+import { getAllSeries } from "@/lib/series-utils"
 
 const BASE_URL = "https://johnmunn.tech"
 
@@ -49,25 +50,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${BASE_URL}/writing`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${BASE_URL}/projects`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/interactive`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/series`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/strategic-narratives`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE_URL}/strategic-narratives/leadership-strategy`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/strategic-narratives/technical-architecture`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/strategic-narratives/technical-architecture/the-rag-atlas`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/strategic-narratives/world-of-artumin`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/strategic-narratives/dnd-ttrpgs`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/auth-atlas`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE_URL}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/services/mentoring`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/services/team-building`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/vision`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE_URL}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE_URL}/interactive/architecture-patterns-game`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/interactive/architecture-playground`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/interactive/rag-atlas`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${BASE_URL}/interactive/ai-evals-explainer`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${BASE_URL}/interactive/scalar-vector-matrix-tensor`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/interactive/where-ai-systems-drift`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${BASE_URL}/interactive/data-governance`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
   ]
+  const seriesPages: MetadataRoute.Sitemap = getAllSeries().map((series) => ({
+    url: `${BASE_URL}/series/${series.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.75,
+  }))
 
   return [
     ...staticPages,
+    ...seriesPages,
     ...articlePages(getContentFiles("content/leadership"), "strategic-narratives/leadership-strategy"),
     ...articlePages(getContentFiles("content/technical-writings"), "strategic-narratives/technical-architecture"),
     ...articlePages(getContentFiles("content/artumin"), "strategic-narratives/world-of-artumin"),
     ...articlePages(getContentFiles("content/dnd-musings"), "strategic-narratives/dnd-ttrpgs"),
-    ...articlePages(getContentFiles("content/projects"), "workbench"),
+    ...articlePages(getContentFiles("content/projects"), "projects"),
   ]
 }

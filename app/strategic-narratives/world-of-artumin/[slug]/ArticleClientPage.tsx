@@ -2,6 +2,7 @@ import { SharedArticleTemplate } from "@/components/shared-article-template"
 
 interface ArticleClientPageProps {
   article: any
+  relatedArticles?: any[]
 }
 
 const config = {
@@ -9,10 +10,11 @@ const config = {
   baseUrl: "/strategic-narratives/world-of-artumin",
 }
 
-export function ArticleClientPage({ article }: ArticleClientPageProps) {
+export function ArticleClientPage({ article, relatedArticles }: ArticleClientPageProps) {
   return (
     <SharedArticleTemplate
       article={article}
+      relatedArticles={relatedArticles}
       config={config}
       backUrl="/strategic-narratives/world-of-artumin"
       backLabel="Back to World of Artumin"

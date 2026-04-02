@@ -3,6 +3,7 @@ import type { Series } from "@/lib/series-utils"
 
 interface ArticleClientPageProps {
   article: any
+  relatedArticles?: any[]
   seriesContext?: {
     series: Series
     currentIndex: number
@@ -14,10 +15,11 @@ const config = {
   baseUrl: "/strategic-narratives/technical-architecture",
 }
 
-export function ArticleClientPage({ article, seriesContext }: ArticleClientPageProps) {
+export function ArticleClientPage({ article, relatedArticles, seriesContext }: ArticleClientPageProps) {
   return (
     <SharedArticleTemplate
       article={article}
+      relatedArticles={relatedArticles}
       seriesContext={seriesContext}
       config={config}
       backUrl="/writing"

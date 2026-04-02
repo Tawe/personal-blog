@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState, useTransition } from "react"
 import Link from "next/link"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { ArrowRight, Search } from "lucide-react"
 
 import { DateText } from "@/components/date-text"
@@ -22,11 +23,38 @@ const themeFilterOptions = ["All", "Leadership", "Technical"] as const
 
 interface WritingIndexClientProps {
   items: WritingItem[]
+  initialSearchQuery?: string
 }
 
-export function WritingIndexClient({ items }: WritingIndexClientProps) {
+export function WritingIndexClient({ items, initialSearchQuery = "" }: WritingIndexClientProps) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const [isPending, startTransition] = useTransition()
   const [themeFilter, setThemeFilter] = useState<typeof themeFilterOptions[number]>("All")
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery)
+
+  useEffect(() => {
+    setSearchQuery(initialSearchQuery)
+  }, [initialSearchQuery])
+
+  useEffect(() => {
+    const nextParams = new URLSearchParams(searchParams.toString())
+    const normalizedQuery = searchQuery.trim()
+
+    if (normalizedQuery) {
+      nextParams.set("search", normalizedQuery)
+    } else {
+      nextParams.delete("search")
+    }
+
+    const nextQueryString = nextParams.toString()
+    const nextUrl = nextQueryString ? `${pathname}?${nextQueryString}` : pathname
+
+    startTransition(() => {
+      router.replace(nextUrl, { scroll: false })
+    })
+  }, [pathname, router, searchParams, searchQuery])
 
   const byTheme = themeFilter === "All" ? items : items.filter((i) => i.theme === themeFilter)
   const query = searchQuery.trim().toLowerCase()
@@ -64,6 +92,7 @@ export function WritingIndexClient({ items }: WritingIndexClientProps) {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="min-h-[44px] w-full rounded-lg border border-border-subtle bg-bg-paper py-3 pl-10 pr-4 text-base text-text-body placeholder:text-text-muted focus:border-accent-primary focus:outline-none focus:ring-2 focus:ring-accent-primary/30 sm:text-sm touch-manipulation"
               aria-label="Search articles"
+              aria-busy={isPending}
             />
           </div>
           <div className="flex flex-wrap gap-2">

@@ -5,6 +5,8 @@ import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import { getArticle } from "@/lib/article-utils"
 import { generateArticleMetadata } from "@/lib/metadata-utils"
 import { generateSlug } from "@/lib/slug-utils"
+import { getRelatedArticles } from "@/lib/related-content"
+import { processContentDirectory } from "@/lib/content-api"
 import fs from "fs"
 import path from "path"
 
@@ -111,6 +113,18 @@ export default async function DndTtrpgsArticlePage({ params }: { params: Promise
   }
 
   const articleUrl = `https://johnmunn.tech/strategic-narratives/dnd-ttrpgs/${slug}`
+  const relatedArticles = getRelatedArticles(
+    article,
+    await processContentDirectory({
+      contentDir: path.join(process.cwd(), "content/dnd-musings"),
+      defaultType: "thought-piece",
+      customFields: {
+        type: "thought-piece",
+        system: "system-agnostic",
+        availability: "free",
+      },
+    })
+  )
 
   return (
     <>
@@ -127,7 +141,7 @@ export default async function DndTtrpgsArticlePage({ params }: { params: Promise
           { name: article.title, url: `/strategic-narratives/dnd-ttrpgs/${slug}` }
         ]}
       />
-      <ArticleClientPage article={article} />
+      <ArticleClientPage article={article} relatedArticles={relatedArticles} />
     </>
   )
 }

@@ -14,6 +14,7 @@ import { SharedHero } from "@/components/shared-hero"
 
 interface SharedArticleTemplateProps {
   article: Article
+  relatedArticles?: Article[]
   seriesContext?: {
     series: Series
     currentIndex: number
@@ -113,6 +114,7 @@ function PublicationLinks({
 
 export function SharedArticleTemplate({
   article,
+  relatedArticles = [],
   seriesContext,
   config,
   backUrl = "/writing",
@@ -120,10 +122,8 @@ export function SharedArticleTemplate({
   breadcrumbLabel = "Writing",
 }: SharedArticleTemplateProps) {
   const articleRef = useRef<HTMLElement>(null)
-  const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const [shareState, setShareState] = useState<"idle" | "copying" | "copied" | "error">("idle")
   const [shareUrl, setShareUrl] = useState("")
-  const [isLoading, setIsLoading] = useState(true)
   const dndBeyondLink = (article as Article & { dndbeyond_link?: string }).dndbeyond_link
   const publicationLinks = getExternalPublicationLinks(article, dndBeyondLink)
   const previousSeriesEntry =
@@ -223,58 +223,6 @@ export function SharedArticleTemplate({
       }
     })
   }, [article.slug, article.content])
-
-  useEffect(() => {
-    const loadRelatedArticles = async () => {
-      try {
-        // Map content folder to API endpoint
-        const apiEndpoint = config.contentFolder === 'dnd-musings' ? '/api/content/dnd' :
-                          config.contentFolder === 'leadership' ? '/api/content/leadership' :
-                          config.contentFolder === 'technical-writings' ? '/api/content/technical' :
-                          config.contentFolder === 'artumin' ? '/api/content/artumin' : null
-
-        if (!apiEndpoint) {
-          setRelatedArticles([])
-          setIsLoading(false)
-          return
-        }
-
-        const response = await fetch(apiEndpoint)
-        if (response.ok) {
-          const data = await response.json()
-          const allArticles = data.articles || []
-          
-          // First try to find articles with matching tags, excluding current article
-          let related = allArticles
-            .filter((a: Article) => a.slug !== article.slug)
-            .filter((a: Article) => a.tags.some((tag: string) => article.tags.includes(tag)))
-          
-          // If we don't have enough tag-matched articles, add other articles from the same category
-          if (related.length < 2) {
-            const otherArticles = allArticles
-              .filter((a: Article) => a.slug !== article.slug)
-              .filter((a: Article) => !related.some((r: Article) => r.slug === a.slug))
-            
-            related = [...related, ...otherArticles]
-          }
-          
-          // Shuffle and take 2 for variety
-          related = related.sort(() => Math.random() - 0.5).slice(0, 2)
-
-          setRelatedArticles(related)
-        } else {
-          setRelatedArticles([])
-        }
-      } catch (error) {
-        console.error("Error loading related articles:", error)
-        setRelatedArticles([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    loadRelatedArticles()
-  }, [article.slug, article.tags, config.contentFolder])
 
   const linkedInShareHref = shareUrl
     ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
@@ -490,7 +438,7 @@ export function SharedArticleTemplate({
           <div dangerouslySetInnerHTML={{ __html: article.content || "" }} />
         </article>
 
-        {!isLoading && relatedArticles.length > 0 && (
+        {relatedArticles.length > 0 && (
           <EditorialSurface className="mt-12 p-6">
             <hr className="mb-8 border-border-subtle" />
             <h3 className="mb-4 text-xl font-semibold text-text-strong">Continue Reading</h3>

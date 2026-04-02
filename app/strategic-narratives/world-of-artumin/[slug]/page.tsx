@@ -5,6 +5,8 @@ import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import { getArticle } from "@/lib/article-utils"
 import { generateArticleMetadata } from "@/lib/metadata-utils"
 import { generateSlug } from "@/lib/slug-utils"
+import { getRelatedArticles } from "@/lib/related-content"
+import { processContentDirectory } from "@/lib/content-api"
 import fs from "fs"
 import path from "path"
 
@@ -95,6 +97,16 @@ export default async function WorldOfArtumiArticlePage({
   }
 
   const articleUrl = `https://johnmunn.tech/strategic-narratives/world-of-artumin/${slug}`
+  const relatedArticles = getRelatedArticles(
+    article,
+    await processContentDirectory({
+      contentDir: path.join(process.cwd(), "content/artumin"),
+      defaultType: "artumin",
+      customFields: {
+        type: "artumin",
+      },
+    })
+  )
 
   return (
     <>
@@ -111,7 +123,7 @@ export default async function WorldOfArtumiArticlePage({
           { name: article.title, url: `/strategic-narratives/world-of-artumin/${slug}` }
         ]}
       />
-      <ArticleClientPage article={article} />
+      <ArticleClientPage article={article} relatedArticles={relatedArticles} />
     </>
   )
 }

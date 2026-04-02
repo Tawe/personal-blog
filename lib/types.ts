@@ -10,6 +10,7 @@ export interface BaseContentMetadata {
   reading_time?: number
   draft?: boolean
   slug: string
+  featured?: boolean
   website_exclusive?: boolean
   series?: string
   series_slug?: string

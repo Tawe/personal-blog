@@ -7,6 +7,8 @@ import { getArticle } from "@/lib/article-utils"
 import { generateArticleMetadata } from "@/lib/metadata-utils"
 import { generateSlug } from "@/lib/slug-utils"
 import { getSeriesBySlug, type Series } from "@/lib/series-utils"
+import { getRelatedArticles } from "@/lib/related-content"
+import { processContentDirectory } from "@/lib/content-api"
 import fs from "fs"
 import path from "path"
 
@@ -216,6 +218,17 @@ export default async function TechnicalArchitectureArticlePage({
   }
 
   const articleUrl = `https://johnmunn.tech/strategic-narratives/technical-architecture/${slug}`
+  const relatedArticles = getRelatedArticles(
+    article,
+    await processContentDirectory({
+      contentDir: path.join(process.cwd(), "content/technical-writings"),
+      defaultType: "technical",
+      customFields: {
+        type: "technical",
+        difficulty: "intermediate",
+      },
+    })
+  )
   const activeSeriesSlug = article.series_slug ? generateSlug(article.series_slug) : article.series ? generateSlug(article.series) : ""
   let seriesContext: ArticleSeriesContext | undefined
   if (activeSeriesSlug) {
@@ -244,7 +257,7 @@ export default async function TechnicalArchitectureArticlePage({
           { name: article.title, url: `/strategic-narratives/technical-architecture/${slug}` }
         ]}
       />
-      <ArticleClientPage article={article} seriesContext={seriesContext} />
+      <ArticleClientPage article={article} relatedArticles={relatedArticles} seriesContext={seriesContext} />
     </>
   )
 }

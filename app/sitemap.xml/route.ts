@@ -45,14 +45,23 @@ export async function GET(request: Request) {
     "/writing",
     "/series",
     "/projects",
+    "/interactive",
     "/about",
     "/contact",
+    "/auth-atlas",
     "/strategic-narratives",
     "/strategic-narratives/leadership-strategy",
     "/strategic-narratives/technical-architecture",
     "/strategic-narratives/technical-architecture/the-rag-atlas",
     "/strategic-narratives/dnd-ttrpgs",
     "/strategic-narratives/world-of-artumin",
+    "/interactive/architecture-patterns-game",
+    "/interactive/architecture-playground",
+    "/interactive/rag-atlas",
+    "/interactive/ai-evals-explainer",
+    "/interactive/scalar-vector-matrix-tensor",
+    "/interactive/where-ai-systems-drift",
+    "/interactive/data-governance",
   ]
 
   staticPages.forEach((page) => {
