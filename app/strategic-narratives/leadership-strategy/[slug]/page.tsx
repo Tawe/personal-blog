@@ -40,6 +40,28 @@ interface ArticleSeriesContext {
 }
 
 const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "how-to-measure-ai-productivity-when-the-cost-moves-instead-of-disappearing": [
+    {
+      question: "How should engineering leaders measure AI productivity?",
+      answer:
+        "Measure how AI changes the whole delivery system, not just drafting speed. Track flow, quality, learning, codebase health, and economic cost per durable outcome so you can see where work accelerates and where cost shifts downstream.",
+    },
+    {
+      question: "Why is throughput alone a bad metric for AI productivity?",
+      answer:
+        "Throughput can improve while review burden, defects, rework, or code entropy get worse. That means AI may be speeding up local output while reducing overall system health and making safe delivery harder.",
+    },
+    {
+      question: "What metrics matter most after an AI rollout in engineering?",
+      answer:
+        "Useful signals include cycle time by workflow stage, PR revision rounds, escaped defects, rollback frequency, onboarding time, code duplication, architectural consistency, and total cost per validated useful change.",
+    },
+    {
+      question: "How do you tell whether AI created leverage or just moved cost?",
+      answer:
+        "Compare the pre-AI baseline to post-AI performance by work type. If drafting gets faster but review queues, incidents, learning debt, or architecture drag rise, the system is not gaining leverage. It is relocating cost.",
+    },
+  ],
   "holding-engineering-teams-accountable-for-delivery": [
     {
       question: "How do you hold engineering teams accountable without micromanaging?",

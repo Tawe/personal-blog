@@ -14,9 +14,9 @@ export function ArticleClientPage({ article }: ArticleClientPageProps) {
     <SharedArticleTemplate
       article={article}
       config={config}
-      backUrl="/strategic-narratives/dnd-ttrpgs"
-      backLabel="Back to D&D and TTRPGs"
-      breadcrumbLabel="D&D and TTRPGs"
+      backUrl="/writing"
+      backLabel="Back to Writing"
+      breadcrumbLabel="Writing"
     />
   )
 }

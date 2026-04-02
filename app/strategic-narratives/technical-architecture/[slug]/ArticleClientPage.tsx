@@ -20,9 +20,9 @@ export function ArticleClientPage({ article, seriesContext }: ArticleClientPageP
       article={article}
       seriesContext={seriesContext}
       config={config}
-      backUrl="/strategic-narratives/technical-architecture"
-      backLabel="Back to Technical Architecture"
-      breadcrumbLabel="Technical Architecture"
+      backUrl="/writing"
+      backLabel="Back to Writing"
+      breadcrumbLabel="Writing"
     />
   )
 }
