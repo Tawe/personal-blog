@@ -40,6 +40,33 @@ interface ArticleSeriesContext {
 }
 
 const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "your-ai-architecture-isnt-broken-its-just-put-together-wrong": [
+    {
+      question: "Why do AI systems often fail over time instead of immediately?",
+      answer:
+        "Because many systems produce enough correct answers to feel useful while still carrying architectural weaknesses. Over time those weaknesses show up as incomplete retrieval, inconsistent data handling, hidden workflow decisions, or brittle behavior that erodes trust.",
+    },
+    {
+      question: "When is retrieval-augmented generation not enough for an AI system?",
+      answer:
+        "Basic retrieval is not enough when the task requires multi-step reasoning, comparing versions, combining multiple sources, or applying context over time. In those cases the system needs explicit decomposition or workflow logic rather than more chunks of context alone.",
+    },
+    {
+      question: "What causes AI hallucination in enterprise systems besides the model itself?",
+      answer:
+        "A common cause is inconsistent or poorly modeled input data. If sources conflict, authority is unclear, or freshness and ownership are not encoded, the model often produces smooth language from incoherent evidence rather than inventing facts from nowhere.",
+    },
+    {
+      question: "When should teams use agents versus deterministic workflows?",
+      answer:
+        "Agents fit problems where the path is genuinely unknown and exploration is required. Deterministic workflows are a better fit when the path is known and the real need is control, observability, and explicit decision points.",
+    },
+    {
+      question: "Can fine-tuning fix a broken AI architecture?",
+      answer:
+        "No. Fine-tuning can improve formatting, tone, and response behavior, but it does not fix structural issues like bad retrieval, conflicting data, or incorrect execution flow. Those problems need to be solved in the system design itself.",
+    },
+  ],
   "youre-probably-doing-typescript-wrong-but-im-here-to-help": [
     {
       question: "What is the main TypeScript mistake discussed in this article?",
@@ -122,6 +149,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       difficulty: "intermediate",
     },
   })
+
+  if (article?.slug === "your-ai-architecture-isnt-broken-its-just-put-together-wrong") {
+    return generateArticleMetadata({
+      article: {
+        ...article,
+        title: "Your AI Architecture Isn’t Broken. It’s Just Put Together Wrong.",
+        excerpt:
+          "AI architecture issues rarely come from the model. Learn where retrieval, data, agents, and fine-tuning break down in real systems, and how to match the right pattern to the right problem.",
+        tags: [
+          ...(article.tags || []),
+          "AI architecture",
+          "RAG architecture",
+          "AI agents",
+          "fine-tuning",
+          "engineering leadership",
+        ],
+      },
+      slug,
+      basePath: "/strategic-narratives/technical-architecture",
+      sectionName: "Technical Architecture",
+      defaultDescription: "Technical architecture article by John Munn",
+    })
+  }
 
   return generateArticleMetadata({
     article,
