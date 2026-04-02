@@ -17,7 +17,7 @@ featured_image: /measureAIProductivity.png?height=400&width=800
 reading_time: 8
 medium_link: https://medium.com/@johnmunn/how-to-measure-ai-productivity-when-the-cost-moves-instead-of-disappearing-9b70767b7f0e
 devto_link:
-substack:
+substack: https://johnmunntech.substack.com/p/how-to-measure-ai-productivity-when
 draft: false
 ---
 
