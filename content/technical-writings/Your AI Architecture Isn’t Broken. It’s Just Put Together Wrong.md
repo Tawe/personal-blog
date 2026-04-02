@@ -6,6 +6,7 @@ excerpt: "AI architecture issues rarely come from the model. Learn where retriev
 tags: ["Artificial Intelligence", "AI Engineering", "Software Architecture", "System Design", "Retrieval Augmented Generation", "Agents"]
 reading_time: 6
 featured_image: /YourAIArchitectureIsntBroken.png?height=400&width=800
+medium_link: "https://medium.com/@johnmunn/your-ai-architecture-isnt-broken-it-s-just-put-together-wrong-c30db8dad5dc"
 code_languages: []
 draft: false
 ---
