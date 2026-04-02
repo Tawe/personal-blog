@@ -99,6 +99,7 @@ export function SiteFooter() {
                 { href: "https://www.linkedin.com/in/john-munn-bbab434b/", label: "LinkedIn", Icon: Linkedin },
                 { href: "https://github.com/Tawe", label: "GitHub", Icon: Github },
                 { href: "https://medium.com/@johnmunn", label: "Medium", Icon: Edit },
+                { href: "https://substack.com/@johnmunntech", label: "Substack", Icon: Edit },
                 { href: "https://dev.to/tawe", label: "Dev.to", Icon: Code },
               ].map(({ href, label, Icon }) => (
                 <Link
