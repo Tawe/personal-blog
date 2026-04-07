@@ -61,8 +61,13 @@ export function generateArticleMetadata(
       typeof article.date === "string"
         ? (article.date.includes("T") ? article.date : `${article.date}T00:00:00Z`)
         : ""
+    const modifiedDate =
+      typeof article.updated === "string"
+        ? (article.updated.includes("T") ? article.updated : `${article.updated}T00:00:00Z`)
+        : publishedDate
 
     openGraph.publishedTime = publishedDate
+    openGraph.modifiedTime = modifiedDate
     openGraph.authors = ["John Munn"]
     openGraph.tags = article.tags || []
   }

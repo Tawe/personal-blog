@@ -1,143 +1,128 @@
 ---
 title: "AI Is About to Make Leadership Harder. Unless You Learn to Tame It."
-subtitle: "You’re not leading people anymore. You’re leading personas."
+subtitle: "In an AI-mediated workplace, leadership is becoming the job of finding what is still real."
 date: 2025-06-17
-excerpt: AI is reshaping leadership, but not always for the better. Here's how to preserve trust, growth, and human clarity in a world of polished performance.
+updated: "2026-04-06"
+excerpt: "AI now does more than polish communication. It drafts, advises, summarizes, and increasingly acts. That changes what leaders have to see, reward, and protect."
 tags:
   - leadership
   - Communication
   - AI
   - Team Management
-  - Artifical Intelligence
+  - Artificial Intelligence
 featured_image: /AIIsAbouttoMakeLeadershipHarder.webp?height=400&width=800
-reading_time: 5
+reading_time: 7
 medium_link: https://medium.com/@johnmunn/ai-is-about-to-make-leadership-harder-unless-you-learn-to-tame-it-d55cc06a74ac
 devto_link:
 substack:
 draft: false
 ---
 
-AI isn’t just changing how work gets done. It’s quietly rewriting how we see each other. And unless we learn to lead through that distortion, we’ll lose something essential.
+You are not just leading people anymore. You are leading their AI-mediated selves.
 
-The pitch sounds great: smarter tooling, faster decisions, clearer communication. But the real impact? It’s more subtle. More dangerous. It’s the erosion of the very things leadership depends on. Trust, growth, and human clarity.
+AI isn’t just changing how work gets done. It’s changing how people appear to work, how prepared they seem, how clear they sound, and how competent they look under pressure. That makes leadership harder in a way most AI conversations still understate.
 
-The leaders who thrive in the AI era won’t be the ones who adopt the most tools. They’ll be the ones who learn to see through the polish and stay connected to what’s real.
+The first wave of concern was obvious: people using AI to polish emails, decks, updates, and strategy docs. But that was the easy version of the problem.
 
-## The Authenticity Crisis Isn’t One-Way
+Now AI is showing up in the middle of the work itself. It drafts plans. Summarizes meetings. Suggests priorities. Prepares talking points. Fills in analysis. In some cases, it acts through workflows and lightweight agents before a manager even sees the result.
 
-Let’s start with the uncomfortable truth: your team is already using AI to talk to you. They’re polishing emails, prepping talking points, generating answers that sound sharp, but aren’t always theirs. You’re not leading people anymore. You’re leading personas.
+Which means leaders are not just managing communication anymore. They are managing mediated judgment.
 
-But the distortion flows both ways. Leaders are using AI to become more persuasive, more prolific, harder to challenge. Why take a messy swing at a pitch when you can run it through five AI passes and come out sounding like a Fortune 500 keynote?
+And unless we learn how to lead through that distortion, we are going to get worse at the parts of leadership that matter most: trust, development, accountability, and real decision quality.
 
-The danger isn’t the polish. It’s what gets lost under it. Uncertainty disappears. Hesitation vanishes. People show up “ready” in ways that feel strangely hollow.
+## The Problem Is No Longer Just Polish. It’s Substitution.
 
-And when both sides are optimized? You get the illusion of communication without any of the substance.
+Your team is already using AI to talk to you. That part is normal now. What has changed is that AI is increasingly being used to think before people think, structure before they structure, and conclude before they have fully understood the problem.
 
-## Remote Work Amplifies the Problem
+That matters because leadership depends on seeing how people reason, not just what they produce.
 
-Remote work already limits our exposure to the messy, spontaneous signals that help us actually understand people: how they respond to questions they didn’t expect, how they process ideas in real time, how they stumble, recover, clarify. Those moments are disappearing.
+If someone sends a clean update, presents a sharp recommendation, or speaks smoothly in a meeting, what are you actually observing: their judgment, their preparation, their pattern recognition, or simply their ability to use AI well enough to produce something persuasive?
 
-In their place? AI-polished updates. Camera-ready presence. Meetings that feel more like performance than collaboration. Even video calls, our last holdout of human signal, are being scripted. Real-time prompt support. Background summarizers. On-screen nudges. It’s getting harder to tell what someone _actually_ thinks.
+Those are not the same thing.
 
-If trust already takes longer to build remotely, AI just added another layer of glass between you and the truth.
+The danger is not that AI assistance exists. The danger is when leaders stop distinguishing between assisted output and internal capability.
 
-## The Skill Illusion Is Coming for You
+That is how you end up rewarding performance theater instead of durable competence.
 
-Here’s what keeps me up at night: the people who _look_ the most capable in an AI-mediated world may be the ones who’ve skipped the struggle entirely.
+## Leadership Now Has an Attribution Problem
 
-They write with clarity, but never wrote a bad first draft. They present with poise, but never bombed a pitch. They think fast, but only when the AI fills in the gaps.
+Leadership used to rely on imperfect but usable signals. Writing quality. Executive presence. Speed of synthesis. Confidence in ambiguity. The signals were never perfect, but they usually pointed at something real.
 
-And then one day, the context disappears. The AI is off. The pressure is real. And they crumble. Because nobody ever taught them how to hold weight without assistance.
+Now those signals are much noisier.
 
-As leaders, we’re building systems that reward signal, not substance. Outputs, not intuition. Competence cosplay. We’re promoting the polished. And quietly wondering why nobody’s growing.
+The same person can look average in a live whiteboard session and exceptional in a carefully staged async update. A manager can sound deeply strategic after three rounds of AI refinement and still have weak conviction underneath. A team can look aligned because every summary is crisp while the underlying disagreements remain unresolved.
 
-## You’re Not Thinking Clearly Either
+This creates an attribution problem: when something is good, who gets credit; when something fails, who understands why; and when someone looks ready, are they actually ready?
 
-If you’ve ever asked AI to write something important for you, a strategy memo, a difficult message, a company vision, you know the dissociation I’m talking about.
+If leaders cannot answer those questions, performance management starts drifting. So do promotions. So does trust.
 
-You start with a vague idea. The AI spins it into something articulate. You read it. Tweak it. Ship it. But something’s off.
+## Remote Work Made This Hard. AI Multiplies It.
 
-You didn’t _wrestle_ with the ideas. You didn’t work through the tradeoffs. You didn’t feel the discomfort that usually sharpens the thinking. You delegated the struggle. And now, the conviction that should live under your decision? It’s not really yours.
+Remote work already removed many of the spontaneous signals that help us understand people. We see fewer rough drafts. Fewer half-formed thoughts. Fewer moments where someone has to reason in real time without a safety net.
 
-That’s a problem.
+AI adds another layer between the person and the signal.
 
-## You Can’t Measure What You Can’t See
+Meeting copilots create summaries that sound cleaner than the meeting felt. Real-time prompting makes people appear more composed than they are. AI-prepared one-on-ones can make managers seem more attentive without making them more present. Agentic workflows can close loops before anyone has actually learned from the work.
 
-Most traditional performance signals are now suspect. Clarity of writing? Maybe AI. Strategic thinking? Maybe AI. Great presentation? Could be AI.
+You can run an organization like that for a while. It will even look efficient.
 
-So what _are_ we measuring?
+Then the pressure hits. A major customer escalates. A roadmap slips. A dependency breaks. The ambiguity gets real. And suddenly the polished layer falls away.
 
-If we can’t tell where the person ends and the tool begins, then our reviews, our promotions, our mentorship decisions, all of it gets foggy. And here’s the scary part: if we don’t find a better compass, we’re going to reward the people who optimize best for perception. Not those doing the actual work.
+That is when you find out whether people were building judgment or just renting it.
 
-That’s a fast path to disillusionment. And eventually, decay.
+## The Real Risk Is Development Debt
+
+This is the part I think leaders still underestimate.
+
+AI does not just create execution risk. It creates development debt.
+
+People can now skip more of the struggle that used to build judgment: writing the first messy draft, structuring an argument from scratch, working through uncertainty without immediate scaffolding, preparing for hard conversations in their own words, and making a decision before a model offers six plausible options.
+
+That struggle was never just friction. It was how many people learned to think.
+
+If you remove too much of it too early, you get people who can produce mature-looking work without developing mature judgment. They look faster than they are. They look more senior than they are. And leaders, under pressure to move quickly, will be tempted to promote the appearance.
+
+Later, the bill comes due.
+
+## What Leaders Need to Measure Instead
+
+If traditional output signals are getting distorted, leaders need a better compass.
+
+Not "Did they use AI?"
+That question is too blunt and increasingly useless.
+
+Better questions are whether they can explain the logic behind the recommendation, adapt when the context changes, recognize where the AI is weak, verify instead of merely relay, operate when the tooling is unavailable or wrong, and escalate ambiguity early rather than hide behind polished certainty.
+
+Those are leadership signals now. Not just output quality, but judgment under assistance.
 
 ## What It Means to Tame AI
 
-Still, resistance alone isn’t a strategy. But it is worth asking, why is it so common?
+Taming AI does not mean banning it. That is neither realistic nor especially intelligent.
 
-Some fear job displacement. Others fear misuse. Many just don’t understand how it works or what it might replace. That fear is human. And as leaders, we need to meet it with empathy, not dismissal. Then go one step further.
+It means deciding where AI should accelerate work, where it should support thinking, and where it should stay out because the human learning or human accountability matters more than the immediate efficiency gain.
 
-To tame AI is to shape how it shows up. When it’s helpful, when it’s silent, and how it integrates without distorting. Taming AI doesn’t mean rejecting progress. It means stepping into it with deliberate choices, shaping how the tool fits, not how we vanish into it.
+In practice, that means leaders need more environments where people have to think in real time. Working sessions. Whiteboard conversations. Live prioritization. Debriefs without over-preparation. These are not inefficiencies. They are diagnostic surfaces. If every important interaction is polished before it reaches you, you lose access to the reasoning that leadership depends on.
 
-That means:
+It also means making AI disclosure normal without making it shameful. People should be able to say, "I used AI to structure this," or, "The first draft came from a model, but the recommendation is mine." The goal is not surveillance. It is accurate attribution. If AI use has to stay hidden, leaders will be forced to infer capability from outputs that no longer cleanly map to the person who produced them.
 
-- Building intentional guardrails around critical workflows, like hiring, performance reviews, and mentorship. Where human judgment must remain primary.
-- Defining use cases and boundaries. When AI assistance is expected, when it’s optional, and when it’s explicitly off-limits.
-- Teaching people to think alongside the tool, not let it think for them.
-- Preserving the arenas where people still need to fail, recover, and grow.
+Just as importantly, leaders have to protect apprenticeship moments. There are parts of work people still need to do the hard way, especially early in their development: writing from scratch, handling difficult conversations, working through tradeoffs, building a point of view before asking a machine to sharpen it. If everything becomes AI-assisted too early, you do not get leverage. You get hollowing.
 
-It’s about using AI to amplify what’s human, not erase it.
+Evaluation has to shift as well. Leaders need to probe judgment, not just output. Ask people to explain why, not just what. Change the scenario. Test whether the reasoning survives the shift. The point is not to catch people cheating. It is to understand where their real capability begins and ends.
 
-## Practices for Responsible Integration
+And in high-consequence work, human ownership has to remain visible. Hiring decisions. Performance reviews. Promotions. Sensitive feedback. Organizational design. Escalations with legal, financial, or reputational consequences. In these areas, AI can support preparation, but it should not become the hidden author of judgment.
 
-## 1. Create AI-Free Zones
+Leaders themselves are not exempt from any of this. If you let AI write every difficult note, frame every strategy, and smooth every rough edge in your thinking, you will slowly lose touch with your own conviction. You will sound sharper than you are. Your team will feel it. Sometimes they need to see the rough thinking too, or they will learn to optimize for polish from you.
 
-Carve out spaces for unfiltered interaction. Walking meetings. Live collaboration sessions. Unstructured one-on-ones. Anywhere the polish can’t hide the person.
+## Final Thought: The Job Is to Find What Is Still Real
 
-These aren’t inefficiencies. They’re diagnostic tools.
+The promise of AI is real. It will make teams faster. It will remove waste. It will help good people do more.
 
-## 2. Make AI Use Transparent
+But it also makes it easier to confuse fluency with understanding, polished output with readiness, and assistance with capability.
 
-Normalize disclosure. “I drafted this with help.” “This is AI-polished.” Build cultural defaults around when and how AI should show up, and when it shouldn’t.
+That is why leadership gets harder from here.
 
-## 3. Protect Human Development
+Not because the tools are bad, but because the signals are getting noisier.
 
-Call out the areas where skill still needs to be built the hard way. Writing. Critical thinking. Decision-making under uncertainty.
+The leaders who do well in this next phase will not be the ones who automate the fastest or sound the smartest. They will be the ones who can still tell the difference between a person who used AI well and a person who is being carried by it.
 
-Design challenges that can’t be outsourced.
-
-## 4. Develop Forensic Listening
-
-Get better at spotting the disconnects. Does their writing outpace their speech? Can they explain the logic behind what they shared? Do they struggle when AI’s not in the room?
-
-These signals matter more now.
-
-## 5. Rethink What You Reward
-
-Start measuring what can’t be faked: emotional intelligence, integrity under pressure, the ability to admit not knowing. Curiosity. Grit. Follow-through.
-
-Not just what looks good, but what holds up.
-
-## 6. Model Imperfection
-
-Share rough drafts. Talk about what you’re still figuring out. Let people see your process. Not just your polish.
-
-That’s how you give others permission to do the same.
-
-## Final Thought: Don’t Lose the Plot
-
-The promise of AI is real. But it comes with a price.
-
-If we let it, AI will give us faster code, prettier prose, better decks, and teams full of people we _think_ we know, doing work we _think_ we understand, growing in ways that _seem_ real.
-
-But only seem.
-
-The leaders who thrive won’t be the ones who automate the fastest. They’ll be the ones who stay grounded in the messy, imperfect, deeply human signals that still matter most.
-
-So before you chase the next integration or celebrate a perfect pitch, ask yourself: _Did I hear the person? Or just the polish?_
-
-Because you can’t outsource trust. Or growth. Or conviction.
-
-And if we lose those?
-
-The rest doesn’t matter.
+Because in the end, you are still responsible for the judgment of the system.

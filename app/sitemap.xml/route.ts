@@ -8,8 +8,8 @@ export const runtime = 'nodejs'
 export const revalidate = 3600 // Revalidate every hour (cache for 1 hour)
 
 // Simple frontmatter parser to avoid bundling gray-matter
-function parseFrontmatter(content: string): { draft?: boolean; date?: string } {
-  const frontmatter: { draft?: boolean; date?: string } = {}
+function parseFrontmatter(content: string): { draft?: boolean; date?: string; updated?: string } {
+  const frontmatter: { draft?: boolean; date?: string; updated?: string } = {}
   
   // Match YAML frontmatter between --- markers
   const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n/)
@@ -29,6 +29,11 @@ function parseFrontmatter(content: string): { draft?: boolean; date?: string } {
   const dateMatch = frontmatterText.match(/^date:\s*(.+)$/m)
   if (dateMatch) {
     frontmatter.date = dateMatch[1].trim().replace(/['"]/g, '')
+  }
+
+  const updatedMatch = frontmatterText.match(/^updated:\s*(.+)$/m)
+  if (updatedMatch) {
+    frontmatter.updated = updatedMatch[1].trim().replace(/['"]/g, '')
   }
   
   return frontmatter
@@ -105,13 +110,14 @@ export async function GET(request: Request) {
         }
         
         const slug = generateSlug(filename)
-        // Use file modification time or frontmatter date, whichever is more recent
+        // Use file modification time, publish date, or explicit updated date, whichever is most recent
         const fileStats = fs.statSync(filePath)
         const fileModTime = new Date(fileStats.mtime).toISOString()
         const frontmatterDate = frontmatter.date ? new Date(frontmatter.date).toISOString() : null
-        const lastmod = frontmatterDate && new Date(frontmatterDate) > new Date(fileModTime) 
-          ? frontmatterDate 
-          : fileModTime
+        const updatedDate = frontmatter.updated ? new Date(frontmatter.updated).toISOString() : null
+        const lastmod = [fileModTime, frontmatterDate, updatedDate]
+          .filter((value): value is string => Boolean(value))
+          .sort((left, right) => new Date(right).getTime() - new Date(left).getTime())[0]
         
         // Add URLs for all routes this content appears on
         section.routes.forEach((route) => {

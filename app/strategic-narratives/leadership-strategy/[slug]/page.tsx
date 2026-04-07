@@ -108,6 +108,23 @@ const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: stri
         "The piece targets senior engineering leaders, including managers, directors, and technical leaders working across organizational complexity, ownership boundaries, and high-stakes decisions.",
     },
   ],
+  "ai-is-about-to-make-leadership-harder-unless-you-learn-to-tame-it": [
+    {
+      question: "Why does AI make leadership harder, not easier?",
+      answer:
+        "AI makes leadership harder because it improves the polish of work faster than it improves the underlying judgment behind it. Leaders now have to distinguish between fluent outputs, genuine capability, and AI-assisted performance.",
+    },
+    {
+      question: "What should leaders evaluate in an AI-assisted workplace?",
+      answer:
+        "Leaders should evaluate judgment under assistance: whether someone can explain their reasoning, adapt when context changes, verify weak AI outputs, and retain ownership in high-consequence decisions.",
+    },
+    {
+      question: "How can leaders use AI without weakening team development?",
+      answer:
+        "Use AI to accelerate execution and support thinking, but protect the work that still builds judgment: writing from scratch, reasoning through ambiguity, handling hard conversations, and making accountable decisions in real time.",
+    },
+  ],
 }
 
 // Generate static params for all articles
