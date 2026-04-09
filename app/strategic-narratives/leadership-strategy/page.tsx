@@ -2,12 +2,14 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowLeft, BookOpen, Target, Users } from "lucide-react"
 
+import { CollectionPageSchema } from "@/components/collection-page-schema"
 import { ContentLayout } from "@/components/content-layout"
 import { EditorialSurface, PageSection, SectionIntro } from "@/components/design-system"
 import { Button } from "@/components/ui/button"
 import { processContentDirectory } from "@/lib/content-api"
 import { LEADERSHIP_CONFIG } from "@/lib/content-configs"
 import { buildMetadata } from "@/lib/seo-metadata"
+import { getDateTimestamp } from "@/lib/date-utils"
 import { LeadershipStrategyClient } from "./client"
 
 interface PageProps {
@@ -43,9 +45,25 @@ export async function generateMetadata({
 export default async function LeadershipStrategyPage() {
   const articles = await processContentDirectory(LEADERSHIP_CONFIG)
   const tags = Array.from(new Set(articles.flatMap((article) => article.tags || []))).sort()
+  const schemaItems = [...articles]
+    .sort((a, b) => getDateTimestamp(b.date) - getDateTimestamp(a.date))
+    .slice(0, 24)
+    .map((article) => ({
+      title: article.title,
+      url: `https://johnmunn.tech/strategic-narratives/leadership-strategy/${article.slug}`,
+      date: article.date,
+      excerpt: article.excerpt,
+    }))
 
   return (
     <ContentLayout>
+      <CollectionPageSchema
+        name="Leadership & Strategy"
+        description="Engineering leadership and strategy articles on team design, organizational judgment, decision-making, and leadership under pressure."
+        url="https://johnmunn.tech/strategic-narratives/leadership-strategy"
+        about={["Engineering leadership", "Technical leadership", "Organizational design", "Leadership strategy"]}
+        items={schemaItems}
+      />
       <div className="space-y-16 md:space-y-20">
         <section className="mx-auto max-w-5xl">
           <div className="mb-8">
@@ -102,6 +120,34 @@ export default async function LeadershipStrategyPage() {
                 <p className="ds-copy">{body}</p>
               </EditorialSurface>
             ))}
+          </div>
+        </PageSection>
+
+        <PageSection tone="soft" spacing="compact" containerClassName="max-w-5xl">
+          <SectionIntro
+            title="Focused Entry Points"
+            description="If you came looking for a more direct path than the full collection, these intent-based pages are a faster start."
+            className="mb-10"
+          />
+          <div className="grid gap-6 md:grid-cols-2">
+            <EditorialSurface className="p-6">
+              <h2 className="mb-3 text-xl font-semibold text-text-strong">Engineering Leadership Articles</h2>
+              <p className="ds-copy mb-5">
+                A curated landing page for readers specifically looking for engineering leadership articles on accountability, judgment, team design, and communication.
+              </p>
+              <Button variant="outline" asChild>
+                <Link href="/engineering-leadership-articles">Explore the hub</Link>
+              </Button>
+            </EditorialSurface>
+            <EditorialSurface className="p-6">
+              <h2 className="mb-3 text-xl font-semibold text-text-strong">AI Systems Strategy</h2>
+              <p className="ds-copy mb-5">
+                Cross-collection reading on AI architecture, governance, evaluation, and the organizational tradeoffs around adoption.
+              </p>
+              <Button variant="outline" asChild>
+                <Link href="/ai-systems-strategy">Explore the hub</Link>
+              </Button>
+            </EditorialSurface>
           </div>
         </PageSection>
 

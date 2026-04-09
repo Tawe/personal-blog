@@ -2,11 +2,13 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowLeft, Cloud, Code, Zap } from "lucide-react"
 
+import { CollectionPageSchema } from "@/components/collection-page-schema"
 import { ContentLayout } from "@/components/content-layout"
 import { EditorialSurface, PageSection, SectionIntro } from "@/components/design-system"
 import { Button } from "@/components/ui/button"
 import { processContentDirectory } from "@/lib/content-api"
 import { TECHNICAL_CONFIG } from "@/lib/content-configs"
+import { getDateTimestamp } from "@/lib/date-utils"
 import { buildMetadata } from "@/lib/seo-metadata"
 import { TechnicalArchitectureClient } from "./client"
 
@@ -41,9 +43,25 @@ export async function generateMetadata({
 export default async function TechnicalArchitecturePage() {
   const articles = await processContentDirectory(TECHNICAL_CONFIG)
   const tags = Array.from(new Set(articles.flatMap((article) => article.tags || []))).sort()
+  const schemaItems = [...articles]
+    .sort((a, b) => getDateTimestamp(b.date) - getDateTimestamp(a.date))
+    .slice(0, 24)
+    .map((article) => ({
+      title: article.title,
+      url: `https://johnmunn.tech/strategic-narratives/technical-architecture/${article.slug}`,
+      date: article.date,
+      excerpt: article.excerpt,
+    }))
 
   return (
     <ContentLayout>
+      <CollectionPageSchema
+        name="Technical Architecture"
+        description="Technical architecture articles on system design, software architecture, AI systems, and operational tradeoffs."
+        url="https://johnmunn.tech/strategic-narratives/technical-architecture"
+        about={["Technical architecture", "System design", "Software architecture", "AI systems"]}
+        items={schemaItems}
+      />
       <div className="space-y-16 md:space-y-20">
         <section className="mx-auto max-w-5xl">
           <div className="mb-8">
@@ -99,6 +117,34 @@ export default async function TechnicalArchitecturePage() {
                 <p className="ds-copy">{body}</p>
               </EditorialSurface>
             ))}
+          </div>
+        </PageSection>
+
+        <PageSection tone="soft" spacing="compact" containerClassName="max-w-5xl">
+          <SectionIntro
+            title="Focused Entry Points"
+            description="These landing pages give readers and crawlers a clearer path into the parts of the collection they are most likely to be searching for."
+            className="mb-10"
+          />
+          <div className="grid gap-6 md:grid-cols-2">
+            <EditorialSurface className="p-6">
+              <h2 className="mb-3 text-xl font-semibold text-text-strong">Technical Architecture Articles</h2>
+              <p className="ds-copy mb-5">
+                A dedicated hub for readers looking specifically for software architecture, system design, and platform tradeoff articles.
+              </p>
+              <Button variant="outline" asChild>
+                <Link href="/technical-architecture-articles">Explore the hub</Link>
+              </Button>
+            </EditorialSurface>
+            <EditorialSurface className="p-6">
+              <h2 className="mb-3 text-xl font-semibold text-text-strong">AI Systems Strategy</h2>
+              <p className="ds-copy mb-5">
+                A cross-cutting hub for AI architecture, evaluation, governance, and the broader system decisions around responsible adoption.
+              </p>
+              <Button variant="outline" asChild>
+                <Link href="/ai-systems-strategy">Explore the hub</Link>
+              </Button>
+            </EditorialSurface>
           </div>
         </PageSection>
 

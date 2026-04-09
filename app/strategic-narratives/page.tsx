@@ -182,6 +182,29 @@ export default async function StrategicNarrativesPage() {
               If you are more interested in creative systems, tabletop design, or fictional worlds, Artumin and the
               TTRPG collection show how those same habits of thinking play out in a different form.
             </p>
+            <div className="mt-8 grid gap-3 text-left sm:grid-cols-3">
+              <Link
+                href="/engineering-leadership-articles"
+                className="rounded-xl border border-border-subtle bg-bg-soft p-4 transition-colors hover:border-accent-primary/40"
+              >
+                <p className="text-sm font-semibold text-text-strong">Engineering Leadership Articles</p>
+                <p className="mt-2 text-sm text-text-body">A direct entry point for team design, management, and leadership writing.</p>
+              </Link>
+              <Link
+                href="/technical-architecture-articles"
+                className="rounded-xl border border-border-subtle bg-bg-soft p-4 transition-colors hover:border-accent-primary/40"
+              >
+                <p className="text-sm font-semibold text-text-strong">Technical Architecture Articles</p>
+                <p className="mt-2 text-sm text-text-body">A focused hub for system design, architecture, and operational tradeoff essays.</p>
+              </Link>
+              <Link
+                href="/ai-systems-strategy"
+                className="rounded-xl border border-border-subtle bg-bg-soft p-4 transition-colors hover:border-accent-primary/40"
+              >
+                <p className="text-sm font-semibold text-text-strong">AI Systems Strategy</p>
+                <p className="mt-2 text-sm text-text-body">Cross-collection reading on AI evaluation, governance, architecture, and adoption strategy.</p>
+              </Link>
+            </div>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Button variant="editorial" asChild>
                 <Link href="/writing">Go to Writing</Link>

@@ -20,15 +20,18 @@ function getContentFiles(dir: string): ContentFile[] {
     .filter((f) => f.endsWith(".md"))
     .filter((f) => {
       const content = fs.readFileSync(path.join(contentDir, f), "utf-8")
-      return !content.match(/^draft:\s*true/m)
+      const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---/)
+      const frontmatterText = frontmatterMatch?.[1] || ""
+      return !frontmatterText.match(/^draft:\s*true\s*$/m)
     })
     .map((f) => {
       const filePath = path.join(contentDir, f)
       const content = fs.readFileSync(filePath, "utf-8")
-      const dateMatch = content.match(/^date:\s*["']?(\d{4}-\d{2}-\d{2})/m)
-      const lastModified = dateMatch
-        ? new Date(dateMatch[1])
-        : fs.statSync(filePath).mtime
+      const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---/)
+      const frontmatterText = frontmatterMatch?.[1] || ""
+      const updatedMatch = frontmatterText.match(/^updated:\s*["']?(\d{4}-\d{2}-\d{2})/m)
+      const fileMtime = fs.statSync(filePath).mtime
+      const lastModified = updatedMatch ? new Date(updatedMatch[1]) : fileMtime
       return { slug: generateSlug(f), lastModified }
     })
 }
@@ -51,6 +54,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
     { url: `${BASE_URL}/writing`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${BASE_URL}/engineering-leadership-articles`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
+    { url: `${BASE_URL}/technical-architecture-articles`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
+    { url: `${BASE_URL}/ai-systems-strategy`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${BASE_URL}/projects`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${BASE_URL}/interactive`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
