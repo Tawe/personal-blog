@@ -125,6 +125,28 @@ const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: stri
         "Use AI to accelerate execution and support thinking, but protect the work that still builds judgment: writing from scratch, reasoning through ambiguity, handling hard conversations, and making accountable decisions in real time.",
     },
   ],
+  "how-to-challenge-your-technical-architects-so-they-actually-grow": [
+    {
+      question: "How do you help technical architects grow beyond technical depth?",
+      answer:
+        "Challenge them on the wider system around the design: tradeoffs, reversibility, ownership boundaries, business timing, and the cost of being wrong. Growth usually happens when architects move from technical correctness toward organizational judgment.",
+    },
+    {
+      question: "What questions help architects think beyond clean design?",
+      answer:
+        "Ask why this is the right tradeoff now, what gets harder later, what happens if the bet is wrong, how reversible the decision is, and what the smallest useful version would be. Those questions shift the conversation from elegance to judgment.",
+    },
+    {
+      question: "Why should architects explain decisions in business language?",
+      answer:
+        "Architecture decisions gain support when leaders can connect them to business risk, speed, cost, customer pain, and future optionality. Translating design choices into business language turns an architect from a system designer into a strategic operator.",
+    },
+    {
+      question: "What makes architecture a human systems problem, not just a software problem?",
+      answer:
+        "Every architecture choice affects team boundaries, dependency friction, incident response, onboarding speed, and ownership clarity. Strong architects learn to design for confidence of execution, not just system performance.",
+    },
+  ],
 }
 
 // Generate static params for all articles

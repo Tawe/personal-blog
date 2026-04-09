@@ -39,6 +39,8 @@ export function generateArticleMetadata(
   const title = article.title || defaultTitle
   const description = article.excerpt || article.subtitle || defaultDescription
   const url = `https://johnmunn.tech${basePath}/${slug}`
+  const titleKeyword = title.trim()
+  const subtitleKeyword = article.subtitle?.trim()
 
   const metadata = buildMetadata({
     title,
@@ -46,9 +48,12 @@ export function generateArticleMetadata(
     path: `${basePath}/${slug}`,
     keywords: [
       ...(article.tags || []),
+      titleKeyword,
+      `${titleKeyword} article`,
+      ...(subtitleKeyword ? [subtitleKeyword] : []),
       `${sectionName.toLowerCase()} article`,
-      "technical explainer",
       "engineering insights",
+      "John Munn",
     ],
     image: article.featured_image || "/me.jpeg",
     imageAlt: title,
