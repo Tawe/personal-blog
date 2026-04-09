@@ -6,6 +6,7 @@ import Link from "next/link"
 import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import { ContentLayout } from "@/components/content-layout"
 import { EditorialSurface, PageSection, SectionIntro } from "@/components/design-system"
+import { ProfilePageSchema } from "@/components/profile-page-schema"
 import { Button } from "@/components/ui/button"
 
 const focusAreas = [
@@ -34,6 +35,7 @@ export default function AboutPage() {
     <ContentLayout>
       <div className="space-y-16 md:space-y-20">
         <section className="mx-auto max-w-5xl">
+          <ProfilePageSchema url="https://johnmunn.tech/about" />
           <BreadcrumbSchema
             items={[
               { name: "Home", url: "/" },

@@ -2,6 +2,7 @@ export function PersonSchema() {
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": "https://johnmunn.tech/#person",
     "name": "John Munn",
     "url": "https://johnmunn.tech",
     "image": "https://johnmunn.tech/me.jpeg",
@@ -41,6 +42,9 @@ export function PersonSchema() {
         "@type": "Country",
         "name": "United States"
       }
+    },
+    "mainEntityOfPage": {
+      "@id": "https://johnmunn.tech/about#profile-page"
     }
   }
 
@@ -53,4 +57,3 @@ export function PersonSchema() {
     />
   )
 }
-

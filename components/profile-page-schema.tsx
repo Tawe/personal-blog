@@ -1,9 +1,20 @@
-export function ProfilePageSchema() {
+interface ProfilePageSchemaProps {
+  url?: string
+}
+
+export function ProfilePageSchema({ url = "https://johnmunn.tech/about" }: ProfilePageSchemaProps) {
   const profilePageSchema = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
+    "@id": `${url}#profile-page`,
+    "url": url,
+    "mainEntityOfPage": {
+      "@type": "ProfilePage",
+      "@id": `${url}#profile-page`
+    },
     "mainEntity": {
       "@type": "Person",
+      "@id": "https://johnmunn.tech/#person",
       "name": "John Munn",
       "url": "https://johnmunn.tech",
       "image": "https://johnmunn.tech/me.jpeg",
@@ -16,6 +27,10 @@ export function ProfilePageSchema() {
         "https://dev.to/tawe",
         "https://tawe.substack.com/"
       ]
+    },
+    "inLanguage": "en-US",
+    "isPartOf": {
+      "@id": "https://johnmunn.tech/#website"
     },
     "dateCreated": "2024-01-01",
     "dateModified": new Date().toISOString().split("T")[0]

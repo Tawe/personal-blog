@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { PersonSchema } from "@/components/person-schema"
 import { WebsiteSchema } from "@/components/website-schema"
-import { ProfilePageSchema } from "@/components/profile-page-schema"
 import { GoogleAnalytics } from "@/components/google-analytics"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DARK_MODE_ENABLED } from "@/lib/feature-flags"
@@ -114,7 +113,6 @@ export default function RootLayout({
         />
         <PersonSchema />
         <WebsiteSchema />
-        <ProfilePageSchema />
       </head>
       <body className="bg-bg-base text-text-primary">
         <a
