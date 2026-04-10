@@ -130,16 +130,6 @@
       "source": "/workbench/:path*",
       "destination": "/projects/:path*",
       "permanent": true
-    },
-    {
-      "source": "/services",
-      "destination": "/contact",
-      "permanent": true
-    },
-    {
-      "source": "/services/:path*",
-      "destination": "/contact",
-      "permanent": true
     }
   ]
-} 
+}
