@@ -1,145 +1,266 @@
 ---
 title: "You’re Measuring AI ROI All Wrong. Here’s What Actually Matters"
-subtitle: "Why Efficiency Is Just the Starting Line, and Strategy Is the Real Prize"
-date: 2025-06-24
-excerpt: "A 3-layer framework to measure AI ROI beyond cost savings, unlock growth, defend your position, and speak the language execs actually care about."
+subtitle: "Why AI ROI is no longer a tooling question. It’s an operating model question."
+date: 2026-04-10
+excerpt: "Most teams still measure AI savings. The real ROI shows up in workflow redesign, new capability, and strategic position."
 tags:
-  - Business Strategy
-  - Technical Leadership
+  - AI ROI
   - AI Strategy
-  - Product Management
-  - Artifical Intelligence
-featured_image: /YoureMeasuringAIROIAllWrong.webp?height=400&width=800
-reading_time: 4
+  - Operating Models
+  - Engineering Leadership
+  - Systems Thinking
+featured_image: /AIROI.png?height=400&width=800
+reading_time: 7
 medium_link: https://medium.com/@johnmunn/youre-measuring-ai-roi-all-wrong-here-s-what-actually-matters-4158432e7e0b
 devto_link:
-substack:
+substack: https://johnmunntech.substack.com/p/youre-measuring-ai-roi-all-wrong
 draft: false
 ---
 
-**It starts with a win. The AI pilot crushes support tickets or drafts code twice as fast. Slack lights up. Everyone’s impressed. Six months later, it’s gathering dust.** Meanwhile, your competitor just shipped something you can’t catch up to.
+It usually starts with a dashboard win.
 
-QBR time rolls around. The CFO’s ready. The CEO’s listening. The board wants proof. And you’ve got… ticket deflection stats and time-to-first-draft numbers. Useful. But not enough.
+Support costs drop. Drafting speed goes up. Developers ship first passes faster. A few workflows get noticeably cheaper, and leadership gets a clean story to tell: the AI rollout is working.
 
-This is how most AI programs die: by answering small questions in a room full of people asking bigger ones.
+Then six months later the harder questions show up.
 
-If you want AI to be a strategic pillar, you need to change the question: From: _“What did we save?”_ To: _“What did we unlock?”_ and _“What happens if we wait?”_
+Why are only a handful of pilots scaling?
+Why did coding get faster while reviews got slower?
+Why are teams using more AI, but not clearly creating more enterprise value?
+Why does a competitor suddenly feel a year ahead?
 
-It’s not about the obvious wins. It’s about what you’re not measuring, and how quietly the gap widens while you do nothing.
+This is the trap in how most companies still talk about AI ROI.
 
-# The 3 ROI Layers That Actually Matter
+They measure the part that is easiest to count, then mistake that for the part that matters most.
 
-## 1. Efficiency ROI. The Floor, Not the Ceiling
+Cost savings matter. Efficiency matters. But in 2026, that is table stakes. The organizations pulling ahead are not the ones with the best "hours saved" slide. They are the ones redesigning workflows, building new capabilities, and changing what the business can do.
 
-**Question:** “How much cheaper or faster did we get?”  
-**Timeframe:** 3-6 months  
-**Measurement:** Direct cost replacement
+That is the real shift.
 
-**Examples:**
+**AI ROI is no longer a tooling question. It is an operating model question.**
 
-- 40% of support tickets auto-resolved
-- 30% faster pull request cycle time
-- 60% less time writing internal documentation
+If you are still asking only, "What did we save?" you are asking a local question in a strategic market.
 
-> _“This is the ROI your CFO expects. It’s visible, reportable, and often overstated.”_
+The better questions are:
 
-**The trap:** If this is all you measure, you’ll end up automating your way into irrelevance.
+- What did we unlock?
+- What changed in how work actually moves?
+- What new revenue, speed, or defensibility became possible?
+- What is the cost of waiting while everyone else learns faster?
 
-**Example scenario:** A logistics SaaS firm automated 25% of support tasks, then got leapfrogged when a competitor used AI to launch a personalized real-time quoting tool. Customers didn’t care about faster replies. They wanted fewer questions to begin with.
+That is the lens executives increasingly need.
 
-# 2. Capability ROI. Where the Growth Lives
+# The Three Layers of AI ROI
 
-**Question:** “What can we do now that we couldn’t do before?”  
-**Timeframe:** 6-18 months  
-**Measurement:** New revenue streams, customer segments, product surfaces
+Most teams collapse AI ROI into a single bucket, and that is where the confusion starts.
 
-**Examples:**
+There are really three different layers of return, and they should not be judged the same way.
 
-- Personalization at scale: True 1:1 experiences
-- Content velocity: 10x more experiments, faster iteration
-- Real-time ops intelligence: Dashboards too expensive to build manually before
+## 1. Efficiency ROI: the visible layer
 
-**Example scenario:** A B2B fintech platform used AI to launch an automated underwriting flow for small businesses. Something previously unprofitable due to manual review costs. Within six months, they opened up an entirely new customer segment and added $3M in new ARR.
+This is where everyone starts because it is the easiest to measure.
 
-This is the middle layer, often sensed but seldom measured. That’s a problem. Because this is where AI shifts from tactical tool to exponential growth engine.
+The questions sound familiar:
 
-> _“If Efficiency ROI cuts costs, Capability ROI compounds learning.”_
+- How much faster did we get?
+- How much cheaper did this workflow become?
+- How much labor did we offset?
 
-# 3. Strategic ROI. The One That Gets You Fired (or Promoted)
+The signals are straightforward:
 
-**Question:** “What does it cost to be wrong by a year?”  
-**Timeframe:** 12-36 months  
-**Measurement:** Market positioning, talent magnetism, customer expectations
+- Support ticket deflection
+- Faster first drafts
+- Reduced time spent on repetitive documentation
+- Shorter backlog-to-first-output cycles
 
-**Examples:**
+This layer matters. It is often the first proof that adoption is doing something real.
 
-- Competitor shipping 2x faster with AI-native tooling
-- Talent migrating toward orgs with embedded copilots and smart infra
-- Customers abandoning manual flows for AI-augmented UX
-- A $10M revenue segment lost to a competitor’s AI-enabled product
+But it is also where teams get fooled.
 
-**This is the most important layer and the least measured.** Why? Because it’s hard. Because it requires imagination. And because once you see it clearly, it’s terrifying.
+Because AI often does not remove cost so much as move it.
 
-**Here’s how to measure Strategic ROI in practice:**
+Coding gets faster, but reviews take longer. Content production scales, but approval and QA become the bottleneck. Support automation reduces ticket volume, but escalation complexity rises.
 
-**Strategic ROI Metrics:**
+The real question at the efficiency layer is not whether a task got faster. It is whether the **system got healthier**.
 
-- **Feature gap delta** — % of major roadmap features your competitor shipped first
-- **Talent flight risk** — % of technical roles turned down due to lack of AI tools (gathered via exit interviews, recruiter feedback, and internal pulse surveys)
-- **Expectation decay** — % of users who abandon flows that lack personalization or speed (tracked via funnel analytics and user session recordings)
-- **Defensive cost avoidance** — Estimated revenue erosion if market shifts go unanswered
-- **Strategic refresh cycle lag** — Average time between your product roadmap updates vs. AI-native competitors
+If local speed improves while downstream friction increases, you did not create pure ROI. You relocated effort.
 
-> _“Strategic ROI isn’t a spreadsheet. It’s a time machine. Measure forward, not backward.”_
+That distinction matters more now than it did even a year ago. Plenty of organizations can show isolated productivity gains. Far fewer can show those gains survived contact with quality control, governance, handoffs, and scale.
 
-🗨️ **Fictional dialogue:**
+**Efficiency ROI is the floor. It proves usefulness. It does not prove transformation.**
 
-> _CFO (in a strategy review): “So you saved us $200K on documentation. Great. But while we were busy automating that, our competitor just launched an AI-native product we can’t match for 12 months. Where’s_ that _in your model?”_
+## The benchmark problem most teams miss
 
-# The Executive Language Shift
+This is where a lot of measurement models quietly fall apart.
 
-**CFO:** “Where’s the payback?”  
-**Answer:** “30% cost savings in 6 months. But those savings are reinvested in capabilities we couldn’t touch before.”
+AI often improves visible throughput before the organization understands whether that new throughput is actually healthy.
 
-**CEO:** “How does this move the needle?”  
-**Answer:** “Year 1: Efficiency. Year 2: Growth. Year 3: Advantage. AI ROI compounds” If you start now.”
+More tickets closed does not automatically mean more value. Faster code generation does not automatically mean faster customer outcomes. More experiments do not automatically mean better learning.
 
-**Board:** “Is this a bet or a hedge?”  
-**Answer:** “It’s both. The risk isn’t that AI fails. It’s that someone else’s doesn’t.”
+The benchmark is rarely "more than before."
 
-# The 90-Day Playbook
+The benchmark is whether the system's real constraint moved.
 
-**Days 1-30: Baseline + Gap Analysis**
+- Did review time shrink, or did it become the new queue?
+- Did cycle time improve evenly, or are items now stalling in one status?
+- Did output rise while defect escape, architectural drift, or learning debt quietly climbed?
 
-- Time current tasks, workflows, and team capacity
-- Interview customers and execs: “What would we build if it were easy?”
-- Benchmark competitors’ visible AI usage, features, velocity
+That is the harder executive question, not whether AI increased throughput.
 
-**Days 31-60: Pilot + Instrument**
+Whether it improved the **cost of durable outcomes**.
 
-- Deploy AI into 1-2 workflows with measurable lag
-- Track capability metrics (content volume, response latency, cycle times)
-- Note unexpected upside (tools adopted elsewhere, new user behavior, unplanned automation wins)
-- **Example tool:** Use Jasper for marketing content or GitHub Copilot for dev workflows to instantly accelerate and measure change
+## 2. Capability ROI: the layer most companies undermeasure
 
-**Days 61–90: Strategic Framing**
+Capability ROI is where AI stops being a productivity aid and starts becoming a business lever.
 
-- Map outcomes to all three ROI layers
-- Connect each to broader company OKRs
-- Present as portfolio: operational gains, capability expansion, strategic defense
+This is not about doing the same work faster.
 
-# 3 Quotables to Drive It Home
+It is about doing work that was previously too expensive, too slow, too manual, or too fragmented to matter.
 
-> **“Efficiency buys you time. Capability buys you growth. Strategy buys you survival.”**
-> 
-> **“AI doesn’t just replace labor — it replaces latency.”**
-> 
-> **“The only thing more expensive than investing early… is investing late.”**
+The questions change:
 
-# Bottom Line
+- What can we do now that we could not do before?
+- Which workflows became redesignable?
+- Which customer experiences became viable?
+- Which markets became reachable?
 
-If you’re only measuring savings, you’re counting pennies while your competitor builds a moat.
+This is where the value gets much more interesting.
 
-**Efficiency is the on-ramp. Capability is the acceleration. Strategy is the escape velocity.**
+A support assistant is efficiency ROI. A product that resolves customer issues before a ticket is created is capability ROI.
 
-**The real ROI of AI isn’t just in the balance sheet, it’s in the gap between the companies that lead and the ones that follow.**
+Faster underwriting reviews are efficiency ROI. Serving a previously unprofitable segment because AI changes the economics of review is capability ROI.
+
+Helping internal teams draft strategy docs faster is efficiency ROI. Giving sales, product, and operations live decision support off proprietary data is capability ROI.
+
+This is also where a lot of AI programs stall.
+
+Not because the models are weak, but because the organization never redesigned the workflow around them.
+
+That has been one of the clearest lessons from enterprise AI adoption over the last year. Tools alone rarely create outsized returns. Workflow redesign does.
+
+If AI is layered on top of legacy approvals, ownership lines, data bottlenecks, and governance, the result is usually a faster version of the old system, not a better one.
+
+Capability ROI appears when the organization changes the shape of work:
+
+- Decisions move closer to the edge
+- Teams can run more experiments
+- Personalization becomes economically realistic
+- Internal expertise becomes reusable at scale
+- Products can respond in real time where they used to batch
+
+This is where AI starts to affect growth instead of just cost.
+
+**Efficiency saves money. Capability changes the business envelope.**
+
+## 3. Strategic ROI: the layer that decides who pulls ahead
+
+Strategic ROI is the hardest to model and the most dangerous to ignore.
+
+This layer asks a different class of question:
+
+- What happens if we are one year late?
+- What customer expectations are being reset without us?
+- What talent will choose not to build here?
+- What operating advantages are competitors quietly compounding?
+
+This is where most ROI models break down, because finance is usually built to measure realized outcomes, not widening strategic gaps.
+
+But that widening gap is exactly what matters.
+
+In 2026, strategic AI ROI is not just about shipping features faster. It increasingly includes:
+
+- Whether your teams can effectively work with agents
+- Whether your proprietary data is usable enough to create differentiated systems
+- Whether governance supports deployment instead of slowing it to a crawl
+- Whether top talent sees your environment as a place they can do modern work
+- Whether customer expectations are shifting toward AI-augmented experiences your current model cannot support
+
+This is where AI stops being an innovation topic and becomes a position-in-the-market topic.
+
+It is also the layer most likely to stay invisible until it gets expensive.
+
+- A rival learns faster.
+- A rival lowers service friction.
+- A rival launches AI-native workflows that change what customers now consider normal.
+
+By the time you can easily quantify that loss, you are usually measuring damage, not opportunity.
+
+**Strategic ROI is not just upside. It is exposure.**
+
+# What executive-grade AI ROI sounds like now
+
+Last year, it was often enough to say, "we saved time." That is not enough anymore.
+
+The harder question now sounds more like this:
+
+> "So we saved $200K on documentation and first drafts. Good. Where does that show up in cycle time, customer outcomes, or strategic leverage?"
+
+That is the right question.
+
+The mature answer is no longer about hours saved in isolation.
+
+It is about whether cost moved to a healthier part of the system, whether workflows compressed end to end, and whether the business can now do something it could not justify before.
+
+The strongest AI ROI story today is not how much work the model did.
+
+It is whether the **business now operates differently in a way competitors will feel.**
+
+# What to measure instead
+
+A good measurement model should mirror the argument itself.
+
+If the return shows up in three layers, the instrumentation has to do the same. Otherwise teams end up over-reading local gains and under-seeing strategic drift.
+
+If you want a measurement model that holds up beyond the pilot phase, track signals across all three layers.
+
+## Efficiency metrics
+
+- Time saved in specific workflows
+- Deflection rate
+- Draft-to-usable-output speed
+- Cycle time compression by work type
+- Review expansion or QA expansion created downstream
+- Status distribution shifts across the workflow
+
+## Capability metrics
+
+- New workflows made economically viable
+- Experiment volume and learning velocity
+- New customer segments reached
+- Personalization depth now possible
+- Decision latency reduction in operations or customer-facing teams
+
+## Strategic metrics
+
+- Feature or workflow gap versus competitors
+- Talent attraction and retention tied to AI-enabled ways of working
+- Percentage of proprietary data that is actually usable in AI systems
+- Governance cycle time for safe deployment
+- Share of roadmap dependent on AI-native or agent-enabled execution
+
+The most important AI metrics are often cross-functional.
+
+If product, engineering, operations, legal, and finance are not all visible in the measurement model, you are probably still measuring adoption rather than advantage.
+
+That is usually the tell.
+
+The moment your measurement model starts spanning functions, constraints, and strategic exposure, you are no longer counting usage. You are finally measuring whether the company itself is changing.
+
+# The bottom line
+
+If you are still measuring AI ROI as a cost-savings story, you are using a 2024 model for a 2026 problem.
+
+The real question is no longer whether AI made isolated work cheaper. It is whether the organization learned how to redesign the system around it.
+
+That is the part competitors compound quietly.
+
+Not the pilot, not the demo, not the slide with hours saved.
+
+The operating model shift that changes how decisions move, how fast learning loops close, and which opportunities are suddenly economic.
+
+That is why the sharpest leadership question is no longer **What did we save?**
+
+It is **what changed in the way the company works, and what gets more expensive every quarter we wait to learn this?**
+
+Efficiency buys time, capability buys growth, strategy buys position.
+
+And position is usually the number that shows up last, right after it becomes expensive to catch up.
