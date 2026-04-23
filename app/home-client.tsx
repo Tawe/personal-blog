@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ExternalLink, Github } from "lucide-react"
 import { DateText } from "@/components/date-text"
 import { EditorialPill, EditorialSurface, PageSection, SectionIntro } from "@/components/design-system"
 
@@ -17,13 +17,31 @@ interface Article {
   href: string
 }
 
+interface FeaturedProject {
+  slug: string
+  title: string
+  description: string
+  status: string
+  tags: string[]
+  href: string
+  github?: string
+  demo?: string
+  featuredImage?: string
+}
+
 const proofPoints = [
   "20+ years leading teams through scaling pressure, architectural change, and messy delivery contexts.",
   "Writing and advisory work across engineering leadership, architecture, and AI decision-making.",
   "Practical guidance for leaders who need clearer judgment, not heavier process.",
 ]
 
-export default function HomePageClient({ articles }: { articles: Article[] }) {
+export default function HomePageClient({
+  articles,
+  featuredProject,
+}: {
+  articles: Article[]
+  featuredProject: FeaturedProject | null
+}) {
   return (
     <div className="ds-page flex min-h-screen flex-col">
       <SiteHeader />
@@ -151,12 +169,85 @@ export default function HomePageClient({ articles }: { articles: Article[] }) {
               className="mb-6"
             />
             <p className="ds-copy max-w-xl">Applied work and exploration. What I build and why.</p>
-            <p className="ds-meta mb-10 mt-3 max-w-2xl">
+            <p className="ds-meta mb-8 mt-3 max-w-2xl">
               These are applied explorations, not products, built to understand systems more deeply.
             </p>
-            <Link href="/projects" className="ds-link inline-block py-2 text-base">
-                See projects
-            </Link>
+
+            {featuredProject ? (
+              <div className="overflow-hidden rounded-[1.5rem] border border-border-subtle bg-bg-paper">
+                {featuredProject.featuredImage ? (
+                  <div className="relative aspect-[16/8] w-full overflow-hidden border-b border-border-subtle">
+                    <Image
+                      src={featuredProject.featuredImage}
+                      alt={featuredProject.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1023px) 100vw, 960px"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
+                    <div className="absolute right-4 top-4">
+                      <EditorialPill
+                        tone={featuredProject.status === "active" ? "success" : featuredProject.status === "experimental" ? "warm" : "neutral"}
+                        className="backdrop-blur-sm"
+                      >
+                        {featuredProject.status}
+                      </EditorialPill>
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="space-y-5 p-6 sm:p-8">
+                  <div className="space-y-3">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-text-muted">Featured Project</p>
+                    <Link href={featuredProject.href} className="group block">
+                      <h3 className="text-2xl font-bold tracking-tight text-text-strong transition-colors group-hover:text-accent-primary sm:text-3xl">
+                        {featuredProject.title}
+                      </h3>
+                    </Link>
+                    <p className="max-w-3xl text-[0.98rem] leading-relaxed text-text-body">{featuredProject.description}</p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {featuredProject.tags.slice(0, 4).map((tag) => (
+                      <EditorialPill key={tag} tone="neutral" className="normal-case tracking-normal">
+                        {tag}
+                      </EditorialPill>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-col gap-3 pt-1 min-[460px]:flex-row min-[460px]:items-center">
+                    <Button variant="editorial" asChild>
+                      <Link href={featuredProject.href}>
+                        Explore Project
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                    {featuredProject.demo ? (
+                      <Button variant="quiet" asChild>
+                        <Link href={featuredProject.demo} target="_blank" rel="noopener noreferrer">
+                          Live Demo
+                          <ExternalLink className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    ) : null}
+                    {featuredProject.github ? (
+                      <Button variant="ghost" className="w-fit text-text-body hover:text-accent-primary" asChild>
+                        <Link href={featuredProject.github} target="_blank" rel="noopener noreferrer">
+                          View Code
+                          <Github className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            <div className="mt-8">
+              <Link href="/projects" className="ds-link inline-block py-2 text-base">
+                See all projects
+              </Link>
+            </div>
           </EditorialSurface>
         </PageSection>
 
