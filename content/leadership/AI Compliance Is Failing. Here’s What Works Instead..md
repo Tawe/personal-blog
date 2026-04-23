@@ -1,102 +1,107 @@
 ---
 title: "AI Compliance Is Failing. Here’s What Works Instead."
-subtitle: "Why resilience. Not paperwork. Will define the future of responsible AI."
+subtitle: "Why resilience, not paperwork, will define responsible AI"
 date: 2025-07-17
-excerpt: "AI compliance frameworks are breaking under real-world pressure. Here’s how resilient governance helps detect, adapt, and thrive when systems fail."
+updated: 2026-04-23
+excerpt: "AI compliance is failing under real production pressure. Responsible AI depends less on paperwork and more on resilient operating practices that monitor, adapt, and respond as systems change."
 tags:
   - AI Governance
   - Compliance
   - AI
   - Machine Learning
   - Technical Leadership
-featured_image: /aicomplianceisfailinghereswhatworksinstead.webp?height=400&width=800
+featured_image: /aicompliance2026.png?height=400&width=800
 reading_time: 6
 medium_link: https://medium.com/@johnmunn/ai-compliance-is-failing-heres-what-works-instead-40b5d93cfe96
 devto_link:
-substack:
+substack: https://johnmunntech.substack.com/p/ai-compliance-is-failing-heres-what
 draft: false
 ---
 
-The AI compliance industry is booming. Large enterprises are pouring $1.9 billion annually into it, armed with frameworks, audits, policies, and legal counsel. And yet, failures abound. From OpenAI’s GDPR penalties to Amazon’s shuttered recruiting tool, the lesson repeats: traditional frameworks are buckling under the weight of real-world complexity.
+_Updated to reflect the current state of AI systems, risks, and how teams are actually operating in 2026._
 
-## The Cracks Are Already Showing
+The AI compliance industry is booming right now. Gartner estimates organizations will spend close to $500 million on AI governance platforms in 2026, with that number set to climb fast. Enterprises are rolling out frameworks, audits, policies, legal reviews. But I feel that once those controls run into deadlines and people trying to get their work done, they will fall by the wayside.
 
-Consider the Samsung incident: a software engineer, racing to meet a deadline, pastes several lines of proprietary code into ChatGPT, hoping for a quick refactor. A hardware designer follows suit the next day, feeding the model schematics and product roadmaps. Within 72 hours, multiple employees have unknowingly uploaded confidential data to an external system. The result? Samsung bans generative AI tools entirely. Policies existed. Warnings were issued. But in the moment of pressure, convenience won.
+We’ve seen the same lesson play out again and again. Compliance frameworks have a hard time holding up in the real world.
 
-OpenAI conducted all the right assessments. Data Protection Impact Assessments, user consent mechanisms, and privacy controls. Yet in March 2023, a Redis vulnerability exposed chat histories from 440 Italian users. No documentation could have prevented it.
+Over the past year, regulators and state attorneys general started issuing fines, filing lawsuits, and forcing public disclosures, and each time it became clear that once people were actually using AI tools and models in production, the policies and audits weren’t doing much to stop things from going wrong.
 
-Clearview AI, with internal governance and legal reviews, still managed to rack up over €100 million in penalties by scraping 30+ billion facial images without consent.
+## AI systems keep failing
 
-These aren’t edge cases. They underscore a deeper reality: compliance frameworks, even when thoughtfully designed, struggle under the unpredictable dynamics of human and machine interaction.
+At Samsung, engineers started using ChatGPT to speed up their work. One pasted in proprietary source code to debug it. Another shared internal chip design notes. A third uploaded meeting summaries tied to product plans. No one was trying to leak anything, but it all went into a system outside the company. A few days later, Samsung locked down access to public AI tools after realizing what had already been shared.
 
-## The Fatal Flaw: Humans
+There were policies and training, but in that moment none of it mattered or stopped anyone.
 
-Compliance models assume rationality. That people will follow protocols. But humans under pressure don’t behave rationally, they behave expediently. Research shows that when people see an AI recommendation before making a judgment, accuracy drops from 66.2% to 36.8% due to automation bias.
+This isn’t rare anymore. AI-related failures drove $4.4 billion in losses across organizations in 2025. The AI Incident Database logged 362 incidents that year, up from 233 the year before, and early 2026 numbers are already higher month to month.
 
-AI systems are treated as both saviors and threats, objective and efficient, yet cold and mechanistic. That contradiction shapes inconsistent user behavior. Meanwhile, overburdened security teams ignore nearly half of alerts due to false positive fatigue. Human fragility often sits at the center of AI risk. Overlooked but critical in both failure and design.
+McDonald’s ran an AI hiring system with default credentials and no MFA, which meant anyone who found it could access the system and view or manipulate applicant data. In other cases, chatbots validated suicidal thinking instead of directing users to help, and lawsuits followed.
 
-## The Illusion of Technical Control
+There’s nothing unusual here. It’s what happens when controls are loose, ownership is muddy, and people are focusing on getting work done as quickly as possible.
 
-AI systems aren’t predictable. Nearly half of knowledge workers admit to pasting sensitive company data into public AI tools, creating compliance blind spots. Prompt injection attacks, triggered by hidden characters in text. Can extract data or rewrite system instructions in ways existing defenses weren’t designed to handle.
+## It’s not your models, it’s you
 
-Even explainability tools fail under novel scenarios. Documentation tells you how a model was trained, not what it will do in a situation your data scientists never imagined.
+Compliance is built on the idea that people will follow the rules, but under pressure people look for the path of least resistance.
 
-## The Regulatory Maze
+Show someone an AI recommendation before they’ve made up their mind and they will favour it, even when they know better. In some cases, accuracy drops, even when the user is a trained professional.
 
-The regulatory landscape isn’t helping. The EU AI Act, NIST framework, California’s transparency laws, and industry-specific rules each come with unique obligations, deadlines, and penalties. Their overlaps make complete compliance a logistical and technical impossibility.
+Security teams are having a hard time catching up, many analysts are ignoring more of their alerts due to false positives, and CrowdStrike’s 2025 Global Threat Report puts AI-generated phishing click rates around 54% versus roughly 12% for traditional attacks.
 
-And they’re still evolving. The rules you meet today may be obsolete tomorrow, yet your compliance system likely wasn’t built to adapt.
+The system scales faster than people can keep up, and that gap keeps widening.
 
-## The Cost Spiral
+## You don’t have as much control as you think
 
-Harvard research estimates that average compliance costs can reach €29,000 per high-risk system per year, though exact figures depend on industry, geography, and maturity of internal controls. Often more than double the cost of developing the system in the first place. Add a talent shortage, months-long implementation cycles, and rising consulting fees, and compliance becomes a drain without the promise of protection.
+As time passes, AI systems drift, get probed, and end up in situations no one has tested.
 
-Violations still occur. Despite the investment, the return is minimal.
+Prompt injection attacks have evolved into multi-step versions that can pull data or rewrite instructions, and CrowdStrike reported these attacks across more than 90 organizations in 2026 alone.
 
-## Why More Tech Won’t Save You
+Documentation doesn’t help much here because it tells you how a model was trained, not what it will do when someone tries to break it, and most organizations are running black-box APIs with no visibility into training data or insight into the architecture, which means you’re operating something you can’t fully inspect.
 
-Throwing more tools at the problem only increases complexity. IBM’s Watson Health, Microsoft’s Tay, and Amazon’s bias-prone recruiting tool all failed despite extensive controls and testing.
+That’s what it looks like once these systems are out in the wild.
 
-Attacks like memory poisoning. Where malicious inputs get remembered and reused, undermine even the best systems. You can’t patch your way out of a problem that’s part of the architecture itself.
+## Regulation is still playing catch up
 
-## A Better Path: Resilience Over Compliance
+The EU AI Act is already in effect. Rules for general-purpose AI models kicked in in August 2025, and full enforcement for high-risk systems is to follow in August 2026.
 
-Here’s a quick comparison of what this shift looks like:
+In the U.S., the situation is a bit different. States like California, Colorado, Texas, and New York are moving quickly, each setting their own rules on automated decisions, training data, and safety reporting. California’s AB 2013 now requires companies to publicly disclose what goes into their training data.
 
-| |Traditional Compliance|Resilience-First Governance|
-|---|---|---|
-|**Goal**|Prevent failure|Detect, contain, and recover|
-|**Approach**|Audits, controls, documentation|Live monitoring, iteration, adaptation|
-|**Assumes**|Rules will be followed|Failure is inevitable|
-|**Primary Metric**|Policy adherence|Outcome quality|
-|**Challenge**|Rigid in dynamic systems|Requires cross-functional agility|
+At the same time, a December 2025 executive order from Donald Trump pushed for a lighter federal approach and signaled challenges to state laws.
 
-Resilience has its own challenges, including organizational inertia, underinvestment, and the same human factors that challenge compliance. But its strength lies in flexibility. Rather than trying to eliminate every failure point upfront, it assumes change, error, and adaptation are constants, and builds for that.
+So now you have two forces pulling in opposite directions. State enforcement is getting more strict, while federal pressure is easing. Things are moving fast and no one can say what the rules will look like in 18 months.
 
-One illustrative success: A large fintech company implemented a model risk committee that met weekly to assess new inputs, flagged anomalies via automated monitoring, and iterated policies bi-weekly based on observed behavior. This approach helped them detect and respond to a subtle model drift affecting creditworthiness scoring, before it resulted in bias claims or regulatory exposure. The result? Averted legal liability, maintained customer trust, and reduced incident triage time by 42%.
+That kind of uncertainty makes compliance models hard to rely on, because the rules are a moving target.
 
-This shift to resilience doesn’t negate the need for regulatory awareness. Instead, a resilient system by its very nature of being transparent, auditable, and adaptable is far better equipped to demonstrate compliance and quickly adjust to evolving regulatory demands than a rigid, checkbox-based framework. Resilience enables effective compliance, rather than being at odds with it. It’s time to shift the goal. Not perfect compliance. Resilience.
+## More tooling won’t fix a structural problem
 
-1. **Assume Breach**: Design systems that expect failure. For example, implement automated anomaly detection that triggers a human review for any output exceeding a pre-defined confidence threshold or deviating sharply from expected sentiment or tone. Sandbox high-risk models. Log all inputs and outputs. Test recovery protocols the same way you test backups.
-2. **Preserve Human Agency**: Design workflows where humans make initial calls and AI advises second. For loan applications, have AI surface potential risk factors, but ensure a human loan officer makes the final decision with clear auditing of how the AI influenced the outcome. This reduces bias and improves accountability.
-3. **Monitor, Don’t Just Document**: Utilize real-time dashboards that track model drift by comparing current outputs to baseline distributions. Automatically alert human reviewers when anomalies exceed two standard deviations from expected behavior. Use this data to intervene early, not just analyze post-failure.
-4. **Build Adaptive Governance**: Establish weekly or bi-weekly ‘AI Guardrail Review’ meetings with a dedicated cross-functional governance team empowered to revise model parameters and internal guidelines in response to incidents, new risks, or shifting regulations.
-5. **Measure Outcomes, Not Checkboxes**: Beyond accuracy, audit fairness metrics like disparate impact and equal opportunity across demographics. Incorporate direct user feedback loops to capture intangible satisfaction metrics, especially where AI decisions affect real people.
+The market’s answer has been predictable: buy more tools. Governance platforms, monitoring dashboards, risk scoring systems.
 
-## The Hard Truth
+Some of it helps. A lot of it just adds another layer no one fully owns.
 
-Compliance, when done thoughtfully, plays an essential role, but it’s not enough on its own. Frameworks that rely purely on policy, documentation, and oversight are often outpaced by the speed of AI system evolution and the unpredictability of user behavior.
+We’ve seen this before. IBM Watson Health, Microsoft Tay, and Amazon’s recruiting tool all failed with controls in place.
 
-While there are success stories, cases where strong governance has prevented incidents they tend to combine compliance with operational adaptability, user training, and real-time oversight. The resilience mindset builds on this by assuming things will still go wrong, and preparing for it.
+Right now, 45% of AI-generated code contains security issues. 93% of companies are using that code in production. Only 12% consistently test it.
 
-Quantifying the upside: In early deployments, primarily from internal case studies in fintech and healthcare settings organizations practicing resilience-first AI governance report a 30–50% reduction in incident response time and a 20% increase in cross-functional team satisfaction. While these figures are based on limited samples and consultant-led implementations, they reflect the directionally promising benefits of embedding flexibility and feedback into governance systems. These controls contribute directly to trust, operational speed, and a state of readiness, moving beyond mere risk mitigation.
+That gap isn’t a tooling issue. It’s an operational one.
 
-So what’s the roadmap? Start with triage:
+## We need to focus on resilience
 
-- **Phase 1 (0–3 months):** Baseline AI inventories, form a cross-functional review group, set up real-time monitoring for key models.
-- **Phase 2 (3–6 months):** Implement sandbox environments, launch feedback loops, automate drift detection and alerting.
-- **Phase 3 (6–12 months):** Embed resilience KPIs in OKRs, formalize governance rhythm, and link outcomes to product health.
+The organizations that are getting ahead of this aren’t focused on adding more paperwork. They treat governance as ongoing work, something they revisit and adjust as the systems change. They expect things to break and are planning around that, set up workflows where people stay in the loop instead of handing decisions over to AI, and keeping a close eye on how systems behave once they’re live rather than relying on documentation written months earlier.
 
-The winners in this era will be those who treat compliance as necessary but insufficient. Who recognize that policies are a starting point, not an end. Who design for real-world messiness, not theoretical order.
+They keep a close eye on how their AI tools and models behave in production. Teams meet regularly, adjust controls, and work through issues as they come up instead of relying on documentation that gets written once and then ignored.
 
-Stop building fortresses that can’t withstand a storm. Start cultivating an AI ecosystem that thrives by embracing the chaos and learning from every ripple. Cracks in your framework are inevitable. The real challenge is spotting and patching them before they lead to broader failures.
+Consider this pattern that’s becoming common in well-governed fintech organizations, a standing model risk group that reviews anomalies every week and updates policies just as often. They catch drift early, adjust before it turns into a regulatory issue, and keep the system within bounds as it’s actually being used.
+
+This is how experienced teams run these systems.
+
+## The part people don’t like
+
+Compliance still matters, but it doesn’t totally hold up in practice.
+
+In 2025, the companies that avoided the worst failures weren’t the ones with perfect documentation, they were the ones that spotted problems early and acted on them before they became larger issues.
+
+Treating resilience as an operating practice ends up producing compliance as a byproduct, while building around checklists tends to create systems with the facade that it is solid.
+
+## Where to Start
+
+Start with a clear view of what you’re actually running in production, because most companies don’t have that figured out. Bring security, legal, and product into the same room on a regular basis and make sure they have the power to change things, not just talk about them.
+
+Put monitoring in the systems that matter the most, so you can see what they’re doing as they run, and make those signals something people can understand and act on. From there, you start filling in what’s missing, a place to test changes without breaking things, a way to see what’s actually happening when the system is in use, and vendor agreements that don’t leave you guessing when something goes wrong.
