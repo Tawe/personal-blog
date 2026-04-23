@@ -1,17 +1,38 @@
 import path from "path"
 import Link from "next/link"
 import Image from "next/image"
-import { Code, ExternalLink, Github, Server, Rocket, Database, Terminal, Wrench, type LucideIcon } from "lucide-react"
+import type { Metadata } from "next"
+import { Code, ExternalLink, Github, Server, Rocket, Globe, Database, Terminal, Wrench, type LucideIcon } from "lucide-react"
 
 import { EditorialPill, EditorialSurface, RuleHeading } from "@/components/design-system"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
+import { CollectionPageSchema } from "@/components/collection-page-schema"
 import { getAllProjectsLightweight } from "@/lib/project-utils"
+import { buildMetadata } from "@/lib/seo-metadata"
+
+export const metadata: Metadata = buildMetadata({
+  title: "Projects",
+  description:
+    "Applied engineering projects, interactive experiments, tools, and prototypes by John Munn across AI systems, simulations, developer tools, and browser-based experiences.",
+  path: "/projects",
+  keywords: [
+    "engineering projects",
+    "software projects",
+    "developer tools",
+    "interactive simulations",
+    "browser games",
+    "John Munn projects",
+  ],
+  image: "/me.jpeg",
+  imageAlt: "Projects by John Munn",
+})
 
 const iconMap: Record<string, LucideIcon> = {
   Code,
   Server,
   Rocket,
+  Globe,
   Database,
   Terminal,
   Wrench,
@@ -31,9 +52,23 @@ function getStatusTone(status: string) {
 export default function ProjectsPage() {
   const contentDir = path.join(process.cwd(), "content/projects")
   const projects = getAllProjectsLightweight(contentDir)
+  const schemaItems = projects.map((project) => ({
+    title: project.title,
+    url: `https://johnmunn.tech/projects/${project.slug}`,
+    date: project.date,
+    excerpt: project.description,
+  }))
 
   return (
     <div className="flex min-h-screen flex-col">
+      <CollectionPageSchema
+        name="Projects"
+        description="Applied engineering projects, prototypes, tools, and interactive experiments by John Munn."
+        url="https://johnmunn.tech/projects"
+        about={["Engineering projects", "Developer tools", "Interactive simulations", "Applied systems thinking"]}
+        items={schemaItems}
+        itemType="SoftwareSourceCode"
+      />
       <SiteHeader />
       <main id="main-content" className="flex-1">
         <section className="w-full bg-bg-paper py-16 md:py-24 lg:py-32">

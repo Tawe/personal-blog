@@ -10,6 +10,7 @@ function parseFrontmatter(content: string): {
   title?: string
   date?: string
   excerpt?: string
+  description?: string
   draft?: boolean
   tags?: string[]
 } {
@@ -27,6 +28,9 @@ function parseFrontmatter(content: string): {
 
   const excerptMatch = text.match(/^excerpt:\s*(.+)$/m)
   if (excerptMatch) result.excerpt = excerptMatch[1].trim().replace(/^["']|["']$/g, "")
+
+  const descriptionMatch = text.match(/^description:\s*(.+)$/m)
+  if (descriptionMatch) result.description = descriptionMatch[1].trim().replace(/^["']|["']$/g, "")
 
   const draftMatch = text.match(/^draft:\s*(true|false)/m)
   if (draftMatch) result.draft = draftMatch[1] === 'true'
@@ -68,6 +72,7 @@ export async function GET() {
     { dir: "content/technical-writings", route: "/strategic-narratives/technical-architecture" },
     { dir: "content/dnd-musings", route: "/strategic-narratives/dnd-ttrpgs" },
     { dir: "content/artumin", route: "/strategic-narratives/world-of-artumin" },
+    { dir: "content/projects", route: "/projects" },
   ]
 
   const items: { title: string; link: string; description: string; pubDate: string; categories: string[] }[] = []
@@ -90,7 +95,7 @@ export async function GET() {
 
       const slug = generateSlug(filename)
       const title = frontmatter.title || filename.replace(".md", "")
-      const description = frontmatter.excerpt || ""
+      const description = frontmatter.excerpt || frontmatter.description || ""
       const pubDate = frontmatter.date ? new Date(frontmatter.date).toUTCString() : new Date().toUTCString()
       const categories = frontmatter.tags || []
 

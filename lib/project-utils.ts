@@ -57,6 +57,7 @@ export function getProjectLightweight(
       const iconMatch = frontmatterText.match(/^icon:\s*(.+)$/m)
       const imageMatch = frontmatterText.match(/^featured_image:\s*(.+)$/m)
       const dateMatch = frontmatterText.match(/^date:\s*(.+)$/m)
+      const draftMatch = frontmatterText.match(/^draft:\s*(true|false)$/m)
       // Handle both YAML array formats: [item1, item2] and - item1\n  - item2
       const tagsArrayMatch = frontmatterText.match(/^tags:\s*\[(.*?)\]/s)
       const tagsListMatch = frontmatterText.match(/^tags:\s*\n((?:\s*-\s*.+\n?)+)/m)
@@ -70,6 +71,7 @@ export function getProjectLightweight(
       if (iconMatch) frontmatter.icon = iconMatch[1].trim().replace(/^["']|["']$/g, "")
       if (imageMatch) frontmatter.featured_image = imageMatch[1].trim().replace(/^["']|["']$/g, "")
       if (dateMatch) frontmatter.date = dateMatch[1].trim().replace(/^["']|["']$/g, "")
+      if (draftMatch) frontmatter.draft = draftMatch[1] === "true"
       
       if (tagsArrayMatch) {
         // Handle [item1, item2] format
@@ -104,6 +106,8 @@ export function getProjectLightweight(
       featured_image: frontmatter.featured_image,
       date: frontmatter.date || new Date().toISOString(),
     }
+
+    ;(project as any).draft = frontmatter.draft || false
 
     return project
   } catch (error) {
@@ -218,6 +222,7 @@ export function getAllProjectsLightweight(contentDir: string): ProjectMetadata[]
         return getProjectLightweight({ contentDir, slug })
       })
       .filter((project): project is ProjectMetadata => project !== null)
+      .filter((project) => !(project as any).draft)
       .sort((a, b) => {
         const dateA = new Date(a.date).getTime()
         const dateB = new Date(b.date).getTime()

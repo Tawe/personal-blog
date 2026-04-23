@@ -47,6 +47,7 @@ export function buildMetadata({
   const normalizedTitle = normalizeMetadataTitle(title)
   const canonical = absoluteUrl(path)
   const dedupedKeywords = Array.from(new Set([...keywords, ...BASE_KEYWORDS]))
+  const absoluteImage = absoluteUrl(image)
 
   return {
     title: normalizedTitle,
@@ -60,7 +61,7 @@ export function buildMetadata({
       siteName: "John Munn",
       images: [
         {
-          url: image,
+          url: absoluteImage,
           width: 1200,
           height: 630,
           alt: imageAlt,
@@ -73,7 +74,7 @@ export function buildMetadata({
       card: "summary_large_image",
       title: normalizedTitle,
       description,
-      images: [image],
+      images: [absoluteImage],
     },
     alternates: {
       canonical,

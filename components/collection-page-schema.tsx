@@ -11,6 +11,7 @@ interface CollectionPageSchemaProps {
   url: string
   about?: string[]
   items: CollectionPageSchemaItem[]
+  itemType?: "Article" | "BlogPosting" | "CreativeWork" | "SoftwareSourceCode"
 }
 
 export function CollectionPageSchema({
@@ -19,6 +20,7 @@ export function CollectionPageSchema({
   url,
   about = [],
   items,
+  itemType = "Article",
 }: CollectionPageSchemaProps) {
   const structuredData = {
     "@context": "https://schema.org",
@@ -40,7 +42,7 @@ export function CollectionPageSchema({
         position: index + 1,
         url: item.url,
         item: {
-          "@type": "Article",
+          "@type": itemType,
           headline: item.title,
           url: item.url,
           description: item.excerpt,

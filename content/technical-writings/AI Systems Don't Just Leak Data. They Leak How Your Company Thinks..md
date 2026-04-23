@@ -12,7 +12,7 @@ tags:
   - Engineering Leadership
 reading_time: 8
 featured_image: /aisystemsdontjustleakdata.png?height=400&width=800
-medium_link:
+medium_link: https://medium.com/p/967ab55a628e
 devto_link: 
 substack: https://johnmunntech.substack.com/p/ai-systems-dont-just-leak-data-they
 code_languages: []

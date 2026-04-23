@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation"
 import { ProjectClientPage } from "./ProjectClientPage"
+import { ProjectStructuredData } from "@/components/project-structured-data"
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
 import { getProject, getProjectLightweight } from "@/lib/project-utils"
 import { generateSlug } from "@/lib/slug-utils"
 import fs from "fs"
@@ -36,7 +38,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title,
     description,
     path: `/projects/${slug}`,
-    keywords: [...(project.tags || []), "engineering project", "technical case study"],
+    keywords: [
+      ...(project.tags || []),
+      project.title,
+      `${project.title} project`,
+      "engineering project",
+      "technical case study",
+      "software project",
+      "John Munn",
+    ],
     image: project.featured_image || "/me.jpeg",
     imageAlt: project.title,
     openGraphType: "article",
@@ -52,5 +62,19 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params
   const project = await loadProject(slug)
   if (!project) notFound()
-  return <ProjectClientPage project={project} />
+  const projectUrl = `https://johnmunn.tech/projects/${slug}`
+
+  return (
+    <>
+      <ProjectStructuredData project={project} projectUrl={projectUrl} />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Projects", url: "/projects" },
+          { name: project.title, url: `/projects/${slug}` },
+        ]}
+      />
+      <ProjectClientPage project={project} />
+    </>
+  )
 }
