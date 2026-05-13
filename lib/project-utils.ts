@@ -7,6 +7,7 @@ export interface ProjectMetadata {
   title: string
   description: string
   subtitle?: string
+  draft?: boolean
   status: "active" | "experimental" | "archived"
   tags: string[]
   github?: string | null
@@ -98,6 +99,7 @@ export function getProjectLightweight(
       title: frontmatter.title || matchingFile.replace(".md", ""),
       description: frontmatter.description || "",
       subtitle: frontmatter.subtitle || "",
+      draft: frontmatter.draft || false,
       status: frontmatter.status || "active",
       tags: frontmatter.tags || [],
       github: frontmatter.github || null,
@@ -106,8 +108,6 @@ export function getProjectLightweight(
       featured_image: frontmatter.featured_image,
       date: frontmatter.date || new Date().toISOString(),
     }
-
-    ;(project as any).draft = frontmatter.draft || false
 
     return project
   } catch (error) {
@@ -151,6 +151,7 @@ export async function getProject(
       title: frontmatter.title || matchingFile.replace(".md", ""),
       description: frontmatter.description || "",
       subtitle: frontmatter.subtitle || "",
+      draft: Boolean(frontmatter.draft),
       status: frontmatter.status || "active",
       tags: frontmatter.tags || [],
       github: frontmatter.github || null,

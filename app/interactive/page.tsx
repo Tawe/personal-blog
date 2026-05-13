@@ -1,7 +1,23 @@
 import Link from "next/link"
+import type { Metadata } from "next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Boxes, GitCompareArrows, ClipboardCheck, KeyRound, Database, Layers3, Scaling, Swords } from "lucide-react"
+import { buildMetadata } from "@/lib/seo-metadata"
+
+export const metadata: Metadata = buildMetadata({
+  title: "Interactive Engineering Guides",
+  description:
+    "Interactive engineering guides, simulations, and visual explainers for AI systems, software architecture, data governance, authentication, and technical tradeoffs.",
+  path: "/interactive",
+  keywords: [
+    "interactive engineering guides",
+    "software architecture interactive",
+    "AI systems interactive",
+    "technical simulations",
+    "data governance interactive",
+  ],
+})
 
 const experiences = [
   {

@@ -92,6 +92,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/data-governance",
+        destination: "/interactive/data-governance",
+        permanent: true,
+      },
+      {
         source: "/workbench/architecture-playground",
         destination: "/interactive/architecture-playground",
         permanent: true,

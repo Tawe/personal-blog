@@ -2,19 +2,14 @@ import { notFound } from "next/navigation"
 import { ProjectClientPage } from "./ProjectClientPage"
 import { ProjectStructuredData } from "@/components/project-structured-data"
 import { BreadcrumbSchema } from "@/components/breadcrumb-schema"
-import { getProject, getProjectLightweight } from "@/lib/project-utils"
-import { generateSlug } from "@/lib/slug-utils"
-import fs from "fs"
+import { getAllProjectsLightweight, getProject, getProjectLightweight } from "@/lib/project-utils"
 import path from "path"
 import { Metadata } from "next"
 import { buildMetadata } from "@/lib/seo-metadata"
 
 export async function generateStaticParams() {
   const contentDir = path.join(process.cwd(), "content/projects")
-  if (!fs.existsSync(contentDir)) return []
-  const files = fs.readdirSync(contentDir)
-  const markdownFiles = files.filter((file) => file.endsWith(".md"))
-  return markdownFiles.map((filename) => ({ slug: generateSlug(filename) }))
+  return getAllProjectsLightweight(contentDir).map((project) => ({ slug: project.slug }))
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -22,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const contentDir = path.join(process.cwd(), "content/projects")
   const project = getProjectLightweight({ contentDir, slug })
 
-  if (!project) {
+  if (!project || project.draft) {
     return buildMetadata({
       title: "Project Not Found",
       description: "The requested project could not be found.",
@@ -55,7 +50,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 async function loadProject(slug: string) {
   const contentDir = path.join(process.cwd(), "content/projects")
-  return getProject({ contentDir, slug })
+  const project = await getProject({ contentDir, slug })
+  return project?.draft ? null : project
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
