@@ -45,6 +45,7 @@ export interface RagPattern {
   id: string
   name: string
   shortDesc: string
+  definition: string
   viewBox: string
   nodes: RagNode[]
   edges: RagEdge[]
@@ -57,6 +58,7 @@ const vanillaRag: RagPattern = {
   id: "vanilla-rag",
   name: "Vanilla RAG",
   shortDesc: "The baseline: embed, search, generate",
+  definition: "A single-pass retrieval pattern that embeds the user's query, finds the nearest matching chunks in a vector index, and gives those chunks to the LLM as grounding context.",
   viewBox: "0 0 760 180",
   nodes: [
     {
@@ -126,6 +128,7 @@ const hybridRag: RagPattern = {
   id: "hybrid-rag",
   name: "Hybrid RAG",
   shortDesc: "BM25 + vector, fused with RRF",
+  definition: "A retrieval pattern that runs keyword search and semantic vector search together, then merges their results so exact terms and conceptual matches can both reach the model.",
   viewBox: "0 0 860 280",
   nodes: [
     {
@@ -206,6 +209,7 @@ const rerankFirstRag: RagPattern = {
   id: "rerank-first-rag",
   name: "Rerank-first RAG",
   shortDesc: "Over-retrieve, then cross-encode for precision",
+  definition: "A precision-focused pattern that retrieves more candidates than it needs, scores them with a stronger reranking model, and sends only the best evidence to the LLM.",
   viewBox: "0 0 900 180",
   nodes: [
     {
@@ -285,6 +289,7 @@ const queryExpansion: RagPattern = {
   id: "query-expansion",
   name: "Query Expansion",
   shortDesc: "LLM generates query variants for broader recall",
+  definition: "A recall-focused pattern that rewrites the user's question into several related search queries, retrieves for each variant, then merges and filters the combined evidence.",
   viewBox: "0 0 960 300",
   nodes: [
     {
@@ -374,6 +379,7 @@ const hyde: RagPattern = {
   id: "hyde",
   name: "HyDE",
   shortDesc: "Embed a hypothetical answer, not the query",
+  definition: "A query-side pattern where the LLM first drafts a hypothetical answer, embeds that draft, and uses it to retrieve documents written in answer-like language.",
   viewBox: "0 0 900 180",
   nodes: [
     {
@@ -444,6 +450,7 @@ const conversationalRag: RagPattern = {
   id: "conversational-rag",
   name: "Conversational RAG",
   shortDesc: "Condense chat history, then retrieve",
+  definition: "A multi-turn pattern that turns the latest message and chat history into a standalone retrieval query, so follow-up questions can still retrieve the right context.",
   viewBox: "0 0 880 280",
   nodes: [
     {
@@ -535,6 +542,7 @@ const routerRag: RagPattern = {
   id: "router-rag",
   name: "Router RAG",
   shortDesc: "Classify the query, route to the right source",
+  definition: "A source-selection pattern that classifies the user's intent and sends the query to the most relevant index, database, API, or combination of sources.",
   viewBox: "0 0 940 320",
   nodes: [
     {
@@ -624,6 +632,7 @@ const iterativeRag: RagPattern = {
   id: "iterative-rag",
   name: "Iterative / Corrective RAG",
   shortDesc: "Retrieve, draft, critique, refine — repeat",
+  definition: "A feedback-loop pattern that retrieves evidence, drafts an answer, checks whether the evidence is sufficient, and repeats with a refined query when the answer is weak.",
   viewBox: "0 0 880 280",
   nodes: [
     {
@@ -706,6 +715,7 @@ const graphRag: RagPattern = {
   id: "graph-rag",
   name: "Graph RAG",
   shortDesc: "Traverse entity relationships, summarise communities",
+  definition: "A relationship-aware pattern that combines graph traversal with retrieval so the model can answer questions about entities, dependencies, hierarchies, and indirect connections.",
   viewBox: "0 0 900 280",
   nodes: [
     {
@@ -785,6 +795,7 @@ const structuredRag: RagPattern = {
   id: "structured-rag",
   name: "Structured RAG",
   shortDesc: "LLM generates SQL or tool calls for tabular data",
+  definition: "A tool-first pattern that translates a natural-language question into SQL or an API call, executes it against structured data, and formats the result for the user.",
   viewBox: "0 0 960 200",
   nodes: [
     {

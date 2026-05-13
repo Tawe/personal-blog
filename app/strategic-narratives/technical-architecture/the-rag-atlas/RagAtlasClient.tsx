@@ -580,6 +580,10 @@ function PatternCard({ pattern, accentColor }: { pattern: RagPattern; accentColo
       </div>
       <div className="p-3 space-y-3 text-xs">
         <div className="grid grid-cols-1 gap-2">
+          <div className="rounded-md border px-2.5 py-2 bg-white" style={{ borderColor: withAlpha(accentColor, 0.28) }}>
+            <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: accentColor }}>What it is</p>
+            <p className="text-[#334155] leading-relaxed">{pattern.definition}</p>
+          </div>
           <div className="rounded-md border px-2.5 py-2 bg-[#FAFCFE]" style={{ borderColor: withAlpha(accentColor, 0.2) }}>
             <p className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: accentColor }}>Best for</p>
             <p className="text-[#334155] leading-relaxed">{primaryUseCase}</p>
