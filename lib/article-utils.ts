@@ -6,6 +6,7 @@ export interface ArticleMetadata {
   slug: string
   title: string
   subtitle?: string
+  description?: string
   date: string
   excerpt: string
   content: string
@@ -80,6 +81,7 @@ export function getArticleLightweight(
       const subtitleMatch = frontmatterText.match(/^subtitle:\s*(.+)$/m)
       const dateMatch = frontmatterText.match(/^date:\s*(.+)$/m)
       const excerptMatch = frontmatterText.match(/^excerpt:\s*(.+)$/m)
+      const descriptionMatch = frontmatterText.match(/^description:\s*(.+)$/m)
       const imageMatch = frontmatterText.match(/^featured_image:\s*(.+)$/m)
       const readingTimeMatch = frontmatterText.match(/^reading_time:\s*(\d+)$/m)
       const featuredMatch = frontmatterText.match(/^featured:\s*(true|false)$/m)
@@ -100,6 +102,7 @@ export function getArticleLightweight(
       if (subtitleMatch) frontmatter.subtitle = subtitleMatch[1].trim().replace(/^["']|["']$/g, "")
       if (dateMatch) frontmatter.date = dateMatch[1].trim().replace(/^["']|["']$/g, "")
       if (excerptMatch) frontmatter.excerpt = excerptMatch[1].trim().replace(/^["']|["']$/g, "")
+      if (descriptionMatch) frontmatter.description = descriptionMatch[1].trim().replace(/^["']|["']$/g, "")
       if (imageMatch) frontmatter.featured_image = imageMatch[1].trim().replace(/^["']|["']$/g, "")
       if (readingTimeMatch) frontmatter.reading_time = parseInt(readingTimeMatch[1])
       if (featuredMatch) frontmatter.featured = featuredMatch[1] === "true"
@@ -138,6 +141,7 @@ export function getArticleLightweight(
       slug,
       title: frontmatter.title || matchingFile.replace(".md", ""),
       subtitle: frontmatter.subtitle,
+      description: frontmatter.description,
       date: frontmatter.date || new Date().toISOString(),
       excerpt,
       content: "", // Don't process markdown at build time
@@ -212,6 +216,7 @@ export async function getArticle(
       slug,
       title: frontmatter.title || matchingFile.replace(".md", ""),
       subtitle: frontmatter.subtitle,
+      description: frontmatter.description,
       date: frontmatter.date || new Date().toISOString(),
       excerpt,
       content: htmlContent,

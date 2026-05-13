@@ -42,6 +42,23 @@ interface ArticleSeriesContext {
 }
 
 const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "keep-simple-things-simple-let-complex-things-earn-their-complexity": [
+    {
+      question: "Why do software systems become complicated too early?",
+      answer:
+        "Systems often become complicated before the technical problem requires it because teams reach for tools, abstractions, workflows, or architecture patterns that feel modern or interesting before the business need has earned that complexity.",
+    },
+    {
+      question: "When is architectural complexity worth adding?",
+      answer:
+        "Complexity is worth adding when the existing approach no longer fits the shape of the problem, such as when scale, reliability, coordination, performance, or operational pressure creates real friction that simpler approaches cannot handle cleanly.",
+    },
+    {
+      question: "How can teams tell when simplicity has been lost?",
+      answer:
+        "A clear sign is when basic work requires navigating systems instead of solving problems. Slow onboarding, risky deployments, excessive approval paths, unclear ownership, and communication routed through layers of process all point to complexity that needs to be questioned.",
+    },
+  ],
   "your-ai-architecture-isnt-broken-its-just-put-together-wrong": [
     {
       question: "Why do AI systems often fail over time instead of immediately?",

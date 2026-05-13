@@ -42,6 +42,28 @@ interface ArticleSeriesContext {
 }
 
 const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "youre-solving-the-wrong-problems-well": [
+    {
+      question: "Why do strong engineering teams solve the wrong problems?",
+      answer:
+        "Strong engineering teams can drift toward solving implementation and system problems because those are familiar, measurable, and comfortable. The risk is that technically good work can become disconnected from product intent, business value, and the outcome the company actually needs.",
+    },
+    {
+      question: "What does engineering alignment with product and business goals look like?",
+      answer:
+        "Aligned teams keep the goal visible through planning, tickets, pull requests, and review. Engineering and product work through the problem together, challenge assumptions together, and evaluate whether the solution serves the intended outcome, not just whether the code works.",
+    },
+    {
+      question: "How can engineering leaders avoid economically wrong technical decisions?",
+      answer:
+        "Leaders need to evaluate technical decisions through cost, time, risk, opportunity cost, and supportability. A solution can be technically sound while still being a bad bet if it takes too long to pay back, consumes focus from more important work, or adds risk the company does not need.",
+    },
+    {
+      question: "What is the warning sign that a team is shipping without solving what matters?",
+      answer:
+        "A common warning sign is when teams can explain how they are building something but cannot clearly explain why it exists, what it should change, or how it connects to product and business goals. By review time, the intent has disappeared and the conversation has become purely technical.",
+    },
+  ],
   "how-to-measure-ai-productivity-when-the-cost-moves-instead-of-disappearing": [
     {
       question: "How should engineering leaders measure AI productivity?",

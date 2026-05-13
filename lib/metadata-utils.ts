@@ -37,7 +37,7 @@ export function generateArticleMetadata(
   }
 
   const title = article.title || defaultTitle
-  const description = article.excerpt || article.subtitle || defaultDescription
+  const description = article.description || article.excerpt || article.subtitle || defaultDescription
   const url = `https://johnmunn.tech${basePath}/${slug}`
   const titleKeyword = title.trim()
   const subtitleKeyword = article.subtitle?.trim()
