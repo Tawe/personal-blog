@@ -116,6 +116,11 @@ const nextConfig = {
         destination: "/interactive/rag-atlas",
         permanent: true,
       },
+      {
+        source: "/strategic-narratives/world-of-artumin/beneath-the-foundation-an-examination-of-hesitatio",
+        destination: "/strategic-narratives/world-of-artumin/beneath-the-foundation-an-examination-of-hesitation",
+        permanent: true,
+      },
     ]
   },
   async headers() {

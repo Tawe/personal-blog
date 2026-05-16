@@ -1,6 +1,6 @@
 ---
-title: Beneath the Foundation, An Examination of Hesitatio
-subtitle: An Examination of Hesitatio
+title: Beneath the Foundation, An Examination of Hesitation
+subtitle: An Examination of Hesitation
 date: 2026-02-27
 type: story
 excerpt: A Darla Rainwood investigation into the Cult of the Black Lamb, where uncertainty, authority, and timing collide beneath a manor's foundation.
