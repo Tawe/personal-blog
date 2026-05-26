@@ -42,6 +42,28 @@ interface ArticleSeriesContext {
 }
 
 const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "documents-as-code": [
+    {
+      question: "What does documents as code mean for AI-assisted software development?",
+      answer:
+        "Documents as code means treating specs, architecture notes, product requirements, and other AI-consumed artifacts with the same discipline as code when they directly shape implementation. They need ownership, versioning, review, freshness, and clear authority because AI coding tools can turn stale context into production behavior.",
+    },
+    {
+      question: "Why do AI coding agents make stale documentation more dangerous?",
+      answer:
+        "Human engineers often know when a Confluence page, Jira ticket, Slack thread, or repo spec is stale and can ask questions or override it. AI agents usually cannot infer that lifecycle context, so they may treat outdated documents as current truth and reintroduce removed features or implement old requirements.",
+    },
+    {
+      question: "Where should the source of truth live in spec-driven development?",
+      answer:
+        "The source of truth must be explicit. The important question is not whether every document belongs in Git, but which artifact has final authority when product systems, collaboration tools, and repository specs disagree. Once AI tools consume those artifacts directly, ambiguity becomes an engineering risk.",
+    },
+    {
+      question: "How should teams manage multimodal product context for AI tools?",
+      answer:
+        "Teams need to curate visual and textual context before feeding it to AI systems. Figma files, screenshots, diagrams, walkthroughs, tickets, and docs should expose which ideas are approved, deprecated, experimental, or obsolete so agents do not treat abandoned artifacts as live requirements.",
+    },
+  ],
   "keep-simple-things-simple-let-complex-things-earn-their-complexity": [
     {
       question: "Why do software systems become complicated too early?",

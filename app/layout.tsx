@@ -82,6 +82,7 @@ export const metadata: Metadata = {
     canonical: "https://johnmunn.tech",
     types: {
       "application/rss+xml": "https://johnmunn.tech/feed.xml",
+      "text/plain": "https://johnmunn.tech/llms.txt",
     },
   },
   category: "technology",
