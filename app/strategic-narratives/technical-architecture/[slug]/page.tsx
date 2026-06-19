@@ -42,6 +42,28 @@ interface ArticleSeriesContext {
 }
 
 const ARTICLE_FAQ_BY_SLUG: Record<string, Array<{ question: string; answer: string }>> = {
+  "code-was-always-a-liability-ai-is-letting-it-grow-faster-than-ever": [
+    {
+      question: "Why can AI make code ownership harder?",
+      answer:
+        "AI can reduce the cost of creating software without reducing the long-term cost of understanding, maintaining, securing, and retiring it. That means organizations may accumulate more software obligations faster than their teams can steward them.",
+    },
+    {
+      question: "What is the main risk of AI-generated software?",
+      answer:
+        "The main risk is not only bad code. It is creating more services, workflows, automations, and features than the organization can understand, own, and safely evolve over time.",
+    },
+    {
+      question: "How does AI change technical debt?",
+      answer:
+        "AI can accelerate the accumulation of code whose purpose, dependencies, and ownership become unclear. The software may still work, but the organization's understanding of why it exists and what depends on it can decay.",
+    },
+    {
+      question: "What should senior engineers focus on as AI increases software output?",
+      answer:
+        "Senior engineers and architects need to focus more on stewardship: preserving system understanding, reducing unnecessary complexity, clarifying ownership, and deleting software that no longer creates meaningful value.",
+    },
+  ],
   "documents-as-code": [
     {
       question: "What does documents as code mean for AI-assisted software development?",
